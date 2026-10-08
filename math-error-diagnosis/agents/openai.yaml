@@ -1,0 +1,4 @@
+interface:
+  display_name: "数学错题诊断助手"
+  short_description: "检查高中数学与高考题解答过程，覆盖函数、三角、圆锥曲线、数列等题型"
+  default_prompt: "请使用 $math-error-diagnosis 检查以下高中数学作业的解答过程，定位首个实质错误，说明依据并给出最小修改。"
