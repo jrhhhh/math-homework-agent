@@ -3,7 +3,7 @@ name: solution-refiner
 description: 学生完整解答的结论和过程已经核验成立，且请求优化时，分析解法的优化空间与本解答未展示的能力，输出 3 个优化方向（每个含「怎么更好 + 暴露什么短板 + 一个训练动作」）。Use when a student shows a correct solution and asks 有没有更简单/更快/更巧的做法、还有别的方法吗、一题多解、我的解法是不是太笨了、能不能写得更优雅、解法还能怎么优化、正解优化、从对到好、再拔高一点, or asks for a better / shorter / more general / more elegant solution to a problem they have already solved correctly. Do not use when the answer is wrong or the student is stuck (use math-error-diagnosis; presolve-starter is optional and not installed here), when the student asks for 判对错、错因诊断、修复句、变式题、复习计划、评分、置信度、理解深度探测, or when the student has not produced a solution yet.
 ---
 
-# 正解优化器（solution-refiner）
+# skill：Solution Refiner（solution-refiner）
 
 学生完整解答的结论和过程已经核验成立，且请求优化时，分析解法的优化空间，
 描述这份解答尚未展示的能力，给出 **3 个优化方向**——每个方向包含"怎么更好 + 暴露了什么短板 + 一个训练动作"。

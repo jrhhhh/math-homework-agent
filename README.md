@@ -1,6 +1,6 @@
-# 数学错题诊断助手
+# 高中数学作业双 Skill 项目
 
-一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。`math-error-diagnosis`检查学生实际提交的解答，定位首错并给最小修改；`solution-refiner`在当前解答的结论与完整过程都成立、且用户请求优化后，提供三个优化方向。
+一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Solution Refiner**（`solution-refiner`）在当前解答的结论与完整过程都成立、且用户请求优化后，提供三个优化方向。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
@@ -30,13 +30,13 @@ math-error-diagnosis/
   agents/openai.yaml       界面信息与默认调用提示
   references/              六份题型清单、判断尺度与示例
 docs/                      诊断案例、验证范围与说明
-tests/                     固定案例计算脚本及运行证据
+tests/                     衔接回归测试与固定案例计算脚本
 solution-refiner/          同学技能的协作对齐版本，原分支保持不变
 scripts/handoff_check.py   交接元信息与当前解答版本检查
 AGENTS.md                 两个技能的调用与反馈规则
 ```
 
-优先阅读 [技能入口](math-error-diagnosis/SKILL.md) 和 [高中题型检验记录](docs/高中题型检验记录.md)。较早的两份案例记录保留制作过程中的试用信息，并不代表新增题型已经独立盲测。
+优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-error-diagnosis`、`$solution-refiner` 调用名保持一致。
 
 ## 复现计算核验
 
@@ -48,7 +48,7 @@ python3 tests/新例计算核验.py
 python3 tests/高中题型计算核验.py
 ```
 
-它们分别核验10、6、11组固定数学事实。后两个脚本会刷新同目录下的JSON证据文件；有限样本与浮点容差检查的限制在输出中说明。这些脚本不是模型行为测试，也不代替一般性数学证明。
+它们分别核验10、6、11组固定数学事实。后两个脚本会在同目录生成JSON证据文件，首个脚本将JSON结果输出到终端；生成结果不纳入版本控制。有限样本与浮点容差检查的限制在输出中说明。这些脚本不是模型行为测试，也不代替一般性数学证明。
 
 交接与卡片兼容性测试：
 
