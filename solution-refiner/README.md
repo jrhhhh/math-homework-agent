@@ -1,4 +1,4 @@
-# solution-refiner 正解优化器
+# skill：Solution Refiner
 
 原作来自本仓库 `solution_refiner` 分支提交 `759a554c62c598dcd28e51c6194080058ae5fc41`。此目录是协作对齐版本，原分支保持不变。
 

@@ -1,4 +1,4 @@
 interface:
-  display_name: "正解优化器"
+  display_name: "skill：Solution Refiner"
   short_description: "对已核验成立的完整高中解答提供三个优化方向、局部能力观察与训练动作"
   default_prompt: "请使用 $solution-refiner 优化经过 $math-error-diagnosis 核验成立的解答，并运行结构和越界检查。"

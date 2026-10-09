@@ -4,8 +4,8 @@
 
 ## 技能与职责
 
-- `math-error-diagnosis/SKILL.md`：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
-- `solution-refiner/SKILL.md`：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
+- skill：Math Error Diagnosis（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
+- skill：Solution Refiner（`solution-refiner/SKILL.md`）：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
 - 未包含presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。
 
 ## 调度
