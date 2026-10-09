@@ -24,6 +24,21 @@ def packet():
 
 
 class HandoffTests(unittest.TestCase):
+    def test_card_invalid_encoding_uses_input_error_contract(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/"bad-card.json"
+            path.write_bytes(b"\xff\xfe")
+            for command in ("validate", "audit"):
+                args = ["python3", str(ROOT/"solution-refiner/solution_card_check.py"),
+                        command, "--card", str(path)]
+                if command == "audit":
+                    args += ["--solution", SOLUTION, "--problem", PROBLEM]
+                with self.subTest(command=command):
+                    result = subprocess.run(args, text=True, capture_output=True)
+                    self.assertEqual(result.returncode, 2)
+                    self.assertEqual(json.loads(result.stdout)["error"], "card file is not valid UTF-8")
+                    self.assertNotIn("Traceback", result.stderr)
+
     def test_valid_current_student_solution(self):
         result = GATE.route(packet(), PROBLEM, SOLUTION)
         self.assertTrue(result["eligible"])

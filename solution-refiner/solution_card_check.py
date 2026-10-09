@@ -46,25 +46,25 @@ OPP_COUNT = 3
 GAP_TABLE = (
     ("更优方法", "方法选择能力",
      ("方法选择", "选择方法", "选方法", "方法比较", "比较方法", "工具"),
-     "只会一种方法，不会比较"),
+     "本份解答仅展示一种方法，尚未展示方法比较"),
     ("更短步骤", "代数变形能力",
      ("代数变形", "变形", "化简", "步骤"),
-     "计算冗长，不会化简"),
+     "本份解答步骤较长，尚有可化简的计算"),
     ("更通用解法", "抽象推广能力",
      ("抽象推广", "推广", "一般化", "通法"),
-     "只会特例，不会一般化"),
+     "本份解答仅展示特例，尚未展示一般化"),
     ("更优雅表达", "数学语言能力",
      ("数学语言", "表达", "书写", "记法"),
-     "步骤对但写得乱"),
+     "本份解答步骤成立，表达还可整理"),
     ("更少分类讨论", "逻辑结构能力",
      ("逻辑结构", "分类讨论", "结构", "合并"),
-     "分类繁琐，不会合并"),
+     "本份解答分类较多，可以尝试合并"),
     ("更快计算", "数感 / 估算能力",
      ("数感", "估算", "计算速度", "口算", "算得慢"),
-     "硬算，不会估算"),
+     "本份解答采用直接计算，尚未展示估算"),
     ("更几何直观", "数形结合能力",
      ("数形结合", "画图", "图象", "图像", "草图", "数轴", "直观"),
-     "只会代数，不会画图"),
+     "本份解答采用代数，尚未展示图形解释"),
 )
 
 DIRECTIONS = {row[0]: row[2] for row in GAP_TABLE}
@@ -141,6 +141,8 @@ def load_card(path):
         emit({"error": "card file not found", "path": path}, 2)
     except json.JSONDecodeError as exc:
         emit({"error": "card file is not valid JSON", "path": path, "detail": str(exc)}, 2)
+    except UnicodeError as exc:
+        emit({"error": "card file is not valid UTF-8", "path": path, "detail": str(exc)}, 2)
     except OSError as exc:
         emit({"error": "cannot read card file", "path": path, "detail": str(exc)}, 2)
     if not isinstance(card, dict):
