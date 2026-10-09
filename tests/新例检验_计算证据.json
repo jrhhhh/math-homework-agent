@@ -1,0 +1,36 @@
+{
+  "passed_groups": 6,
+  "checks": [
+    {
+      "name": "N01 分式方程",
+      "passed": true,
+      "scope": "验证因式分解、唯一候选值及分母为零"
+    },
+    {
+      "name": "N02 根式反例",
+      "passed": true,
+      "scope": "验证反例；一般恒等式 sqrt(x²)=|x| 由非负平方根定义说明"
+    },
+    {
+      "name": "N03 有效约分",
+      "passed": true,
+      "scope": "系数展开及有限点计算；约分须保留 x≠2"
+    },
+    {
+      "name": "N04 参数不等式",
+      "passed": true,
+      "scope": "有限样本及零参数检查；一般结论由不等式乘除规则说明"
+    },
+    {
+      "name": "N05 两根代回",
+      "passed": true,
+      "scope": "因式分解系数与两个候选根代回"
+    },
+    {
+      "name": "N08 取倒数反例",
+      "passed": true,
+      "scope": "反例否定错误全称断言"
+    }
+  ],
+  "limitation": "只核验列出的数学事实，不是自动模型评测，也不替代一般证明。"
+}
