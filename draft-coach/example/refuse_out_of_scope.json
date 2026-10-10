@@ -1,0 +1,7 @@
+{
+  "action": "refuse",
+  "error": "超出范围",
+  "message": "我只分析草稿习惯，不判断对错。如果你想知道答案对不对，请把解答交给诊断工具。",
+  "reason": "out_of_scope",
+  "exit_code_meaning": "超出范围：草稿有效，但这个问题不归本技能管"
+}

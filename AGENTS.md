@@ -1,123 +1,46 @@
-# 数学智能体项目 · Agent 调度约定（AGENTS.md）
-
-本项目是《数学智能体工程与实践》第 4 讲的动手作品工作区。**Agent 决定何时调用哪个 skill，
-每个 skill 只提供"这类事该怎么做"的方法与门。** 默认中文、默认高中学段用词（按需切换学段）。
-
-## 一、四个技能与职责
-
-| Skill | 目录 | 负责的疆域 | 产出 |
-| --- | --- | --- | --- |
-| `presolve-starter` | `my_skill/` | 学生**还没动笔**、不知道从哪开始 | 解题前思考卡（5 个启动问题 + 第一个动作） |
-| `math-error-diagnosis` | **不在本仓库** | 学生**做错了**：首错定位、最小修改、分层提示 | 诊断报告（+ 可选交接包） |
-| `solution-refiner` | `solution_refiner/` | 学生**做对了**但解法笨/慢/局限 | 3 个优化方向 + 能力短板 + 训练动作 |
-| `error-atlas` | `error-atlas/` | **≥2 道已修复错题**的跨题归因；**学生明确要求时**定制出题 | 错题病理图（+ 个性化练习） |
-
-> **注意**：`math-error-diagnosis` 是**同伴的技能**，本仓库不包含它、也不能假装调用它。
-> 需要用它的场景（单题错因诊断、首错定位、修复句、变式题、复习计划、评分、置信度复核）
-> 一律**转交**，或明确告知用户"该能力由另一个 skill 提供"。
-
-## 二、调度：一条闭环
-
-```
-学生不会开始 ──▶ presolve-starter
-学生做错了   ──▶ math-error-diagnosis（同伴）→ 修好
-                  ↓ 攒够 ≥2 道（各带同伴错因结论）
-学生问"我老犯什么错" ──▶ error-atlas 第一段 → 病理图
-学生明确要求出题     ──▶ error-atlas 第二段 → 个性化练习
-学生做对了但嫌笨     ──▶ solution-refiner
-```
-
-选用条件（**每条都含负面边界，越界会污染别的技能的地盘**）：
-
-- 用 `presolve-starter`：学生说不会开始、没思路、看到题就懵。
-  **不用于**已有解答需要诊断或优化时。
-- 用 `solution-refiner`：学生**已做对**且要求更简单/更快/更优雅/更通用。
-  **不用于**答案错误、也不会开始；它**禁止出变式题**、**不凭一道题认定长期能力弱**。
-- 用 `error-atlas`：手里有 **≥2 道已修复**错题、每题都有可引用的同伴错因结论。
-  **不接只有一道题**；**未明确要求就不出题**；**不做通用题库式出题**。
-
-## 三、error-atlas 的两段准入（缺一不可）
-
-**第一段（归因）准入**：
-
-1. 错题 **≥ 2 道**（一题在数学上无法归纳，脚本 `E_TOO_FEW_CASES` 会驳回）；
-2. 每题都带同伴结论对象 `cause`，且 `cause.method` **不能**是 `numeric_only` / `none`
-   （廉价核验不算完整审查，`E_CAUSE_UNVERIFIED`），`cause.unresolved_items` 必须为空
-   （`E_CAUSE_UNRESOLVED`）；
-3. 每条的 `case_count ≥ 2`，且 `evidence` 里**点名**的题数不少于声明数
-   （`E_CASE_COUNT_THIN` / `E_CASE_COUNT_MISMATCH`）。
-
-**第二段（出题）准入**：
-
-1. 第一段已经通过 `validate` 与 `audit`；
-2. **学生明确要求出题**（说"举一反三/针对我的错题出题/定制练习"之类），
-   否则 `practice_authorized=false`、`practice_items=[]`；
-3. 白名单：**不接通用题库式出题**（"给我来 5 道圆锥曲线题"不属于本技能）。
-
-## 四、三条上游接口（改动前先读 `error-atlas/CONFLICTS.md`）
-
-1. **`cause` 对象**：`type` 只能取同伴 `references/error-types.md` 的六类
-   （运算错误 / 条件失效 / 分支·边界遗漏 / 逻辑错误 / 定理误用 / 论证缺口），
-   **不改名、不细分**；`method` 取同伴五值枚举。
-2. **证据指纹**：`evidence` 写成 `[题号#12位指纹]`，算法与同伴
-   `scripts/handoff_check.py` 的 `version()` **逐字相同**。**不要手写指纹**，
-   用 `error-atlas/example/build_cards.py` 生成。
-3. **退出码**：`0` 准入 / 通过 · `1` 有效但不准入 · `2` 非法输入。
-   本项目的三个门脚本与同伴的 `handoff_check.py` 共用这套约定，
-   但**查的东西完全不同，不可互相替代**。
-
-**两处上游立法必须持续遵守**：
-
-- 同伴禁止"不凭一道题认定学生长期能力弱" → 本项目的跨题断言一律走**样本量**（≥2 道）
-  + "假设/待验证"限定词；
-- 同伴禁止"未授权出题"（但他允许"用户请求时生成同类练习，
-  先核验题目条件、解和完整性") → 出题一律过**授权门 + 答案核验门**，
-  答案与学生可见题干**分离存放**。
-
-## 五、维护与验证
-
-改任何门脚本或卡片 schema 后，**必须重跑真实输出**，不许凭印象写"应该会通过"：
-
-```bash
-cd error-atlas
-python3 example/build_cards.py     # 按真实内容重算指纹并重建示例卡
-python3 verify_all_gates.py        # 59 条判据的覆盖核验（应输出"全部判据都有真实触发"）
-```
-
-- 参考实现：`error-atlas/real_output.txt`（所有门的原始输出记录）。
-- **完整例子**：`error-atlas/example/DEMO.md`——六道错题 → 病理图 → 定制练习，
-  含学生版题纸与答案页；它引用的每段 JSON 都是真实运行结果。
-  需要向人解释"这个技能到底产出什么"时，直接给这份。
-- `error-atlas/_upstream/` 是**同伴仓库的原文副本，仅供比对，不是交付物**；
-  提交或分享前请删除或加入 `.gitignore`。
-- **不去修改同伴仓库的任何文件**；分工不一致时，改本项目的对接层，并在
-  `error-atlas/CONFLICTS.md` 里记录理由与上游原文行号。
-
-**Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，
-会静默失败、什么都不输出。本机可用的解释器为
-`"D:/Program Files/anaconda3/python.exe"`。
 # 高中数学作业项目的 Agent 调度约定
 
-本文件是项目根目录的 Agent 入口（AGENTS.md）。Agent决定调用时机，两个Skill分别提供诊断和优化方法。默认使用中文和高中方法，尊重用户的反馈模式。
+本文件是项目根目录的 Agent 入口（AGENTS.md）。Agent 决定调用时机，三个 Skill 分别提供诊断、优化和草稿习惯分析的方法。默认使用中文和高中方法，尊重用户的反馈模式。
 
 ## 技能与职责
 
-- skill：Math Error Diagnosis（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
-- skill：Solution Refiner（`solution-refiner/SKILL.md`）：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
-- 未包含presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。
+- skill：**Math Error Diagnosis**（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
+- skill：**Solution Refiner**（`solution-refiner/SKILL.md`）：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
+- skill：**Draft Coach**（`draft-coach/SKILL.md`）：只看学生草稿，分析思考习惯——分区组织、跳步、涂改、试错、画图、草稿利用率——输出六维观察卡、3 条习惯和下一道题可执行的动作。不判对错、不诊断知识漏洞、不修补解答、不出变式题、不排复习计划。
+
+未包含 presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。
 
 ## 调度
 
-1. 收集原题与学生实际过程，先调用math-error-diagnosis。只有答案时可核对结果，但不准入优化。
+1. 收集原题与学生实际过程，先调用 math-error-diagnosis。只有答案时可核对结果，但不准入优化。
 2. 解答有错或论证缺口：给诊断/修补或提示，等待学生修订并重新检查。助手修补稿不冒充学生解答。
 3. 只有结论正确、完整过程成立、核验无未解决项、来源为学生，而且用户要求优化时，准备独立交接包。
-4. 交接包按 [协议](docs/handoff-protocol.md) 保存；运行 `python3 scripts/handoff_check.py route --handoff handoff.json --problem-file problem.txt --solution-file solution.txt`。以当前题目与过程文件比较版本，退出0才可进入solution-refiner；1表示不准入，2表示输入或协议非法。脚本通过只验证元信息与版本，不验证数学或用户授权真实性。
-5. 优化卡与诊断报告分开。先由宿主核验建议的数学有效性、学段允许性和实际改进，再按solution-refiner运行validate和audit，保存真实输出。推荐audit --strict并人工检查告警；不能用两道门代替数学检查。
+4. 交接包按 [协议](docs/handoff-protocol.md) 保存；运行 `python3 scripts/handoff_check.py route --handoff handoff.json --problem-file problem.txt --solution-file solution.txt`。以当前题目与过程文件比较版本，退出 0 才可进入 solution-refiner；1 表示不准入，2 表示输入或协议非法。脚本通过只验证元信息与版本，不验证数学或用户授权真实性。
+5. 优化卡与诊断报告分开。先由宿主核验建议的数学有效性、学段允许性和实际改进，再按 solution-refiner 运行 validate 和 audit，保存真实输出。推荐 `audit --strict` 并人工检查告警；不能用两道门代替数学检查。
 6. 用户只要求检查时完成检查即可，不强制优化。用户要求提示时持续一次一个提示，不因自动调度泄露解答。
 7. 学生改变题目、参数、过程或提交新方法后旧检查失效，重新调用诊断；不能把旧解答的正确性状态转给新解答。
 
 问题有多个小问时按题号绑定各自题目、过程与状态，检查依赖，不用某一小问通过替代整套作业核验。优化阶段发现检查遗漏时停止交付，由宿主重新诊断，不能把判错文字藏进优化卡。
 
+## draft-coach 的选用条件
+
+draft-coach **不在这条交接链路里**，它是横着长出来的第三条路：草稿对错都能分析习惯，所以它既不要求 `result_status=correct`，也不因为 `incorrect` 而被挡住，并且**不消费交接包**。
+
+- 用 draft-coach：学生**提供了草稿**（文字还原、布局描述或笔迹结构化数据），并问草稿习惯、草稿组织、跳步、涂改、试错、画图或草稿利用率。
+  **不用于**判对错、定位首错、诊断知识漏洞、修补解答（转 math-error-diagnosis）；
+  **不用于**已成立解答的优化（转 solution-refiner）；
+  **没有草稿不分析**（只给题目或只给最终答案时不进本技能）；
+  **不出变式题、不排复习计划、不评分、不贴标签**。
+- draft-coach 的卡片同样过两道门：`draft_coach_check.py validate`（结构）与 `audit`（越界 + 草稿关联度）。
+  它沿用本项目的退出码约定：**0** 通过 / 干净 · **1** 有效但不合格 · **2** 非法输入。
+  但查的东西与 handoff_check.py、solution_card_check.py 完全不同，**不可互相替代**。
+- `refuse` 的退出码另有一套读法：**2 = 草稿本身不能当证据**（没给 / 给了但用不了）；
+  **1 = 草稿没问题，但这个问题不归本技能管**（学生只想判对错）。判断理由是模型给的，脚本认不出来。
+
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`。数学参考资料变化时运行相关固定计算脚本。保留双方技能的职责和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
+
+改任何门脚本或卡片 schema 后，必须重跑真实输出，不许凭印象写"应该会通过"。同伴仓库的副本只供比对，不是交付物；**不去修改同伴仓库的任何文件**。
+
+**Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，会静默失败、什么都不输出。本机可用的解释器为 `"D:/Program Files/anaconda3/python.exe"`。`tests/test_handoff.py` 用字面量 `"python3"` 起子进程，在本机跑不起来；`tests/test_draft_coach.py` 用 `sys.executable`，可直接运行。

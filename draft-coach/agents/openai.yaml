@@ -1,0 +1,4 @@
+interface:
+  display_name: "skill：Draft Coach"
+  short_description: "只看学生草稿分析思考习惯（分区、跳步、涂改、试错、画图、草稿利用率），给出下一道题即可执行的动作"
+  default_prompt: "请使用 $draft-coach 分析这份草稿的思考习惯，并运行结构、越界与草稿关联检查。"

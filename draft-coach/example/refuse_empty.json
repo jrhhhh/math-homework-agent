@@ -1,0 +1,7 @@
+{
+  "action": "refuse",
+  "error": "无草稿",
+  "message": "没有检测到草稿内容。如果你是在脑子里算的，建议下次把关键步骤写下来，这样才能分析思考过程。",
+  "reason": "empty",
+  "exit_code_meaning": "没有草稿：必需输入缺失"
+}

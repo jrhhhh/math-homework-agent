@@ -1,0 +1,7 @@
+{
+  "action": "refuse",
+  "error": "草稿无法识别",
+  "message": "草稿内容太乱或图片不清晰，无法分析。建议重新拍一张更清晰的草稿，或把草稿内容用文字描述出来。",
+  "reason": "unreadable",
+  "exit_code_meaning": "草稿无法识别：输入存在但用不了"
+}
