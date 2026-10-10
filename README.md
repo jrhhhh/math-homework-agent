@@ -87,7 +87,7 @@ python3 draft_coach_check.py audit --card example/drifts_into_judgment.json \
 
 第一道应退出 0；第二道结构合格但审计应退出 1（它滑进了判对错、错因诊断、贴标签和题量计划）。
 
-前两个技能的结构已通过 skill-creator 的 `quick_validate.py`；仓库参考路径与界面配置已检查。新增 draft-coach 时环境里没有该验证器，**这一项没跑**，改用 frontmatter/界面 YAML 可解析、示例 JSON 可解析、Markdown 相对链接可达和 unittest 退出码覆盖代替。诊断案例由同一助手执行及复核，尚未进行独立盲测。复测时只向新会话提供技能和案例输入，隐藏已有回答，然后比较首错定位、条件边界与提示模式。
+三个技能于2026-10-10通过宿主 skill-creator 的 `quick_validate.py`；全部26项单元测试、27组固定计算、参考链接与界面配置检查通过。新增 [行为对照评测](docs/行为对照评测.md) 保存12题普通问答、Skill回答及匿名独立上下文复核的真实记录；这些小样本结果不构成普遍准确率保证。
 
 ## 能力边界
 

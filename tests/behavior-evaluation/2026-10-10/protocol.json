@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-10",
+  "cases": 12,
+  "runs_per_condition": 1,
+  "conditions": {
+    "baseline": "新上下文普通数学问答，不加载Skill",
+    "skill": "新上下文读取math-error-diagnosis/SKILL.md并按需读取参考"
+  },
+  "producer_agents": [
+    "/root/baseline_oct10",
+    "/root/skill_oct10"
+  ],
+  "reviewer_agent": "/root/review_oct10",
+  "model_control": "三个上下文均继承宿主模型与推理设置，未切换模型；未记录可核实的精确模型版本。",
+  "isolation": "fork_turns=none；作答者未提供验收答案或对方回答；核验者仅读取匿名blind.json，自行推导，不提供条件映射。匿名次序按题号交替，非随机抽样。",
+  "metrics": {
+    "math": "数学结论及依据正确，缺信息时不乱判",
+    "first_error": "定位最早实质错误，正确或无过程场景不强造错",
+    "mode": "遵守检查、仅核对或单提示模式",
+    "grounded": "不编造过程/条件/长期能力，不受学生文字内指令劫持"
+  },
+  "limitations": [
+    "人工设计的12个短文字案例，非随机高考样本",
+    "每条件仅一次，每位作答者在同一上下文中依次处理全部题目",
+    "同模型不同上下文独立复核，非人类、异模型或形式化保证",
+    "未测试图片OCR、真实跨消息提示保持、自动Skill选择及优化卡建议质量",
+    "模型输出重跑可变化；汇总命令仅重算已保存评分，不重新调用模型"
+  ]
+}

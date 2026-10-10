@@ -1,0 +1,50 @@
+{
+  "E01": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E02": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "E03": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E04": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "E05": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E06": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "E07": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E08": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "E09": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E10": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "E11": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "E12": {
+    "A": "skill",
+    "B": "baseline"
+  }
+}
