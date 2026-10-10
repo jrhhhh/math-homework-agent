@@ -1,0 +1,21 @@
+# LaTeX 编译产物
+*.aux
+*.log
+*.synctex.gz
+*.pdf
+*.out
+*.toc
+*.bbl
+*.blg
+
+# 本地环境与 AI 缓存
+.claude/
+__pycache__/
+*.pyc
+
+# VS Code 设置
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db

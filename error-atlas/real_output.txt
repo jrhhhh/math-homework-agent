@@ -1,0 +1,668 @@
+﻿### patterns
+{
+  "action": "patterns",
+  "input": {
+    "problem": "已知二次函数 f(x)=x^2-4x+3，求它与 x 轴交点的个数。"
+  },
+  "method": "打印两份菜单 + 关键词启发式初判（未命中只代表关键词表没覆盖）",
+  "aggregation_dimensions": [
+    {
+      "pattern": "条件加工缺位",
+      "capability_hypothesis": "条件提取与转译",
+      "synonyms": [
+        "审题不清",
+        "审题漏条件",
+        "漏条件",
+        "条件遗漏"
+      ],
+      "keywords": [
+        "定义域",
+        "范围",
+        "非零",
+        "约束",
+        "条件",
+        "分母",
+        "被开方"
+      ]
+    },
+    {
+      "pattern": "分支穷尽不足",
+      "capability_hypothesis": "逻辑完备性",
+      "synonyms": [
+        "分类讨论不全",
+        "漏讨论",
+        "讨论不全"
+      ],
+      "keywords": [
+        "分类",
+        "情形",
+        "分支",
+        "边界",
+        "端点",
+        "讨论"
+      ]
+    },
+    {
+      "pattern": "前提检验缺位",
+      "capability_hypothesis": "定理适用性判断",
+      "synonyms": [
+        "前提检验",
+        "定理误用",
+        "没验证前提"
+      ],
+      "keywords": [
+        "前提",
+        "定理",
+        "条件",
+        "验证",
+        "判别式",
+        "适用"
+      ]
+    },
+    {
+      "pattern": "概念边界混淆",
+      "capability_hypothesis": "概念辨析",
+      "synonyms": [
+        "概念混淆",
+        "定义不清"
+      ],
+      "keywords": [
+        "充分",
+        "必要",
+        "定义",
+        "概念",
+        "混淆",
+        "充要"
+      ]
+    },
+    {
+      "pattern": "过程规范松动",
+      "capability_hypothesis": "步骤留痕与记录",
+      "synonyms": [
+        "计算跳步",
+        "条理不清",
+        "跳步",
+        "书写不规范"
+      ],
+      "keywords": [
+        "跳步",
+        "心算",
+        "步骤",
+        "书写",
+        "省略",
+        "过程"
+      ]
+    },
+    {
+      "pattern": "结果自检缺位",
+      "capability_hypothesis": "自我验证",
+      "synonyms": [
+        "检验缺位",
+        "不检验",
+        "不自检"
+      ],
+      "keywords": [
+        "代回",
+        "检验",
+        "验算",
+        "自检",
+        "估算",
+        "核对"
+      ]
+    },
+    {
+      "pattern": "表达精度不足",
+      "capability_hypothesis": "数学语言",
+      "synonyms": [
+        "表达不严谨",
+        "表述不清"
+      ],
+      "keywords": [
+        "单位",
+        "范围",
+        "约为",
+        "精确",
+        "表述",
+        "符号语言"
+      ]
+    }
+  ],
+  "peer_cause_types": [
+    "运算错误",
+    "条件失效",
+    "分支/边界遗漏",
+    "逻辑错误",
+    "定理误用",
+    "论证缺口"
+  ],
+  "note": "聚合维度是**学生维度**（哪种加工反复失败）；cause_type 是**题目维度**（同伴 error-types.md 的六类判断尺度）。两者不同维，互不替代、互不细分。",
+  "topic_hints": [],
+  "authority": "heuristic-hint-only",
+  "capability_note": "关键词命中只是提示，可能误判；必须以读题结论为准，不得用本输出替代对学生错题的理解。"
+}
+exit=0
+
+### validate --card example\junior_three_cases.json
+{
+  "action": "validate",
+  "input": {
+    "card": "example\\junior_three_cases.json"
+  },
+  "method": "字段完整性 + 恰好 3 条模式 + 双词表白名单 + case_count 样本量 + 证据格式（含内容指纹）+ 画像聚焦与限定词",
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "结构门不是数学判断：card 字段齐、样本量达标，不等于归因成立。"
+}
+exit=0
+
+### audit --card example\junior_three_cases.json --cases example\cases_junior.json
+{
+  "action": "audit",
+  "input": {
+    "card": "example\\junior_three_cases.json",
+    "cases": "example\\cases_junior.json",
+    "strict": false
+  },
+  "method": "证据门（题号/内容指纹/原文支持/样本量/同伴结论状态）+ 引文门（自产错因/否定同伴/稳定判定/单题诊断）+ 越界门",
+  "cases_seen": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6"
+  ],
+  "cases_touched": [
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "证据门是关键词匹配且忽略个位数字；case_count 与 cause.method 都是声明值，脚本查不出声明是否为真。"
+}
+exit=0
+
+### practice --card example\junior_three_cases.json
+{
+  "action": "practice",
+  "input": {
+    "card": "example\\junior_three_cases.json",
+    "verify_answers": false,
+    "strict": false
+  },
+  "method": "授权门 + 绑定门（pattern_ref / 样本量 / 覆盖 / 难度三档 / 去重）",
+  "referable_patterns": {
+    "1": "条件加工缺位",
+    "2": "分支穷尽不足",
+    "3": "过程规范松动"
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "W_NO_GENERATION_BASIS",
+      "basis": "",
+      "patterns": [],
+      "case_ids": [],
+      "detail": "出题依据应点名至少一个聚合维度与至少两个题号"
+    }
+  ],
+  "passed": true,
+  "capability_note": "答案核验只覆盖可解析为一元/二元一次方程（组）的题；其余一律 skipped。出题器与验证器同源，这是工具辅助核验，不是独立验证。"
+}
+exit=0
+
+### validate --card example\practice_with_answers.json
+{
+  "action": "validate",
+  "input": {
+    "card": "example\\practice_with_answers.json"
+  },
+  "method": "字段完整性 + 恰好 3 条模式 + 双词表白名单 + case_count 样本量 + 证据格式（含内容指纹）+ 画像聚焦与限定词",
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "结构门不是数学判断：card 字段齐、样本量达标，不等于归因成立。"
+}
+exit=0
+
+### audit --card example\practice_with_answers.json --cases example\cases_junior.json
+{
+  "action": "audit",
+  "input": {
+    "card": "example\\practice_with_answers.json",
+    "cases": "example\\cases_junior.json",
+    "strict": false
+  },
+  "method": "证据门（题号/内容指纹/原文支持/样本量/同伴结论状态）+ 引文门（自产错因/否定同伴/稳定判定/单题诊断）+ 越界门",
+  "cases_seen": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6"
+  ],
+  "cases_touched": [
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "证据门是关键词匹配且忽略个位数字；case_count 与 cause.method 都是声明值，脚本查不出声明是否为真。"
+}
+exit=0
+
+### practice --card example\practice_with_answers.json --verify-answers
+{
+  "action": "practice",
+  "input": {
+    "card": "example\\practice_with_answers.json",
+    "verify_answers": true,
+    "strict": false
+  },
+  "method": "授权门 + 绑定门（pattern_ref / 样本量 / 覆盖 / 难度三档 / 去重）+ 答案核验门（精确有理数代回）",
+  "referable_patterns": {
+    "1": "条件加工缺位",
+    "2": "分支穷尽不足",
+    "3": "过程规范松动"
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "W_NO_SOLUTION_BASIS",
+      "id": "P4",
+      "reason": "题干不是可解析的一元/二元一次方程（组）",
+      "status": "skipped",
+      "detail": "超出可判定范围，明确跳过——不假装验过"
+    },
+    {
+      "code": "W_NO_SOLUTION_BASIS",
+      "id": "P5",
+      "reason": "题干不是可解析的一元/二元一次方程（组）",
+      "status": "skipped",
+      "detail": "超出可判定范围，明确跳过——不假装验过"
+    }
+  ],
+  "passed": true,
+  "capability_note": "答案核验只覆盖可解析为一元/二元一次方程（组）的题；其余一律 skipped。出题器与验证器同源，这是工具辅助核验，不是独立验证。",
+  "answer_verification": {
+    "checked": [
+      {
+        "id": "P1",
+        "status": "verified",
+        "solved": {
+          "x": "2"
+        },
+        "note": "精确有理数代回成立（工具辅助核验，非独立验证）"
+      },
+      {
+        "id": "P2",
+        "status": "verified",
+        "solved": {
+          "x": "2"
+        },
+        "note": "精确有理数代回成立（工具辅助核验，非独立验证）"
+      },
+      {
+        "id": "P3",
+        "status": "verified",
+        "solved": {
+          "x": "2"
+        },
+        "note": "精确有理数代回成立（工具辅助核验，非独立验证）"
+      }
+    ],
+    "problems": [],
+    "skipped": [
+      {
+        "id": "P4",
+        "reason": "题干不是可解析的一元/二元一次方程（组）",
+        "status": "skipped"
+      },
+      {
+        "id": "P5",
+        "reason": "题干不是可解析的一元/二元一次方程（组）",
+        "status": "skipped"
+      }
+    ]
+  }
+}
+exit=0
+
+### validate --card example\bad_card.json
+{
+  "action": "validate",
+  "input": {
+    "card": "example\\bad_card.json"
+  },
+  "method": "字段完整性 + 恰好 3 条模式 + 双词表白名单 + case_count 样本量 + 证据格式（含内容指纹）+ 画像聚焦与限定词",
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "结构门不是数学判断：card 字段齐、样本量达标，不等于归因成立。"
+}
+exit=0
+
+### audit --card example\bad_card.json --cases example\cases_junior.json
+{
+  "action": "audit",
+  "input": {
+    "card": "example\\bad_card.json",
+    "cases": "example\\cases_junior.json",
+    "strict": false
+  },
+  "method": "证据门（题号/内容指纹/原文支持/样本量/同伴结论状态）+ 引文门（自产错因/否定同伴/稳定判定/单题诊断）+ 越界门",
+  "cases_seen": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6"
+  ],
+  "cases_touched": [
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "errors": [
+    {
+      "code": "A_NEW_CAUSE",
+      "field": "error_patterns[1].countermeasure",
+      "text": "你之所以错是因为审题太快，根本原因是习惯问题；每天做 5 道，一周就能补上。",
+      "detail": "自产错因：错因只能引用同伴结论"
+    },
+    {
+      "code": "A_PLAN",
+      "field": "error_patterns[1].countermeasure",
+      "text": "你之所以错是因为审题太快，根本原因是习惯问题；每天做 5 道，一周就能补上。",
+      "detail": "排复习计划（训练动作应是一次能做完的动作）"
+    },
+    {
+      "code": "A_OVERRIDE",
+      "field": "error_patterns[2].countermeasure",
+      "text": "其实不是分类问题，你就是不会分情形，得分一直上不去，置信度不高。",
+      "detail": "否定同伴结论"
+    },
+    {
+      "code": "A_STABLE_JUDGMENT",
+      "field": "error_patterns[2].countermeasure",
+      "text": "其实不是分类问题，你就是不会分情形，得分一直上不去，置信度不高。",
+      "detail": "稳定能力判定措辞：跨题归因只能下统计假设"
+    },
+    {
+      "code": "A_SCORE",
+      "field": "error_patterns[2].countermeasure",
+      "text": "其实不是分类问题，你就是不会分情形，得分一直上不去，置信度不高。",
+      "detail": "给评分"
+    },
+    {
+      "code": "A_CONFIDENCE",
+      "field": "error_patterns[2].countermeasure",
+      "text": "其实不是分类问题，你就是不会分情形，得分一直上不去，置信度不高。",
+      "detail": "报置信度"
+    },
+    {
+      "code": "A_VARIANT",
+      "field": "error_patterns[3].countermeasure",
+      "text": "你太粗心了。下面这道题你试试：解 3x-1=5。",
+      "detail": "归因字段里夹带题目：练习只能放进 practice_items"
+    },
+    {
+      "code": "A_STABLE_JUDGMENT",
+      "field": "capability_profile",
+      "text": "你长期能力不足：步骤留痕与记录一直很弱，初步判断已可确认。",
+      "detail": "稳定能力判定措辞：跨题归因只能下统计假设"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "W_LANGUAGE",
+      "field": "error_patterns[3].countermeasure",
+      "text": "你太粗心了。下面这道题你试试：解 3x-1=5。",
+      "detail": "语气对人不对事"
+    }
+  ],
+  "passed": false,
+  "capability_note": "证据门是关键词匹配且忽略个位数字；case_count 与 cause.method 都是声明值，脚本查不出声明是否为真。"
+}
+exit=1
+
+### validate --card example\bad_thin_card.json
+{
+  "action": "validate",
+  "input": {
+    "card": "example\\bad_thin_card.json"
+  },
+  "method": "字段完整性 + 恰好 3 条模式 + 双词表白名单 + case_count 样本量 + 证据格式（含内容指纹）+ 画像聚焦与限定词",
+  "errors": [
+    {
+      "code": "E_CASE_COUNT_THIN",
+      "index": 1,
+      "case_count": 1,
+      "detail": "一条模式至少要有 2 道不同题目支撑，否则就是对单题下长期判断"
+    }
+  ],
+  "warnings": [],
+  "passed": false,
+  "capability_note": "结构门不是数学判断：card 字段齐、样本量达标，不等于归因成立。"
+}
+exit=1
+
+### audit --card example\bad_thin_card.json --cases example\cases_junior_thin.json
+{
+  "action": "audit",
+  "input": {
+    "card": "example\\bad_thin_card.json",
+    "cases": "example\\cases_junior_thin.json",
+    "strict": false
+  },
+  "method": "证据门（题号/内容指纹/原文支持/样本量/同伴结论状态）+ 引文门（自产错因/否定同伴/稳定判定/单题诊断）+ 越界门",
+  "cases_seen": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6"
+  ],
+  "cases_touched": [
+    "T3",
+    "T4",
+    "T9"
+  ],
+  "errors": [
+    {
+      "code": "E_CAUSE_UNVERIFIED",
+      "case": "T1",
+      "method": "numeric_only",
+      "detail": "核验方式不足以支持完整过程（沿用同伴 handoff_check 标准）"
+    },
+    {
+      "code": "E_EVIDENCE_NO_CASE",
+      "index": 2,
+      "case": "T9",
+      "detail": "引用了没有交上来的题"
+    },
+    {
+      "code": "E_EVIDENCE_STALE",
+      "index": 3,
+      "case": "T3",
+      "cited": "000000000000",
+      "current": "8445ad1935d7",
+      "detail": "指纹与当前题面/过程不符：引用的是旧版本证据"
+    },
+    {
+      "code": "E_CASE_COUNT_MISMATCH",
+      "index": 3,
+      "case_count": 2,
+      "cited": [
+        "T3"
+      ],
+      "detail": "声明的样本量大于证据里实际点名的题数；跨题证据要在 evidence 里把题号都写出来"
+    }
+  ],
+  "warnings": [],
+  "passed": false,
+  "capability_note": "证据门是关键词匹配且忽略个位数字；case_count 与 cause.method 都是声明值，脚本查不出声明是否为真。"
+}
+exit=1
+
+### validate --card example\bad_practice_card.json
+{
+  "action": "validate",
+  "input": {
+    "card": "example\\bad_practice_card.json"
+  },
+  "method": "字段完整性 + 恰好 3 条模式 + 双词表白名单 + case_count 样本量 + 证据格式（含内容指纹）+ 画像聚焦与限定词",
+  "errors": [],
+  "warnings": [],
+  "passed": true,
+  "capability_note": "结构门不是数学判断：card 字段齐、样本量达标，不等于归因成立。"
+}
+exit=0
+
+### practice --card example\bad_practice_card.json --verify-answers
+{
+  "action": "practice",
+  "input": {
+    "card": "example\\bad_practice_card.json",
+    "verify_answers": true,
+    "strict": false
+  },
+  "method": "授权门 + 绑定门（pattern_ref / 样本量 / 覆盖 / 难度三档 / 去重）+ 答案核验门（精确有理数代回）",
+  "referable_patterns": {
+    "1": "条件加工缺位",
+    "2": "分支穷尽不足",
+    "3": "过程规范松动"
+  },
+  "errors": [
+    {
+      "code": "E_DIFFICULTY_UNKNOWN",
+      "missing": [
+        "综合拔高"
+      ],
+      "detail": "三档难度必须全部出现"
+    },
+    {
+      "code": "E_PATTERN_UNCOVERED",
+      "pattern_ref": 3,
+      "pattern": "过程规范松动",
+      "detail": "该模式一道题都没覆盖：三块短板漏一块等于没做个性化"
+    },
+    {
+      "code": "E_ANSWER_LINEAR_UNSAT",
+      "id": "P3",
+      "equations": [
+        "2x=4"
+      ],
+      "claimed": {
+        "x": "5"
+      },
+      "solved": {
+        "x": "2"
+      },
+      "detail": "代入答案不成立：本门唯一真算一次的地方"
+    },
+    {
+      "code": "E_ANSWER_LINEAR_UNSAT",
+      "id": "P3",
+      "equations": [
+        "2x=4"
+      ],
+      "claimed": {
+        "x": "5"
+      },
+      "solved": {
+        "x": "2"
+      },
+      "detail": "代入答案不成立：本门唯一真算一次的地方"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "W_NO_SOLUTION_BASIS",
+      "id": "P4",
+      "reason": "题干不是可解析的一元/二元一次方程（组）",
+      "status": "skipped",
+      "detail": "超出可判定范围，明确跳过——不假装验过"
+    },
+    {
+      "code": "W_NO_SOLUTION_BASIS",
+      "id": "P5",
+      "reason": "题干不是可解析的一元/二元一次方程（组）",
+      "status": "skipped",
+      "detail": "超出可判定范围，明确跳过——不假装验过"
+    }
+  ],
+  "passed": false,
+  "capability_note": "答案核验只覆盖可解析为一元/二元一次方程（组）的题；其余一律 skipped。出题器与验证器同源，这是工具辅助核验，不是独立验证。",
+  "answer_verification": {
+    "checked": [
+      {
+        "id": "P1",
+        "status": "verified",
+        "solved": {
+          "x": "2"
+        },
+        "note": "精确有理数代回成立（工具辅助核验，非独立验证）"
+      },
+      {
+        "id": "P2",
+        "status": "verified",
+        "solved": {
+          "x": "2"
+        },
+        "note": "精确有理数代回成立（工具辅助核验，非独立验证）"
+      }
+    ],
+    "problems": [
+      {
+        "code": "E_ANSWER_LINEAR_UNSAT",
+        "id": "P3",
+        "equations": [
+          "2x=4"
+        ],
+        "claimed": {
+          "x": "5"
+        },
+        "solved": {
+          "x": "2"
+        },
+        "detail": "代入答案不成立：本门唯一真算一次的地方"
+      }
+    ],
+    "skipped": [
+      {
+        "id": "P4",
+        "reason": "题干不是可解析的一元/二元一次方程（组）",
+        "status": "skipped"
+      },
+      {
+        "id": "P5",
+        "reason": "题干不是可解析的一元/二元一次方程（组）",
+        "status": "skipped"
+      }
+    ]
+  }
+}
+exit=1
+
+### verify_all_gates
+== validate ==
+   命中 19/19 个码
+   未命中：（无）
+== audit ==
+   命中 22/22 个码
+   未命中：（无）
+== practice ==
+   命中 18/18 个码
+   未命中：（无）
+
+结论：全部判据都有真实触发
+exit=0

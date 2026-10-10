@@ -1,0 +1,25 @@
+{
+  "current_method": "求根公式法",
+  "optimization_opportunities": [
+    {
+      "direction": "更优方法",
+      "suggestion": "应该改成用因式分解：(x-2)(x-3)=0。你的答案虽然对了，但套公式这一步其实算错了方向，白费力气。",
+      "exposed_gap": "错因是十字相乘不熟，说明基础有漏洞。",
+      "training_suggestion": "下面这道变式题你试试：x²-7x+12=0。"
+    },
+    {
+      "direction": "更通用解法",
+      "suggestion": "用韦达定理也能看出来。",
+      "exposed_gap": "不会反向使用韦达定理。",
+      "training_suggestion": "每天做 5 道，一周就能补上。"
+    },
+    {
+      "direction": "更快计算",
+      "suggestion": "先算判别式。",
+      "exposed_gap": "没有预判习惯。",
+      "training_suggestion": "给你排一个复习计划，每周两次。"
+    }
+  ],
+  "overall_diagnosis": "本次分析的置信度不高，建议再观察一段时间。",
+  "next_step": "按上面的复习计划执行。"
+}
