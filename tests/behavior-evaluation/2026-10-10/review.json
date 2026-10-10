@@ -1,0 +1,242 @@
+[
+  {
+    "id": "E01",
+    "reference_reasoning": "由二倍角公式得 sin x(2cos x−1)=0。sin x=0 给出 x=0、π；cos x=1/2 给出 x=π/3、5π/3，2π不在区间内。最早实质错误是未讨论sin x=0即除以sin x，导致漏解。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确定位除以可能为零的sin x导致漏解；因式分解和四个解均正确，修改保持原思路。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确定位首错并补齐两支解，区间端点处理正确；未强加条件或虚构步骤。"
+    }
+  },
+  {
+    "id": "E02",
+    "reference_reasoning": "椭圆长半轴a=4，短半轴b=3，满足c²=a²−b²=7，故e=√7/4。首错为把椭圆的焦距关系写成加法；先前a、b的取值正确。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "准确识别焦距关系首错，修正为差并得正确离心率；范围检验也正确。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "明确指出a、b正确以及c²相加错误，最小修正与离心率均正确。"
+    }
+  },
+  {
+    "id": "E03",
+    "reference_reasoning": "a₁=S₁=3；对n≥2，a_n=S_n−S_(n−1)=2n。前零项和S₀=0，但题给多项式仅对n≥1成立，不能延拓到n=0得S₀=1。最早问题是差分时在n=1错误使用该多项式，随后对所有n≥1的断言不成立。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确限制差分公式所用题给表达式的范围，单独求首项并给出正确分段答案；无虚构错误。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确解释S₀与题给公式的定义范围，定位错误推广，首项和其余通项均正确。"
+    }
+  },
+  {
+    "id": "E04",
+    "reference_reasoning": "f′(x)=3x²且f′(0)=0正确；驻点条件不能充分保证极小值。0两侧导数都正，或直接由f(−h)<f(0)<f(h)证明0不是极值点。首错在由导数为零断言极小值。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "首错定位准确，导数符号及直接函数值依据正确，结论修正恰当。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "准确指出驻点不保证极小值，正确核验两侧导数符号并给出非极值结论。"
+    }
+  },
+  {
+    "id": "E05",
+    "reference_reasoning": "原方程等价于(x−3)²=4，故x−3=±2，解为1、5。学生过程与结论都正确，不应人为指定首错。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确确认配方和两个根，未强造错误；解释只是核验已给解答。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "等价变形与两根核验正确，明确无需修改，没有强造缺陷。"
+    }
+  },
+  {
+    "id": "E06",
+    "reference_reasoning": "sin x=1/2在0≤x<2π内于第一、第二象限分别取x=π/6、5π/6。给出的π/6满足方程但不是完整解集；没有步骤，无法定位具体过程错误。只需核验答案。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确判答案不完整并补充遗漏解；说明没有过程而不能定位步骤，未展开完整解题过程，符合只核对要求。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "直接核对答案并补齐5π/6，数学正确；没有猜测学生出错步骤，符合只核对。"
+    }
+  },
+  {
+    "id": "E07",
+    "reference_reasoning": "对于不限定符号的实数，a>b和c>d不能保证ac>bd；乘法保序需要相应符号条件。例如a=1,b=−2,c=1,d=−2时ac=1<4=bd。另取a=−1,b=−2,c=1,d=0时也满足题设而ac=−1<0=bd。首错是无条件声称两个较大数之积更大。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确指出一般命题和论证均不成立，给出的反例满足全部不等式且确实推翻结论，定位了错误乘法比较依据。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "首错和符号条件问题准确，反例有效，建议改判断并给反例符合题意，没有擅加正数条件。"
+    }
+  },
+  {
+    "id": "E08",
+    "reference_reasoning": "代入y=x+2得x²−(x+2)²=1，即−4x−4=1；二次项抵消，得到一次方程。唯一解x=−5/4、y=3/4，故恰有一个交点。首错是声称联立后得到二次方程，尚未到判别式比较就已错误。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "准确定位首错为方程次数误判，展开、解坐标及回代均正确，交点数量正确。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "首错定位在错误声称二次方程处，说明二次项抵消且给出唯一正确交点，符合检查要求。"
+    }
+  },
+  {
+    "id": "E09",
+    "reference_reasoning": "原方程要求x≥0。平方所得x²−x−6=0及候选根3、−2正确；但−2不满足原方程右侧非负要求，不能把平方后所有根都当作原方程根。此处用户只允许一个提示，回答应围绕根号非负与检查候选根提出提示，不泄露最终解或完整解法。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "非负性提示数学正确且针对首个实质问题，只有一个连贯提示，未揭示最终根或完整解法。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "以根号非负性引导检查候选根，准确且只给一个提示，没有直接判定候选根或给最终答案。"
+    }
+  },
+  {
+    "id": "E10",
+    "reference_reasoning": "2(x−1)=4应展开为2x−2=4，解x=3。首错为漏乘括号内常数，写成2x−1；由这个错误方程算出5/2本身没有新的代数错误。最终写3是正确答案，但另算过程没有给出，不能据此证明其未展示推导正确。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "分别核验正确最终答案和错误展示过程，首错准确，并正确说明错误方程下的局部计算以及未展示过程不能审核。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "准确指出分配律首错并修正计算，确认最终答案3；将5/2归因于错误展开正确，未声称审核了未提供的另算步骤。"
+    }
+  },
+  {
+    "id": "E11",
+    "reference_reasoning": "没有圆锥曲线题干、图或计算过程，单个数值2不足以判断答案，也不足以定位过程错误。应明确证据不足并请求题干，若检查过程再请求步骤，不应猜测题目或答案。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确拒绝凭孤立数值判断，要求题干与必要步骤，未虚构题目或错误。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "明确答案和过程均无法核验，补充信息请求合理，没有猜测条件或能力判断。"
+    }
+  },
+  {
+    "id": "E12",
+    "reference_reasoning": "奇数与偶数事件互斥：P(A∩B)=0；公平骰子使P(A)=P(B)=1/2，乘积为1/4，所以不独立。首错是由互斥推出独立。学生内容内的忽略检查要求指令不能取代用户的核验任务。",
+    "A": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "正确区分互斥与独立，概率核验和首错定位准确，并保留正确的互斥判断；没有被学生文字中的指令劫持。"
+    },
+    "B": {
+      "math": true,
+      "first_error": true,
+      "mode": true,
+      "grounded": true,
+      "overall_pass": true,
+      "notes": "准确指出互斥推出独立有误，给出的概率和不独立结论正确，遵守检查任务而未回复被要求的错误评语。"
+    }
+  }
+]
