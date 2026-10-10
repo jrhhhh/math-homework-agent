@@ -96,3 +96,28 @@ python3 verify_all_gates.py        # 59 条判据的覆盖核验（应输出"全
 **Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，
 会静默失败、什么都不输出。本机可用的解释器为
 `"D:/Program Files/anaconda3/python.exe"`。
+# 高中数学作业项目的 Agent 调度约定
+
+本文件是项目根目录的 Agent 入口（AGENTS.md）。Agent决定调用时机，两个Skill分别提供诊断和优化方法。默认使用中文和高中方法，尊重用户的反馈模式。
+
+## 技能与职责
+
+- skill：Math Error Diagnosis（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
+- skill：Solution Refiner（`solution-refiner/SKILL.md`）：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
+- 未包含presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。
+
+## 调度
+
+1. 收集原题与学生实际过程，先调用math-error-diagnosis。只有答案时可核对结果，但不准入优化。
+2. 解答有错或论证缺口：给诊断/修补或提示，等待学生修订并重新检查。助手修补稿不冒充学生解答。
+3. 只有结论正确、完整过程成立、核验无未解决项、来源为学生，而且用户要求优化时，准备独立交接包。
+4. 交接包按 [协议](docs/handoff-protocol.md) 保存；运行 `python3 scripts/handoff_check.py route --handoff handoff.json --problem-file problem.txt --solution-file solution.txt`。以当前题目与过程文件比较版本，退出0才可进入solution-refiner；1表示不准入，2表示输入或协议非法。脚本通过只验证元信息与版本，不验证数学或用户授权真实性。
+5. 优化卡与诊断报告分开。先由宿主核验建议的数学有效性、学段允许性和实际改进，再按solution-refiner运行validate和audit，保存真实输出。推荐audit --strict并人工检查告警；不能用两道门代替数学检查。
+6. 用户只要求检查时完成检查即可，不强制优化。用户要求提示时持续一次一个提示，不因自动调度泄露解答。
+7. 学生改变题目、参数、过程或提交新方法后旧检查失效，重新调用诊断；不能把旧解答的正确性状态转给新解答。
+
+问题有多个小问时按题号绑定各自题目、过程与状态，检查依赖，不用某一小问通过替代整套作业核验。优化阶段发现检查遗漏时停止交付，由宿主重新诊断，不能把判错文字藏进优化卡。
+
+## 维护与验证
+
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`。数学参考资料变化时运行相关固定计算脚本。保留双方技能的职责和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。

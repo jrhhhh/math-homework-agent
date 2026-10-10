@@ -19,3 +19,13 @@ __pycache__/
 # 系统文件
 .DS_Store
 Thumbs.db
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+*.zip
+
+# 固定计算脚本生成的证据，运行时重建
+/tests/计算核验结果.json
+/tests/新例检验_计算证据.json
+/tests/高中题型计算证据.json
