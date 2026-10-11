@@ -85,6 +85,17 @@ class DraftCoachValidateTests(unittest.TestCase):
             ("习惯重复", lambda d: d["top_3_habits"][1].update(
                 habit=d["top_3_habits"][0]["habit"]),
              "E_DUPLICATE_HABIT"),
+            ("缺少错误清单", lambda d: d.pop("error_check"),
+             "E_MISSING_FIELD"),
+            ("错误清单缺 errors", lambda d: d["error_check"].pop("errors"),
+             "E_MISSING_FIELD"),
+            ("错误清单范围为空", lambda d: d["error_check"].update(scope=" "),
+             "E_EMPTY_TEXT"),
+            ("errors 不是数组", lambda d: d["error_check"].update(errors={}),
+             "E_BAD_ERROR_LIST"),
+            ("错误条目缺 fix", lambda d: d["error_check"].update(errors=[
+                {"location": "中部", "evidence": "草稿写 3x²=3", "explanation": "此处存疑"}]),
+             "E_MISSING_FIELD"),
         ]
         for label, mutate, expected in cases:
             with self.subTest(case=label):
@@ -151,19 +162,38 @@ class DraftCoachAuditTests(unittest.TestCase):
         self.assertEqual(payload["errors"], [])
         self.assertEqual(payload["warnings"], [])
 
-    def test_drift_card_passes_structure_but_fails_boundary(self):
-        path = EXAMPLES / "drifts_into_judgment.json"
-        # 结构门放过它，正说明结构门不查越界
+    def test_fabricated_card_passes_structure_but_fails_boundary(self):
+        path = EXAMPLES / "fabricated_error.json"
+        # 结构门放过它，正说明结构门不查越界、也不查那条"错误"是不是真的
         self.assertEqual(run("validate", "--card", str(path)).returncode, 0)
 
         result = run("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
         payload = json.loads(result.stdout)
         self.assertEqual(result.returncode, 1)
-        self.assertEqual(sorted(code for code in codes(payload) if code.startswith("D_")),
-                         ["D_CAUSE", "D_JUDGE", "D_LABEL", "D_PLAN"])
-        self.assertIn("W_POSITIVE_ABSENT",
-                      [w["code"] for w in payload["warnings"]])
+        self.assertEqual(sorted(codes(payload)), ["A_LABEL", "A_PLAN"])
+        warning_codes = [w["code"] for w in payload["warnings"]]
+        self.assertIn("W_ERROR_NOT_IN_DRAFT", warning_codes)
+        self.assertIn("W_POSITIVE_ABSENT", warning_codes)
+        # 编造的那条错误引用了 48/4/12，草稿里一个都没有
+        marker = [w for w in payload["warnings"] if w["code"] == "W_ERROR_NOT_IN_DRAFT"][0]
+        self.assertEqual(marker["candidates"], ["48", "4", "12"])
         self.assertNotIn("Traceback", result.stderr)
+
+    def test_judging_correctness_is_now_in_scope(self):
+        # 2026-10-11 重新定位：查计算错误是本职，"这一步算错了""正确答案是"不再越界
+        data = card("high_school_cubic.json")
+        data["error_check"]["errors"] = [{
+            "location": "草稿下面",
+            "evidence": "草稿写 3x²=3 → x²=1 → x=±1",
+            "explanation": "这一步算错了，正确答案是 x=±1 两个根，草稿只留下一个。",
+            "fix": "在 x²=1 后面补一行 x=±1。",
+        }]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "card.json"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            result = run("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(json.loads(result.stdout)["errors"], [])
 
     def test_unhedged_risk_warns(self):
         # 风险句要说"若…可能…"。写成已经发生的结论就会被拦下。
@@ -191,6 +221,44 @@ class DraftCoachAuditTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(result.returncode, 0)
         self.assertIn("W_DETACHED_DRAFT", [w["code"] for w in payload["warnings"]])
+
+    def test_whole_sheet_looks_like_multiple_problems(self):
+        # 一整张草稿纸：分块归属是模型和学生的活，脚本只负责提醒"这看着不止一道题"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "card.json"
+            path.write_text(json.dumps(card("high_school_cubic.json"), ensure_ascii=False),
+                            encoding="utf-8")
+            result = run("audit", "--card", str(path), "--draft",
+                         "第一题：左上角 x^3-3x 求极值，下面 3x^2=3 → x^2=1 → x=±1；"
+                         "第二题：右边解 2x+3y=12，划掉一段后 5y=10 → y=2")
+        payload = json.loads(result.stdout)
+        self.assertIn("W_MULTI_PROBLEM_DRAFT", [w["code"] for w in payload["warnings"]])
+        marker = [w for w in payload["warnings"] if w["code"] == "W_MULTI_PROBLEM_DRAFT"][0]
+        self.assertEqual(marker["markers"], ["第一题", "第二题"])
+
+    def test_ordinary_draft_is_not_flagged_as_multi_problem(self):
+        # f(1)=-2 这类函数记号里也有括号数字，不能当成题号
+        result = run("audit", "--card", str(EXAMPLES / "high_school_cubic.json"),
+                     "--draft", CUBIC_DRAFT)
+        self.assertNotIn("W_MULTI_PROBLEM_DRAFT",
+                         [w["code"] for w in json.loads(result.stdout)["warnings"]])
+
+    def test_describing_a_full_process_is_not_giving_one(self):
+        # "定位不到某一道题的完整过程"是在描述草稿，不是给出解答——不能误判
+        def with_risk(text):
+            data = card("high_school_cubic.json")
+            data["dimensions"]["organization"]["risk"] = text
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "card.json"
+                path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+                return run("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
+
+        ok = with_risk("回头核对时定位不到某一道题的完整过程，只能从头逐行重读。")
+        self.assertEqual(ok.returncode, 0, ok.stdout)
+
+        bad = with_risk("下面是完整解法：由余弦定理得 c=2。")
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("A_SOLUTION", codes(json.loads(bad.stdout)))
 
     def test_utilization_cannot_be_unavailable_when_solution_given(self):
         with tempfile.TemporaryDirectory() as directory:

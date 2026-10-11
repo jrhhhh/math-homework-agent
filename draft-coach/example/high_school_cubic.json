@@ -1,4 +1,8 @@
 {
+  "error_check": {
+    "scope": "有草稿完整过程，逐步核对了求导、解方程、代入求值三步。未核验原题条件是否抄写正确。",
+    "errors": []
+  },
   "dimensions": {
     "organization": {
       "score": "中",

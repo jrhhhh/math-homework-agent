@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""draft_coach_check.py — "草稿习惯分析卡"的结构门与越界审计。
+"""draft_coach_check.py — "草稿检查卡"的结构门与越界审计。
 
 用法：
   validate --card CARD.json
@@ -14,17 +14,21 @@
     2 = 输入非法。refuse 另有一套映射，见 REFUSALS。
   - 仅使用 Python 标准库，无第三方依赖。
 
+定位（2026-10-11 起）：**首要是查计算错误，其次是讲草稿习惯。**
+所以判对错、指出"这一步算错了"、给出该写成什么，**都是本职**，不再越界。
+
 能力边界（诚实声明，别把它当正确性证明）：
-  - 结构门只查"卡片长得对不对"：六个维度是否齐全、评分是否在取值集合内、
-    证据与风险是否填了、习惯是否恰好 3 条、学段与草稿来源是否合法。
-    **它不判断这条习惯观察在数学上是否站得住**——那要人来读。
-  - 越界审计靠措辞规则，抓的是"判对错 / 诊断知识漏洞 / 给学生贴标签 / 排题量计划 /
-    出变式题 / 给出完整解答"。它是便宜的确定性门，不是语义理解；换个说法绕过去，
-    它抓不住。抓不住"修复句"本身：修复句的前提是判错，D_JUDGE / D_CAUSE 抓那个前提。
-  - 本技能的核心词汇——跳步、涂改、划掉、心算、漏根——**不在**禁列。
-    "如果 x²=1 写成 x=1，就会漏根"是假设性风险，合法；"这一步错了"才是判对错。
-  - 草稿关联度用记号重合判断，只认多位数字与 ASCII 标识符，短草稿可能整段跳过
-    这项检查（和 solution-refiner 的 W_DETACHED_SOLUTION 同性质）。
+  - 结构门只查"卡片长得对不对"：错误清单与六个维度是否齐全、评分是否在取值集合内、
+    每条错误的四个字段是否填了、习惯是否恰好 3 条、学段与草稿来源是否合法。
+    **它不判断你报的那处错误在数学上是否真的错**——那要人来算。
+  - 越界审计靠措辞规则，抓的是"诊断知识漏洞 / 给学生贴标签 / 排题量计划 /
+    出变式题 / 给完整解答 / 评分扣分"。它是便宜的确定性门，不是语义理解；
+    换个说法绕过去，它抓不住。
+  - **本门唯一能守住的错误相关约束是"错误指控必须有草稿证据"**（W_ERROR_NOT_IN_DRAFT）：
+    每条错误的 evidence 必须引用草稿里的记号。它拦不住"引用了草稿却把对的判成错的"——
+    那只能靠人复核。**没有人工复核的草稿检查卡不构成数学结论。**
+  - 草稿关联度用记号重合判断；短草稿可能整段跳过这项检查
+    （和 solution-refiner 的 W_DETACHED_SOLUTION 同性质）。
 """
 
 import argparse
@@ -41,9 +45,14 @@ except Exception:
 
 # ---------------------------------------------------------------- 常量
 
+ERROR_FIELD = "error_check"
 DIMENSIONS_FIELD = "dimensions"
 HABIT_FIELD = "top_3_habits"
-REQUIRED_FIELDS = (DIMENSIONS_FIELD, HABIT_FIELD, "next_step", "grade_level", "draft_source")
+REQUIRED_FIELDS = (ERROR_FIELD, DIMENSIONS_FIELD, HABIT_FIELD,
+                   "next_step", "grade_level", "draft_source")
+
+# 错误清单：每条恰好四个字段。errors 允许为空数组（草稿没错就说没错）。
+ERROR_ITEM_FIELDS = ("location", "evidence", "explanation", "fix")
 
 # 六个分析维度，键名固定、顺序固定
 DIM_KEYS = ("organization", "skipping", "correction_pattern",
@@ -110,46 +119,45 @@ IDENT_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,7}")
 STOP_TOKENS = frozenset({"已知", "求其", "下列", "的是", "一个", "以及", "其中", "如何", "什么"})
 
 # 越界措辞：命中即说明卡片跑到了别的 skill 的疆域。
-# 每条是 (代码, 说明, 正则)。正则一律要求"断言"语境（第二人称 / 这一步 / 答案），
-# 不单禁"错"字，免得误伤"如果…就会漏根"这类假设性风险。
+# 注意：**判对错、指出某处算错了、给出该写成什么，都不在禁列**——那是本职。
+# 剩下的边界是"别越到能力评价和别的技能的地盘上去"。
 OUT_OF_SCOPE = (
-    ("D_JUDGE", "判对错 / 给出正确结果",
-     re.compile(
-         r"你.{0,6}?(?:算|做|写|答|解|求).{0,3}?(?:错|不对|有问题)"
-         r"|(?:这一步|该步|此处|这里|那一步|第[一二三四五六七八九十\d]+步|整个过程"
-         r"|你的答案|你的结果|你的解法|你的思路)"
-         r".{0,4}?(?:是?错了?|不正确|不对|有误|出错了?|有问题)"
-         r"|正确答案|标准答案|参考答案|正确(?:的)?(?:结果|答案)"
-         r"|应(?:该|当)(?:是|为|等于|改成|改写|写成)"
-         r"|判(?:对错|分|卷)|对错|评分|打分|扣分|得分|满分|零分")),
-    ("D_CAUSE", "诊断知识漏洞 / 判错因",
+    ("A_CAUSE", "诊断知识漏洞 / 给学生能力定级",
      re.compile(
          r"你(?:不|没)(?:懂|会|理解|掌握|明白|熟悉|记住)"
          r"|基础(?:差|薄弱|不牢|不扎实)|知识(?:点)?(?:漏洞|薄弱|欠缺|缺失)"
-         r"|概念(?:不清|不牢|模糊|混淆)|错因|错误的原因|根本原因|出错的原因"
+         r"|概念(?:不清|不牢|模糊|混淆)"
          r"|之所以.{0,12}?(?:错|失误)")),
-    ("D_LABEL", "给学生贴标签",
+    ("A_LABEL", "给学生贴标签",
      re.compile(
          r"你(?:很|太|比较|有(?:些|点)|就是)?(?:粗心|马虎|笨|懒|糟糕)"
          r"|你(?:的)?(?:思维|思路).{0,3}?(?:混乱|不清|很乱)"
          r"|你(?:不|没).{0,3}?(?:认真|仔细|用心|专心)"
          r"|态度不端正|粗心大意")),
-    ("D_PLAN", "排题量 / 复习计划",
+    ("A_PLAN", "排题量 / 复习计划",
      re.compile(
          r"复习计划|学习计划|复习安排|错题本|计划表|打卡"
          r"|每天|每日|每周|一周|一个月|坚持\s*\d+\s*天"
          r"|连续做\s*\d+|做\s*\d+\s*道|刷\s*\d+\s*道|练\s*\d+\s*道")),
-    ("D_VARIANT", "出变式题 / 出练习题",
+    ("A_VARIANT", "出变式题 / 出练习题",
      re.compile(
          r"变式|举一反三|再出.{0,3}?题"
          r"|(?:给你|再做|另出|附加).{0,4}?(?:一|几|\d+)\s*道"
          r"|出\s*\d*\s*道|练习(?:题|册)|习题|题库")),
-    ("D_SOLUTION", "给出完整解答",
+    # 给"最小修改"是本职；整题重写、给完整解答不是。
+    ("A_SOLUTION", "给完整解答 / 整题重写",
      re.compile(
-         r"完整(?:解答|解法|过程|步骤|证明)"
-         r"|正确(?:的)?(?:解法|解答|过程|步骤|写法)"
-         r"|(?:应该|可以|建议)(?:这样|按这样)(?:写|做|算|解|画)")),
+         r"(?:给出|提供|附上|下面是|以下是|这就是|这是)"
+         r"\s*(?:完整|正确)的?(?:解答|解法|过程|步骤|证明)"
+         r"|(?:把|将)(?:整|全)(?:道|个)?题.{0,4}?(?:重写|重做|写一遍)"
+         r"|完整(?:解答|解法|证明)\s*[:：]")),
+    ("A_SCORE", "评分 / 扣分",
+     re.compile(r"判(?:对错|分|卷)|评分|打分|扣分|得分|满分|零分")),
 )
+
+# 错误清单里禁止出现的"空话式修改"：说了等于没说
+FIX_NON_ACTIONABLE_RE = re.compile(
+    r"^\s*(?:注意|小心|认真|仔细|再算算|重算|检查一下)[。！!]*\s*$")
 
 # 训练动作里的空话。出现这些说明这条"建议"下一道题没法执行。
 VAGUE_ACTION_RE = re.compile(
@@ -164,19 +172,28 @@ META_VOCAB_RE = re.compile(r"元认知|策略导向|路径标注|方法比较")
 # 草稿里"有涂改痕迹"的信号，用来判断该不该肯定积极信号
 DRAFT_CORRECTION_RE = re.compile(r"划掉|划去|涂改|涂抹|重写|改了|改掉|打叉|更正")
 
+# 题号标记：用来发现"这其实是一整张草稿纸，不止一道题"。
+# 刻意避开普通数字与 f(1) 这类函数记号，否则草稿里满地都是误报。
+PROBLEM_MARKER_RE = re.compile(
+    r"第\s*[一二三四五六七八九十\d]+\s*[题问]"      # 第一题 / 第 2 问
+    r"|[①②③④⑤⑥⑦⑧⑨⑩]"                          # 带圈序号
+    r"|（\s*\d+\s*）"                              # 全角括号小问号
+    r"|(?:^|[；;。\n])\s*\d+\s*[、.．]"            # 段落起首的 1、 / 2.
+)
+
 # refuse 的三种情形：学生会话里唯一允许的"不分析"出口。
 # 退出码取值理由：2 = 草稿本身不能当证据（没给 / 给了但用不了）；
 # 1 = 草稿没问题，但这个问题不归本技能管（有效请求，不予受理）。
 REFUSALS = {
     "empty": ("无草稿",
               "没有检测到草稿内容。如果你是在脑子里算的，建议下次把关键步骤写下来，"
-              "这样才能分析思考过程。", 2),
+              "这样才能检查计算过程、也才能分析习惯。", 2),
     "unreadable": ("草稿无法识别",
                    "草稿内容太乱或图片不清晰，无法分析。建议重新拍一张更清晰的草稿，"
                    "或把草稿内容用文字描述出来。", 2),
     "out_of_scope": ("超出范围",
-                     "我只分析草稿习惯，不判断对错。如果你想知道答案对不对，"
-                     "请把解答交给诊断工具。", 1),
+                     "我检查草稿里的计算错误和过程习惯。要优化已经做对的解法，"
+                     "或者要变式题、复习计划，请交给对应的技能。", 1),
 }
 
 
@@ -213,6 +230,21 @@ def load_card(path):
 def card_texts(card):
     """把卡片里所有文字摊平成 [(字段名, 文本)]，便于逐条扫描。"""
     out = []
+
+    error_check = card.get(ERROR_FIELD)
+    if isinstance(error_check, dict):
+        value = error_check.get("scope")
+        if isinstance(value, str):
+            out.append(("%s.scope" % ERROR_FIELD, value))
+        errors = error_check.get("errors")
+        if isinstance(errors, list):
+            for index, item in enumerate(errors, start=1):
+                if not isinstance(item, dict):
+                    continue
+                for field in ERROR_ITEM_FIELDS:
+                    value = item.get(field)
+                    if isinstance(value, str):
+                        out.append(("%s.errors[%d].%s" % (ERROR_FIELD, index, field), value))
 
     dimensions = card.get(DIMENSIONS_FIELD)
     if isinstance(dimensions, dict):
@@ -281,6 +313,54 @@ def cmd_validate(args):
         if field not in REQUIRED_FIELDS:
             errors.append({"code": "E_EXTRA_FIELD", "field": field,
                            "detail": "分析卡只能包含五个标准字段；交接状态、诊断结论请放在卡片之外"})
+
+    # -- 错误清单（首要产出，排在六个维度前面）
+    error_check = card.get(ERROR_FIELD)
+    if ERROR_FIELD in card:
+        if not isinstance(error_check, dict):
+            errors.append({"code": "E_BAD_ERROR_CHECK", "field": ERROR_FIELD,
+                           "detail": "必须是对象：scope 说明本次检查范围，errors 是错误数组"})
+            error_check = None
+        else:
+            for field in error_check:
+                if field not in ("scope", "errors"):
+                    errors.append({"code": "E_EXTRA_FIELD", "field": "%s.%s" % (ERROR_FIELD, field),
+                                   "detail": "非标准字段，建议删除"})
+            scope = error_check.get("scope")
+            if not isinstance(scope, str) or not scope.strip():
+                errors.append({"code": "E_EMPTY_TEXT", "field": "%s.scope" % ERROR_FIELD,
+                               "detail": "必须写明这次实际检查了什么、什么没查"})
+
+    if isinstance(error_check, dict):
+        found = error_check.get("errors")
+        if "errors" not in error_check:
+            errors.append({"code": "E_MISSING_FIELD", "field": "%s.errors" % ERROR_FIELD,
+                           "detail": "必须是数组；没发现错误就写空数组，不能不写"})
+        elif not isinstance(found, list):
+            errors.append({"code": "E_BAD_ERROR_LIST", "field": "%s.errors" % ERROR_FIELD,
+                           "detail": "必须是数组"})
+        else:
+            for index, item in enumerate(found, start=1):
+                tag = "%s.errors[%d]" % (ERROR_FIELD, index)
+                if not isinstance(item, dict):
+                    errors.append({"code": "E_BAD_ERROR_ITEM", "field": tag,
+                                   "detail": "每条错误必须是 JSON 对象"})
+                    continue
+                for field in ERROR_ITEM_FIELDS:
+                    if field not in item:
+                        errors.append({"code": "E_MISSING_FIELD", "field": "%s.%s" % (tag, field),
+                                       "detail": "缺少必需字段"})
+                    elif not isinstance(item[field], str) or not item[field].strip():
+                        errors.append({"code": "E_EMPTY_TEXT", "field": "%s.%s" % (tag, field),
+                                       "detail": "必须是非空字符串"})
+                for field in item:
+                    if field not in ERROR_ITEM_FIELDS:
+                        errors.append({"code": "E_EXTRA_FIELD", "field": "%s.%s" % (tag, field),
+                                       "detail": "非标准字段，建议删除"})
+                fix = item.get("fix")
+                if isinstance(fix, str) and fix.strip() and FIX_NON_ACTIONABLE_RE.match(fix):
+                    warnings.append({"code": "W_VAGUE_FIX", "field": "%s.fix" % tag, "text": fix,
+                                     "detail": "修改写成这样等于没说；要写出改成什么"})
 
     # -- 六个维度
     dimensions = card.get(DIMENSIONS_FIELD)
@@ -433,12 +513,14 @@ def cmd_validate(args):
     emit({
         "action": "validate",
         "input": {"card": args.card},
-        "method": "字段完整性 + 恰好六个维度 + 评分取值 + 恰好三条习惯 + 学段与来源合法性",
+        "method": "字段完整性 + 错误清单四字段 + 恰好六个维度 + 评分取值 + 恰好三条习惯"
+                  " + 学段与来源合法性",
         "errors": errors,
         "warnings": warnings,
         "passed": passed,
-        "capability_note": "结构门只查卡片长得对不对，不判断习惯观察是否成立；"
-                           "证据与草稿是否对得上由 audit 的 W_DETACHED_DRAFT 提醒。",
+        "capability_note": "结构门只查卡片长得对不对：**它不判断你报的错误是不是真的错**，"
+                           "也不判断习惯观察是否成立。错误指控是否有草稿依据由 audit 的"
+                           " W_ERROR_NOT_IN_DRAFT 提醒，数学本身只能人工复核。",
     }, 0 if passed else 1)
 
 
@@ -481,6 +563,41 @@ def cmd_audit(args):
                                  "solution_tokens": solution_tokens[:12],
                                  "detail": "卡片没有引用最终解答里的任何数字或记号，"
                                            "可能脱离实际解答"})
+
+    # W 组（最重要的一条）：每条错误指控都必须在草稿里有据。
+    # 本门验不了数学，但它能验"你说的那处到底在不在草稿上"。
+    draft_norm = norm(draft)
+    error_check = card.get(ERROR_FIELD)
+    if isinstance(error_check, dict) and isinstance(error_check.get("errors"), list):
+        for index, item in enumerate(error_check["errors"], start=1):
+            if not isinstance(item, dict):
+                continue
+            evidence = item.get("evidence")
+            if not isinstance(evidence, str) or not evidence.strip():
+                continue
+            evidence_tokens = draft_tokens(evidence)
+            if not evidence_tokens:
+                warnings.append({"code": "W_ERROR_EVIDENCE_VAGUE",
+                                 "field": "%s.errors[%d].evidence" % (ERROR_FIELD, index),
+                                 "text": evidence,
+                                 "detail": "这条错误的证据里没有任何数字或记号，"
+                                           "没法核它是不是真出自这份草稿"})
+            elif not any(token_hit(draft_norm, token) for token in evidence_tokens):
+                warnings.append({"code": "W_ERROR_NOT_IN_DRAFT",
+                                 "field": "%s.errors[%d].evidence" % (ERROR_FIELD, index),
+                                 "text": evidence,
+                                 "candidates": evidence_tokens[:12],
+                                 "detail": "这条错误的证据在草稿里找不到对应记号——"
+                                           "本门唯一能守的错误约束就是这条，请人工复核"})
+
+    # 一整张草稿纸：分析单位是一道题，先分块并确认归属，再逐题出卡
+    markers = sorted({m.strip() for m in PROBLEM_MARKER_RE.findall(draft)})
+    if len(markers) >= 2:
+        warnings.append({"code": "W_MULTI_PROBLEM_DRAFT", "field": "*",
+                         "markers": markers[:8],
+                         "detail": "草稿里出现了多个题号标记，可能不止一道题。"
+                                   "分析单位是一道题：先分块、让学生确认归属，"
+                                   "再把其中一块作为 --draft 逐题过门，别把整张纸当一份草稿打分"})
 
     dimensions = card.get(DIMENSIONS_FIELD)
     if isinstance(dimensions, dict):
@@ -531,15 +648,17 @@ def cmd_audit(args):
         "action": "audit",
         "input": {"card": args.card, "draft": draft,
                   "final_solution": final_solution or None, "strict": args.strict},
-        "method": "规则扫描：判对错 / 诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答，"
-                  "外加与草稿及最终解答的关联度、风险句限定词、学段用词一致性",
+        "method": "规则扫描：诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答 / "
+                  "评分扣分，外加**错误证据是否出自草稿**、与草稿及最终解答的关联度、"
+                  "风险句限定词、学段用词一致性",
         "errors": errors,
         "warnings": warnings,
         "passed": passed,
-        "capability_note": "规则门而非语义理解：passed 只说明卡片没越过这几条线，"
-                           "不说明这条习惯观察在数学上站得住，也不说明建议真的可执行。"
-                           "跳步 / 涂改 / 划掉 / 漏根等本技能核心词汇不在禁列，"
-                           "假设性风险句（「若…可能漏根」）是合法的。",
+        "capability_note": "规则门而非语义理解。判对错、指出某处算错了、给出该写成什么，"
+                           "**都是本职，不在禁列**。但本门**验不了数学**：它只能查"
+                           "「你说的那处在草稿上找不找得到」（W_ERROR_NOT_IN_DRAFT），"
+                           "查不了「你判得对不对」。引用了草稿却把对的判成错的，本门一声不响。"
+                           "**没有人工复核的草稿检查卡不构成数学结论。**",
     }, 0 if passed else 1)
 
 
@@ -592,7 +711,7 @@ def cmd_refuse(args):
         "exit_code_meaning": {
             "empty": "没有草稿：必需输入缺失",
             "unreadable": "草稿无法识别：输入存在但用不了",
-            "out_of_scope": "超出范围：草稿有效，但这个问题不归本技能管",
+            "out_of_scope": "超出范围：草稿没问题，但这个问题不归本技能管",
         }[args.reason],
     }, code)
 

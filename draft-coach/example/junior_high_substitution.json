@@ -1,4 +1,8 @@
 {
+  "error_check": {
+    "scope": "有草稿完整过程，逐步核对了代入、展开、消元三步。未核验原题方程组是否抄写正确。",
+    "errors": []
+  },
   "dimensions": {
     "organization": {
       "score": "中",
