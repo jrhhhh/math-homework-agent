@@ -1,0 +1,9 @@
+{
+  "bundle_id": "e64a3dd837",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "我核算（无原题，仅按草稿内部）：3x+2=11→3x=9→x=3，代回 3×3+2=11 成立。草稿根错在第二行 3x=11+2=13（移项未变号，应为 3x=11-2=9），第三行 x=13/3 承接。答案指出「问题出在第一行到第二行」并改出正确第二步，位置与参考 location（第二行）一致，故 location true。改法写出 3x=11-2=9、x=3，与参考 minimal_fix 一致，故 fix true。解释为「+2 移项未变号，过等号要变号」，数学成立，并说明第三行承接上游，故 explanation true。答案也正确声明了原题缺失、只按草稿第一行核对（未越界断言题意/方向）。"
+}

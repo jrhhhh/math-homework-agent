@@ -1,0 +1,9 @@
+{
+  "bundle_id": "073c522a1c",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自算：方法一 (x-2)(x-3)=0→x=2 或 3 正确；方法二整条被划掉（其数学本身成立）；Δ 处先写 49 后划掉补写 1，属已自我纠正，此案例无现存错误。注意：答案把『整条被划掉的方法二』当作现存错误报进错误清单（对照 gold_correct_steps 属 S2 假阳性）——但该问题不在本题三项指标范围内，不影响下面三项的判定。multi_problem_handling=null：草稿是『一道题、两种方法』，不是多道题，按 null_rule 无『多题分块』可判。evaluable_scope_respected=true：unevaluable 为『学生是否理解配方法/因式分解』与『最终采用哪条路径』，答案未做知识诊断、未断言最终采用哪一路径。mixed_content_reading=true：『方法一/方法二』文字标记、『整条被划掉』、『Δ 划掉补写』等记号与文字说明均被正确读入，无读错、无漏掉。"
+}

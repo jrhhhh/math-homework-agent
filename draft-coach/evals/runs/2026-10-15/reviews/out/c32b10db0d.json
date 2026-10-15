@@ -1,0 +1,9 @@
+{
+  "bundle_id": "c32b10db0d",
+  "ratings": {
+    "multi_problem_handling": true,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：第一题 3x+5=20→3x=15→x=5 全对；第二题 2x-4=10→应为 2x=14→x=7，草稿 2x=6→x=3 是移项没变号的根错。multi_problem_handling=true：答案按『第一题/第二题』两块分块，并明确交代各块归属，没有把两题混判。evaluable_scope_respected=true：unevaluable 列的是『未标注归属前不可混判』（本题归属清楚、已按题号分开）与『是否理解移项』，答案没有诊断知识漏洞，反而说『你是会移项的』，未对不可判事项下确定结论。mixed_content_reading=true：答案正确读入两题所有记号（3x+5=20、3x=15、x=5、2x-4=10、2x=6、x=3），未读错、未漏。"
+}

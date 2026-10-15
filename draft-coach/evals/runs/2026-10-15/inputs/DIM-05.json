@@ -1,0 +1,9 @@
+{
+  "case_id": "DIM-05",
+  "prompt": "帮我看看这份草稿的习惯。题目：在直角三角形 ABC 中，∠C=90°，AC=3，BC=4，求斜边 AB 和斜边上的高 CD。",
+  "problem": "在直角三角形 ABC 中，∠C=90°，AC=3，BC=4，求斜边 AB 和斜边上的高 CD。",
+  "draft": "画了个三角形，三个顶点标了 A、B、C，左边边写 3，底边写 4，没有画直角符号，也没有画斜边上的高。算 AB=√(3²+4²)=5，CD=3×4÷5=2.4。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

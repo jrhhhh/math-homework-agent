@@ -1,0 +1,9 @@
+{
+  "case_id": "DIM-02",
+  "prompt": "帮我看看这份草稿的习惯。题目：解方程 (x-1)/2+(x+1)/3=3。",
+  "problem": "解方程 (x-1)/2+(x+1)/3=3。",
+  "draft": "第一行抄题：(x-1)/2+(x+1)/3=3。第二行直接写 5x=19。第三行写 x=3.8。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

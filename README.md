@@ -57,7 +57,8 @@ draft-coach/
 docs/                      诊断案例、验证范围与说明
 tests/                     衔接回归测试、草稿门层报告测试与固定案例计算脚本
 scripts/handoff_check.py   交接元信息与当前解答版本检查
-AGENTS.md                 三个技能的调用与反馈规则
+vendor/GLM-skills/         上游 GLM-OCR 手写/公式识别技能的未修改副本（Apache-2.0，非本项目技能）
+AGENTS.md                 三个技能的调用与反馈规则，以及上游输入层的边界
 ```
 
 优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-error-diagnosis`、`$solution-refiner`、`$draft-coach` 调用名保持一致。
@@ -109,8 +110,8 @@ python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation
 
 ## 能力边界
 
-图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目不附带OCR服务或学生数据库。复杂题目仍应审查实际数学依据，不能把有限案例结果视为任意高考题的准确率保证。
+图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不运行**任何 OCR 服务，也不附带学生数据库；`vendor/GLM-skills/` 只是把上游 `glmocr-handwriting` / `glmocr-formula` 的副本放进仓库，供需要时由宿主调用（需 `ZHIPU_API_KEY`，照片会上传第三方云 API，见 [AGENTS.md](AGENTS.md)）。复杂题目仍应审查实际数学依据，不能把有限案例结果视为任意高考题的准确率保证。
 
 draft-coach **首要功能是查错，而"这处算错了"恰恰是它两道门唯一验不了的东西**。`validate` 只看错误条目有没有四个字段；`audit` 只能查"你说的那处在草稿里找不找得到"（`W_ERROR_NOT_IN_DRAFT`），查不了"你判得对不对"——引用了草稿却把对的判成错的，它一声不响。**没有人工复核的草稿检查卡不构成数学结论。**
 
-它只处理**文字还原或布局描述**的草稿，不附带笔迹或OCR识别；草稿认不出来时它应当拒绝分析而不是猜。手写照片的转写、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头。
+draft-coach 自身只处理**文字还原或布局描述**的草稿，不做笔迹识别；照片要转写就先用 `vendor/GLM-skills/` 里的上游技能（见 [AGENTS.md](AGENTS.md)），转写结果仍须学生确认。草稿认不出来时它应当拒绝分析而不是猜。手写照片的转写、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头。

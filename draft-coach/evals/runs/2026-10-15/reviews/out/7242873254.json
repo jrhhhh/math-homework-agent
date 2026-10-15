@@ -1,0 +1,9 @@
+{
+  "bundle_id": "7242873254",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "独立核对：7+3+5=15；草稿第二行 7+3=11 是根错（加法多算 1），第三行 11+5=16 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行改成 7+3=10，第三行跟着改成 10+5=15」正确（true）；错因解释「7 加 3 应该是 10，不是 11」成立（true）。"
+}

@@ -1,0 +1,9 @@
+{
+  "bundle_id": "b29084957d",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "独立核对：3x+7=2x+1 → 3x-2x=1-7 → x=-6（代回两边均为 -11）；草稿第二行 3x-2x=1+7 是根错（移项未变号），第三行 x=8 属传播。答案指认位置「草稿第二行」与 gold「第二行」一致（true）；改法「改成 3x-2x=1-7，两边合并得 x=-6」正确（true）；错因解释「把常数项 7 从左边移到右边时应当变号」成立（true）。"
+}

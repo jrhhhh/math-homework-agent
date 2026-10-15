@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-02",
+  "prompt": "帮我看看草稿算得对不对。题目：计算 7+3+5。草稿：第一行写 7+3+5；第二行写 7+3=11；第三行写 11+5=16。",
+  "problem": "计算 7+3+5。",
+  "draft": "第一行写 7+3+5；第二行写 7+3=11；第三行写 11+5=16。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "小学"
+}

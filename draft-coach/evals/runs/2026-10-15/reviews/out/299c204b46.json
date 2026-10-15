@@ -1,0 +1,9 @@
+{
+  "bundle_id": "299c204b46",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "我核算：3x+7=2x+1→3x-2x=1-7→x=-6，代回 3×(-6)+7=-11=2×(-6)+1 成立。草稿根错在第二行 3x-2x=1+7（移项未变号，应为 1-7），第三行 x=8 承接。答案明确「【第二行】这里错了」，与参考 location 一致，故 location true。改法写出 3x-2x=1-7、x=-6，并给代回检验（两边都 -11），与参考 minimal_fix 方向一致且正确，故 fix true。解释为「+7 移项未变号，应写成 1-7」，数学成立，故 explanation true。"
+}

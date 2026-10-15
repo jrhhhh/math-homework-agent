@@ -8,7 +8,7 @@
 - skill：**Solution Refiner**（`solution-refiner/SKILL.md`）：对结论和完整过程已成立的当前学生解答提供优化卡。不承担原解答判错或修补。
 - skill：**Draft Coach**（`draft-coach/SKILL.md`）：看学生**草稿**——首要检查草稿里的计算错误，其次分析过程习惯（分区组织、跳步、涂改、试错、画图、草稿利用率）——输出错误清单 + 六维观察 + 3 条习惯 + 下一道题可执行的动作。不诊断知识漏洞、不贴标签、不给整题重写、不出变式题、不排复习计划。
 
-未包含 presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。
+未包含 presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。仓库另存有 `glmocr-handwriting` / `glmocr-formula` 的未修改副本，那是手写草稿的**上游输入层**（见下文），不属这三个技能。
 
 ## 调度
 
@@ -47,10 +47,22 @@ draft-coach **不在这条交接链路里**，它是横着长出来的第三条�
 - `refuse` 的退出码另有一套读法：**2 = 草稿本身不能当证据**（没给 / 给了但用不了）；
   **1 = 草稿没问题，但这个问题不归本技能管**（比如要变式题或复习计划）。判断理由是模型给的，脚本认不出来。
 
+## 手写草稿的前置转写（GLM-OCR，上游输入层）
+
+学生交的是**手写草稿的照片或扫描件**时，可先用上游技能 `glmocr-handwriting`（正文、批注、标签）与 `glmocr-formula`（公式 → LaTeX）把图像转成文字，再交给 draft-coach。这两个技能的未修改副本存放在 [vendor/GLM-skills/](vendor/GLM-skills/README.md)（Apache-2.0，来源与版本见该目录说明）。
+
+**它们是输入适配器，不是本项目的第四个技能：**
+
+- 只做「照片 → 文字」，不诊断、不判错、不产出草稿卡；**不进 `handoff → solution-refiner` 那条链路**，与 draft-coach 的两道门也没有关系。
+- 需要 `ZHIPU_API_KEY`；草稿照片会**上传到智谱云 API**，即学生数据出本机。用之前先确认这件事合适。
+- 转写结果**不等于**「学生提供了草稿」：draft-coach 要的是「内容 + 位置 + 涂改」三层描述，而 GLM-OCR 的 `text` 是 Markdown 正文，位置与涂改未必在输出里。缺这一层就要人工补，补不上就走 `refuse --reason unreadable`。
+- **转写必须先让学生确认再往下走**——读错一个数字就是一条凭空指控学生的「错误」，draft-coach 的两道门都拦不住。这与它的 R19/R20 要求一致。
+- 图片、笔迹与 OCR 仍属宿主职责；本项目**不附带** OCR 服务，这些脚本也不提供诊断服务。
+
 ## 维护与验证
 
 修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；它的评测子系统在 `draft-coach/evals/`，跑 `python3 -m unittest discover -s draft-coach/evals/tests -p 'test_*.py'` 与 `python3 draft-coach/evals/engine/schema_check.py`。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
 
-改任何门脚本或卡片 schema 后，必须重跑真实输出，不许凭印象写"应该会通过"。同伴仓库的副本只供比对，不是交付物；**不去修改同伴仓库的任何文件**。
+改任何门脚本或卡片 schema 后，必须重跑真实输出，不许凭印象写"应该会通过"。同伴仓库的副本只供比对，不是交付物；**不去修改同伴仓库的任何文件**。`vendor/GLM-skills/` 同理——它是上游未修改副本，同步时整目录替换，**不在本地改**。
 
 **Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，会静默失败、什么都不输出。本机可用的解释器为 `"D:/Program Files/anaconda3/python.exe"`。`tests/test_handoff.py` 用字面量 `"python3"` 起子进程，在本机跑不起来；`draft-coach/tests/` 与 `draft-coach/evals/tests/` 下的测试都用 `sys.executable`，可直接运行。

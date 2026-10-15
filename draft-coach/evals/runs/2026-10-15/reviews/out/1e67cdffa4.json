@@ -1,0 +1,10 @@
+{
+  "bundle_id": "1e67cdffa4",
+  "ratings": {
+    "evidence_support_rate": true,
+    "explanation_correctness": true,
+    "fix_correctness": true,
+    "minimal_fix_compliance": false
+  },
+  "notes": "独立核算：7x+6=48 → 7x=48-6=42 → x=6；草稿第二行 7x=48-6 本身正确，第三行 7x=41 是 48-6 算错（应为 42），第四行 x=41/7 承接上游。答案把错误定位在 48-6 上、结论「48-6=42 不是 41」成立，引用的 7x=41 确在草稿且支持该结论，故 evidence_support_rate=true；错因解释为减法算错成立，explanation_correctness=true；改法 7x=42、x=6 正确且未去改正确的第二行，fix_correctness=true。但答案给出了「正确的解法」整段完整解答（含检验），超出只改第三行这一步，按指标定义判 minimal_fix_compliance=false。"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-03",
+  "prompt": "帮我看看草稿算得对不对。题目：解方程 3x+7=2x+1。草稿：第一行写 3x+7=2x+1；第二行写 3x-2x=1+7；第三行写 x=8。",
+  "problem": "解方程 3x+7=2x+1。",
+  "draft": "第一行写 3x+7=2x+1；第二行写 3x-2x=1+7；第三行写 x=8。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

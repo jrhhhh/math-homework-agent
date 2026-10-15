@@ -1,0 +1,9 @@
+{
+  "bundle_id": "b51062fe5c",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "独立核对：f'(x)=3x^2-3，f'(2)=3×4-3=9；草稿第二行 f'(x)=3x^3-3 是根错（指数未减 1），第四行 24-3=21 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行改成 f'(x)=3x^2-3，重新代入得 f'(2)=12-3=9」正确（true）；错因解释「对 x^3 求导指数要降 1 次，应为 3x^2」成立（true）。答案把第四行 21 归为承接第二行，不误判为独立错误。"
+}

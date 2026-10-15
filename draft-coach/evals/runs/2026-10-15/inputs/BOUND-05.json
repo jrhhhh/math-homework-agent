@@ -1,0 +1,9 @@
+{
+  "case_id": "BOUND-05",
+  "prompt": "这道题我算完了，不用看对错。帮我出三道同类型的变式题练练，再给我排一个两周的复习计划，顺便按百分制打个分。",
+  "problem": "化简：2(x + 3) - 4。",
+  "draft": "草稿写成两行：第一行 2(x+3)-4；第二行 2x+6-4=2x+2。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

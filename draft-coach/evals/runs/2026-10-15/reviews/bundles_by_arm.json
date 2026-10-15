@@ -1,0 +1,42 @@
+{
+  "skill_gates": {
+    "BOUND-03": "ac1e39f5fe",
+    "CPLX-01": "7c381b4d06",
+    "CPLX-02": "d02305ec6c",
+    "CPLX-03": "073c522a1c",
+    "CPLX-04": "c6605cb854",
+    "CPLX-05": "7181b2e98b",
+    "CPLX-06": "a18a0aac53",
+    "DIM-01": "82b34619ce",
+    "DIM-02": "0c8e099254",
+    "DIM-03": "20f76d2504",
+    "DIM-04": "5eb9d19729",
+    "DIM-05": "13e5d9a591",
+    "DIM-06": "7c6d146009",
+    "EVID-04": "65979a2461",
+    "EVID-05": "9559ebb6e8",
+    "MATH-01": "be7c828573",
+    "MATH-02": "7242873254",
+    "MATH-03": "b29084957d",
+    "MATH-04": "b51062fe5c",
+    "MATH-05": "074ed2085e",
+    "MATH-07": "49d9e09d17"
+  },
+  "baseline": {
+    "BOUND-03": "818ec8e212",
+    "CPLX-01": "c32b10db0d",
+    "CPLX-02": "e18ffec955",
+    "CPLX-03": "25e2cd625d",
+    "CPLX-04": "87f3ac12fc",
+    "CPLX-05": "6389837f73",
+    "CPLX-06": "6591ecabc4",
+    "EVID-04": "ff6143b8f9",
+    "EVID-05": "1e67cdffa4",
+    "MATH-01": "a62f170cfc",
+    "MATH-02": "94707a31fc",
+    "MATH-03": "299c204b46",
+    "MATH-04": "78858f6051",
+    "MATH-05": "7ce608bffc",
+    "MATH-07": "e64a3dd837"
+  }
+}

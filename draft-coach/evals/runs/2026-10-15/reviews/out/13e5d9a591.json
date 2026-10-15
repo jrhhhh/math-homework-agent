@@ -1,0 +1,7 @@
+{
+  "bundle_id": "13e5d9a591",
+  "ratings": {
+    "dimension_evidence_grounded": true
+  },
+  "notes": "逐维对草稿核：草稿明写『画了个三角形，三个顶点标了 A、B、C，左边边写 3，底边写 4，没有画直角符号，也没有画斜边上的高』。graphic_use 引用该句逐字，并如实指出缺直角符号与高——未编造这两者存在（正是 forbidden_behavior 所禁），属实；organization 引『先画图再算、无分区』属实；skipping 引『CD=3×4÷5 直接给出、无面积相等一步』属实（草稿确无该行）；correction_pattern『无涂改』为缺席陈述；trial_and_error『只有一种做法』属实；draft_to_solution『不适用』属实。无编造，判 true。"
+}

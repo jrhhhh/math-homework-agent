@@ -1,0 +1,9 @@
+{
+  "bundle_id": "a62f170cfc",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "我核算：2(x+3)=14→2x+6=14→2x=8→x=4。草稿根错在第二行 2x+3=14（漏乘常数项 3），第三、四行是承接。答案明确指认「第二行：2x+3=14 ❌ 错在这里」，与参考 location（第二行）一致，故 location true。改法写出 2x+6=14、2x=8、x=4，与参考 minimal_fix（2x+6=14，终值 x=4）方向一致且正确，故 fix true。错因解释为「去括号漏乘，2 只乘了 x 没乘 3」，并正确说明第三、四行移项与除法本身没错、只是承接错误第二行，数学成立，故 explanation true。"
+}

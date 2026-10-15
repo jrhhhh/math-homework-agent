@@ -1,0 +1,7 @@
+{
+  "bundle_id": "7c6d146009",
+  "ratings": {
+    "dimension_evidence_grounded": true
+  },
+  "notes": "逐维对草稿核：草稿为『已知 a1=2，d=3。a5=2+4×3=14。S5=5×(2+14)÷2=40』，最终解答仅含(1)『a5 = a1 + 4d = 2 + 12 = 14』。organization 引『已知与两问连写、无分区』属实；skipping 引『未先写通项/求和公式、直接代数值』属实；correction_pattern『无划改』为缺席陈述；trial_and_error『只有一条公式代入路线』属实；graphic_use『未列项、无图示』为缺席陈述；draft_to_solution 引『a5=14 进正解、S5=40 未进正解』与草稿/最终解答逐字一致。无编造，判 true。"
+}

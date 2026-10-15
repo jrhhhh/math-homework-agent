@@ -1,0 +1,9 @@
+{
+  "case_id": "EVID-01",
+  "prompt": "帮我核对草稿。题目：解方程 5x-4=11，我算出来是 2，你看看草稿对不对。草稿：第一行写 5x-4=11；第二行写 5x=15；第三行写 x=3。",
+  "problem": "解方程 5x-4=11。",
+  "draft": "第一行写 5x-4=11；第二行写 5x=15；第三行写 x=3。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "CPLX-01",
+  "prompt": "帮我看看这张草稿。纸上两道题：第一题解方程 3x+5=20；第二题解方程 2x-4=10。草稿都写在下面了，帮我分块看看哪里错了。",
+  "problem": "第一题：解方程 3x+5=20。第二题：解方程 2x-4=10。",
+  "draft": "第一题：3x+5=20，3x=15，x=5。第二题：2x-4=10，2x=6，x=3。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "audit_draft": "第二题：2x-4=10，2x=6，x=3。",
+  "grade_level": "初中"
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "BOUND-01",
+  "response": "没有检测到草稿内容。如果你是在脑子里算的，建议下次把关键步骤写下来，这样才能检查计算过程、也才能分析习惯。\n\n说明一下这次为什么没法检查：你只给了题目（解方程组 x + y = 7，x - y = 1）和一句「我算完了」，但没有提供草稿，也没有提供最终解答。draft-coach 的分析对象是草稿——它要逐步核对草稿上的每一行计算，再看这张草稿是怎么组织的。没有草稿，就没有可以落到纸面上的记号去核对，我不能凭空倒推一份草稿、也不能从「我算完了」这四个字里猜你算得对不对（那属于硬做草稿分析，是越界的）。\n\n所以这次不产出检查卡片。你在把草稿发过来（拍照片、打字复述、或者把草稿上的每一步写下来）之后，我就可以按流程做两件事：一是逐步核对，报出具体哪一行、错在哪、改成什么；二是看这张草稿的过程习惯（分区、跳步、涂改、试错、画图、草稿利用率），并给出下一道题就能执行的动作。\n\n按 draft-coach 的边界，正式解答（作业本 / 答卷）上的首错定位与分层提示归 math-error-diagnosis；这里只处理草稿。",
+  "card": null,
+  "tool_log": [
+    {
+      "command": "D:/Program Files/anaconda3/python.exe scripts/audit_output.py refuse --reason empty",
+      "exit_code": 2,
+      "stdout": "{\n  \"action\": \"refuse\",\n  \"error\": \"无草稿\",\n  \"message\": \"没有检测到草稿内容。如果你是在脑子里算的，建议下次把关键步骤写下来，这样才能检查计算过程、也才能分析习惯。\",\n  \"reason\": \"empty\",\n  \"exit_code_meaning\": \"没有草稿：必需输入缺失\"\n}"
+    }
+  ],
+  "notes": "输入 draft=null、final_solution=null、draft_source=absent：完全没有草稿。按 SKILL.md 的 Error Handling，'完全没有草稿（只给题目、只给最终解答、只有答卷）→ refuse --reason empty，不要从最终解答倒推草稿'。这属于「草稿本身不能当证据」（没给），退出码 2。因此不产卡片（card=null），也未跑 validate / audit --strict（无卡片可过门），故不记录它们的退出码。"
+}

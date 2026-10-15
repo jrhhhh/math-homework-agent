@@ -1,0 +1,9 @@
+{
+  "bundle_id": "6389837f73",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：正确解 3(x-2)=2x+5→3x-6=2x+5→x=11；草稿第二行 3x-2=2x+5 是漏乘常数项（应 3x-6），第三、四行是其传播；右侧验算 3×(7-2)=15 正确、2×7+5 应为 19 而草稿写 21 是独立的算术失误。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=true：unevaluable 为『是否理解分配律与移项』与『学生打算怎么处理验算矛盾（15≠21，草稿未写）』；答案把去括号漏乘解释成笔误（『忘了乘』）而非知识漏洞，也没有断言学生的处理打算，未对不可判事项下结论。mixed_content_reading=true：四行方程与右侧验算（3×(7-2)=15、2×7+5=21）均被正确读入，记号无误。"
+}

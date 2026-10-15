@@ -1,0 +1,149 @@
+{
+  "bundle_id": "6389837f73",
+  "说明": "盲评包：你不知道这条案例来自哪个实验组，也不需要知道。",
+  "student_input": {
+    "prompt": "帮我看看这张草稿算得对不对。",
+    "problem": "解方程 3(x-2)=2x+5。",
+    "draft": "解方程 3(x-2)=2x+5。第一行：3(x-2)=2x+5。第二行：3x-2=2x+5。第三行：3x-2x=5+2。第四行：x=7。右边空白处验算：把 x=7 代回去，3×(7-2)=15，2×7+5=21。",
+    "final_solution": null,
+    "draft_source": "text_reconstruction"
+  },
+  "reference": {
+    "expected_action": "analyze",
+    "refuse_reason": null,
+    "gold_errors": [
+      {
+        "error_id": "CPLX-05-E1",
+        "kind": "root",
+        "propagates_to": [
+          "CPLX-05-E2",
+          "CPLX-05-E3"
+        ],
+        "type": "algebra",
+        "severity": "major",
+        "location": "第二行 3x-2=2x+5",
+        "evidence_anchor": [
+          "3x-2=2x+5"
+        ],
+        "evidence_note": "去括号只把 3 乘给了 x，漏乘 -2：3(x-2)=3x-6，草稿写成 3x-2。",
+        "cause": "分配律只用了一半，常数项 -2 没有乘。",
+        "minimal_fix": "把第二行改成 3x-6=2x+5。",
+        "must_report": true
+      },
+      {
+        "error_id": "CPLX-05-E2",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "transposition",
+        "severity": "minor",
+        "location": "第三行 3x-2x=5+2",
+        "evidence_anchor": [
+          "3x-2x=5+2"
+        ],
+        "evidence_note": "在上一步 3x-2=2x+5 的前提下，移项得 3x-2x=5+2 本身没算错；错的是第二行的方程。",
+        "cause": "承接第二行的错误方程，不是独立的运算失误。",
+        "minimal_fix": "第二行改正后此处应为 3x-2x=5+6。",
+        "must_report": false
+      },
+      {
+        "error_id": "CPLX-05-E3",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "第四行 x=7",
+        "evidence_anchor": [
+          "x=7"
+        ],
+        "evidence_note": "由 3x-2x=5+2 得 x=7，合并与计算本身正确；结果错是因为第二行已经偏了。",
+        "cause": "承接上游错误。",
+        "minimal_fix": "第二行改正后最终结果应为 x=11。",
+        "must_report": false
+      },
+      {
+        "error_id": "CPLX-05-E4",
+        "kind": "independent",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "右侧验算 2×7+5 处",
+        "evidence_anchor": [
+          "2×7+5=21"
+        ],
+        "evidence_note": "2×7+5=14+5=19，草稿写成 21；这是验算右边表达式时的独立算术失误，与第二行去括号漏乘没有因果关系。",
+        "cause": "2×7=14 再加 5 应为 19，草稿算成了 21。",
+        "minimal_fix": "把 2×7+5 的结果改成 19。",
+        "must_report": true
+      }
+    ],
+    "gold_correct_steps": [
+      {
+        "step_id": "CPLX-05-S1",
+        "location": "右侧验算 3×(7-2) 处",
+        "evidence_anchor": [
+          "3×(7-2)=15"
+        ],
+        "note": "3×(7-2)=3×5=15 计算正确；报它就是假错。"
+      }
+    ],
+    "gold_dimensions": {
+      "organization": {
+        "label": "中",
+        "basis": "四行从上到下排列，右边另有一处验算，有顺序但没分区。"
+      },
+      "skipping": {
+        "label": "高",
+        "basis": "去括号、移项、合并、验算各步骤都落笔了。"
+      },
+      "correction_pattern": {
+        "label": "高",
+        "basis": "整张草稿没有涂改痕迹。"
+      },
+      "trial_and_error": {
+        "label": "中",
+        "basis": "主线之外在右边做了代入验算，算一次备选检查，但没有第二种解法。"
+      },
+      "graphic_use": {
+        "label": "低",
+        "basis": "纯代数方程，草稿里没有图形。",
+        "unevaluable": true
+      },
+      "draft_to_solution": {
+        "label": "不适用",
+        "basis": "没有提供最终解答，无法判断草稿转化率。"
+      }
+    },
+    "evaluable_scope": [
+      "第二行去括号是否漏乘 -2",
+      "第三、四行相对上一行是否自洽",
+      "右侧验算 3×(7-2)=15 与 2×7+5=21 两处算术"
+    ],
+    "unevaluable_scope": [
+      "学生是否理解分配律与移项（属知识诊断，不在本技能范围）",
+      "验算得出的矛盾（15≠21）学生打算怎么处理（草稿未写）"
+    ],
+    "expected_behaviors": [
+      "分别报出去括号漏乘（第二行 3x-2=2x+5）与验算里的独立算术错误（2×7+5=21）两条",
+      "说明第三、四行是承接第二行的传播，不把它们当成独立错误",
+      "说明 2×7+5=21 与去括号漏乘没有因果关系，不要把它归因到第二行",
+      "指出验算里的 3×(7-2)=15 正确"
+    ],
+    "forbidden_behaviors": [
+      "把 2×7+5=21 这一处说成是去括号漏乘引起的（把传播链与独立错误混为一谈）",
+      "把第三行 3x-2x=5+2 的移项本身说成运算错误",
+      "诊断学生不懂分配律",
+      "给整题重写或完整解答"
+    ],
+    "notes": "验算：正确解 3x-6=2x+5→x=11。E1 为 root，E2/E3 为其传播（不进 Precision/Recall 分子分母）；E4 的 2×7+5=21 是与前后无关的 independent 错误，必须单独报、不得与传播链混为一谈。graphic_use 标 unevaluable：纯代数题不画图正常。"
+  },
+  "answer_under_review": {
+    "response": "同学你好，我把这张草稿从头到尾看了一遍，发现有两个地方要改，其中第一个是关键错误。\n\n【错误一：去括号时漏乘了常数项】\n第二行你把 3(x-2) 写成了 3x-2，这里错了。\n去括号要用分配律，括号外的 3 要乘括号里的每一项：\n  3·x = 3x，3·(-2) = -6，\n所以应该是 3x-6，而不是 3x-2。\n你大概是只把 3 乘给了 x，忘了还要乘 -2（把 -2 里的常数项漏掉了）。\n\n正确的第二行应是：3x-6 = 2x+5\n\n【错误二：验算时算错了右边】\n你在右边验算写「2×7+5=21」，这里也算错了：\n  2×7 = 14，14+5 = 19，应该是 19，不是 21。\n于是你的验算实际上是 3×(7-2)=15 和 2×7+5=19，15 不等于 19。\n也就是说，验算已经在提醒你 x=7 不对了（等式两边不相等），可惜右边算成了 21，把这个提醒盖住了。验算本是抓错的好工具，一旦两边对不上，就该回头检查。\n\n【关于第三、四行的移项】\n按你第二行的 3x-2=2x+5 往下移项：把含 x 的项移到左边、常数移到右边，得到 3x-2x = 5+2，从而 x=7——这一步移项本身没有写错，问题是它建立在第二行那个错误的等式上，所以错的是源头（第二行），不是移项。移项时记得变号：-2 移到右边变 +2，这一步你做对了。\n\n【正确解法】\n  3(x-2) = 2x+5\n  3x-6 = 2x+5      ← 正确去括号\n  3x-2x = 5+6      ← 移项（-6 移到右边变 +6）\n  x = 11\n\n【验算】\n  左边：3×(11-2) = 3×9 = 27\n  右边：2×11+5 = 22+5 = 27\n两边都是 27，所以 x=11 是正确的。\n\n【小结】\n1. 最容易错的是去括号的分配律：括号外的数必须乘括号里的每一项，别漏掉常数项。\n2. 你已经有验算习惯，这一点很好；建议把两边的值都仔细算准，一旦发现不相等，立刻回头查前面的步骤。\n3. 订正时重点盯住第二行，把 3x-2 改成 3x-6 再重算一遍，就能得到正确答案 x=11。",
+    "card": null
+  },
+  "metrics_to_rate": {
+    "multi_problem_handling": "草稿上有多道题时，是否先分块、并声明块与题目的归属（或声明归属未确认）。有分块且交代了归属 → true；不分块、或把多题当一题 → false。",
+    "evaluable_scope_respected": "对参考答案 `unevaluable_scope` 里列出的事项（例如题意是否抄对、解题方向是否正确、知识漏洞），答案是否**没有**下确定结论。没下确定结论 → true；下了 → false。",
+    "mixed_content_reading": "草稿里公式、文字说明、图形混排时，是否被正确读入（记号没读错、文字说明没漏掉）。读错记号或漏掉文字说明 → false；正确读入 → true。"
+  },
+  "null_rule": "**null 与 false 不是一回事。** 没有可判对象时写 null（例：答案一处错都没报，就没有「改法对不对」可判；草稿只有一道题，就没有「多题分块」可判）；有可判对象而不合格才写 false。拿不准时先问「这条指标在本题上有没有对象」。"
+}

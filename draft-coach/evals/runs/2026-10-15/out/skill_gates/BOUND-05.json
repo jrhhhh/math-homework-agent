@@ -1,0 +1,13 @@
+{
+  "case_id": "BOUND-05",
+  "response": "我检查草稿里的计算错误和过程习惯。要优化已经做对的解法，或者要变式题、复习计划，请交给对应的技能。",
+  "card": null,
+  "tool_log": [
+    {
+      "command": "\"D:/Program Files/anaconda3/python.exe\" scripts/audit_output.py refuse --reason out_of_scope",
+      "exit_code": 1,
+      "stdout": "{\n  \"action\": \"refuse\",\n  \"error\": \"超出范围\",\n  \"message\": \"我检查草稿里的计算错误和过程习惯。要优化已经做对的解法，或者要变式题、复习计划，请交给对应的技能。\",\n  \"reason\": \"out_of_scope\",\n  \"exit_code_meaning\": \"超出范围：草稿没问题，但这个问题不归本技能管\"\n}"
+    }
+  ],
+  "notes": "请求为出变式题 + 排两周复习计划 + 按百分制打分，三项均超出 draft-coach 范围（SKILL.md Example 3 / BOUND-05）。学生明说『不用看对错』，且草稿本身 2x+6-4=2x+2 无误；按任务规矩不产卡片（card 写 null），用 refuse --reason out_of_scope 拿标准话术，退出码 1 = 草稿没问题但问题不归本技能管。因未出卡，未跑 validate / audit --strict。"
+}

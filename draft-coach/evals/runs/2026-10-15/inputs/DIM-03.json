@@ -1,0 +1,9 @@
+{
+  "case_id": "DIM-03",
+  "prompt": "帮我看看这份草稿的习惯。题目：解方程 4x-3=2x+9。",
+  "problem": "解方程 4x-3=2x+9。",
+  "draft": "解 4x-3=2x+9。第一次移项写错成 4x+2x=9-3（已划掉），旁边重写 4x-2x=9+3，得 2x=12。最后一步先写 x=3（已划掉），改成 x=6。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

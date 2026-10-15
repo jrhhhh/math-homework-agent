@@ -1,0 +1,7 @@
+{
+  "bundle_id": "82b34619ce",
+  "ratings": {
+    "dimension_evidence_grounded": true
+  },
+  "notes": "逐维对草稿核：organization 引用的『左边画了方框、框外标第1问』『右下角无题号也没画框』草稿原文均有；skipping 引用『3x-5=10，3x=15，x=5』与『x²-5x+6=0，因式分解，2、3』逐字在草稿；correction_pattern 说『没有涂改』与草稿（无任何划改描述）一致，属缺席陈述；trial_and_error 说『只写一种方法』与草稿(2)仅『因式分解』一致；graphic_use 说『无抛物线草图/数轴』为缺席陈述，且明点草稿里确有方框，未编造图形；draft_to_solution 未给最终解答判『不适用』属实。六维 observation/evidence 均出自草稿，无涂改/试错/图形/记号编造，判 true。"
+}

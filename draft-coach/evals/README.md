@@ -11,8 +11,8 @@
 | 案例集 | **38 条**（A 8 / B 6 / C 6 / D 6 / E 6 / F 6），全部通过结构、锚点自洽、两份文件对齐与防泄漏校验 |
 | 评测器与报告 | 已实现并跑通（85 项单元与端到端测试全过） |
 | 自动层指标 | 已实现，含 4 条可自动判定的严重失败检测 |
-| 模型辅助层 / 人工层 | **接口已就绪，未运行**（没有评审文件；接口见 `engine/human_review.py`） |
-| baseline / skill / skill_gates 三组真实模型输出 | **未运行**（无模型 API，需要宿主产出） |
+| 模型辅助层 / 人工层 | **模型辅助层已跑**（2026-10-15，`skill_gates` 47 项、`baseline` 41 项判定，独立上下文盲评）；**人工层仍未运行**（接口见 `engine/human_review.py`） |
+| baseline / skill / skill_gates 三组真实模型输出 | `skill_gates` 与 `baseline` **已各跑一次**（2026-10-15，38 条全量，见 [runs/2026-10-15/RUN_NOTES.md](runs/2026-10-15/RUN_NOTES.md)）。`skill`（加载技能但不跑门）仍未运行。**每组仅一次、产出方与评审方同模型**，不构成泛化结论 |
 | 留出集（`split: test`） | **0 条**，理由见 [HOLDOUT.md](HOLDOUT.md) |
 | `S3` 图像歧义硬判、`retry_policy_followed` | **未运行**（需要图片案例 / 多轮 transcript） |
 

@@ -1,0 +1,9 @@
+{
+  "bundle_id": "c6605cb854",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自算：f'(x)=3x^2-3，令其为 0 得 x=±1；f(1)=1-3=-2 正确；f(-1)=(-1)^3-3×(-1)=-1+3=2，草稿写成『-1-3=-4』是符号错，文字结论『极大值 -4』为其传播。答案正确报出 f(-1) 处符号错并说明结论 -4 是传播、f(1) 与导数求解正确。multi_problem_handling=null：单一问题，无『多题分块』可判。evaluable_scope_respected=true：unevaluable 为『草图是否按比例』与『学生是否懂极值判别法』，答案只对草图做定性（左高右低与极大/极小一致）描述，未断言其按比例、也未做知识诊断。mixed_content_reading=true：公式、『先求导，令导数等于零』文字说明、中部三次曲线草图、右下计算与文字结论混排，均被正确读入。"
+}

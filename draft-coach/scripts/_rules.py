@@ -154,6 +154,21 @@ OUT_OF_SCOPE = (
      re.compile(r"判(?:对错|分|卷)|评分|打分|扣分|得分|满分|零分")),
 )
 
+# 越界扫描的否定豁免。紧接在命中措辞**之前**的否定词，把该命中豁免掉。
+# 学生问"帮我按百分制打个分"，答案答"这一项我没有打分"是在**拒绝**越界，
+# 不是越界；A_SCORE 的正则只看字面，必然误报。这与 REFUSALS 的豁免同类：
+# 规则门认不出语义，所以要把"如实声明自己没做某件事"这一小类显式豁免。
+NEGATION_BEFORE_RE = re.compile(
+    r"(?:没有|没|不|未|无需|不需要|不必要|不用|谈不上)\s*$")
+
+# 手写图片里形近、一眼分不清的记号。从图片读来的这类记号**不许单独支撑一条错误**：
+# ≤ 与 <、± 与 +、6 与 8 在手写里近乎同形，读错一个就会变成一条凭空指控学生的错误，
+# 而两道门都拦不住它。audit 对图片来源的卡片报 W_MIXED_SYMBOL_EVIDENCE 提醒。
+# 只收比较号与 ±：加减号满地都是（f(-1)=-1-3 里就有两个），收进来只会把提醒变成噪音。
+AMBIGUOUS_SYMBOL_RE = re.compile(r"[≤≥<>±≦≧≪≫≈]")
+# 转写来自"看图"而不是学生打字/口述的来源，见 references/image-intake.md
+IMAGE_SOURCES = ("image_description", "stroke_data")
+
 # 错误清单里禁止出现的"空话式修改"：说了等于没说
 FIX_NON_ACTIONABLE_RE = re.compile(
     r"^\s*(?:注意|小心|认真|仔细|再算算|重算|检查一下)[。！!]*\s*$")
@@ -298,3 +313,24 @@ def token_hit(haystack_norm, token):
     if token[0].isdigit():
         return re.search(r"(?<!\d)" + re.escape(token) + r"(?!\d)", haystack_norm) is not None
     return token in haystack_norm
+
+
+def out_of_scope_matches(text):
+    """扫描越界措辞，返回 [(code, label, matched, start, end)]。
+
+    被否定的命中会被跳过（见 NEGATION_BEFORE_RE）。豁免只看命中措辞**紧前面**那个词：
+    「这一项我没有打分」跳过，「这道题会扣分」「建议连续做 10 道题」照旧命中。
+    换个说法照样绕得过去——本门从来不是语义理解，别把它当保证。
+    """
+    hits = []
+    for code, label, pattern in OUT_OF_SCOPE:
+        for match in pattern.finditer(str(text or "")):
+            if NEGATION_BEFORE_RE.search(str(text or "")[:match.start()]):
+                continue
+            hits.append((code, label, match.group(0), match.start(), match.end()))
+    return hits
+
+
+def out_of_scope_codes(text):
+    """只取命中的代码，去重排序。评测器与门脚本共用同一口径的入口。"""
+    return sorted({code for code, _label, _matched, _start, _end in out_of_scope_matches(text)})

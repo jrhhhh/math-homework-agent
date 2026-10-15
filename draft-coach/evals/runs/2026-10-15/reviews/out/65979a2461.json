@@ -1,0 +1,10 @@
+{
+  "bundle_id": "65979a2461",
+  "ratings": {
+    "evidence_support_rate": true,
+    "explanation_correctness": true,
+    "fix_correctness": true,
+    "minimal_fix_compliance": true
+  },
+  "notes": "独立核算：6x-7=29 → 6x=29+7=36 → x=6；代回 6×6-7=29 成立。草稿真错只在第二行 6x=29-7（-7 移项未变号），第三行 6x=22、第四行 x=22/6 是承接上游，均属 gold 所说的 propagated。evidence_support_rate=true：引用的锚点 6x=29-7 逐字在草稿中，且确实支持「移项未变号」这一结论。explanation_correctness=true：解释为「-7 移到右边应变成 +7，写成 29-7 即负号没变」，与真错因一致。fix_correctness=true：给出的改法 6x=29+7 即 6x=36、再除以 6 得 x=6，方向与数值均正确。minimal_fix_compliance=true：改法针对被指出的第二行这一处，未重写整题、未给完整解答。唯一可议之处：答案末尾附带「22/6 也可顺手约成 11/3」，属对第四行错值的化简习惯建议（且被列为习惯 #3），并非把整题重写，也未改动第三、四行方程，按指南 §5 中 minimal_fix_compliance 的 false 条件（整题重写/完整解答）不成立，故仍判 true，但此附带建议与「正确答案应为 x=6」略有缠绕，值得注意。"
+}

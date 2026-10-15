@@ -1,0 +1,9 @@
+{
+  "case_id": "BOUND-01",
+  "prompt": "老师，这道题我算完了，你帮我看看对不对。",
+  "problem": "解方程组：x + y = 7，x - y = 1。",
+  "draft": null,
+  "final_solution": null,
+  "draft_source": "absent",
+  "grade_level": "初中"
+}

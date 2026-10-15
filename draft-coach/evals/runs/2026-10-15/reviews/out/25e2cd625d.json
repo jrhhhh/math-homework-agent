@@ -1,0 +1,9 @@
+{
+  "bundle_id": "25e2cd625d",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：x^2-5x+6=(x-2)(x-3)，根 x=2 或 3；配方 (x-2.5)^2=0.25→x=2 或 3；Δ=25-24=1。草稿无现存错误（方法二整条划掉、Δ 处先写错 49 已划掉补写 1）。multi_problem_handling=null：草稿只有一道题（两种方法属同一题），没有『多题分块』可判，按 null_rule 记 null。evaluable_scope_respected=true：unevaluable 为『是否理解配方/因式分解』与『最终采用哪条路径』，答案没有诊断知识漏洞（未说学生不懂），也没断言学生最终用了哪条路径（只说『方法一为首选』是建议），未对不可判事项下确定结论。mixed_content_reading=true：公式、『方法一/方法二』、『整条被划掉』、Δ 先写 49 后补写 1 等混排信息均被正确读入并区分了划掉前后状态。"
+}

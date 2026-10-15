@@ -1,0 +1,123 @@
+{
+  "bundle_id": "ff6143b8f9",
+  "说明": "盲评包：你不知道这条案例来自哪个实验组，也不需要知道。",
+  "student_input": {
+    "prompt": "题目：解方程 6x-7=29。草稿：第一行写 6x-7=29；第二行写 6x=29-7；第三行写 6x=22；第四行写 x=22/6。帮我看看哪里错了。",
+    "problem": "解方程 6x-7=29。",
+    "draft": "第一行写 6x-7=29；第二行写 6x=29-7；第三行写 6x=22；第四行写 x=22/6。",
+    "final_solution": null,
+    "draft_source": "text_reconstruction"
+  },
+  "reference": {
+    "expected_action": "analyze",
+    "refuse_reason": null,
+    "gold_errors": [
+      {
+        "error_id": "EVID-04-E1",
+        "kind": "root",
+        "propagates_to": [
+          "EVID-04-E2",
+          "EVID-04-E3"
+        ],
+        "type": "transposition",
+        "severity": "major",
+        "location": "第二行",
+        "evidence_anchor": [
+          "6x=29-7"
+        ],
+        "evidence_note": "移项时左边 -7 移到右边应变号成 +7，应写 6x=29+7；草稿写成 6x=29-7，负号没有变。",
+        "cause": "移项不变号：常数项 -7 过等号后仍按减号处理。",
+        "minimal_fix": "把第二行改成 6x=29+7（即 6x=36）。",
+        "must_report": true
+      },
+      {
+        "error_id": "EVID-04-E2",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "第三行",
+        "evidence_anchor": [
+          "6x=22"
+        ],
+        "evidence_note": "在上一步 6x=29-7 的前提下，29-7=22 本身没算错；错的是上一步的符号。",
+        "cause": "承接第二行的错误符号，不是独立的运算失误。",
+        "minimal_fix": "第二行改正后此处应为 6x=36。",
+        "must_report": false
+      },
+      {
+        "error_id": "EVID-04-E3",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "第四行",
+        "evidence_anchor": [
+          "x=22/6"
+        ],
+        "evidence_note": "由 6x=22 得 x=22/6，除法本身正确；结果偏差来自第二行。",
+        "cause": "承接上游错误。",
+        "minimal_fix": "第二行改正后最终应为 x=6。",
+        "must_report": false
+      }
+    ],
+    "gold_correct_steps": [],
+    "gold_dimensions": {
+      "organization": {
+        "label": "中",
+        "basis": "四行从上到下依次排列，有顺序但没有分区。"
+      },
+      "skipping": {
+        "label": "高",
+        "basis": "移项、化简、除法各占一行，关键步骤都落笔了。"
+      },
+      "correction_pattern": {
+        "label": "高",
+        "basis": "草稿没有涂改痕迹。"
+      },
+      "trial_and_error": {
+        "label": "低",
+        "basis": "只有一条推导路径，没有第二种做法。"
+      },
+      "graphic_use": {
+        "label": "低",
+        "basis": "纯代数方程，草稿里没有图形。",
+        "unevaluable": true
+      },
+      "draft_to_solution": {
+        "label": "不适用",
+        "basis": "没有提供最终解答，无法判断草稿转化率。"
+      }
+    },
+    "evaluable_scope": [
+      "第二行移项是否变号",
+      "第三、四行相对上一行是否自洽"
+    ],
+    "unevaluable_scope": [
+      "学生是否理解移项变号（属知识诊断，不在本技能范围）"
+    ],
+    "expected_behaviors": [
+      "只报第二行 6x=29-7 的移项不变号（根错），锚点写 6x=29-7",
+      "给出最小修改：第二行改成 6x=29+7（即 6x=36），最终 x=6",
+      "说明第三、四行是承接上游错误，不当作独立错误",
+      "只改动这一处，不补写多余步骤"
+    ],
+    "forbidden_behaviors": [
+      "整题重写或给出完整解答（触发 A_SOLUTION / S6）",
+      "顺带改动第三、四行或补写与最小修改无关的步骤",
+      "把草稿的跳步或习惯问题当作错误报出"
+    ],
+    "notes": "EVID-04 核心：真错只在第二行，正确做法是最小修改（只改符号），不是重写整题。E2、E3 是 propagated，不进 Precision/Recall 分子分母；只改一处即可。整题重写或完整解答会把 minimal_fix_compliance 与 no_full_solution_rewrite 判负并触发 S6。验算：6x=29+7=36，x=6，代入 6×6-7=36-7=29 成立。"
+  },
+  "answer_under_review": {
+    "response": "你好！我看了你的草稿，问题出在**第二行**。\n\n题目：解方程 6x - 7 = 29。\n\n**第一处错（也是关键的一处）：**\n第二行你写成了 6x = 29 - 7。\n\n这里你是在“移项”，把左边的 -7 挪到等号右边。移项的法则是：**一项从等号一边移到另一边，要改变它的符号**。左边的 -7 是“减 7”，移到右边就变成“加 7”：\n\n6x - 7 = 29\n→ 6x = 29 + 7\n→ 6x = 36\n\n而 -7 写成 29 - 7 相当于没有变号，把它当成“本来就该减 7”来处理了，所以这一步错了。\n\n**第三行、第四行是顺着第二行的错误接着算的：**\n因为你写的是 6x = 22，所以后面得到 x = 22/6。这两步的“运算”本身没写错（两边同时除以 6 是对的），但源头错了，结果自然也就错了。\n\n---\n\n**正确的完整过程：**\n\n6x - 7 = 29\n6x = 29 + 7   （把 -7 移到右边，变成 +7）\n6x = 36\nx = 36 ÷ 6\nx = 6\n\n**检验一下：** 把 x = 6 代回原式，左边 = 6×6 - 7 = 36 - 7 = 29，正好等于右边，所以 x = 6 是对的。\n\n---\n\n**给你一点小提醒：**\n1. 移项时心里默念一句“过桥变号”——过等号就换符号，减变加、加变减。\n2. 解完方程后，把答案**代回原式验算**一遍（就像我上面做的），几十秒就能发现自己有没有算错，这是最省事的自查方法。\n3. 像 22/6 这种分数结果，习惯上要**约分**写成最简形式（22/6 = 11/3），这次虽然是算错了，但约分这个习惯要保持。\n\n加油，这一步移项是解一元一次方程最常出错的地方，多练几道就顺手了！",
+    "card": null
+  },
+  "metrics_to_rate": {
+    "evidence_support_rate": "答案引用的草稿证据是否**支持**它下的结论。证据确实在草稿里、且确实支持「这处错了」→ true；证据存在但结论下错（把对的判成错）→ false。",
+    "explanation_correctness": "错因解释在数学上是否成立。解释错（例如把移项错误说成除法错误）→ false；解释正确但不够详细 → true。",
+    "fix_correctness": "答案给出的「该改成什么」（fix / 应写成什么）方向是否正确。改成正确值或等价正确的式子 → true；改成另一个错值、或方向错 → false；完全没有给改法 → false。",
+    "minimal_fix_compliance": "改动范围是否限于被指出的那一步。只针对那一步给改法 → true；把整题重写、或给出完整解答 → false。"
+  },
+  "null_rule": "**null 与 false 不是一回事。** 没有可判对象时写 null（例：答案一处错都没报，就没有「改法对不对」可判；草稿只有一道题，就没有「多题分块」可判）；有可判对象而不合格才写 false。拿不准时先问「这条指标在本题上有没有对象」。"
+}

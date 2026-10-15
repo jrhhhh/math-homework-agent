@@ -1,0 +1,9 @@
+{
+  "bundle_id": "78858f6051",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "我核算：f'(x)=3x^2-3，f'(2)=3×4-3=9。草稿根错在第二行 f'(x)=3x^3-3（幂指数未减 1），第三、四行承接。答案指出「第二行 f'(x)=3x^3-3 —— 这里错了」，位置与参考 location（第二行）一致，故 location true。改法给出正确导函数 f'(x)=3x^2-3 与终值 9，与参考 minimal_fix 一致，故 fix true。解释为「x^3 求导应为 3x^2（指数乘到系数并把指数减 1），不是 3x^3」，并正确说明第四行 24-3=21 算术本身没错、只是承接错导数式，数学成立，故 explanation true。"
+}

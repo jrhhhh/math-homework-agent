@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-04",
+  "prompt": "帮我看看草稿算得对不对。题目：求函数 f(x)=x^3-3x 在 x=2 处的导数值。草稿：第一行写 f(x)=x^3-3x；第二行写 f'(x)=3x^3-3；第三行写 把 x=2 代入 3x^3 得 24；第四行写 f'(2)=24-3=21。",
+  "problem": "求函数 f(x)=x^3-3x 在 x=2 处的导数值。",
+  "draft": "第一行写 f(x)=x^3-3x；第二行写 f'(x)=3x^3-3；第三行写 把 x=2 代入 3x^3 得 24；第四行写 f'(2)=24-3=21。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "高中"
+}

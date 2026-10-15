@@ -1,0 +1,7 @@
+{
+  "bundle_id": "20f76d2504",
+  "ratings": {
+    "dimension_evidence_grounded": true
+  },
+  "notes": "逐维对草稿核：草稿明写两处划改——『4x+2x=9-3（已划掉）』旁重写『4x-2x=9+3』与『x=3（已划掉）』改『x=6』。correction_pattern 引用这两处逐字在草稿，且 positive 也据此给出，属实；organization 引『4x-3=2x+9 到 x=6 连写、无分区』与草稿一致；skipping 说『2x=12 后未写 12÷2』属实（草稿确无该步）；trial_and_error『只有一条链条』与草稿一致；graphic_use『无图形/数轴/标注』为缺席陈述；draft_to_solution『不适用』属实。无编造，判 true。"
+}

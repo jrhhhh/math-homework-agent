@@ -1,0 +1,9 @@
+{
+  "case_id": "CPLX-02",
+  "prompt": "帮我看看这张草稿哪里错了。这张纸上写的几块内容没有题号，我也记不清哪块对应哪道题。",
+  "problem": null,
+  "draft": "纸上没有题号。左半边孤零零写着一个方程 2x-4=10；右上方一块写着 x=5；右下方另一块写着 x=3，旁边还有些潦草的数字看不清。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

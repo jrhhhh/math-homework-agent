@@ -174,6 +174,80 @@ class DraftCoachAuditTests(unittest.TestCase):
         self.assertIn("W_GRADE_MISMATCH",
                       [w["code"] for w in json.loads(result.stdout)["warnings"]])
 
+    def test_declining_to_score_is_not_a_scoring_violation(self):
+        # 学生要"按百分制打个分"，答案答"这一项我没有打分"是在**拒绝**越界。
+        # A_SCORE 只看字面必然误报，所以命中措辞紧前面的否定词要豁免。
+        def with_next_step(text):
+            data = card("high_school_cubic.json")
+            data["next_step"] = text
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "card.json"
+                path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+                return run_audit("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
+
+        declined = with_next_step("这道题我没有打分，也不给分数，下一道题只落笔不跳步。")
+        self.assertEqual(declined.returncode, 0, declined.stdout)
+        self.assertEqual(json.loads(declined.stdout)["errors"], [])
+
+        # 真的主动评分仍然要被拦下——豁免只针对否定句，不是把 A_SCORE 关掉
+        actual = with_next_step("这次给你扣分，满分是 10 分。")
+        self.assertEqual(actual.returncode, 1)
+        self.assertIn("A_SCORE", codes(json.loads(actual.stdout)))
+
+    def test_value_only_in_fix_is_not_unfounded_evidence(self):
+        # 一条错误的证据里带着"应改成"的新数值（草稿上没有 4），那不算查无此据：
+        # 同一个错误条目的 fix 里已经写了这个值，它是答案给出的**期望值**，
+        # 不是对草稿的引述断言。这条证据故意只含一个记号，好把机制单独隔出来测。
+        def with_fix(fix_text):
+            data = card("high_school_cubic.json")
+            data["error_check"]["errors"] = [{
+                "location": "第四行",
+                "evidence": "第四行写成 4",
+                "explanation": "这里少了一个根。",
+                "fix": fix_text,
+            }]
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "card.json"
+                path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+                return run_audit("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
+
+        explained = json.loads(with_fix("第四行改成 x=4。").stdout)
+        self.assertNotIn("W_ERROR_NOT_IN_DRAFT",
+                         [w["code"] for w in explained["warnings"]])
+
+        # fix 里也没有 4 时，本门照旧把它当成"草稿上找不到"的候选记号
+        unexplained = json.loads(with_fix("这一行重算一遍。").stdout)
+        marker = [w for w in unexplained["warnings"] if w["code"] == "W_ERROR_NOT_IN_DRAFT"]
+        self.assertEqual(len(marker), 1)
+        self.assertEqual(marker[0]["candidates"], ["4"])
+
+    def test_ambiguous_symbol_evidence_warns_only_for_image_drafts(self):
+        # ≤ 与 < 在手写里近乎同形：从图片读来的这类记号不许单独支撑一条错误，
+        # 门对图片来源的卡片报 W_MIXED_SYMBOL_EVIDENCE 提醒；学生打字来的草稿不提醒。
+        def run_with(source):
+            data = card("high_school_cubic.json")
+            data["draft_source"] = source
+            data["error_check"]["errors"] = [{
+                "location": "第四行",
+                "evidence": "第四行写 √3/2 < sin(A + π/6) ≤ 1",
+                "explanation": "端点的开闭与上一行对不上。",
+                "fix": "把端点符号改成与上一行一致。",
+            }]
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "card.json"
+                path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+                return json.loads(run_audit("audit", "--card", str(path),
+                                            "--draft", CUBIC_DRAFT).stdout)
+
+        photo = run_with("image_description")
+        marker = [w for w in photo["warnings"] if w["code"] == "W_MIXED_SYMBOL_EVIDENCE"]
+        self.assertEqual(len(marker), 1, photo["warnings"])
+        self.assertEqual(marker[0]["symbols"], ["<", "≤"])
+
+        typed = run_with("text_reconstruction")
+        self.assertNotIn("W_MIXED_SYMBOL_EVIDENCE",
+                         [w["code"] for w in typed["warnings"]])
+
     def test_audit_requires_a_draft(self):
         result = run_audit("audit", "--card", str(EXAMPLES / "high_school_cubic.json"))
         self.assertEqual(result.returncode, 2)

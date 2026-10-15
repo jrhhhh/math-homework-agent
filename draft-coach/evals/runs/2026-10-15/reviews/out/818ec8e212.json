@@ -1,0 +1,7 @@
+{
+  "bundle_id": "818ec8e212",
+  "ratings": {
+    "clarify_quality": true
+  },
+  "notes": "草稿只有孤立记号 3、12、一个圆圈和一个等号，无题面、无完整式子，既看不出在算哪道题也拼不出一步运算，按指南 §6 应走 clarify，被评回答正确落在 clarify。追问问到点上：明确请求（1）题目、（2）更完整的草稿（已知/所求/第一步），这正是「这道题在算什么」；并如实复述所见记号、声明无法判定对错。card 为 null，未硬凑六维评分，也未把 3、12 判成计算错误或凭空补题，符合 expected_behaviors。因此 clarify_quality 判 true。"
+}

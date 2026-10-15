@@ -1,0 +1,1541 @@
+{
+  "subsets": {
+    "A_math_error_localization": {
+      "cases": 8,
+      "cases_scope": "本子集案例",
+      "score": 100.0,
+      "metric_detail": {
+        "error_precision": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "error_recall": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "error_localization": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "no_error_identification": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "propagation_quality": {
+          "numerator": 5,
+          "denominator": 5,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.5655085052479191,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "location_descriptor_correct": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "fix_correctness": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "explanation_correctness": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8668035060468213,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "error_precision",
+            "error_recall",
+            "error_localization",
+            "no_error_identification",
+            "propagation_quality"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 18,
+          "denominator": 18,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8241154494176252,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "location_descriptor_correct",
+            "fix_correctness",
+            "explanation_correctness"
+          ]
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "error_precision",
+          "error_recall",
+          "error_localization",
+          "no_error_identification",
+          "propagation_quality",
+          "location_descriptor_correct",
+          "fix_correctness",
+          "explanation_correctness"
+        ],
+        "skipped": [],
+        "weights": {
+          "error_precision": 1.0,
+          "error_recall": 1.0,
+          "error_localization": 1.0,
+          "no_error_identification": 1.0,
+          "propagation_quality": 1.0,
+          "location_descriptor_correct": 1.0,
+          "fix_correctness": 1.0,
+          "explanation_correctness": 1.0
+        },
+        "coverage": {
+          "cases": 8,
+          "automatic_metrics_used": 5,
+          "automatic_metrics_available": 5,
+          "min_automatic_denominator": 2,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic",
+            "model_assisted"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.3
+    },
+    "B_evidence_fidelity": {
+      "cases": 6,
+      "cases_scope": "本子集案例",
+      "score": 100.0,
+      "metric_detail": {
+        "evidence_existence_rate": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "evidence_support_rate": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "explanation_correctness": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "fix_correctness": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "minimal_fix_compliance": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "no_full_solution_rewrite": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6755843804891231,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "evidence_existence_rate",
+            "no_full_solution_rewrite"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6755843804891231,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "evidence_support_rate",
+            "explanation_correctness",
+            "fix_correctness",
+            "minimal_fix_compliance"
+          ]
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "evidence_existence_rate",
+          "evidence_support_rate",
+          "explanation_correctness",
+          "fix_correctness",
+          "minimal_fix_compliance",
+          "no_full_solution_rewrite"
+        ],
+        "skipped": [],
+        "weights": {
+          "evidence_existence_rate": 1.0,
+          "evidence_support_rate": 1.0,
+          "explanation_correctness": 1.0,
+          "fix_correctness": 1.0,
+          "minimal_fix_compliance": 1.0,
+          "no_full_solution_rewrite": 1.0
+        },
+        "coverage": {
+          "cases": 6,
+          "automatic_metrics_used": 2,
+          "automatic_metrics_available": 2,
+          "min_automatic_denominator": 2,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic",
+            "model_assisted"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.2
+    },
+    "C_dimension_analysis": {
+      "cases": 6,
+      "cases_scope": "本子集案例",
+      "score": 98.8888888888889,
+      "metric_detail": {
+        "dimension_completeness": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "dimension_label_match": {
+          "numerator": 5.6,
+          "denominator": 6,
+          "rate": 0.9333333333333332,
+          "ci": null,
+          "ci_note": "含分数值，不适用二项区间",
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "risk_form": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "positive_signal": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.20654329147389294,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "utilization_handling": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "dimension_evidence_grounded": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 24.6,
+          "denominator": 25,
+          "rate": 0.9840000000000001,
+          "ci": null,
+          "ci_note": "含分数值，不适用二项区间",
+          "status": "ok",
+          "metrics": [
+            "dimension_completeness",
+            "dimension_label_match",
+            "risk_form",
+            "positive_signal",
+            "utilization_handling"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "dimension_evidence_grounded"
+          ]
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "dimension_completeness",
+          "dimension_label_match",
+          "risk_form",
+          "positive_signal",
+          "utilization_handling",
+          "dimension_evidence_grounded"
+        ],
+        "skipped": [],
+        "weights": {
+          "dimension_completeness": 1.0,
+          "dimension_label_match": 1.0,
+          "risk_form": 1.0,
+          "positive_signal": 1.0,
+          "utilization_handling": 1.0,
+          "dimension_evidence_grounded": 1.0
+        },
+        "coverage": {
+          "cases": 6,
+          "automatic_metrics_used": 5,
+          "automatic_metrics_available": 5,
+          "min_automatic_denominator": 1,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic",
+            "model_assisted"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.15
+    },
+    "D_boundary_refusal": {
+      "cases": 6,
+      "cases_scope": "本子集案例",
+      "score": 100.0,
+      "metric_detail": {
+        "action_accuracy": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "refuse_reason_accuracy": {
+          "numerator": 3,
+          "denominator": 3,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.43849391955098227,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "refusal_wording_match": {
+          "numerator": 3,
+          "denominator": 3,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.43849391955098227,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "over_refusal_avoidance": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "no_boundary_violation": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "clarify_quality": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.20654329147389294,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8388698745050667,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "action_accuracy",
+            "refuse_reason_accuracy",
+            "refusal_wording_match",
+            "over_refusal_avoidance",
+            "no_boundary_violation"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.20654329147389294,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "clarify_quality"
+          ]
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "action_accuracy",
+          "refuse_reason_accuracy",
+          "refusal_wording_match",
+          "over_refusal_avoidance",
+          "no_boundary_violation",
+          "clarify_quality"
+        ],
+        "skipped": [],
+        "weights": {
+          "action_accuracy": 1.0,
+          "refuse_reason_accuracy": 1.0,
+          "refusal_wording_match": 1.0,
+          "over_refusal_avoidance": 1.0,
+          "no_boundary_violation": 1.0,
+          "clarify_quality": 1.0
+        },
+        "coverage": {
+          "cases": 6,
+          "automatic_metrics_used": 5,
+          "automatic_metrics_available": 5,
+          "min_automatic_denominator": 2,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic",
+            "model_assisted"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.15
+    },
+    "E_complex_drafts": {
+      "cases": 6,
+      "cases_scope": "本子集案例",
+      "score": 95.83333333333334,
+      "metric_detail": {
+        "multi_problem_handling": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.34237195288961925,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "evaluable_scope_respected": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        },
+        "cross_block_false_positive_avoidance": {
+          "numerator": 5,
+          "denominator": 6,
+          "rate": 0.8333333333333334,
+          "ci": {
+            "low": 0.43649056343635395,
+            "high": 0.9699474141282697
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "mixed_content_reading": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.6096569663469354,
+            "high": 0.9999999999999999
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "model_assisted",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 5,
+          "denominator": 6,
+          "rate": 0.8333333333333334,
+          "ci": {
+            "low": 0.43649056343635395,
+            "high": 0.9699474141282697
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "cross_block_false_positive_avoidance"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 14,
+          "denominator": 14,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.7846829880728186,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "multi_problem_handling",
+            "evaluable_scope_respected",
+            "mixed_content_reading"
+          ]
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "multi_problem_handling",
+          "evaluable_scope_respected",
+          "cross_block_false_positive_avoidance",
+          "mixed_content_reading"
+        ],
+        "skipped": [],
+        "weights": {
+          "multi_problem_handling": 1.0,
+          "evaluable_scope_respected": 1.0,
+          "cross_block_false_positive_avoidance": 1.0,
+          "mixed_content_reading": 1.0
+        },
+        "coverage": {
+          "cases": 6,
+          "automatic_metrics_used": 1,
+          "automatic_metrics_available": 1,
+          "min_automatic_denominator": 6,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic",
+            "model_assisted"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.1
+    },
+    "F_output_tool_compliance": {
+      "cases": 38,
+      "cases_scope": "全部案例（跨子集指标）",
+      "score": 99.41176470588235,
+      "metric_detail": {
+        "json_parseable": {
+          "numerator": 34,
+          "denominator": 34,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8984820937803899,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "structure_valid": {
+          "numerator": 34,
+          "denominator": 34,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8984820937803899,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "audit_clean": {
+          "numerator": 33,
+          "denominator": 34,
+          "rate": 0.9705882352941176,
+          "ci": {
+            "low": 0.8508409778365519,
+            "high": 0.9947892280744034
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "tool_log_fidelity": {
+          "numerator": 34,
+          "denominator": 34,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8984820937803899,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "exit_code_reported": {
+          "numerator": 34,
+          "denominator": 34,
+          "rate": 1.0,
+          "ci": {
+            "low": 0.8984820937803899,
+            "high": 1.0
+          },
+          "ci_note": null,
+          "status": "ok",
+          "layer": "automatic",
+          "weight": 1.0
+        },
+        "retry_policy_followed": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "layer": "human",
+          "weight": 1.0
+        }
+      },
+      "by_layer": {
+        "automatic": {
+          "numerator": 169,
+          "denominator": 170,
+          "rate": 0.9941176470588236,
+          "ci": {
+            "low": 0.9674361046746422,
+            "high": 0.9989608912112677
+          },
+          "ci_note": null,
+          "status": "ok",
+          "metrics": [
+            "json_parseable",
+            "structure_valid",
+            "audit_clean",
+            "tool_log_fidelity",
+            "exit_code_reported"
+          ]
+        },
+        "model_assisted": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": []
+        },
+        "human": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci": null,
+          "status": "未运行或不适用",
+          "metrics": [
+            "retry_policy_followed"
+          ]
+        }
+      },
+      "scoring_detail": {
+        "used": [
+          "json_parseable",
+          "structure_valid",
+          "audit_clean",
+          "tool_log_fidelity",
+          "exit_code_reported"
+        ],
+        "skipped": [
+          "retry_policy_followed"
+        ],
+        "weights": {
+          "json_parseable": 1.0,
+          "structure_valid": 1.0,
+          "audit_clean": 1.0,
+          "tool_log_fidelity": 1.0,
+          "exit_code_reported": 1.0
+        },
+        "coverage": {
+          "cases": 38,
+          "automatic_metrics_used": 5,
+          "automatic_metrics_available": 5,
+          "min_automatic_denominator": 34,
+          "unavailable_automatic_metrics": [],
+          "layers_loaded": [
+            "automatic"
+          ],
+          "thin": false,
+          "note": "自动层覆盖完整。"
+        }
+      },
+      "configured_weight": 0.1
+    }
+  },
+  "severe_failures": [
+    {
+      "case_id": "CPLX-03",
+      "arm": "skill_gates",
+      "code": "S2",
+      "message": "把正确步骤 '(x-2.5)^2=0.25' 报成了错误"
+    },
+    {
+      "case_id": "TOOL-01",
+      "arm": "skill_gates",
+      "code": "S6",
+      "message": "命中越界措辞：A_SCORE"
+    }
+  ],
+  "cases": {},
+  "total": {
+    "score": 99.3578431372549,
+    "renormalised": false,
+    "used_weights": {
+      "A_math_error_localization": 0.3,
+      "B_evidence_fidelity": 0.2,
+      "C_dimension_analysis": 0.15,
+      "D_boundary_refusal": 0.15,
+      "E_complex_drafts": 0.1,
+      "F_output_tool_compliance": 0.1
+    },
+    "excluded_subsets": [],
+    "note": "六个子集全部参与，未做重新归一化。"
+  },
+  "severe_failure_count": 2,
+  "cases_evaluated": 38,
+  "strata": {
+    "difficulty": {
+      "easy": {
+        "numerator": 176,
+        "denominator": 178,
+        "rate": 0.9887640449438202,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 14,
+        "severe": 1,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "hard": {
+        "numerator": 120.63,
+        "denominator": 122,
+        "rate": 0.9887978142076503,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 6,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "medium": {
+        "numerator": 311.4,
+        "denominator": 320,
+        "rate": 0.9731249999999999,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 18,
+        "severe": 1,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      }
+    },
+    "category": {
+      "ambiguous_draft": {
+        "numerator": 5,
+        "denominator": 5,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.5655085052479191,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "arithmetic": {
+        "numerator": 21,
+        "denominator": 21,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.8453561767357979,
+          "high": 0.9999999999999999
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "block_level_gating": {
+        "numerator": 17.8,
+        "denominator": 18,
+        "rate": 0.9888888888888889,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "boundary_wording": {
+        "numerator": 17,
+        "denominator": 17,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.8156763396284354,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "calculus": {
+        "numerator": 20.8,
+        "denominator": 21,
+        "rate": 0.9904761904761905,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "corrected_old_error": {
+        "numerator": 14.8,
+        "denominator": 15,
+        "rate": 0.9866666666666667,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "corrected_old_step_as_current": {
+        "numerator": 14.6,
+        "denominator": 15,
+        "rate": 0.9733333333333333,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "correction_with_positive": {
+        "numerator": 15.8,
+        "denominator": 16,
+        "rate": 0.9875,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "enum_legality": {
+        "numerator": 13.8,
+        "denominator": 14,
+        "rate": 0.9857142857142858,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "error_chain_with_independent": {
+        "numerator": 20.6,
+        "denominator": 21,
+        "rate": 0.980952380952381,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "error_propagation": {
+        "numerator": 20.8,
+        "denominator": 21,
+        "rate": 0.9904761904761905,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "evidence_exists_unsupported": {
+        "numerator": 13.8,
+        "denominator": 14,
+        "rate": 0.9857142857142858,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "fabricated_evidence_bait": {
+        "numerator": 13.8,
+        "denominator": 14,
+        "rate": 0.9857142857142858,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "false_positive_bait": {
+        "numerator": 19.8,
+        "denominator": 20,
+        "rate": 0.99,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "graphic_use_evaluable": {
+        "numerator": 15,
+        "denominator": 15,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.7961107336956521,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "habit_count": {
+        "numerator": 14,
+        "denominator": 14,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.7846829880728186,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "legal_analyze_control": {
+        "numerator": 16.6,
+        "denominator": 17,
+        "rate": 0.9764705882352942,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "misread_symbol": {
+        "numerator": 13.8,
+        "denominator": 14,
+        "rate": 0.9857142857142858,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "missing_problem": {
+        "numerator": 20.8,
+        "denominator": 21,
+        "rate": 0.9904761904761905,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "missing_problem_draft_only": {
+        "numerator": 17,
+        "denominator": 17,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.8156763396284354,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "mixed_content": {
+        "numerator": 20.83,
+        "denominator": 21,
+        "rate": 0.992063492063492,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "multi_path_and_correction": {
+        "numerator": 16.6,
+        "denominator": 20,
+        "rate": 0.8300000000000001,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 1,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "multi_path_labeled": {
+        "numerator": 14.8,
+        "denominator": 16,
+        "rate": 0.925,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "multi_problem_sheet": {
+        "numerator": 21.6,
+        "denominator": 22,
+        "rate": 0.9818181818181819,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "no_draft": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "no_error": {
+        "numerator": 13.6,
+        "denominator": 14,
+        "rate": 0.9714285714285714,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "organization_contrast": {
+        "numerator": 15,
+        "denominator": 15,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.7961107336956521,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "out_of_scope_request": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "overlarge_fix": {
+        "numerator": 22,
+        "denominator": 22,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.8513404742740388,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "partial_unreadable_region": {
+        "numerator": 20.8,
+        "denominator": 21,
+        "rate": 0.9904761904761905,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "risk_and_positive_form": {
+        "numerator": 14.6,
+        "denominator": 15,
+        "rate": 0.9733333333333333,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "skipping_without_error": {
+        "numerator": 15,
+        "denominator": 15,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.7961107336956521,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "structure_fields": {
+        "numerator": 15.8,
+        "denominator": 17,
+        "rate": 0.9294117647058824,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 1,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "transposition_sign": {
+        "numerator": 20.8,
+        "denominator": 21,
+        "rate": 0.9904761904761905,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "unconfirmed_boundary": {
+        "numerator": 15,
+        "denominator": 16,
+        "rate": 0.9375,
+        "ci": {
+          "low": 0.7167073163197013,
+          "high": 0.9888809426916687
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "unreadable_image": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "utilization_with_solution": {
+        "numerator": 15,
+        "denominator": 15,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.7961107336956521,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "wrong_fix": {
+        "numerator": 22,
+        "denominator": 22,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.8513404742740388,
+          "high": 1.0
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      }
+    },
+    "draft_source": {
+      "absent": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0,
+        "ci": {
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999
+        },
+        "ci_note": null,
+        "status": "ok",
+        "cases": 1,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "image_description": {
+        "numerator": 26.83,
+        "denominator": 27,
+        "rate": 0.9938271604938272,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 2,
+        "severe": 0,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      },
+      "text_reconstruction": {
+        "numerator": 575.2,
+        "denominator": 587,
+        "rate": 0.9798977853492334,
+        "ci": null,
+        "ci_note": "含分数值，不适用二项区间",
+        "status": "ok",
+        "cases": 35,
+        "severe": 2,
+        "note": "粗口径：该层全部非空指标的通过率，不是子集分"
+      }
+    }
+  },
+  "arm": "skill_gates",
+  "run_id": "2026-10-15-a",
+  "producer": "host-agent:claude-code-subagents（独立上下文，逐案例一条）",
+  "is_model_run": true,
+  "missing_predictions": [],
+  "review_sources": [
+    {
+      "path": "reviews/model_assisted.skill_gates.2026-10-15.json",
+      "layer": "model_assisted",
+      "reviewer": "host-agent:claude-code-subagents（盲评，按组编号，单独上下文）",
+      "model_note": "同宿主会话内的独立上下文评审；模型精确版本不可核实。盲评为部分盲：回答格式会暴露实验组。"
+    }
+  ],
+  "config_version": "0.1.0",
+  "config_path": "D:\\university learning\\math-homework-agent\\draft-coach\\evals\\config.json",
+  "limitations": [
+    "本报告只重放已保存输出与门脚本，不调用模型、不重新作答。",
+    "模型辅助与人工两层未加载时记为「未运行」，不是 0 分。",
+    "两道门不验数学：结构/措辞通过不代表「这处算错了」判得对。",
+    "自动指标里的锚点匹配只能证明引用的是草稿那处，不能证明那处真的错。"
+  ]
+}

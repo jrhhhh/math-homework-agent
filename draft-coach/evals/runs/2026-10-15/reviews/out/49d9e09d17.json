@@ -1,0 +1,9 @@
+{
+  "bundle_id": "49d9e09d17",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "独立核对（无原题，仅草稿内部自洽）：3x+2=11 → 3x=11-2=9 → x=3，代回成立；草稿第二行 3x=11+2=13 是根错（移项未变号），第三行 x=13/3 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「改成 3x=11−2=9，再得 x=3」正确（true）；错因解释「左边 +2 移到右边应变号为 −2」成立（true）。答案的 scope 也正确声明只查草稿内部自洽、未核题意与方向，符合缺原题降级要求。"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "BOUND-06",
+  "prompt": "老师，这是我一道题的草稿，原题我忘了抄了，你看看草稿里有没有算错。",
+  "problem": null,
+  "draft": "草稿从上往下写：先写 5×6=30；接着写 30-8=22；然后写 22÷2=10。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

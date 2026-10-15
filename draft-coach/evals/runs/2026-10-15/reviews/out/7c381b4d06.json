@@ -1,0 +1,9 @@
+{
+  "bundle_id": "7c381b4d06",
+  "ratings": {
+    "multi_problem_handling": true,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自算：第一题 3x+5=20→3x=15→x=5 正确；第二题 2x-4=10 应为 2x=14→x=7，草稿 2x=6 处移项未变号（x=3 为传播）。multi_problem_handling=true：答案开头即『按题号分成了两块』，明确交代第一题属 3x+5=20、第二题属 2x-4=10，并逐块分析，未把两块混判。evaluable_scope_respected=true：unevaluable 要求不混题、不对『学生是否理解移项』下确定结论，答案把两块分开且未做知识诊断。mixed_content_reading=true：草稿的『第一题/第二题』文字标记与各方程记号均被正确读入，未读错亦未漏记。"
+}

@@ -1,0 +1,158 @@
+{
+  "arm": "baseline",
+  "layer": "model_assisted",
+  "reviewer": "host-agent:claude-code-subagents（盲评，按组编号，单独上下文）",
+  "model_note": "同宿主会话内的独立上下文评审；模型精确版本不可核实。盲评为部分盲：回答格式会暴露实验组。",
+  "ratings": [
+    {
+      "case_id": "EVID-05",
+      "subset": "B_evidence_fidelity",
+      "metrics": {
+        "evidence_support_rate": true,
+        "explanation_correctness": true,
+        "fix_correctness": true,
+        "minimal_fix_compliance": false
+      },
+      "notes": "独立核算：7x+6=48 → 7x=48-6=42 → x=6；草稿第二行 7x=48-6 本身正确，第三行 7x=41 是 48-6 算错（应为 42），第四行 x=41/7 承接上游。答案把错误定位在 48-6 上、结论「48-6=42 不是 41」成立，引用的 7x=41 确在草稿且支持该结论，故 evidence_support_rate=true；错因解释为减法算错成立，explanation_correctness=true；改法 7x=42、x=6 正确且未去改正确的第二行，fix_correctness=true。但答案给出了「正确的解法」整段完整解答（含检验），超出只改第三行这一步，按指标定义判 minimal_fix_compliance=false。"
+    },
+    {
+      "case_id": "CPLX-03",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：x^2-5x+6=(x-2)(x-3)，根 x=2 或 3；配方 (x-2.5)^2=0.25→x=2 或 3；Δ=25-24=1。草稿无现存错误（方法二整条划掉、Δ 处先写错 49 已划掉补写 1）。multi_problem_handling=null：草稿只有一道题（两种方法属同一题），没有『多题分块』可判，按 null_rule 记 null。evaluable_scope_respected=true：unevaluable 为『是否理解配方/因式分解』与『最终采用哪条路径』，答案没有诊断知识漏洞（未说学生不懂），也没断言学生最终用了哪条路径（只说『方法一为首选』是建议），未对不可判事项下确定结论。mixed_content_reading=true：公式、『方法一/方法二』、『整条被划掉』、Δ 先写 49 后补写 1 等混排信息均被正确读入并区分了划掉前后状态。"
+    },
+    {
+      "case_id": "MATH-03",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算：3x+7=2x+1→3x-2x=1-7→x=-6，代回 3×(-6)+7=-11=2×(-6)+1 成立。草稿根错在第二行 3x-2x=1+7（移项未变号，应为 1-7），第三行 x=8 承接。答案明确「【第二行】这里错了」，与参考 location 一致，故 location true。改法写出 3x-2x=1-7、x=-6，并给代回检验（两边都 -11），与参考 minimal_fix 方向一致且正确，故 fix true。解释为「+7 移项未变号，应写成 1-7」，数学成立，故 explanation true。"
+    },
+    {
+      "case_id": "CPLX-05",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：正确解 3(x-2)=2x+5→3x-6=2x+5→x=11；草稿第二行 3x-2=2x+5 是漏乘常数项（应 3x-6），第三、四行是其传播；右侧验算 3×(7-2)=15 正确、2×7+5 应为 19 而草稿写 21 是独立的算术失误。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=true：unevaluable 为『是否理解分配律与移项』与『学生打算怎么处理验算矛盾（15≠21，草稿未写）』；答案把去括号漏乘解释成笔误（『忘了乘』）而非知识漏洞，也没有断言学生的处理打算，未对不可判事项下结论。mixed_content_reading=true：四行方程与右侧验算（3×(7-2)=15、2×7+5=21）均被正确读入，记号无误。"
+    },
+    {
+      "case_id": "CPLX-06",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": false,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：正确解 5x-3=2x+9→5x-2x=9+3→3x=12→x=4；草稿 5x+2x=9+3 是移项不变号的根错，7x=12、x=12/7 为其传播（12/7≈1.714）。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=false：unevaluable 明确列『右下角水渍区域不可读，无法判定里面写了什么、是否算错』，expected 要求『不对其下结论』；答案却推断该区域内容为『这大概是你写的 x≈1.7』并笃定『它是被前面 7x=12 那一步带错的』，等于对不可读区域下了确定结论（左下角潦草部分它正确声明了没核对，但右下角这块越界了）。mixed_content_reading=true：可读部分 5x-3=2x+9、5x+2x=9+3、7x=12、x=12/7 全部读对，且如实说明右下洇掉、左下潦草，未读错记号。"
+    },
+    {
+      "case_id": "MATH-04",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算：f'(x)=3x^2-3，f'(2)=3×4-3=9。草稿根错在第二行 f'(x)=3x^3-3（幂指数未减 1），第三、四行承接。答案指出「第二行 f'(x)=3x^3-3 —— 这里错了」，位置与参考 location（第二行）一致，故 location true。改法给出正确导函数 f'(x)=3x^2-3 与终值 9，与参考 minimal_fix 一致，故 fix true。解释为「x^3 求导应为 3x^2（指数乘到系数并把指数减 1），不是 3x^3」，并正确说明第四行 24-3=21 算术本身没错、只是承接错导数式，数学成立，故 explanation true。"
+    },
+    {
+      "case_id": "MATH-05",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算：x^2+2x-3=(x+3)(x-1)，根 x=-3、x=1；x>0 只取 x=1（代回成立）。第四行舍负根是正确步骤（参考列入 gold_correct_steps）。唯一真错在第五行韦达检验 -3×1=3，应为 -3。答案指出「第5行：两根之积 = -3×1 = 3 —— 这里算错了」，位置与参考 location（第五行）一致，故 location true。改法指出应为 c/a=-3/1=-3，与参考 minimal_fix 一致，故 fix true。解释为「(-3)×1=-3，丢了一个负号」，数学成立；且答案明确把第 1~4 行判为正确、未把正确的第四行报成错误（无 S2 假错），故 explanation true。"
+    },
+    {
+      "case_id": "BOUND-03",
+      "subset": "D_boundary_refusal",
+      "metrics": {
+        "clarify_quality": true
+      },
+      "notes": "草稿只有孤立记号 3、12、一个圆圈和一个等号，无题面、无完整式子，既看不出在算哪道题也拼不出一步运算，按指南 §6 应走 clarify，被评回答正确落在 clarify。追问问到点上：明确请求（1）题目、（2）更完整的草稿（已知/所求/第一步），这正是「这道题在算什么」；并如实复述所见记号、声明无法判定对错。card 为 null，未硬凑六维评分，也未把 3、12 判成计算错误或凭空补题，符合 expected_behaviors。因此 clarify_quality 判 true。"
+    },
+    {
+      "case_id": "CPLX-04",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：f'(x)=3x^2-3，令=0 得 x=±1；f(1)=1-3=-2 正确，f(-1)=(-1)^3-3(-1)=-1+3=2，草稿写成 -1-3=-4 是符号根错（-3×(-1) 漏负负得正），结论里的极大值 -4 为其传播。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=true：unevaluable 为『草图是否按比例（草图不参与数值判定）』与『是否理解极值判别法』；答案对草图的评论只涉及走向且明说『不影响这道题的计算结论』，未据草图下数值结论，也未诊断知识漏洞。mixed_content_reading=true：文字说明（先求导、令导数等于零）、公式、草图（左高右低、两个转折点标 x=±1）、代入计算与文字结论均被正确读入。"
+    },
+    {
+      "case_id": "MATH-02",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算：7+3+5=10+5=15。草稿根错在第二行 7+3=11（应为 10），第三行 11+5=16 是承接。答案指出「第一处（第二行）：7 + 3 = 10，可是你写成了 11」，位置与参考 location（第二行）一致，故 location true。改法写出 7+3=10、最终 15，与参考 minimal_fix 方向一致，故 fix true。解释为「第二行加法口算出错」，并正确说明第三行 11+5=16 的加法本身没错、只是用了错的 11，数学成立，故 explanation true。"
+    },
+    {
+      "case_id": "MATH-01",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算：2(x+3)=14→2x+6=14→2x=8→x=4。草稿根错在第二行 2x+3=14（漏乘常数项 3），第三、四行是承接。答案明确指认「第二行：2x+3=14 ❌ 错在这里」，与参考 location（第二行）一致，故 location true。改法写出 2x+6=14、2x=8、x=4，与参考 minimal_fix（2x+6=14，终值 x=4）方向一致且正确，故 fix true。错因解释为「去括号漏乘，2 只乘了 x 没乘 3」，并正确说明第三、四行移项与除法本身没错、只是承接错误第二行，数学成立，故 explanation true。"
+    },
+    {
+      "case_id": "CPLX-01",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": true,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：第一题 3x+5=20→3x=15→x=5 全对；第二题 2x-4=10→应为 2x=14→x=7，草稿 2x=6→x=3 是移项没变号的根错。multi_problem_handling=true：答案按『第一题/第二题』两块分块，并明确交代各块归属，没有把两题混判。evaluable_scope_respected=true：unevaluable 列的是『未标注归属前不可混判』（本题归属清楚、已按题号分开）与『是否理解移项』，答案没有诊断知识漏洞，反而说『你是会移项的』，未对不可判事项下确定结论。mixed_content_reading=true：答案正确读入两题所有记号（3x+5=20、3x=15、x=5、2x-4=10、2x=6、x=3），未读错、未漏。"
+    },
+    {
+      "case_id": "CPLX-02",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": false,
+        "evaluable_scope_respected": false,
+        "mixed_content_reading": true
+      },
+      "notes": "自己算：2x-4=10 的正确解是 x=7；草稿无题号，2x-4=10、x=5、x=3 各属哪题不可确认，本题应 clarify。multi_problem_handling=false：答案虽说出『因为你没写题号，我没法替你对应谁是谁』，但实质上仍把三块当成同一方程的材料，开篇直接断言『右上 x=5 和右下 x=3 都对不上，两个都错』——即『把多题当一题』，未在归属确认前保持不判。evaluable_scope_respected=false：unevaluable 明确写『跨块配对得到的结论一律不可判』，答案却把 2x-4=10 与 x=5、x=3 配对并判两者为错（『两个都错』），正是被禁的跨块配对下确定结论。mixed_content_reading=true：2x-4=10、x=5、x=3 均读对，并如实承认右下潦草数字看不清，未读错记号。"
+    },
+    {
+      "case_id": "MATH-07",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "我核算（无原题，仅按草稿内部）：3x+2=11→3x=9→x=3，代回 3×3+2=11 成立。草稿根错在第二行 3x=11+2=13（移项未变号，应为 3x=11-2=9），第三行 x=13/3 承接。答案指出「问题出在第一行到第二行」并改出正确第二步，位置与参考 location（第二行）一致，故 location true。改法写出 3x=11-2=9、x=3，与参考 minimal_fix 一致，故 fix true。解释为「+2 移项未变号，过等号要变号」，数学成立，并说明第三行承接上游，故 explanation true。答案也正确声明了原题缺失、只按草稿第一行核对（未越界断言题意/方向）。"
+    },
+    {
+      "case_id": "EVID-04",
+      "subset": "B_evidence_fidelity",
+      "metrics": {
+        "evidence_support_rate": true,
+        "explanation_correctness": true,
+        "fix_correctness": true,
+        "minimal_fix_compliance": false
+      },
+      "notes": "独立核算：6x-7=29 → 6x=29+7=36 → x=6；草稿第二行 6x=29-7 是移项不变号（根错），三、四行是承接上游。答案引用第二行 6x=29-7 并断言该处错，证据确实在草稿且结论成立（把对的判成错的假阳性未出现），故 evidence_support_rate=true；错因解释为「移项不变号」符合数学，explanation_correctness=true；改法 6x=29+7=36、x=6 正确，fix_correctness=true。但答案额外写出了「正确的完整过程」整段完整解答（并补检验与约分提醒），超出了只改第二行这一步的范围，按指标定义「给出完整解答→false」，故 minimal_fix_compliance=false。"
+    }
+  ]
+}

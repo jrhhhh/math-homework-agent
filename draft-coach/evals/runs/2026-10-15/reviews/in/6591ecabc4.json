@@ -1,0 +1,133 @@
+{
+  "bundle_id": "6591ecabc4",
+  "说明": "盲评包：你不知道这条案例来自哪个实验组，也不需要知道。",
+  "student_input": {
+    "prompt": "帮我看看这张草稿算得对不对。右下角那块洇了看不清，其余都能看。",
+    "problem": "解方程 5x-3=2x+9。",
+    "draft": "解方程 5x-3=2x+9。左上角：5x-3=2x+9。下面一行：5x+2x=9+3。再下面：7x=12。再下面：x=12/7。右下角有一块被水渍洇了，只能看出像 x=1.7 开头的一串数字，具体看不清。左下角潦草地写着验算，字迹分辨不出。",
+    "final_solution": null,
+    "draft_source": "text_reconstruction"
+  },
+  "reference": {
+    "expected_action": "analyze",
+    "refuse_reason": null,
+    "gold_errors": [
+      {
+        "error_id": "CPLX-06-E1",
+        "kind": "root",
+        "propagates_to": [
+          "CPLX-06-E2",
+          "CPLX-06-E3"
+        ],
+        "type": "transposition",
+        "severity": "major",
+        "location": "5x+2x=9+3 这一行",
+        "evidence_anchor": [
+          "5x+2x=9+3"
+        ],
+        "evidence_note": "移项要变号：2x 移到左边应是 5x-2x=9+3，草稿写成 5x+2x=9+3。",
+        "cause": "移项时 2x 的符号没有改变。",
+        "minimal_fix": "把这一行改成 5x-2x=9+3。",
+        "must_report": true
+      },
+      {
+        "error_id": "CPLX-06-E2",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "algebra",
+        "severity": "minor",
+        "location": "7x=12 这一行",
+        "evidence_anchor": [
+          "7x=12"
+        ],
+        "evidence_note": "在 5x+2x=9+3 的前提下，合并同类项得 7x=12 本身没算错；错的是上一行的移项。",
+        "cause": "承接上一行的错误方程，不是独立的运算失误。",
+        "minimal_fix": "改正上一行后此处应为 3x=12。",
+        "must_report": false
+      },
+      {
+        "error_id": "CPLX-06-E3",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "x=12/7 这一行",
+        "evidence_anchor": [
+          "x=12/7"
+        ],
+        "evidence_note": "由 7x=12 得 x=12/7，除法本身正确；结果错是因为前面已经偏了。",
+        "cause": "承接上游错误。",
+        "minimal_fix": "上一行改正后最终结果应为 x=4。",
+        "must_report": false
+      }
+    ],
+    "gold_correct_steps": [
+      {
+        "step_id": "CPLX-06-S1",
+        "location": "第一行 / 左上角",
+        "evidence_anchor": [
+          "5x-3=2x+9"
+        ],
+        "note": "题设方程 5x-3=2x+9 抄写无误，是方程本身、不是错误；报它就是假错。"
+      }
+    ],
+    "gold_dimensions": {
+      "organization": {
+        "label": "中",
+        "basis": "四行从上到下排列，另有左下角与右下角两个区域，有顺序但没分区。"
+      },
+      "skipping": {
+        "label": "高",
+        "basis": "移项、合并、除法都落笔了。"
+      },
+      "correction_pattern": {
+        "label": "高",
+        "basis": "可读部分没有涂改痕迹。"
+      },
+      "trial_and_error": {
+        "label": "低",
+        "basis": "只有一条推算路径，没有第二种做法。"
+      },
+      "graphic_use": {
+        "label": "低",
+        "basis": "纯代数方程，草稿里没有图形。",
+        "unevaluable": true
+      },
+      "draft_to_solution": {
+        "label": "不适用",
+        "basis": "没有提供最终解答，无法判断草稿转化率。"
+      }
+    },
+    "evaluable_scope": [
+      "可读部分 5x-3=2x+9 → 5x+2x=9+3 → 7x=12 → x=12/7 的每一步",
+      "7x=12 与 x=12/7 相对上一行是否自洽"
+    ],
+    "unevaluable_scope": [
+      "右下角被水渍洇掉的区域：内容不可读，无法判定里面写了什么、是否算错",
+      "左下角潦草无法辨认的验算部分：同样不可读",
+      "学生是否理解移项法则（属知识诊断，不在本技能范围）"
+    ],
+    "expected_behaviors": [
+      "只在可读区域里定位错误，报出 5x+2x=9+3 这处移项不变号",
+      "说明 7x=12、x=12/7 是承接上游的传播，不当作独立错误",
+      "明确声明右下角水渍区域与左下角潦草部分不可读，不对其下结论"
+    ],
+    "forbidden_behaviors": [
+      "对着看不清的水渍区域下确定结论（例如断言那里写了 x=4 或算错了）",
+      "编造水渍区域里的数字并据此报错",
+      "把可读部分没有的东西当成证据",
+      "给整题重写或完整解答"
+    ],
+    "notes": "验算：正确解 5x-3=2x+9→3x=12→x=4；草稿 5x+2x=9+3（移项不变号）→7x=12→x=12/7≈1.71。E2/E3 为 propagated，不进 Precision/Recall。水渍区域与潦草区域不给锚点、不写进 gold_errors。graphic_use 标 unevaluable：纯代数题不画图正常。"
+  },
+  "answer_under_review": {
+    "response": "我帮你把这草稿看了一遍，先给结论：**算错了**。错在\"移项\"那一步，后面一路跟着错到底。\n\n草稿复原出来的过程大致是：\n5x-3=2x+9\n5x+2x=9+3   ← 这一步错了\n7x=12\nx=12/7\n\n## 错在哪一步\n第二行，把右边的 2x 移到左边时**忘记变号**了。移项要变号：右边的 +2x 移到左边应当变成 -2x。所以这一行应该是\n\n5x-2x=9+3\n\n再合并同类项：左边 5x-2x=3x，右边 9+3=12，得到\n\n3x=12，x=4。\n\n你写成了 5x+2x=9+3，左边就变成 7x，接着得到 7x=12、x=12/7，于是一路错到最后。\n顺便说一句，右边的 9+3 那半边是对的：-3 移到右边变 +3，没有问题；毛病只出在 2x 这一项没变号。\n\n## 正确答案\nx=4。\n\n验算一下：左边 5×4-3=17，右边 2×4+9=17，两边相等，所以 x=4 是对的。\n\n## 关于看不清的两块\n- 右下角那块被洇掉、开头像\"x=1.7...\"的数字：这大概是你写的 x≈1.7。因为 12/7≈1.714，正好是把错误结论 12/7 化成小数的结果，它是被前面 7x=12 那一步带错的。改对以后这里应当是 x=4，建议直接划掉重写。\n- 左下角潦草的\"验算\"：字迹实在分辨不出，我没法替你核对。不过既然正确结果是 x=4，你正好可以拿它自己重新验算一遍，就当练手。\n\n## 记一条规则\n解方程做移项时，**过等号（移项）一定要变号**：加变减、减变加。这道题里就是 +2x 移过去要写成 -2x。另外养成\"算完立刻回代验算\"的习惯，像这道题把 x=4 代回去两边都是 17，一眼就能发现自己有没有算错。",
+    "card": null
+  },
+  "metrics_to_rate": {
+    "multi_problem_handling": "草稿上有多道题时，是否先分块、并声明块与题目的归属（或声明归属未确认）。有分块且交代了归属 → true；不分块、或把多题当一题 → false。",
+    "evaluable_scope_respected": "对参考答案 `unevaluable_scope` 里列出的事项（例如题意是否抄对、解题方向是否正确、知识漏洞），答案是否**没有**下确定结论。没下确定结论 → true；下了 → false。",
+    "mixed_content_reading": "草稿里公式、文字说明、图形混排时，是否被正确读入（记号没读错、文字说明没漏掉）。读错记号或漏掉文字说明 → false；正确读入 → true。"
+  },
+  "null_rule": "**null 与 false 不是一回事。** 没有可判对象时写 null（例：答案一处错都没报，就没有「改法对不对」可判；草稿只有一道题，就没有「多题分块」可判）；有可判对象而不合格才写 false。拿不准时先问「这条指标在本题上有没有对象」。"
+}

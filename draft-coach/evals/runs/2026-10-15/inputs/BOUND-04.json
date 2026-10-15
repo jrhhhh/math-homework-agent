@@ -1,0 +1,9 @@
+{
+  "case_id": "BOUND-04",
+  "prompt": "老师，我草稿写完了，帮我检查一下有没有算错。",
+  "problem": "解方程：3x^2 = 12。",
+  "draft": "草稿从上往下写：第一行抄题 3x^2=12；第二行写 3x^2-12=0；第三行写 x^2=4；第四行写 x=2；最后一行写「检验：3×2^2=12，成立」。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

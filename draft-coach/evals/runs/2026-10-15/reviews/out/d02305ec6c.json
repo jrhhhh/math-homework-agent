@@ -1,0 +1,9 @@
+{
+  "bundle_id": "d02305ec6c",
+  "ratings": {
+    "multi_problem_handling": true,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "本题草稿无题号、多块内容边界不可确认（expected_action=clarify，gold_errors 留空）。自算可知若把 2x-4=10 与 x=5 或 x=3 配成同题都会造出假错（2x-4=10 的解是 x=7），故不可配对。multi_problem_handling=true：答案先声明『题目边界未确认』，未把任意两块硬凑成一道题，符合『分块且声明归属未确认』。evaluable_scope_respected=true：unevaluable 的三项（边界未确认、跨块配对、单题跳步/试错不可靠）均未被越界下结论——试错维度主动声明不可靠，跳步只写单块内部（2x-4=10 那行）观察。mixed_content_reading=true：左/右上/右下三块位置与『2x-4=10』『x=5』『x=3』记号及『潦草看不清』的文字说明均正确读入。"
+}

@@ -1,0 +1,10 @@
+{
+  "bundle_id": "9559ebb6e8",
+  "ratings": {
+    "evidence_support_rate": true,
+    "explanation_correctness": true,
+    "fix_correctness": true,
+    "minimal_fix_compliance": true
+  },
+  "notes": "独立核算：7x+6=48 → 7x=48-6=42 → x=6；代回 7×6+6=48 成立。草稿第二行 7x=48-6 本身正确；真错在第三行 7x=41（48-6 应为 42），第四行 x=41/7 承接上游，属 gold 的 propagated。evidence_support_rate=true：引用的锚点 7x=41 与 x=41/7 逐字在草稿中，分别支持「减法算错」与「末行承接上游」的结论。explanation_correctness=true：解释为「48-6 应等于 42，不是 41，属减法算错」，与真错因一致，并明确指出第二行方向没问题。fix_correctness=true：改法 7x=42、进而 x=42/7=6，方向与数值均正确。minimal_fix_compliance=true：改法针对被指出的第三行及与之保持自洽的第四行，未重写整题、未给完整解答；把第四行一并改为 x=6 而非保留 7x=41，正是 gold 要求的自洽做法，未超出范围。"
+}

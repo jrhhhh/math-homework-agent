@@ -1,0 +1,9 @@
+{
+  "case_id": "EVID-06",
+  "prompt": "题目：解方程 4x-5=15。草稿：第一行写 4x-5=15；第二行先写 4x=15-5，划掉后在旁边补写 4x=15+5；第三行写 4x=20；第四行写 x=5。帮我看看算得对不对。",
+  "problem": "解方程 4x-5=15。",
+  "draft": "第一行写 4x-5=15；第二行先写 4x=15-5，划掉后在旁边补写 4x=15+5；第三行写 4x=20；第四行写 x=5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

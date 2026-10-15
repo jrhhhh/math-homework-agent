@@ -1,0 +1,9 @@
+{
+  "bundle_id": "6591ecabc4",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": false,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：正确解 5x-3=2x+9→5x-2x=9+3→3x=12→x=4；草稿 5x+2x=9+3 是移项不变号的根错，7x=12、x=12/7 为其传播（12/7≈1.714）。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=false：unevaluable 明确列『右下角水渍区域不可读，无法判定里面写了什么、是否算错』，expected 要求『不对其下结论』；答案却推断该区域内容为『这大概是你写的 x≈1.7』并笃定『它是被前面 7x=12 那一步带错的』，等于对不可读区域下了确定结论（左下角潦草部分它正确声明了没核对，但右下角这块越界了）。mixed_content_reading=true：可读部分 5x-3=2x+9、5x+2x=9+3、7x=12、x=12/7 全部读对，且如实说明右下洇掉、左下潦草，未读错记号。"
+}

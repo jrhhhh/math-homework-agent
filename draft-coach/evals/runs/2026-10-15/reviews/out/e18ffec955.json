@@ -1,0 +1,9 @@
+{
+  "bundle_id": "e18ffec955",
+  "ratings": {
+    "multi_problem_handling": false,
+    "evaluable_scope_respected": false,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：2x-4=10 的正确解是 x=7；草稿无题号，2x-4=10、x=5、x=3 各属哪题不可确认，本题应 clarify。multi_problem_handling=false：答案虽说出『因为你没写题号，我没法替你对应谁是谁』，但实质上仍把三块当成同一方程的材料，开篇直接断言『右上 x=5 和右下 x=3 都对不上，两个都错』——即『把多题当一题』，未在归属确认前保持不判。evaluable_scope_respected=false：unevaluable 明确写『跨块配对得到的结论一律不可判』，答案却把 2x-4=10 与 x=5、x=3 配对并判两者为错（『两个都错』），正是被禁的跨块配对下确定结论。mixed_content_reading=true：2x-4=10、x=5、x=3 均读对，并如实承认右下潦草数字看不清，未读错记号。"
+}

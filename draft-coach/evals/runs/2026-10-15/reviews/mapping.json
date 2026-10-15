@@ -1,0 +1,350 @@
+{
+  "ac1e39f5fe": {
+    "arm": "skill_gates",
+    "case_id": "BOUND-03",
+    "subset": "D_boundary_refusal",
+    "metrics": [
+      "clarify_quality"
+    ]
+  },
+  "7c381b4d06": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-01",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "d02305ec6c": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-02",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "073c522a1c": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-03",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "c6605cb854": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-04",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "7181b2e98b": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-05",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "a18a0aac53": {
+    "arm": "skill_gates",
+    "case_id": "CPLX-06",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "82b34619ce": {
+    "arm": "skill_gates",
+    "case_id": "DIM-01",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "0c8e099254": {
+    "arm": "skill_gates",
+    "case_id": "DIM-02",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "20f76d2504": {
+    "arm": "skill_gates",
+    "case_id": "DIM-03",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "5eb9d19729": {
+    "arm": "skill_gates",
+    "case_id": "DIM-04",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "13e5d9a591": {
+    "arm": "skill_gates",
+    "case_id": "DIM-05",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "7c6d146009": {
+    "arm": "skill_gates",
+    "case_id": "DIM-06",
+    "subset": "C_dimension_analysis",
+    "metrics": [
+      "dimension_evidence_grounded"
+    ]
+  },
+  "65979a2461": {
+    "arm": "skill_gates",
+    "case_id": "EVID-04",
+    "subset": "B_evidence_fidelity",
+    "metrics": [
+      "evidence_support_rate",
+      "explanation_correctness",
+      "fix_correctness",
+      "minimal_fix_compliance"
+    ]
+  },
+  "9559ebb6e8": {
+    "arm": "skill_gates",
+    "case_id": "EVID-05",
+    "subset": "B_evidence_fidelity",
+    "metrics": [
+      "evidence_support_rate",
+      "explanation_correctness",
+      "fix_correctness",
+      "minimal_fix_compliance"
+    ]
+  },
+  "be7c828573": {
+    "arm": "skill_gates",
+    "case_id": "MATH-01",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "7242873254": {
+    "arm": "skill_gates",
+    "case_id": "MATH-02",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "b29084957d": {
+    "arm": "skill_gates",
+    "case_id": "MATH-03",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "b51062fe5c": {
+    "arm": "skill_gates",
+    "case_id": "MATH-04",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "074ed2085e": {
+    "arm": "skill_gates",
+    "case_id": "MATH-05",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "49d9e09d17": {
+    "arm": "skill_gates",
+    "case_id": "MATH-07",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "818ec8e212": {
+    "arm": "baseline",
+    "case_id": "BOUND-03",
+    "subset": "D_boundary_refusal",
+    "metrics": [
+      "clarify_quality"
+    ]
+  },
+  "c32b10db0d": {
+    "arm": "baseline",
+    "case_id": "CPLX-01",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "e18ffec955": {
+    "arm": "baseline",
+    "case_id": "CPLX-02",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "25e2cd625d": {
+    "arm": "baseline",
+    "case_id": "CPLX-03",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "87f3ac12fc": {
+    "arm": "baseline",
+    "case_id": "CPLX-04",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "6389837f73": {
+    "arm": "baseline",
+    "case_id": "CPLX-05",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "6591ecabc4": {
+    "arm": "baseline",
+    "case_id": "CPLX-06",
+    "subset": "E_complex_drafts",
+    "metrics": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "mixed_content_reading"
+    ]
+  },
+  "ff6143b8f9": {
+    "arm": "baseline",
+    "case_id": "EVID-04",
+    "subset": "B_evidence_fidelity",
+    "metrics": [
+      "evidence_support_rate",
+      "explanation_correctness",
+      "fix_correctness",
+      "minimal_fix_compliance"
+    ]
+  },
+  "1e67cdffa4": {
+    "arm": "baseline",
+    "case_id": "EVID-05",
+    "subset": "B_evidence_fidelity",
+    "metrics": [
+      "evidence_support_rate",
+      "explanation_correctness",
+      "fix_correctness",
+      "minimal_fix_compliance"
+    ]
+  },
+  "a62f170cfc": {
+    "arm": "baseline",
+    "case_id": "MATH-01",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "94707a31fc": {
+    "arm": "baseline",
+    "case_id": "MATH-02",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "299c204b46": {
+    "arm": "baseline",
+    "case_id": "MATH-03",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "78858f6051": {
+    "arm": "baseline",
+    "case_id": "MATH-04",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "7ce608bffc": {
+    "arm": "baseline",
+    "case_id": "MATH-05",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  },
+  "e64a3dd837": {
+    "arm": "baseline",
+    "case_id": "MATH-07",
+    "subset": "A_math_error_localization",
+    "metrics": [
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ]
+  }
+}

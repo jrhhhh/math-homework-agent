@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-07",
+  "prompt": "原题找不到了，只有这张草稿，帮我看看算得对不对。草稿：第一行写 3x+2=11；第二行写 3x=11+2=13；第三行写 x=13/3。",
+  "problem": null,
+  "draft": "第一行写 3x+2=11；第二行写 3x=11+2=13；第三行写 x=13/3。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

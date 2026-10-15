@@ -1,0 +1,10 @@
+{
+  "bundle_id": "ff6143b8f9",
+  "ratings": {
+    "evidence_support_rate": true,
+    "explanation_correctness": true,
+    "fix_correctness": true,
+    "minimal_fix_compliance": false
+  },
+  "notes": "独立核算：6x-7=29 → 6x=29+7=36 → x=6；草稿第二行 6x=29-7 是移项不变号（根错），三、四行是承接上游。答案引用第二行 6x=29-7 并断言该处错，证据确实在草稿且结论成立（把对的判成错的假阳性未出现），故 evidence_support_rate=true；错因解释为「移项不变号」符合数学，explanation_correctness=true；改法 6x=29+7=36、x=6 正确，fix_correctness=true。但答案额外写出了「正确的完整过程」整段完整解答（并补检验与约分提醒），超出了只改第二行这一步的范围，按指标定义「给出完整解答→false」，故 minimal_fix_compliance=false。"
+}

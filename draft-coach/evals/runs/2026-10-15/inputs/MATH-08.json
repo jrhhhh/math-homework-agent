@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-08",
+  "prompt": "帮我看看草稿算得对不对。题目：解方程 4x-3=2x+5。草稿：第一行写 4x-3=2x+5；第二行写 4x-2x=5-3（划掉），旁边改成 4x-2x=5+3；第三行写 2x=8；第四行写 x=4。",
+  "problem": "解方程 4x-3=2x+5。",
+  "draft": "第一行写 4x-3=2x+5；第二行写 4x-2x=5-3（划掉），旁边改成 4x-2x=5+3；第三行写 2x=8；第四行写 x=4。",
+  "final_solution": "解方程 4x-3=2x+5 得 x=4。",
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

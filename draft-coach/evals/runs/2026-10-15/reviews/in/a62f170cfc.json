@@ -1,0 +1,124 @@
+{
+  "bundle_id": "a62f170cfc",
+  "说明": "盲评包：你不知道这条案例来自哪个实验组，也不需要知道。",
+  "student_input": {
+    "prompt": "帮我看看草稿算得对不对。题目：解方程 2(x+3)=14。草稿：第一行写 2(x+3)=14；第二行写 2x+3=14；第三行写 2x=11；第四行写 x=5.5。",
+    "problem": "解方程 2(x+3)=14。",
+    "draft": "第一行写 2(x+3)=14；第二行写 2x+3=14；第三行写 2x=11；第四行写 x=5.5。",
+    "final_solution": null,
+    "draft_source": "text_reconstruction"
+  },
+  "reference": {
+    "expected_action": "analyze",
+    "refuse_reason": null,
+    "gold_errors": [
+      {
+        "error_id": "MATH-01-E1",
+        "kind": "root",
+        "propagates_to": [
+          "MATH-01-E2",
+          "MATH-01-E3"
+        ],
+        "type": "algebra",
+        "severity": "major",
+        "location": "第二行",
+        "evidence_anchor": [
+          "2x+3=14"
+        ],
+        "evidence_note": "去括号时只把 2 乘给了 x，漏乘了 3：2(x+3) 应展开为 2x+6，草稿写成 2x+3。",
+        "cause": "分配律只用了一半，常数项没有乘。",
+        "minimal_fix": "把第二行改成 2x+6=14。",
+        "must_report": true
+      },
+      {
+        "error_id": "MATH-01-E2",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "transposition",
+        "severity": "minor",
+        "location": "第三行",
+        "evidence_anchor": [
+          "2x=11"
+        ],
+        "evidence_note": "在上一步 2x+3=14 的前提下，移项得 2x=14-3=11 本身没算错；错的是上一步的方程。",
+        "cause": "承接第二行的错误方程，不是独立的运算失误。",
+        "minimal_fix": "第二行改正后此处应为 2x=8。",
+        "must_report": false
+      },
+      {
+        "error_id": "MATH-01-E3",
+        "kind": "propagated",
+        "propagates_to": [],
+        "type": "arithmetic",
+        "severity": "minor",
+        "location": "第四行",
+        "evidence_anchor": [
+          "x=5.5"
+        ],
+        "evidence_note": "由 2x=11 得 x=5.5，除法本身正确；结果错是因为前面两行已经偏了。",
+        "cause": "承接上游错误。",
+        "minimal_fix": "第二行改正后最终结果应为 x=4。",
+        "must_report": false
+      }
+    ],
+    "gold_correct_steps": [],
+    "gold_dimensions": {
+      "organization": {
+        "label": "中",
+        "basis": "四行从上到下依次排列，有基本顺序，但没有分区。"
+      },
+      "skipping": {
+        "label": "高",
+        "basis": "去括号、移项、除法各占一行，关键步骤都落笔了。"
+      },
+      "correction_pattern": {
+        "label": "高",
+        "basis": "整张草稿没有涂改痕迹。"
+      },
+      "trial_and_error": {
+        "label": "低",
+        "basis": "只有一条推导路径，没有第二种做法。"
+      },
+      "graphic_use": {
+        "label": "低",
+        "basis": "纯代数方程，草稿里没有图形。",
+        "unevaluable": true
+      },
+      "draft_to_solution": {
+        "label": "不适用",
+        "basis": "没有提供最终解答，无法判断草稿转化率。"
+      }
+    },
+    "evaluable_scope": [
+      "第二行去括号是否漏乘常数项",
+      "第三、四行相对上一行是否自洽",
+      "四步的行序与涂改痕迹"
+    ],
+    "unevaluable_scope": [
+      "学生是否理解分配律（属知识诊断，不在本技能范围）"
+    ],
+    "expected_behaviors": [
+      "报出去括号漏乘这一条，并写明锚点 2x+3=14",
+      "说明第三、四行是承接上游错误，不把它们当成两个独立错误",
+      "指出该处错误的最小修改是 2x+6=14，最终应为 x=4",
+      "skipping 判为高：有错不等于跳步"
+    ],
+    "forbidden_behaviors": [
+      "把第三行 2x=11 的移项本身说成运算错误",
+      "诊断学生「不懂分配律」",
+      "给整题重写或完整解答",
+      "把 skipping 判为低（草稿并未跳步）"
+    ],
+    "notes": "E2、E3 是 propagated，不进 Precision/Recall 分子分母；只在 propagation_quality 里考察答案有没有把偏差归因到第二行。graphic_use 标 unevaluable：纯代数题不画图正常，只检查是否编造了图形。"
+  },
+  "answer_under_review": {
+    "response": "帮你看了，草稿里有一处关键错误：第二行去括号时漏乘了。\n\n你的草稿：\n- 第一行：2(x+3)=14 ✅\n- 第二行：2x+3=14 ❌ 错在这里\n- 第三行：2x=11\n- 第四行：x=5.5\n\n问题出在去括号。括号外的 2 要乘以括号里的每一项：\n2(x+3) = 2·x + 2·3 = 2x + 6。\n你只把 2 乘到了 x，把 3 漏掉了，所以写成了 2x+3。\n\n正确的过程应该是：\n2(x+3) = 14\n2x + 6 = 14\n2x = 14 − 6\n2x = 8\nx = 4\n\n代回去检查：x=4 时，2×(4+3) = 2×7 = 14，成立。\n\n顺便说一句：你第三行、第四行的移项和除法本身没算错——由 2x+3=14 得到 2x=11、x=5.5 是自洽的。问题只在于它是从错误的第二行推出来的，所以最后答案也跟着错了。把去括号这一步改对，这道题就对了。\n\n小提醒：以后去括号可以记成“外面的数要挨个和括号里每个数相乘”，即 a(b+c)=ab+ac，尤其别漏掉常数项那一项。",
+    "card": null
+  },
+  "metrics_to_rate": {
+    "location_descriptor_correct": "答案指出的位置（location）与参考答案的 location 是否指同一步/同一行。指向同一处 → true；漏写位置或指到别处 → false。",
+    "fix_correctness": "答案给出的「该改成什么」（fix / 应写成什么）方向是否正确。改成正确值或等价正确的式子 → true；改成另一个错值、或方向错 → false；完全没有给改法 → false。",
+    "explanation_correctness": "错因解释在数学上是否成立。解释错（例如把移项错误说成除法错误）→ false；解释正确但不够详细 → true。"
+  },
+  "null_rule": "**null 与 false 不是一回事。** 没有可判对象时写 null（例：答案一处错都没报，就没有「改法对不对」可判；草稿只有一道题，就没有「多题分块」可判）；有可判对象而不合格才写 false。拿不准时先问「这条指标在本题上有没有对象」。"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "DIM-06",
+  "prompt": "帮我看看草稿和最终解答的习惯。题目：等差数列 {a_n} 中 a1=2，公差 d=3。求 (1) a5；(2) 前 5 项和 S5。我的最终解答：(1) a5 = a1 + 4d = 2 + 12 = 14。",
+  "problem": "等差数列 {a_n} 中 a1=2，公差 d=3。求 (1) a5；(2) 前 5 项和 S5。",
+  "draft": "已知 a1=2，d=3。a5=2+4×3=14。S5=5×(2+14)÷2=40。",
+  "final_solution": "（1）a5 = a1 + 4d = 2 + 12 = 14。",
+  "draft_source": "text_reconstruction",
+  "grade_level": "高中"
+}

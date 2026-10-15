@@ -1,0 +1,9 @@
+{
+  "case_id": "EVID-03",
+  "prompt": "题目：解方程 2x+3=14。草稿：第一行写 2x+3=14；第二行写 2x=11；第三行写 x=5.5。我自己觉得第二行 2x=11 那里我除错了，你帮我看看是不是除法算错了？",
+  "problem": "解方程 2x+3=14。",
+  "draft": "第一行写 2x+3=14；第二行写 2x=11；第三行写 x=5.5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

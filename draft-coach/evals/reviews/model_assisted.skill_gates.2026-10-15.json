@@ -1,0 +1,206 @@
+{
+  "arm": "skill_gates",
+  "layer": "model_assisted",
+  "reviewer": "host-agent:claude-code-subagents（盲评，按组编号，单独上下文）",
+  "model_note": "同宿主会话内的独立上下文评审；模型精确版本不可核实。盲评为部分盲：回答格式会暴露实验组。",
+  "ratings": [
+    {
+      "case_id": "CPLX-03",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自算：方法一 (x-2)(x-3)=0→x=2 或 3 正确；方法二整条被划掉（其数学本身成立）；Δ 处先写 49 后划掉补写 1，属已自我纠正，此案例无现存错误。注意：答案把『整条被划掉的方法二』当作现存错误报进错误清单（对照 gold_correct_steps 属 S2 假阳性）——但该问题不在本题三项指标范围内，不影响下面三项的判定。multi_problem_handling=null：草稿是『一道题、两种方法』，不是多道题，按 null_rule 无『多题分块』可判。evaluable_scope_respected=true：unevaluable 为『学生是否理解配方法/因式分解』与『最终采用哪条路径』，答案未做知识诊断、未断言最终采用哪一路径。mixed_content_reading=true：『方法一/方法二』文字标记、『整条被划掉』、『Δ 划掉补写』等记号与文字说明均被正确读入，无读错、无漏掉。"
+    },
+    {
+      "case_id": "MATH-05",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对：x^2+2x-3=(x+3)(x-1)，根 -3、1，题设 x>0 故取 x=1；第四行舍去 x=-3 是正确的（gold_correct_steps），唯一真错在第五行韦达检验 -3×1 写成 3。答案只报第五行、未误报第四行；位置「第五行」与 gold 一致（true）；改法「改成 -3，即 -3×1=-3」正确（true）；错因解释「负×正得负、两根之积应等于常数项÷二次项系数=-3」成立（true）。"
+    },
+    {
+      "case_id": "DIM-02",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：草稿只有三行『(x-1)/2+(x+1)/3=3』『5x=19』『x=3.8』。organization 引用三行紧挨、无空行/分区，与草稿一致；skipping 引『第二行直接写 5x=19，上面只有第一行原式』属实；correction_pattern 说『三行一次写成、无涂改』为缺席陈述，草稿无划改；trial_and_error 说『只有一条推导、无第二种做法或代回验算』为缺席陈述；graphic_use 说『无数轴/天平』为缺席陈述；draft_to_solution『不适用』属实。无任何一维编造草稿之外的涂改/试错/图形/记号，判 true。"
+    },
+    {
+      "case_id": "DIM-05",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：草稿明写『画了个三角形，三个顶点标了 A、B、C，左边边写 3，底边写 4，没有画直角符号，也没有画斜边上的高』。graphic_use 引用该句逐字，并如实指出缺直角符号与高——未编造这两者存在（正是 forbidden_behavior 所禁），属实；organization 引『先画图再算、无分区』属实；skipping 引『CD=3×4÷5 直接给出、无面积相等一步』属实（草稿确无该行）；correction_pattern『无涂改』为缺席陈述；trial_and_error『只有一种做法』属实；draft_to_solution『不适用』属实。无编造，判 true。"
+    },
+    {
+      "case_id": "DIM-03",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：草稿明写两处划改——『4x+2x=9-3（已划掉）』旁重写『4x-2x=9+3』与『x=3（已划掉）』改『x=6』。correction_pattern 引用这两处逐字在草稿，且 positive 也据此给出，属实；organization 引『4x-3=2x+9 到 x=6 连写、无分区』与草稿一致；skipping 说『2x=12 后未写 12÷2』属实（草稿确无该步）；trial_and_error『只有一条链条』与草稿一致；graphic_use『无图形/数轴/标注』为缺席陈述；draft_to_solution『不适用』属实。无编造，判 true。"
+    },
+    {
+      "case_id": "MATH-07",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对（无原题，仅草稿内部自洽）：3x+2=11 → 3x=11-2=9 → x=3，代回成立；草稿第二行 3x=11+2=13 是根错（移项未变号），第三行 x=13/3 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「改成 3x=11−2=9，再得 x=3」正确（true）；错因解释「左边 +2 移到右边应变号为 −2」成立（true）。答案的 scope 也正确声明只查草稿内部自洽、未核题意与方向，符合缺原题降级要求。"
+    },
+    {
+      "case_id": "DIM-04",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：草稿确有『方法①…方法②…』两段与『整段划掉』。organization 引『方法①/方法②两段』属实；skipping 引『x²-6x=-5、x²-6x+9=4、(x-3)²=4、x-3=±2』逐字在草稿；correction_pattern 引『乘开是 x²-5x-6，不对，整段划掉』逐字在草稿，且 positive 据此给出，属实（草稿仅此一处划掉）；trial_and_error 引两条标号路径属实；graphic_use 说『无图形/坐标标注』为缺席陈述；draft_to_solution『不适用』属实。无编造，判 true。"
+    },
+    {
+      "case_id": "EVID-04",
+      "subset": "B_evidence_fidelity",
+      "metrics": {
+        "evidence_support_rate": true,
+        "explanation_correctness": true,
+        "fix_correctness": true,
+        "minimal_fix_compliance": true
+      },
+      "notes": "独立核算：6x-7=29 → 6x=29+7=36 → x=6；代回 6×6-7=29 成立。草稿真错只在第二行 6x=29-7（-7 移项未变号），第三行 6x=22、第四行 x=22/6 是承接上游，均属 gold 所说的 propagated。evidence_support_rate=true：引用的锚点 6x=29-7 逐字在草稿中，且确实支持「移项未变号」这一结论。explanation_correctness=true：解释为「-7 移到右边应变成 +7，写成 29-7 即负号没变」，与真错因一致。fix_correctness=true：给出的改法 6x=29+7 即 6x=36、再除以 6 得 x=6，方向与数值均正确。minimal_fix_compliance=true：改法针对被指出的第二行这一处，未重写整题、未给完整解答。唯一可议之处：答案末尾附带「22/6 也可顺手约成 11/3」，属对第四行错值的化简习惯建议（且被列为习惯 #3），并非把整题重写，也未改动第三、四行方程，按指南 §5 中 minimal_fix_compliance 的 false 条件（整题重写/完整解答）不成立，故仍判 true，但此附带建议与「正确答案应为 x=6」略有缠绕，值得注意。"
+    },
+    {
+      "case_id": "CPLX-05",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自算：正确解 3(x-2)=2x+5→3x-6=2x+5→x=11；草稿第二行 3x-2=2x+5 漏乘 -2（root），第三行 3x-2x=5+2、第四行 x=7 为其传播；右侧验算 2×7+5=21 是独立算术错（应 19），3×(7-2)=15 正确。答案把两处错误分别单独报出、把中间两步当传播、未把 2×7+5=21 归因到漏乘那一步。multi_problem_handling=null：单一问题。evaluable_scope_respected=true：unevaluable 为『学生是否理解分配律与移项』与『验算得出的矛盾学生打算怎么处理』，答案未做知识诊断、未断言学生将如何处理 15≠21 的矛盾。mixed_content_reading=true：四行方程与『右边空白处验算：把 x=7 代回去』等文字说明均正确读入。"
+    },
+    {
+      "case_id": "MATH-02",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对：7+3+5=15；草稿第二行 7+3=11 是根错（加法多算 1），第三行 11+5=16 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行改成 7+3=10，第三行跟着改成 10+5=15」正确（true）；错因解释「7 加 3 应该是 10，不是 11」成立（true）。"
+    },
+    {
+      "case_id": "CPLX-01",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": true,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自算：第一题 3x+5=20→3x=15→x=5 正确；第二题 2x-4=10 应为 2x=14→x=7，草稿 2x=6 处移项未变号（x=3 为传播）。multi_problem_handling=true：答案开头即『按题号分成了两块』，明确交代第一题属 3x+5=20、第二题属 2x-4=10，并逐块分析，未把两块混判。evaluable_scope_respected=true：unevaluable 要求不混题、不对『学生是否理解移项』下确定结论，答案把两块分开且未做知识诊断。mixed_content_reading=true：草稿的『第一题/第二题』文字标记与各方程记号均被正确读入，未读错亦未漏记。"
+    },
+    {
+      "case_id": "DIM-06",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：草稿为『已知 a1=2，d=3。a5=2+4×3=14。S5=5×(2+14)÷2=40』，最终解答仅含(1)『a5 = a1 + 4d = 2 + 12 = 14』。organization 引『已知与两问连写、无分区』属实；skipping 引『未先写通项/求和公式、直接代数值』属实；correction_pattern『无划改』为缺席陈述；trial_and_error『只有一条公式代入路线』属实；graphic_use『未列项、无图示』为缺席陈述；draft_to_solution 引『a5=14 进正解、S5=40 未进正解』与草稿/最终解答逐字一致。无编造，判 true。"
+    },
+    {
+      "case_id": "DIM-01",
+      "subset": "C_dimension_analysis",
+      "metrics": {
+        "dimension_evidence_grounded": true
+      },
+      "notes": "逐维对草稿核：organization 引用的『左边画了方框、框外标第1问』『右下角无题号也没画框』草稿原文均有；skipping 引用『3x-5=10，3x=15，x=5』与『x²-5x+6=0，因式分解，2、3』逐字在草稿；correction_pattern 说『没有涂改』与草稿（无任何划改描述）一致，属缺席陈述；trial_and_error 说『只写一种方法』与草稿(2)仅『因式分解』一致；graphic_use 说『无抛物线草图/数轴』为缺席陈述，且明点草稿里确有方框，未编造图形；draft_to_solution 未给最终解答判『不适用』属实。六维 observation/evidence 均出自草稿，无涂改/试错/图形/记号编造，判 true。"
+    },
+    {
+      "case_id": "EVID-05",
+      "subset": "B_evidence_fidelity",
+      "metrics": {
+        "evidence_support_rate": true,
+        "explanation_correctness": true,
+        "fix_correctness": true,
+        "minimal_fix_compliance": true
+      },
+      "notes": "独立核算：7x+6=48 → 7x=48-6=42 → x=6；代回 7×6+6=48 成立。草稿第二行 7x=48-6 本身正确；真错在第三行 7x=41（48-6 应为 42），第四行 x=41/7 承接上游，属 gold 的 propagated。evidence_support_rate=true：引用的锚点 7x=41 与 x=41/7 逐字在草稿中，分别支持「减法算错」与「末行承接上游」的结论。explanation_correctness=true：解释为「48-6 应等于 42，不是 41，属减法算错」，与真错因一致，并明确指出第二行方向没问题。fix_correctness=true：改法 7x=42、进而 x=42/7=6，方向与数值均正确。minimal_fix_compliance=true：改法针对被指出的第三行及与之保持自洽的第四行，未重写整题、未给完整解答；把第四行一并改为 x=6 而非保留 7x=41，正是 gold 要求的自洽做法，未超出范围。"
+    },
+    {
+      "case_id": "CPLX-06",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自算：正确解 5x-3=2x+9→5x-2x=9+3→3x=12→x=4；草稿『5x+2x=9+3』移项未变号（应 5x-2x），7x=12、x=12/7 为其传播。答案只在可读区报出该处并说明传播。multi_problem_handling=null：单一问题。evaluable_scope_respected=true：unevaluable 为『右下角水渍区不可读』『左下角潦草验算不可读』『学生是否理解移项』，答案明确声明这两块看不清、未纳入核对、未对其下结论也未编造；未做知识诊断。mixed_content_reading=true：可读的 5x-3=2x+9、5x+2x=9+3、7x=12、x=12/7 记号以及『右下角水渍洇掉』『左下角潦草验算』的文字说明均被正确读入。"
+    },
+    {
+      "case_id": "BOUND-03",
+      "subset": "D_boundary_refusal",
+      "metrics": {
+        "clarify_quality": true
+      },
+      "notes": "草稿只有孤立的 3、12、一个圆圈和右下角的「=」，无文字、无完整式子、无图形标注，既看不出在算哪道题也拼不出一步完整运算，按 §6 应走 clarify。被评回答（自由文字，card=null）正中要点：先说明无法判断在算什么、无法核对对错，再逐一追问①这道题要求做什么（求值/解方程/证明/画图）②偏左「3」和右上「12」各代表什么（已知量还是算出的结果）③圆圈圈住哪一步、等号两边本应是什么，并承诺澄清后再看分区/跳步。没有硬凑六维、没有编造题目、没有把孤立数字当计算错误，追问全部落在「这道题在算什么」「这几个记号各代表什么」上，故 clarify_quality 判 true。"
+    },
+    {
+      "case_id": "MATH-03",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对：3x+7=2x+1 → 3x-2x=1-7 → x=-6（代回两边均为 -11）；草稿第二行 3x-2x=1+7 是根错（移项未变号），第三行 x=8 属传播。答案指认位置「草稿第二行」与 gold「第二行」一致（true）；改法「改成 3x-2x=1-7，两边合并得 x=-6」正确（true）；错因解释「把常数项 7 从左边移到右边时应当变号」成立（true）。"
+    },
+    {
+      "case_id": "MATH-04",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对：f'(x)=3x^2-3，f'(2)=3×4-3=9；草稿第二行 f'(x)=3x^3-3 是根错（指数未减 1），第四行 24-3=21 属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行改成 f'(x)=3x^2-3，重新代入得 f'(2)=12-3=9」正确（true）；错因解释「对 x^3 求导指数要降 1 次，应为 3x^2」成立（true）。答案把第四行 21 归为承接第二行，不误判为独立错误。"
+    },
+    {
+      "case_id": "MATH-01",
+      "subset": "A_math_error_localization",
+      "metrics": {
+        "location_descriptor_correct": true,
+        "fix_correctness": true,
+        "explanation_correctness": true
+      },
+      "notes": "独立核对：2(x+3)=14 → 2x+6=14 → 2x=8 → x=4；草稿第二行 2x+3=14 是根错（漏乘 3），第三、四行属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行写 2x+6=14，再往下算得 2x=8、x=4」方向正确（true）；错因解释「去括号时 2 只乘了 x，没有乘 3」在数学上成立（true）。"
+    },
+    {
+      "case_id": "CPLX-04",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": null,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "自算：f'(x)=3x^2-3，令其为 0 得 x=±1；f(1)=1-3=-2 正确；f(-1)=(-1)^3-3×(-1)=-1+3=2，草稿写成『-1-3=-4』是符号错，文字结论『极大值 -4』为其传播。答案正确报出 f(-1) 处符号错并说明结论 -4 是传播、f(1) 与导数求解正确。multi_problem_handling=null：单一问题，无『多题分块』可判。evaluable_scope_respected=true：unevaluable 为『草图是否按比例』与『学生是否懂极值判别法』，答案只对草图做定性（左高右低与极大/极小一致）描述，未断言其按比例、也未做知识诊断。mixed_content_reading=true：公式、『先求导，令导数等于零』文字说明、中部三次曲线草图、右下计算与文字结论混排，均被正确读入。"
+    },
+    {
+      "case_id": "CPLX-02",
+      "subset": "E_complex_drafts",
+      "metrics": {
+        "multi_problem_handling": true,
+        "evaluable_scope_respected": true,
+        "mixed_content_reading": true
+      },
+      "notes": "本题草稿无题号、多块内容边界不可确认（expected_action=clarify，gold_errors 留空）。自算可知若把 2x-4=10 与 x=5 或 x=3 配成同题都会造出假错（2x-4=10 的解是 x=7），故不可配对。multi_problem_handling=true：答案先声明『题目边界未确认』，未把任意两块硬凑成一道题，符合『分块且声明归属未确认』。evaluable_scope_respected=true：unevaluable 的三项（边界未确认、跨块配对、单题跳步/试错不可靠）均未被越界下结论——试错维度主动声明不可靠，跳步只写单块内部（2x-4=10 那行）观察。mixed_content_reading=true：左/右上/右下三块位置与『2x-4=10』『x=5』『x=3』记号及『潦草看不清』的文字说明均正确读入。"
+    }
+  ]
+}

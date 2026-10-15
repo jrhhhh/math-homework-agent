@@ -135,12 +135,13 @@ def evidence_exists(pred, draft):
 
 
 def boundary_hits(text):
-    """扫描一段文字命中的越界措辞，返回 A 组代码列表。"""
-    hits = []
-    for code, _label, pattern in GATE.OUT_OF_SCOPE:
-        if pattern.search(text or ""):
-            hits.append(code)
-    return hits
+    """扫描一段文字命中的越界措辞，返回 A 组代码列表。
+
+    与技能自己的 `audit` 走**同一个函数**（`_rules.out_of_scope_codes`），
+    包括那条否定豁免：「这一项我没有打分」是谢绝评分，不是越界评分。
+    两边若各写一份，改一处忘另一处必然漂移。
+    """
+    return GATE.out_of_scope_codes(text)
 
 
 REFUSAL_TEXTS = tuple(message for _error, message, _code in GATE.REFUSALS.values())

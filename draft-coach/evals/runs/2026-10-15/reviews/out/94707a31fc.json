@@ -1,0 +1,9 @@
+{
+  "bundle_id": "94707a31fc",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "我核算：7+3+5=10+5=15。草稿根错在第二行 7+3=11（应为 10），第三行 11+5=16 是承接。答案指出「第一处（第二行）：7 + 3 = 10，可是你写成了 11」，位置与参考 location（第二行）一致，故 location true。改法写出 7+3=10、最终 15，与参考 minimal_fix 方向一致，故 fix true。解释为「第二行加法口算出错」，并正确说明第三行 11+5=16 的加法本身没错、只是用了错的 11，数学成立，故 explanation true。"
+}

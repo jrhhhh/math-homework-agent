@@ -1,0 +1,9 @@
+{
+  "bundle_id": "87f3ac12fc",
+  "ratings": {
+    "multi_problem_handling": null,
+    "evaluable_scope_respected": true,
+    "mixed_content_reading": true
+  },
+  "notes": "自己算：f'(x)=3x^2-3，令=0 得 x=±1；f(1)=1-3=-2 正确，f(-1)=(-1)^3-3(-1)=-1+3=2，草稿写成 -1-3=-4 是符号根错（-3×(-1) 漏负负得正），结论里的极大值 -4 为其传播。multi_problem_handling=null：只有一道题，无多题分块可判。evaluable_scope_respected=true：unevaluable 为『草图是否按比例（草图不参与数值判定）』与『是否理解极值判别法』；答案对草图的评论只涉及走向且明说『不影响这道题的计算结论』，未据草图下数值结论，也未诊断知识漏洞。mixed_content_reading=true：文字说明（先求导、令导数等于零）、公式、草图（左高右低、两个转折点标 x=±1）、代入计算与文字结论均被正确读入。"
+}

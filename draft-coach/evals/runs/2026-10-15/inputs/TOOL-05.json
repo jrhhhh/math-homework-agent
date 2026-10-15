@@ -1,0 +1,9 @@
+{
+  "case_id": "TOOL-05",
+  "prompt": "看看我这道不等式草稿算得对不对，顺便给点建议。题目：解不等式 -2x>6。草稿：第一行写 -2x>6；第二行写 x>-3。",
+  "problem": "解不等式 -2x>6。",
+  "draft": "第一行写 -2x>6；第二行写 x>-3。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

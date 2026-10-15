@@ -1,0 +1,7 @@
+{
+  "bundle_id": "0c8e099254",
+  "ratings": {
+    "dimension_evidence_grounded": true
+  },
+  "notes": "逐维对草稿核：草稿只有三行『(x-1)/2+(x+1)/3=3』『5x=19』『x=3.8』。organization 引用三行紧挨、无空行/分区，与草稿一致；skipping 引『第二行直接写 5x=19，上面只有第一行原式』属实；correction_pattern 说『三行一次写成、无涂改』为缺席陈述，草稿无划改；trial_and_error 说『只有一条推导、无第二种做法或代回验算』为缺席陈述；graphic_use 说『无数轴/天平』为缺席陈述；draft_to_solution『不适用』属实。无任何一维编造草稿之外的涂改/试错/图形/记号，判 true。"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "MATH-01",
+  "prompt": "帮我看看草稿算得对不对。题目：解方程 2(x+3)=14。草稿：第一行写 2(x+3)=14；第二行写 2x+3=14；第三行写 2x=11；第四行写 x=5.5。",
+  "problem": "解方程 2(x+3)=14。",
+  "draft": "第一行写 2(x+3)=14；第二行写 2x+3=14；第三行写 2x=11；第四行写 x=5.5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

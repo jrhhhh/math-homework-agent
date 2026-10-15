@@ -1,0 +1,9 @@
+{
+  "case_id": "EVID-05",
+  "prompt": "题目：解方程 7x+6=48。草稿：第一行写 7x+6=48；第二行写 7x=48-6；第三行写 7x=41；第四行写 x=41/7。帮我看看错在哪，怎么改。",
+  "problem": "解方程 7x+6=48。",
+  "draft": "第一行写 7x+6=48；第二行写 7x=48-6；第三行写 7x=41；第四行写 x=41/7。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

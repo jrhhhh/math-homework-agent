@@ -1,0 +1,10 @@
+{
+  "case_id": "TOOL-06",
+  "prompt": "这是我一整张草稿纸，上面有两道题，帮我看看哪里算错了。第一题：解方程 x+2=5，得 x=3。第二题：解方程 2x=8，得 x=5。",
+  "problem": null,
+  "draft": "第一题：解方程 x+2=5，得 x=3。第二题：解方程 2x=8，得 x=5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "audit_draft": "第二题：解方程 2x=8，得 x=5。",
+  "grade_level": "初中"
+}

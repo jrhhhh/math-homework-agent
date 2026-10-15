@@ -1,0 +1,9 @@
+{
+  "case_id": "TOOL-01",
+  "prompt": "帮我看看草稿算得对不对，格式上该有的都别漏。题目：解方程 2x+5=17。草稿：第一行写 2x+5=17；第二行写 2x=12；第三行写 x=7。",
+  "problem": "解方程 2x+5=17。",
+  "draft": "第一行写 2x+5=17；第二行写 2x=12；第三行写 x=7。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

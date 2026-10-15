@@ -1,0 +1,9 @@
+{
+  "case_id": "EVID-04",
+  "prompt": "题目：解方程 6x-7=29。草稿：第一行写 6x-7=29；第二行写 6x=29-7；第三行写 6x=22；第四行写 x=22/6。帮我看看哪里错了。",
+  "problem": "解方程 6x-7=29。",
+  "draft": "第一行写 6x-7=29；第二行写 6x=29-7；第三行写 6x=22；第四行写 x=22/6。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

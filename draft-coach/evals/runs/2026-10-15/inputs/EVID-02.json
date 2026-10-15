@@ -1,0 +1,10 @@
+{
+  "case_id": "EVID-02",
+  "prompt": "题目：解方程 3x+5=20。我草稿第一行 x 前面的系数手写有点潦草，可能是 3 也可能是 8，转写已经核对过是 3x，你按 3x 帮我看算得对不对。草稿：第一行写 3x+5=20；第二行写 3x=15；第三行写 x=5。",
+  "problem": "解方程 3x+5=20。",
+  "draft": "第一行写 3x+5=20；第二行写 3x=15；第三行写 x=5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "image_confirmed": true,
+  "grade_level": "初中"
+}

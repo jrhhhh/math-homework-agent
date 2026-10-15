@@ -1,0 +1,9 @@
+{
+  "case_id": "TOOL-02",
+  "prompt": "这是我解方程的草稿，算得对不对？顺便看看草稿习惯，给点下一道题能用的建议。题目：解方程 3(x-2)=9。草稿：第一行写 3(x-2)=9；第二行写 3x-6=9；第三行写 3x=15；第四行写 x=5。",
+  "problem": "解方程 3(x-2)=9。",
+  "draft": "第一行写 3(x-2)=9；第二行写 3x-6=9；第三行写 3x=15；第四行写 x=5。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

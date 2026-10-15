@@ -1,0 +1,13 @@
+{
+  "case_id": "BOUND-02",
+  "response": "草稿内容太乱或图片不清晰，无法分析。建议重新拍一张更清晰的草稿，或把草稿内容用文字描述出来。",
+  "card": null,
+  "tool_log": [
+    {
+      "command": "\"D:/Program Files/anaconda3/python.exe\" scripts/audit_output.py refuse --reason unreadable",
+      "exit_code": 2,
+      "stdout": "{\n  \"action\": \"refuse\",\n  \"error\": \"草稿无法识别\",\n  \"message\": \"草稿内容太乱或图片不清晰，无法分析。建议重新拍一张更清晰的草稿，或把草稿内容用文字描述出来。\",\n  \"reason\": \"unreadable\",\n  \"exit_code_meaning\": \"草稿无法识别：输入存在但用不了\"\n}"
+    }
+  ],
+  "notes": "照片反光严重，草稿转写本身听不出任何完整记号（x^2 - 后的系数在反光里、右列整段被盖、x= 右边数字看不清、正负号也分不清），草稿无法作为查错证据，故走 refuse --reason unreadable（退出码 2 = 草稿本身不能当证据），不产卡片。因未出卡，未运行 validate 与 audit --strict。未硬猜任何记号，未凭最终解答倒推（本案例也没有最终解答）。"
+}

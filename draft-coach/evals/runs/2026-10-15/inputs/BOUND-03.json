@@ -1,0 +1,9 @@
+{
+  "case_id": "BOUND-03",
+  "prompt": "老师，帮我看看我这张草稿写得怎么样。",
+  "problem": null,
+  "draft": "整张草稿纸上只有零星几个记号：偏左写了一个数字 3，右上角写了 12，中间单独画了一个圆圈，圆圈的右下角写了一个等号「=」，此外没有任何文字说明、没有完整式子、没有图形标注，看不出这些数字和圆圈是在算哪一道题，也拼不出一步完整的运算。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "高中"
+}

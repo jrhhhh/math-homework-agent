@@ -70,3 +70,71 @@ print(gate_replay.replay_card(cfg, f.build_oracle_card(c), gate_replay.audit_dra
 ## F8 没有观察到严重失败 ≠ 不会失败
 
 三个夹具里只有一个（故意编造的 `fabricated`）触发了严重失败，共 39 条（`S1` 19 条、`S5` 20 条）。**这是夹具，不是模型。** 本批**没有任何真实模型输出**，所以关于三组实验的真实行为，这套基准目前给不出结论——它能给出的是：流程跑得通、该抓的抓得住、四条自动严重失败检测（S1/S2/S4/S5）都有真实触发的证据。
+
+> F8 记录的是**建基准时**的状态。2026-10-15 起本仓库有了一次真实运行（`skill_gates` 与 `baseline` 各 38 条），见 [`../runs/2026-10-15/RUN_NOTES.md`](../runs/2026-10-15/RUN_NOTES.md)。下面 F9–F11 全部来自那次运行。
+
+## F9 越界正则会抓住「我没有打分」这种否定句（已在技能侧修掉）
+
+真实运行里 `TOOL-01` 被判 `S6`，命中的原句是「这次没有提供最终解答，所以"草稿利用率"这一项我**没有打分**」——
+`A_SCORE` 的关键词表里有「打分」，规则门只看字面，于是把一句**谢绝评分**的话当成了越界评分。
+技能自己的 `audit --strict` 对这张卡退出 **0**（该门只扫卡片，不扫交付文字），两份结果互相矛盾。
+
+这不是孤例，是 [F2](#f2-技能自己的标准拒绝话术会被自己的越界规则扫中) 的同一类：
+**规则门必须为"如实声明自己没做某件事"留出口。**
+
+修法（2026-10-15）：`_rules.py` 增加 `NEGATION_BEFORE_RE` 与 `out_of_scope_matches` /
+`out_of_scope_codes`，命中措辞**紧前面**是否定词的豁免；`audit_output.py` 与
+`evals/engine/metrics.py` 改成调用**同一个函数**，两边不再各写一份。
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0,'draft-coach/evals/engine')
+import metrics as m
+print(m.boundary_hits('这一项我没有打分。'))        # [] —— 谢绝评分
+print(m.boundary_hits('这次给你扣分，满分是 10 分。'))  # ['A_SCORE'] —— 真越界照旧抓住
+"
+```
+
+豁免范围只到"上一个词"为止：换个说法照样绕得过去。`reports/*.2026-10-15.report.*`
+是**修之前**的记录，原样保留；修之后重跑的读数是
+`reports/*.2026-10-15.postfix.report.*`。
+
+## F10 `refuse` 的判分口径比 DESIGN 写死的更严
+
+[DESIGN §3](DESIGN.md) 写的是「`refuse`＝未产卡且命中标准话术**或明确拒绝**」，
+实现里 `metrics.predict_action` 只认 `GATE.REFUSALS` 的三句原文：学生话术之外的婉拒
+一律算 `unclear`。真实运行里 baseline 用自己话拒绝时就吃了这个亏（`refusal_wording_match` 0/3）。
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0,'draft-coach/evals/engine')
+import metrics as m
+print(m.predict_action({'card': None, 'response': '这个我不能做。'}))              # unclear
+print(m.predict_action({'card': None, 'response': m.GATE.REFUSALS['empty'][1]}))   # refuse
+"
+```
+
+对 `skill_gates` 组这是合理的（技能本来就要求用标准话术），但**读 baseline 的数字时必须知道
+这条不是"它不肯拒绝"**。要么改实现去认"明确拒绝"，要么改 DESIGN 的描述——别让两处继续不一致。
+
+## F11 自动层看不见自由文字，格式差异会被读成能力差异
+
+`metrics.pred_errors` 只从卡片的 `error_check.errors` 取条目。没有卡片的回答 →
+`error_recall`、`error_localization`、`propagation_quality` 全为 0，`predict_action`
+也认不出自由文字里的"分析"。真实运行里 baseline 因此拿到 A 25.0 / D 20.0，
+而**模型辅助层对同一批回答给出 `fix_correctness` 6/6、`explanation_correctness` 6/6**——
+评审先自己算一遍，六条都定位到了正确的行、给了正确的改法。
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0,'draft-coach/evals/engine')
+import metrics as m
+p={'card': None, 'response': '第二行 2x+3=14 漏乘了，应改成 2x+6=14。', 'tool_log': []}
+print('pred_errors:', m.pred_errors(p['card']))     # [] —— 看不见散文
+print('predict_action:', m.predict_action(p))       # unclear
+"
+```
+
+**结论不是"baseline 少找了一半错"，而是"这套自动层量的是产出格式"。**
+跨组比较时，A/B/C/F 的自动读数必须先看覆盖度表与 `layers_loaded`，再看模型辅助层的同项。
+这与 [F4](#f4-什么错都不报在证据忠实度上拿满分) 是同一件事的两面。

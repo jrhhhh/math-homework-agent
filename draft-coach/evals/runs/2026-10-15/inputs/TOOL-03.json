@@ -1,0 +1,9 @@
+{
+  "case_id": "TOOL-03",
+  "prompt": "帮我看看草稿，算得对不对、有没有跳步。题目：解方程 3x²=3。草稿：第一行写 3x²=3；第二行直接写 x=±1。",
+  "problem": "解方程 3x²=3。",
+  "draft": "第一行写 3x²=3；第二行直接写 x=±1。",
+  "final_solution": null,
+  "draft_source": "text_reconstruction",
+  "grade_level": "初中"
+}

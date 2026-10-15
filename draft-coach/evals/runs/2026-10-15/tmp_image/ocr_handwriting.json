@@ -1,0 +1,13 @@
+{
+  "ok": false,
+  "text": "",
+  "layout_details": null,
+  "result": null,
+  "error": {
+    "code": "CONFIG_ERROR",
+    "message": "ZHIPU_API_KEY not configured. Get your API key at: https://open.bigmodel.cn/usercenter/apikeys"
+  },
+  "source": "C:/Users/29165/AppData/Local/Temp/claude/d--university-learning-math-homework-agent/a1977c49-8aca-4547-93b8-5f22e71fab9a/images/2.jpg",
+  "source_type": "file",
+  "raw_result_included": false
+}

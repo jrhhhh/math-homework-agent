@@ -1,0 +1,9 @@
+{
+  "bundle_id": "be7c828573",
+  "ratings": {
+    "location_descriptor_correct": true,
+    "fix_correctness": true,
+    "explanation_correctness": true
+  },
+  "notes": "独立核对：2(x+3)=14 → 2x+6=14 → 2x=8 → x=4；草稿第二行 2x+3=14 是根错（漏乘 3），第三、四行属传播。答案指认位置「第二行」与 gold 一致（true）；改法「第二行写 2x+6=14，再往下算得 2x=8、x=4」方向正确（true）；错因解释「去括号时 2 只乘了 x，没有乘 3」在数学上成立（true）。"
+}
