@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://math-homework-agent.local/draft-coach/evals/case.schema.json",
+  "title": "Draft Coach Benchmark Case",
+  "description": "一个评测案例：输入 + 结构化标准答案（Ground Truth）。规则以 draft-coach/SKILL.md 为唯一主要依据。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id", "template_id", "subset", "split", "category", "difficulty",
+    "grade_level", "input", "expected_action", "gold_errors",
+    "gold_correct_steps", "expected_behaviors",
+    "forbidden_behaviors", "severity", "provenance", "notes"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"expected_action": {"const": "analyze"}}},
+      "then": {"required": ["gold_dimensions"]},
+      "else": {
+        "comment": "clarify / refuse 不产出卡片，因此没有六维标准答案；gold_dimensions 可省略。"
+      }
+    },
+    {
+      "if": {"properties": {"expected_action": {"const": "refuse"}}},
+      "then": {"required": ["refuse_reason"]}
+    },
+    {
+      "if": {"properties": {"expected_action": {"enum": ["analyze", "clarify"]}}},
+      "then": {"properties": {"refuse_reason": {"type": "null"}}}
+    }
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^(MATH|EVID|DIM|BOUND|CPLX|TOOL)-[0-9]{2}$",
+      "description": "全局唯一。前缀对应六个子集。"
+    },
+    "template_id": {
+      "type": "string",
+      "minLength": 3,
+      "description": "题目模板标识。同一模板（含仅换数字的近重复）必须落在同一 split，防止泄漏。"
+    },
+    "subset": {
+      "type": "string",
+      "enum": [
+        "A_math_error_localization", "B_evidence_fidelity", "C_dimension_analysis",
+        "D_boundary_refusal", "E_complex_drafts", "F_output_tool_compliance"
+      ]
+    },
+    "split": {"type": "string", "enum": ["development", "validation", "test"]},
+    "category": {
+      "type": "string",
+      "description": "子集内的细分类，例如 arithmetic / transposition / false_positive_bait / no_error / missing_problem。"
+    },
+    "difficulty": {"type": "string", "enum": ["easy", "medium", "hard"]},
+    "grade_level": {"type": "string", "enum": ["小学", "初中", "高中", "大学"]},
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "problem", "draft", "final_solution", "draft_source"],
+      "properties": {
+        "prompt": {"type": "string", "minLength": 1, "description": "学生的原始请求，逐字交给被评测方。"},
+        "problem": {"type": ["string", "null"], "description": "原题；未提供时为 null。"},
+        "draft": {"type": ["string", "null"], "description": "草稿的文字还原；无草稿时为 null。"},
+        "audit_draft": {
+          "type": ["string", "null"],
+          "description": "传给 audit --draft 的文本。整张草稿纸按 SKILL.md 必须先分块、一块一道题一张卡，此时这里是那道题所在那一块；缺省时用整份 draft。拿整张纸去审一张块级卡片，任何合规卡片都会触发 W_MULTI_PROBLEM_DRAFT。"
+        },
+        "final_solution": {"type": ["string", "null"], "description": "最终解答；未提供时为 null。"},
+        "draft_source": {
+          "type": "string",
+          "enum": ["text_reconstruction", "image_description", "stroke_data", "absent"]
+        },
+        "image_confirmed": {
+          "type": "boolean",
+          "description": "图片类草稿的转写是否已由学生核对。未核对不得据此判定确定结论。"
+        }
+      }
+    },
+    "expected_action": {
+      "type": "string",
+      "enum": ["analyze", "clarify", "refuse"],
+      "description": "analyze = 正常分析出卡；clarify = 先请求澄清/确认边界；refuse = 走 refuse 出口。"
+    },
+    "refuse_reason": {
+      "type": ["string", "null"],
+      "enum": ["empty", "unreadable", "out_of_scope", null],
+      "description": "expected_action=refuse 时必填，与 draft-coach/scripts/_rules.py 的 REFUSALS 键一致。"
+    },
+    "gold_errors": {
+      "type": "array",
+      "description": "标准答案里草稿真实存在的错误。草稿无错时为空数组（对应 errors: []）。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "error_id", "kind", "propagates_to", "type", "severity",
+          "location", "evidence_anchor", "evidence_note", "cause",
+          "minimal_fix", "must_report"
+        ],
+        "properties": {
+          "error_id": {"type": "string", "pattern": "^(MATH|EVID|DIM|BOUND|CPLX|TOOL)-[0-9]{2}-E[0-9]+$"},
+          "kind": {
+            "type": "string",
+            "enum": ["root", "propagated", "independent"],
+            "description": "root = 根错，后续偏差由它引起；propagated = 由他人引起；independent = 与前后无关的独立错误。"
+          },
+          "propagates_to": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "kind=root 时列出被它带偏的 error_id；其他情况为空数组。"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["arithmetic", "transposition", "sign", "algebra", "factorization",
+                     "calculus", "limit", "matrix", "trigonometry", "geometry", "other"]
+          },
+          "severity": {"type": "string", "enum": ["major", "minor"]},
+          "location": {"type": "string", "minLength": 1},
+          "evidence_anchor": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "description": "必须逐字出现在 input.draft 中的片段。校验器会强制核对，用于自动判定证据存在性。"
+          },
+          "evidence_note": {"type": "string", "minLength": 1, "description": "为什么这处是错误（数学依据）。"},
+          "cause": {"type": "string", "minLength": 1},
+          "minimal_fix": {"type": "string", "minLength": 1, "description": "只改这一处的最小修改，不是整题重写。"},
+          "must_report": {"type": "boolean", "description": "漏报是否计入 Recall 分母。"}
+        }
+      }
+    },
+    "gold_correct_steps": {
+      "type": "array",
+      "description": "草稿里明确正确、容易被误判的步骤。命中这些锚点即触发严重失败「把对判成错」。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step_id", "location", "evidence_anchor", "note"],
+        "properties": {
+          "step_id": {"type": "string", "minLength": 1},
+          "location": {"type": "string", "minLength": 1},
+          "evidence_anchor": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "note": {"type": "string", "description": "为什么这步是对的；报它就是假错。"}
+        }
+      }
+    },
+    "gold_dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["organization", "skipping", "correction_pattern",
+                   "trial_and_error", "graphic_use", "draft_to_solution"],
+      "properties": {
+        "organization": {"$ref": "#/$defs/dim"},
+        "skipping": {"$ref": "#/$defs/dim"},
+        "correction_pattern": {"$ref": "#/$defs/dim"},
+        "trial_and_error": {"$ref": "#/$defs/dim"},
+        "graphic_use": {"$ref": "#/$defs/dim"},
+        "draft_to_solution": {"$ref": "#/$defs/dim"}
+      }
+    },
+    "evaluable_scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "本案例可以判定的范围（复杂案例必填）。"
+    },
+    "unevaluable_scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "本案例不可判定的范围。答案若对这些下确定结论即为越界。"
+    },
+    "expected_behaviors": {
+      "type": "array", "minItems": 1, "items": {"type": "string"},
+      "description": "期望行为清单（人类可读，供人工复核参照）。"
+    },
+    "forbidden_behaviors": {
+      "type": "array", "minItems": 1, "items": {"type": "string"},
+      "description": "不允许出现的行为。部分由自动规则扫描，其余进人工复核。"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "案例本身的重要程度，用于分层报告。"
+    },
+    "provenance": {
+      "type": "string",
+      "enum": ["synthetic", "imported"],
+      "description": "synthetic = 本基准独立设计；imported = 从既有材料迁入（须在 notes 写明出处）。"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "本案例参与计算的指标名。留空则由子集默认映射决定。"
+    },
+    "notes": {"type": "string", "minLength": 1, "description": "标注备注与歧义说明。"}
+  },
+  "$defs": {
+    "dim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "basis"],
+      "properties": {
+        "label": {"type": "string", "enum": ["高", "中", "低", "不适用"]},
+        "basis": {"type": "string", "minLength": 1, "description": "判这个标签的草稿依据（只能用草稿里看得见的东西）。"},
+        "positive_expected": {"type": "boolean", "description": "仅 correction_pattern 用：是否应给出积极信号。"},
+        "unevaluable": {"type": "boolean", "description": "该维度因缺原题/边界不清而不可判定。"}
+      }
+    }
+  }
+}

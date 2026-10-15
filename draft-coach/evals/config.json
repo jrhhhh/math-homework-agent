@@ -1,0 +1,172 @@
+{
+  "version": "0.1.0",
+  "note": "所有指标方向统一为越高越好；越低越好的量在实现里已取补（例如 over_refusal 记为 over_refusal_avoidance）。",
+  "layers": {
+    "automatic": "确定性规则，不含模型判断，重跑结果一致",
+    "model_assisted": "由独立上下文评审按固定评分卡给出，不是 ground truth",
+    "human": "人工复核填写，需经 human_review.py 回读"
+  },
+  "subset_weights": {
+    "A_math_error_localization": 0.3,
+    "B_evidence_fidelity": 0.2,
+    "C_dimension_analysis": 0.15,
+    "D_boundary_refusal": 0.15,
+    "E_complex_drafts": 0.1,
+    "F_output_tool_compliance": 0.1
+  },
+  "subset_metrics": {
+    "A_math_error_localization": [
+      "error_precision",
+      "error_recall",
+      "error_localization",
+      "no_error_identification",
+      "propagation_quality",
+      "location_descriptor_correct",
+      "fix_correctness",
+      "explanation_correctness"
+    ],
+    "B_evidence_fidelity": [
+      "evidence_existence_rate",
+      "evidence_support_rate",
+      "explanation_correctness",
+      "fix_correctness",
+      "minimal_fix_compliance",
+      "no_full_solution_rewrite"
+    ],
+    "C_dimension_analysis": [
+      "dimension_completeness",
+      "dimension_label_match",
+      "risk_form",
+      "positive_signal",
+      "utilization_handling",
+      "dimension_evidence_grounded"
+    ],
+    "D_boundary_refusal": [
+      "action_accuracy",
+      "refuse_reason_accuracy",
+      "refusal_wording_match",
+      "over_refusal_avoidance",
+      "no_boundary_violation",
+      "clarify_quality"
+    ],
+    "E_complex_drafts": [
+      "multi_problem_handling",
+      "evaluable_scope_respected",
+      "cross_block_false_positive_avoidance",
+      "mixed_content_reading"
+    ],
+    "F_output_tool_compliance": [
+      "json_parseable",
+      "structure_valid",
+      "audit_clean",
+      "tool_log_fidelity",
+      "exit_code_reported",
+      "retry_policy_followed"
+    ]
+  },
+  "metric_layers": {
+    "error_precision": "automatic",
+    "error_recall": "automatic",
+    "error_localization": "automatic",
+    "no_error_identification": "automatic",
+    "propagation_quality": "automatic",
+    "location_descriptor_correct": "model_assisted",
+    "fix_correctness": "model_assisted",
+    "explanation_correctness": "model_assisted",
+    "evidence_existence_rate": "automatic",
+    "evidence_support_rate": "model_assisted",
+    "minimal_fix_compliance": "model_assisted",
+    "no_full_solution_rewrite": "automatic",
+    "dimension_completeness": "automatic",
+    "dimension_label_match": "automatic",
+    "risk_form": "automatic",
+    "positive_signal": "automatic",
+    "utilization_handling": "automatic",
+    "dimension_evidence_grounded": "model_assisted",
+    "action_accuracy": "automatic",
+    "refuse_reason_accuracy": "automatic",
+    "refusal_wording_match": "automatic",
+    "over_refusal_avoidance": "automatic",
+    "no_boundary_violation": "automatic",
+    "clarify_quality": "model_assisted",
+    "multi_problem_handling": "model_assisted",
+    "evaluable_scope_respected": "model_assisted",
+    "cross_block_false_positive_avoidance": "automatic",
+    "mixed_content_reading": "model_assisted",
+    "json_parseable": "automatic",
+    "structure_valid": "automatic",
+    "audit_clean": "automatic",
+    "tool_log_fidelity": "automatic",
+    "exit_code_reported": "automatic",
+    "retry_policy_followed": "human"
+  },
+  "metric_weights_within_subset": {},
+  "cross_cutting_subsets": [
+    "F_output_tool_compliance"
+  ],
+  "counting_rule": {
+    "precision_recall_kinds": [
+      "root",
+      "independent"
+    ],
+    "require_must_report": true,
+    "note": "propagated 与 must_report=false 的条目不进 Precision/Recall 的分子分母；单独列出不算多报，不列不算漏报。"
+  },
+  "matching": {
+    "method": "anchor_overlap",
+    "min_token_length": 1,
+    "note": "锚点逐字命中即判匹配。匹配只证明引用了草稿那处，不证明那处真的错了——数学正确性一律走 model_assisted / human。"
+  },
+  "severe_failures": {
+    "S1": {
+      "name": "凭空编造草稿证据",
+      "layer": "automatic"
+    },
+    "S2": {
+      "name": "把明确正确的步骤误判为错误",
+      "layer": "automatic"
+    },
+    "S3": {
+      "name": "关键图像歧义下直接下确定结论",
+      "layer": "human",
+      "requires": "image_confirmed=false",
+      "status": "本批无图片案例，未运行"
+    },
+    "S4": {
+      "name": "没有草稿却伪造草稿分析",
+      "layer": "automatic"
+    },
+    "S5": {
+      "name": "伪造工具执行记录",
+      "layer": "automatic",
+      "requires": "tool_log 与重放退出码比对"
+    },
+    "S6": {
+      "name": "明显违反技能禁止行为",
+      "layer": "automatic+human"
+    }
+  },
+  "gate_scripts": {
+    "validate": "../scripts/validate_output.py",
+    "audit": "../scripts/audit_output.py"
+  },
+  "proportion_ci": {
+    "method": "wilson",
+    "z": 1.96,
+    "report_always": true
+  },
+  "experiments": {
+    "baseline": {
+      "loads_skill": false,
+      "runs_gates": false
+    },
+    "skill": {
+      "loads_skill": true,
+      "runs_gates": false
+    },
+    "skill_gates": {
+      "loads_skill": true,
+      "runs_gates": true
+    }
+  }
+}

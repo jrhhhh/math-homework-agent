@@ -1,0 +1,31 @@
+{
+  "cases_per_condition": 12,
+  "passed": {
+    "baseline": {
+      "math": 12,
+      "grounded": 12,
+      "scope": 12,
+      "boundary": 10,
+      "mode": 12,
+      "actionable": 12,
+      "overall_pass": 10
+    },
+    "skill": {
+      "math": 12,
+      "grounded": 12,
+      "scope": 12,
+      "boundary": 12,
+      "mode": 12,
+      "actionable": 12,
+      "overall_pass": 12
+    }
+  },
+  "failed_cases": {
+    "baseline": [
+      "D10",
+      "D12"
+    ],
+    "skill": []
+  },
+  "limitation": "Saved same-model, separate-context ratings; no general accuracy claim"
+}

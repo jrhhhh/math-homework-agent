@@ -1,0 +1,29 @@
+{
+  "note": "留给留出集（hidden test）的模板号。写 development / validation 案例时不要使用这些前缀，否则会造成数据泄漏。案例分存在 cases.jsonl（输入）与 ground_truth.jsonl（标准答案）两个文件里。",
+  "reserved_prefixes": [
+    "tpl-holdout-"
+  ],
+  "reserved_examples": [
+    "tpl-holdout-alg-transposition-01",
+    "tpl-holdout-trig-missing-root-01",
+    "tpl-holdout-calculus-chain-01",
+    "tpl-holdout-false-positive-bait-01",
+    "tpl-holdout-multi-problem-01",
+    "tpl-holdout-unreadable-image-01"
+  ],
+  "split_of_record": "test",
+  "target_size": {
+    "first_phase_total": "100–150",
+    "full_release_total": 380,
+    "by_subset": {
+      "A_math_error_localization": 100,
+      "B_evidence_fidelity": 60,
+      "C_dimension_analysis": 60,
+      "D_boundary_refusal": 50,
+      "E_complex_drafts": 60,
+      "F_output_tool_compliance": 50
+    }
+  },
+  "current_test_cases": 0,
+  "why_empty": "留出集应由未参与设计的标注者撰写；本批优先做扎实 development / validation。加载器已支持：在 cases.jsonl 与 ground_truth.jsonl 各加一行、split 填 test 即生效，评测时加 --splits development validation test。"
+}

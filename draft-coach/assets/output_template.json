@@ -1,0 +1,72 @@
+{
+  "error_check": {
+    "scope": "<这次实际检查了什么、什么没查；缺原题时必须写明只核对了草稿内部自洽，未核对题意是否抄对、未核对解题方向>",
+    "errors": [
+      {
+        "location": "<草稿里的位置，如「中部第三行」>",
+        "evidence": "<草稿里的原话或原式，必须能在草稿里对上；报不出证据的错误不要报>",
+        "explanation": "<错在哪、为什么错>",
+        "fix": "<改成什么；最小修改，不是整题重写>"
+      }
+    ]
+  },
+  "dimensions": {
+    "organization": {
+      "score": "<高 / 中 / 低>",
+      "observation": "<一句话观察：草稿是否分区、有序、可追溯>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>"
+    },
+    "skipping": {
+      "score": "<高 / 中 / 低>",
+      "observation": "<一句话观察：哪些步骤没落笔、跳的是哪一类>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>"
+    },
+    "correction_pattern": {
+      "score": "<高 / 中 / 低>",
+      "observation": "<一句话观察：涂改的频率、位置、类型>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>",
+      "positive": "<涂改后能自我纠正 / 改处有标注等积极信号；只有本维度可以写 positive>"
+    },
+    "trial_and_error": {
+      "score": "<高 / 中 / 低>",
+      "observation": "<一句话观察：有没有多路径尝试、有没有标号区分>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>"
+    },
+    "graphic_use": {
+      "score": "<高 / 中 / 低>",
+      "observation": "<一句话观察：有没有画图、标注是否完整、画图时机>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>"
+    },
+    "draft_to_solution": {
+      "score": "<高 / 中 / 低；没有最终解答时填 不适用>",
+      "observation": "<一句话观察：草稿算出的结果有多少进入了最终解答>",
+      "evidence": "<草稿里的具体位置或记号>",
+      "risk": "<若…可能…的假设句>"
+    }
+  },
+  "top_3_habits": [
+    {
+      "habit": "<习惯名，如「解方程跳步」>",
+      "impact": "<这个习惯可能导致的问题>",
+      "training": "<下一道题就能做的动作，不是周期计划>"
+    },
+    {
+      "habit": "<第二个习惯名>",
+      "impact": "<这个习惯可能导致的问题>",
+      "training": "<下一道题就能做的动作>"
+    },
+    {
+      "habit": "<第三个习惯名>",
+      "impact": "<这个习惯可能导致的问题>",
+      "training": "<下一道题就能做的动作>"
+    }
+  ],
+  "next_step": "<下一道题只做的一件事，一句话>",
+  "grade_level": "<小学 / 初中 / 高中 / 大学，默认 高中>",
+  "draft_source": "<text_reconstruction / stroke_data / image_description>"
+}

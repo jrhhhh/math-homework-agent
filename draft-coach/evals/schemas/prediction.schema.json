@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://math-homework-agent.local/draft-coach/evals/prediction.schema.json",
+  "title": "Draft Coach Benchmark Prediction File",
+  "description": "一个实验组（arm）在一批案例上的原始输出。工具记录必须是真实执行结果；没有执行过就不要写 tool_log。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["arm", "run_id", "producer", "model_note", "predictions"],
+  "properties": {
+    "arm": {
+      "type": "string",
+      "enum": ["baseline", "skill", "skill_gates"],
+      "description": "baseline = 不加载 Skill；skill = 加载 SKILL.md 但不跑门脚本；skill_gates = 加载并实际运行 validate / audit。"
+    },
+    "run_id": {"type": "string", "minLength": 1, "description": "本次运行的标识，用于复现与波动对比。"},
+    "producer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "谁产出的：例如 host-agent:<名称>、replay:<文件名>。本仓库未配置模型 API，脚本不会自己调用模型。"
+    },
+    "model_note": {
+      "type": "string",
+      "minLength": 1,
+      "description": "模型与参数说明。无法核实精确版本时必须写明，不得声称可逐字复现。"
+    },
+    "predictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "response", "card", "tool_log"],
+        "properties": {
+          "case_id": {"type": "string"},
+          "response": {
+            "type": "string",
+            "description": "交付给学生的最终文字。空字符串表示该案例没有产出任何回答。"
+          },
+          "card": {
+            "type": ["object", "null"],
+            "description": "草稿分析卡的 JSON 对象；没产卡（refuse / 追问 / 未过门）时为 null。"
+          },
+          "tool_log": {
+            "type": "array",
+            "description": "真实执行过的门脚本调用。每条含命令、退出码与 stdout/stderr。evaluate.py 会重放并比对，伪造会被记为严重失败。",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["command", "exit_code"],
+              "properties": {
+                "command": {"type": "string", "minLength": 1},
+                "exit_code": {"type": "integer"},
+                "stdout": {"type": "string"},
+                "stderr": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

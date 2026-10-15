@@ -39,7 +39,8 @@ draft-coach **不在这条交接链路里**，它是横着长出来的第三条�
   **不用于**已成立解答的优化（转 solution-refiner）；
   **不诊断知识漏洞、不贴标签、不给整题重写、不出变式题、不排复习计划、不评分扣分**。
 - **缺原题时查错要降级**：只能查草稿内部自洽，且必须写进卡片的 `error_check.scope`；不得含糊成"检查过了"。
-- draft-coach 的卡片过两道门：`draft_coach_check.py validate`（结构）与 `audit`（越界 + **错误证据是否出自草稿**）。
+- draft-coach 的卡片过两道门，**分处两个脚本**：`scripts/validate_output.py validate`（结构）与 `scripts/audit_output.py audit`（越界 + **错误证据是否出自草稿**）。
+  两者共用常量模块 `scripts/_rules.py`（六维键名、越界正则、`REFUSALS`、学段表都在那里）；判据冲突时以脚本常量为准。
   它沿用本项目的退出码约定：**0** 通过 / 干净 · **1** 有效但不合格 · **2** 非法输入。
   但查的东西与 handoff_check.py、solution_card_check.py 完全不同，**不可互相替代**。
   **两道门都不验数学**：本技能最核心的声称"这处算错了"恰恰是它唯一验不了的东西，`W_ERROR_NOT_IN_DRAFT` 只能发现"草稿里找不到这处"，发现不了"你判错了"。宿主必须人工复核错误清单。
@@ -48,8 +49,8 @@ draft-coach **不在这条交接链路里**，它是横着长出来的第三条�
 
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；它的评测子系统在 `draft-coach/evals/`，跑 `python3 -m unittest discover -s draft-coach/evals/tests -p 'test_*.py'` 与 `python3 draft-coach/evals/engine/schema_check.py`。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
 
 改任何门脚本或卡片 schema 后，必须重跑真实输出，不许凭印象写"应该会通过"。同伴仓库的副本只供比对，不是交付物；**不去修改同伴仓库的任何文件**。
 
-**Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，会静默失败、什么都不输出。本机可用的解释器为 `"D:/Program Files/anaconda3/python.exe"`。`tests/test_handoff.py` 用字面量 `"python3"` 起子进程，在本机跑不起来；`tests/test_draft_coach.py` 用 `sys.executable`，可直接运行。
+**Windows 注意**：`PATH` 里的 `python` / `python3` 可能是应用商店的占位程序，会静默失败、什么都不输出。本机可用的解释器为 `"D:/Program Files/anaconda3/python.exe"`。`tests/test_handoff.py` 用字面量 `"python3"` 起子进程，在本机跑不起来；`draft-coach/tests/` 与 `draft-coach/evals/tests/` 下的测试都用 `sys.executable`，可直接运行。

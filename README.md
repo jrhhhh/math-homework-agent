@@ -47,11 +47,15 @@ solution-refiner/
   solution_card_check.py   优化卡的结构门与越界审计
   example/                 三份示例卡（含混入诊断的反例）
 draft-coach/
-  SKILL.md                 草稿检查入口、错误清单格式、六维尺度与学段适配
-  draft_coach_check.py     结构门、越界审计、错误证据检查、hint 与 refuse
+  SKILL.md                 草稿检查入口（行为契约与 Workflow）
+  references/              六维判定尺度、输出 Schema、7 份示例说明
+  scripts/                 两道门：validate_output.py（结构 + hint）与 audit_output.py（审计 + refuse），共用 _rules.py
+  assets/output_template.json  空白卡片骨架
+  tests/                   技能自带门测试（22 项）
+  evals/                   评测子系统：38 个案例、评测器、报告模板与测试（85 项）
   example/                 三份示例卡、一份编造错误的反例、三份 refuse 输出
 docs/                      诊断案例、验证范围与说明
-tests/                     衔接回归测试、draft-coach 门测试与固定案例计算脚本
+tests/                     衔接回归测试、草稿门层报告测试与固定案例计算脚本
 scripts/handoff_check.py   交接元信息与当前解答版本检查
 AGENTS.md                 三个技能的调用与反馈规则
 ```
@@ -76,20 +80,32 @@ python3 tests/高中题型计算核验.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。`tests/test_draft_coach.py` 另覆盖草稿卡的结构、越界、关联度与三个 refuse 出口。
+覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（22 项，覆盖草稿卡的结构、越界、关联度与三个 refuse 出口），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、编造错误只有在 `--strict` 下才拦得住、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
 
 draft-coach 的两道门可直接复现：
 
 ```bash
 cd draft-coach
-python3 draft_coach_check.py validate --card example/high_school_cubic.json
-python3 draft_coach_check.py audit --card example/fabricated_error.json \
+python3 scripts/validate_output.py validate --card example/high_school_cubic.json
+python3 scripts/audit_output.py audit --card example/fabricated_error.json \
   --draft "左上角写 x^3-3x 求极值；下面写 3x^2=3 → x^2=1 → x=1（划掉）x=±1"
 ```
 
 第一道应退出 0；第二道结构合格但审计应退出 1——它报了一条草稿里根本没有的错误（`48÷4=12`，`W_ERROR_NOT_IN_DRAFT` 会列出查不到的候选记号），还给学生贴标签、写了题量计划。
 
+草稿评测里每张卡片过不过门，可以只重放退出码、不调用模型：
+
+```bash
+python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation/draft-coach-2026-10-15
+```
+
+它读 `inputs.json` 与 `skill.json`，对保存下来的卡片重跑 `validate` 与 `audit --strict`，记录真实退出码与命中代码，写到 `gates.json`。退出码沿用 0/1/2：0 = 每张卡都过两道门，1 = 有效输入但有卡未过门（或一张卡都没产出），2 = 输入非法。它只说明卡片有没有越过结构线与措辞线，**不说明"这处算错了"判得对不对**。
+
 三个技能于2026-10-10通过宿主 skill-creator 的 `quick_validate.py`；全部26项单元测试、27组固定计算、参考链接与界面配置检查通过。新增 [行为对照评测](docs/行为对照评测.md) 保存12题普通问答、Skill回答及匿名独立上下文复核的真实记录；这些小样本结果不构成普遍准确率保证。
+
+新增 [草稿行为对照评测](docs/草稿行为对照评测.md)：12条合成草稿的普通问答/Skill 对照与匿名独立复核（`skill` 12/12、普通问答 10/12，两项都失败在不越界这一项），外加一层可重跑、不由模型产出的门层读数（交付的 9 张卡片全部通过两道门）。两条限制必须一起读：两项条件在数学判断上都是满分，存在天花板效应，**没有证明 Skill 判定得更准**；门层只重放退出码，不构成数学结论。
+
+草稿技能的评测子系统在 [draft-coach/evals/](draft-coach/evals/)：38 个案例分六个子集（数学错误定位、证据忠实度、六维分析、边界与拒绝、复杂草稿、输出与工具合规），案例与标准答案分放 `cases.jsonl` 与 `ground_truth.jsonl`，带 JSON Schema、自动评测器、三层评分（自动／模型辅助／人工）、严重失败硬门槛与报告模板。`python3 draft-coach/evals/engine/schema_check.py` 可校验案例与标准答案。**其中没有任何真实模型输出**：三组实验与模型辅助／人工两层均标为未运行，已跑的只有夹具。该评测还查出技能门脚本的一处假阳性（`方法①` 被当成题号，正确卡片过不了 `audit --strict`），见 [FINDINGS](draft-coach/evals/docs/FINDINGS.md)。
 
 ## 能力边界
 
