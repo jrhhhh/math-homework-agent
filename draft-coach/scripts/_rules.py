@@ -77,7 +77,7 @@ HABIT_COUNT = 3
 
 GRADES = ("小学", "初中", "高中", "大学")
 DEFAULT_GRADE = "高中"
-SOURCES = ("text_reconstruction", "stroke_data", "image_description")
+SOURCES = ("text_reconstruction", "image_description")
 
 # 学段适配表。SKILL.md 的「学段适配指南」同内容；此处常量供 hint 子命令回显，
 # 两处不一致时以本常量为准。
@@ -166,8 +166,8 @@ NEGATION_BEFORE_RE = re.compile(
 # 而两道门都拦不住它。audit 对图片来源的卡片报 W_MIXED_SYMBOL_EVIDENCE 提醒。
 # 只收比较号与 ±：加减号满地都是（f(-1)=-1-3 里就有两个），收进来只会把提醒变成噪音。
 AMBIGUOUS_SYMBOL_RE = re.compile(r"[≤≥<>±≦≧≪≫≈]")
-# 转写来自"看图"而不是学生打字/口述的来源，见 references/image-intake.md
-IMAGE_SOURCES = ("image_description", "stroke_data")
+# 内容来自"别人看图写下来的描述"而不是学生自己打字/口述，见 references/image-intake.md
+IMAGE_SOURCES = ("image_description",)
 
 # 错误清单里禁止出现的"空话式修改"：说了等于没说
 FIX_NON_ACTIONABLE_RE = re.compile(

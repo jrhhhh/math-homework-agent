@@ -68,7 +68,7 @@
         "final_solution": {"type": ["string", "null"], "description": "最终解答；未提供时为 null。"},
         "draft_source": {
           "type": "string",
-          "enum": ["text_reconstruction", "image_description", "stroke_data", "absent"]
+          "enum": ["text_reconstruction", "image_description", "absent"]
         },
         "image_confirmed": {
           "type": "boolean",

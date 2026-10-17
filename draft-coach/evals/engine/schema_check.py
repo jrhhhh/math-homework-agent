@@ -59,7 +59,7 @@ KNOWN_METRICS = {
     "retry_policy_followed",
 }
 GRADES = {"小学", "初中", "高中", "大学"}
-SOURCES = {"text_reconstruction", "image_description", "stroke_data", "absent"}
+SOURCES = {"text_reconstruction", "image_description", "absent"}
 
 
 class Issues:
@@ -142,10 +142,10 @@ def check_case(case, issues):
                          "没有草稿内容时 draft_source 必须是 absent")
         if "image_confirmed" in data and not isinstance(data["image_confirmed"], bool):
             issues.error(cid, "merged", "E_TYPE", "input.image_confirmed 必须是布尔值")
-        if data.get("draft_source") in ("image_description", "stroke_data") \
+        if data.get("draft_source") == "image_description" \
                 and data.get("image_confirmed") is None:
             issues.error(cid, "merged", "E_REQUIRED",
-                         "图片/笔迹类草稿必须显式给出 input.image_confirmed（转写是否已核对）")
+                         "图片类草稿必须显式给出 input.image_confirmed（内容是否已核对）")
         draft = data.get("draft")
         audit_draft = data.get("audit_draft")
         if audit_draft is not None:

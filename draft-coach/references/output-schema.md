@@ -34,7 +34,7 @@
 | `top_3_habits` | object[] | 恰好 3 条，每条恰好三个字段 | validate |
 | `next_step` | string | 非空；一句话：下一道题只做一件事 | validate |
 | `grade_level` | string | `小学` / `初中` / `高中` / `大学`，默认高中 | validate |
-| `draft_source` | string | `text_reconstruction` / `stroke_data` / `image_description` | validate |
+| `draft_source` | string | `text_reconstruction` / `image_description` | validate |
 
 ## error_check
 
@@ -82,7 +82,7 @@
 
 - `next_step`：非空字符串；过短或命中空话模式报 `W_NON_ACTIONABLE`。**只写一件事。**
 - `grade_level`：取值必须是 `小学` / `初中` / `高中` / `大学`（`GRADES`），否则 `E_BAD_GRADE`。默认高中。
-- `draft_source`：取值必须是 `text_reconstruction` / `stroke_data` / `image_description`（`SOURCES`），否则 `E_BAD_SOURCE`。
+- `draft_source`：取值必须是 `text_reconstruction` / `image_description`（`SOURCES`），否则 `E_BAD_SOURCE`。
 
 ## refuse 输出
 
@@ -160,4 +160,4 @@
 
 `validate` 是结构门，`audit` 是措辞门，**两者都不验数学**。本技能最核心的声称"这处算错了"，恰恰是两道门唯一验不了的东西——`validate` 只看错误条目有没有四个字段，`audit` 只看证据在不在草稿里、有没有越过措辞边界。**没有人工复核的草稿检查卡不构成数学结论。**
 
-进一步说，`W_ERROR_NOT_IN_DRAFT` 只发现"这处在草稿里找不到"，发现不了"你判错了"：引用了草稿却把对的判成错的，它一声不响；反过来它也可能误报（证据里的新数值若写在 `evidence` 而不是 `fix` 里，会被当成查无此据）。措辞门抓的是固定说法，换个说法绕过去它抓不住。手写照片的转写对不对、整张纸哪块属于哪道题，都没有脚本能核——唯一防线是让学生确认那两步。
+进一步说，`W_ERROR_NOT_IN_DRAFT` 只发现"这处在草稿里找不到"，发现不了"你判错了"：引用了草稿却把对的判成错的，它一声不响；反过来它也可能误报（证据里的新数值若写在 `evidence` 而不是 `fix` 里，会被当成查无此据）。措辞门抓的是固定说法，换个说法绕过去它抓不住。学生给的文字对不对、整张纸哪块属于哪道题，都没有脚本能核——唯一防线是让学生确认那两步。

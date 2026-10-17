@@ -68,5 +68,5 @@
   ],
   "next_step": "<下一道题只做的一件事，一句话>",
   "grade_level": "<小学 / 初中 / 高中 / 大学，默认 高中>",
-  "draft_source": "<text_reconstruction / stroke_data / image_description>"
+  "draft_source": "<text_reconstruction / image_description>"
 }

@@ -26,7 +26,7 @@
 - `problem`：原题（可能为 `null` —— 没给原题，按 SKILL.md 降级为「只查草稿内部自洽」，并在 `scope` 里写明）
 - `draft`：草稿的文字还原（可能为 `null` —— 完全没有草稿）
 - `final_solution`：最终解答（可能为 `null`）
-- `draft_source`：`text_reconstruction` / `stroke_data` / `image_description` / `absent`
+- `draft_source`：`text_reconstruction` / `image_description` / `absent`
 - `grade_level`：学段
 - `audit_draft`（只有部分案例有）：**若存在，它是本案例过门时 `--draft` 要传的那一块文本**
 
