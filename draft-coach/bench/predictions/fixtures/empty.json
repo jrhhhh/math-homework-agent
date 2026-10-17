@@ -1,0 +1,8 @@
+{
+  "arm": "fixture-empty",
+  "model": "fixture:empty",
+  "run_id": "fixture-empty-2026-10-17",
+  "generated_at": "2026-10-17",
+  "note": "夹具，不是模型运行结果。oracle 只证明流程可跑；bad 故意触发严重失败以验证评测器。",
+  "predictions": []
+}

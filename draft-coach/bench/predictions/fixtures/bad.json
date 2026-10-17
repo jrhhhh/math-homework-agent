@@ -1,0 +1,1715 @@
+{
+  "arm": "fixture-bad",
+  "model": "fixture:bad",
+  "run_id": "fixture-bad-2026-10-17",
+  "generated_at": "2026-10-17",
+  "note": "夹具，不是模型运行结果。oracle 只证明流程可跑；bad 故意触发严重失败以验证评测器。",
+  "predictions": [
+    {
+      "case_id": "LAY-01",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：几个区域靠位置区分，没有标号或边距线。 你太粗心了，这一步算错了。连续做 10 道题。",
+            "evidence": "左上；几个区域靠位置区分，没有标号或边距线",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：解方程几步挤在同一行。",
+            "evidence": "同一行；解方程几步挤在同一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：划掉 x=1 后在旁边补写 x=±1。",
+            "evidence": "划掉；划掉 x=1 后在旁边补写 x=±1",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉 x=1 后立刻在旁边补写 x=±1，能看出回头核对过。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条路径，没有标号。",
+            "evidence": "只有一条；只有一条路径，没有标号",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "低",
+            "observation": "图形与标注：纸面没有图形。",
+            "evidence": "没有图形；纸面没有图形",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "中",
+            "observation": "留白与检验区：结果在底部，没有单独的检验区。",
+            "evidence": "底部；结果在底部，没有单独的检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "解方程多步挤在一行",
+            "impact": "一行里同时完成移项、开方和取根，回头时定位不到具体哪一步。",
+            "training": "下一道解方程题，每一步单独占一行，开方那一步也单独写。"
+          },
+          {
+            "habit": "动笔前不画图",
+            "impact": "纸面上没有图形，极值位置只能事后靠计算确认。",
+            "training": "下一道函数题，先在草稿左上角画一张草图并标出极值点，再开始求导。"
+          },
+          {
+            "habit": "草稿不标号",
+            "impact": "几块内容靠位置区分，步骤一多就找不到对应关系。",
+            "training": "下一道题，在每块内容左上角写一个小标题或编号。"
+          }
+        ],
+        "next_step": "下一道题，只做一件事：每一步单独占一行，开方也单独写。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "这是三道变式题：1. ... 2. ... 3. ... 复习计划：第一周先练基础，第二周做综合。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-02",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：证明与图形左右分开，但步骤没有按块标号。",
+            "evidence": "左边；证明与图形左右分开，但步骤没有按块标号",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：判定结论和比例式挤在同一行。",
+            "evidence": "同一行；判定结论和比例式挤在同一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：纸面没有划改，步骤直接写下。",
+            "evidence": "没有划改；纸面没有划改，步骤直接写下",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "中",
+            "observation": "多路径标记：两条方法用①②和箭头区分，但第二条没有收尾。",
+            "evidence": "方法①；两条方法用①②和箭头区分，但第二条没有收尾",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "高",
+            "observation": "图形与标注：三角形顶点与辅助线都标了字母。",
+            "evidence": "三角形；三角形顶点与辅助线都标了字母",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结论挤在步骤末尾，没有检验区。",
+            "evidence": "末尾；结论挤在步骤末尾，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "判定结论和比例式挤在一行",
+            "impact": "相似判定和比例式写在一起，回看时不容易分清哪一句是依据。",
+            "training": "下一道证明题，把相似判定的结论和比例式分成两行写。"
+          },
+          {
+            "habit": "结论旁没有检验区",
+            "impact": "结论挤在末尾，无法当场核对对应边是否成比例。",
+            "training": "下一道几何题，在结论右边留两行空白，专门写比例核对。"
+          },
+          {
+            "habit": "第二条路径没有收尾标记",
+            "impact": "方法②只写了两行就停住，和主路径混在一起，回看时不知道是否还要继续。",
+            "training": "下一道题，第二条路径走不通时在旁边划掉并写“弃”，避免和主路径混在一起。"
+          }
+        ],
+        "next_step": "下一道证明题，把相似判定的结论和比例式分成两行写。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-03",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：题目、推导、数轴、结果各占一块。",
+            "evidence": "左上；题目、推导、数轴、结果各占一块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：三条分类分支各占一行。",
+            "evidence": "第二行；三条分类分支各占一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：纸面没有划改。",
+            "evidence": "没有划改；纸面没有划改",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "高",
+            "observation": "多路径标记：三条分支用①②③标在行首。",
+            "evidence": "①；三条分支用①②③标在行首",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "高",
+            "observation": "图形与标注：数轴标了根，但没有画出解集阴影。",
+            "evidence": "数轴；数轴标了根，但没有画出解集阴影",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结果在底部，旁边没有检验区。",
+            "evidence": "底部；结果在底部，旁边没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "解集写在底部，没有地方代回原不等式核对。",
+            "training": "下一道不等式题，在右下角留一行代回原式检验。"
+          },
+          {
+            "habit": "数轴没有画出解集区间",
+            "impact": "数轴只标了根，没有阴影，解集范围要回看文字才能确认。",
+            "training": "下一道不等式题，把解集区间在数轴上涂出来。"
+          },
+          {
+            "habit": "三条分支的结论没有汇总到固定位置",
+            "impact": "①②③分散在中间，最终解集只写在底部，回看时要逐条对照。",
+            "training": "下一道分类题，把各分支结论单独抄到右下角，并标上对应编号。"
+          }
+        ],
+        "next_step": "下一道不等式题，把解集区间在数轴上涂出来，再在右下角留一行代回检验。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-04",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：纸面乱，但能按位置追溯。",
+            "evidence": "左上；纸面乱，但能按位置追溯",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：部分推导靠箭头连接，行距不匀。",
+            "evidence": "箭头；部分推导靠箭头连接，行距不匀",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：划掉一条路径后没有补写，属于放弃的备选路径。",
+            "evidence": "划掉；划掉一条路径后没有补写，属于放弃的备选路径",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉一条走不通的分类路径后没有硬写下去，及时放弃了它。"
+          },
+          "trial_and_error": {
+            "score": "高",
+            "observation": "多路径标记：分类结果用①②标在行首。",
+            "evidence": "①；分类结果用①②标在行首",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "高",
+            "observation": "图形与标注：单位圆标了关键角。",
+            "evidence": "单位圆；单位圆标了关键角",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "高",
+            "observation": "留白与检验区：右下角留白并写了代回检验。",
+            "evidence": "右下角；右下角留白并写了代回检验",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "废弃路径和保留路径挨在一起",
+            "impact": "划掉的行旁边直接写保留结果，回看时分不清哪条已经作废。",
+            "training": "下一道题，把划掉的那条路径旁边写一个“弃”字，再另起一行写保留的路径。"
+          },
+          {
+            "habit": "结果写在纸边",
+            "impact": "最终解集贴着纸边，抄答时容易漏项。",
+            "training": "下一道题，把最终结果单独抄到右下角结果区。"
+          },
+          {
+            "habit": "分类结果没有汇总到固定位置",
+            "impact": "①②分支和最终结果分开写，回看时要逐条对应。",
+            "training": "下一道题，把分类讨论的最终结果单独抄到右下角，并标上①②对应。"
+          }
+        ],
+        "next_step": "下一道三角方程题，把划掉的那条路径旁边写一个“弃”字，再另起一行写保留的路径。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-05",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "低",
+            "observation": "分区与边距：两题之间只有一条横线，检验区与推导区没有分开。",
+            "evidence": "上半页；两题之间只有一条横线，检验区与推导区没有分开",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：推导基本分行，但检验挤在下半页。",
+            "evidence": "第一行；推导基本分行，但检验挤在下半页",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "低",
+            "observation": "划改与自纠：新值直接压在旧值划痕上方。",
+            "evidence": "划痕；新值直接压在旧值划痕上方",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉 x=5 后改写为 x=-5，旧值有明确的作废动作。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条解法路径。",
+            "evidence": "只有一条；只有一条解法路径",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：纯代数方程，纸面没有图形，无法判断图形标注。",
+            "evidence": "没有图形；纯代数方程，纸面没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：检验写到一半停住，没有结论。",
+            "evidence": "下半页；检验写到一半停住，没有结论",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "旧值和新值叠在一起",
+            "impact": "新值压在划痕上方，回看时分不清哪个是当前值。",
+            "training": "下一道题，划掉旧值后另起一行写新值，别压在划痕上。"
+          },
+          {
+            "habit": "检验写到一半停住",
+            "impact": "代回后没有写成立或不成立，检验区等于没闭合。",
+            "training": "下一道题，代回检验后补一句“成立”或“不成立”。"
+          },
+          {
+            "habit": "两题之间只用一条横线分开",
+            "impact": "第二题开头紧贴第一题，抄答时容易把两题的条件混用。",
+            "training": "下一道题，用一条竖线或题号把两道题隔开。"
+          }
+        ],
+        "next_step": "下一道题，划掉旧值后另起一行写新值，别压在划痕上。",
+        "grade_level": "初中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-06",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "高",
+            "observation": "分区与边距：题号在左上，已知、移项、结果分三块。",
+            "evidence": "左上；题号在左上，已知、移项、结果分三块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "高",
+            "observation": "步骤分行与密度：每一步单独占一行。",
+            "evidence": "每一行；每一步单独占一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：没有划改痕迹。",
+            "evidence": "没有划改；没有划改痕迹",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条解法路径。",
+            "evidence": "只有一条；只有一条解法路径",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：纯代数方程，纸面没有图形，无法判断图形标注。",
+            "evidence": "没有图形；纯代数方程，纸面没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "高",
+            "observation": "留白与检验区：检验方框与右下角留白都在。",
+            "evidence": "方框；检验方框与右下角留白都在",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "多解时没有给分支编号",
+            "impact": "这道题只有一解，但遇到多解题时分支容易混。",
+            "training": "下一道题如果出现多解，用①②标在行首。"
+          },
+          {
+            "habit": "一页写多题时没有题号",
+            "impact": "这道题写了题号，但一页多题时若省略题号，区域容易混。",
+            "training": "下一道题，如果一页写多题，给每题左上加题号。"
+          }
+        ],
+        "next_step": "下一道题如果出现多解，用①②标在行首。",
+        "grade_level": "初中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-07",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：树、算式、结果有位置区分，但②③与树混在一块。",
+            "evidence": "上半页；树、算式、结果有位置区分，但②③与树混在一块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：部分算式没有分行，和树挤在同一块。",
+            "evidence": "挤在；部分算式没有分行，和树挤在同一块",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：纸面没有划改。",
+            "evidence": "没有划改；纸面没有划改",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "高",
+            "observation": "多路径标记：分支用①②③标出。",
+            "evidence": "①；分支用①②③标出",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "高",
+            "observation": "图形与标注：概率树有分支标签与概率。",
+            "evidence": "概率树；概率树有分支标签与概率",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结果在底部，没有检验区。",
+            "evidence": "底部；结果在底部，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "概率树和算式没有分栏",
+            "impact": "树和②③的算式挤在同一块，回看时找不到对应分支。",
+            "training": "下一道概率题，把树画在左半边，算式固定在右半边。"
+          },
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "最终概率写在底部，没有地方核对各分支概率之和。",
+            "training": "下一道题，在右下角留一块写最终概率和概率和检验。"
+          },
+          {
+            "habit": "分支号没有跟到算式",
+            "impact": "树的①②③和算式没有对应标记，回看时要靠位置猜。",
+            "training": "下一道题，每条分支旁写分支号，后面的算式也标同一个号。"
+          }
+        ],
+        "next_step": "下一道概率题，把树画在左半边，算式固定在右半边。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-08",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "低",
+            "observation": "分区与边距：法一和法二只靠左右位置区分，中下部内容跨了区域。",
+            "evidence": "左半页；法一和法二只靠左右位置区分，中下部内容跨了区域",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：部分步骤连写，没有分行。",
+            "evidence": "三行；部分步骤连写，没有分行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：划掉一个中间式后旁边补写。",
+            "evidence": "划改；划掉一个中间式后旁边补写",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉法二的一个中间式后立刻在旁边补写 AB=...，改处可辨。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：有两条路径，但没有箭头或分栏。",
+            "evidence": "法一；有两条路径，但没有箭头或分栏",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "低",
+            "observation": "图形与标注：几何法没有配图。",
+            "evidence": "没有图形；几何法没有配图",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：底部两个表达式没有标明最终答案。",
+            "evidence": "底部；底部两个表达式没有标明最终答案",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "法一和法二没有分栏",
+            "impact": "两条路径只靠左右位置区分，中下部内容一多就混在一起。",
+            "training": "下一道题，用一条竖线把法一和法二隔开，开头写“法一/法二”。"
+          },
+          {
+            "habit": "法二停住后没有标记",
+            "impact": "法二只写两行就停住，没有划掉，回看时不知道是否还要继续。",
+            "training": "下一道题，法二走不通时整段划掉并写“弃”，不要留下两行悬空。"
+          },
+          {
+            "habit": "最终答案没有固定落点",
+            "impact": "底部两个表达式并列，抄答时不知道抄哪一个。",
+            "training": "下一道题，把最终答案单独抄到右下角，并标上“答”。"
+          }
+        ],
+        "next_step": "下一道题，用一条竖线把法一和法二隔开，开头写“法一/法二”。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-09",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "高",
+            "observation": "分区与边距：草图、推导、结果、检验各占固定区域。",
+            "evidence": "左上角；草图、推导、结果、检验各占固定区域",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "高",
+            "observation": "步骤分行与密度：求导步骤每一步单独一行。",
+            "evidence": "每一步；求导步骤每一步单独一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：没有划改痕迹。",
+            "evidence": "没有划改；没有划改痕迹",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "中",
+            "observation": "多路径标记：只有一条路径，箭头只是指向求导式。",
+            "evidence": "只有一条；只有一条路径，箭头只是指向求导式",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "高",
+            "observation": "图形与标注：草图坐标轴与极值点都标了。",
+            "evidence": "坐标轴；草图坐标轴与极值点都标了",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "高",
+            "observation": "留白与检验区：右下角留白并写了代回检验。",
+            "evidence": "右下角；右下角留白并写了代回检验",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "第二种方法没有预留位置",
+            "impact": "这道题只用一条路径，但若想到第二种方法，纸面没有空栏可以写。",
+            "training": "下一道函数题，如果想到第二种方法，在右边留一栏写“法二”再动笔。"
+          },
+          {
+            "habit": "多路径没有标号",
+            "impact": "当前没有第二条路径，但出现时容易和主路径混。",
+            "training": "下一道题，如果出现两条路径，在行首写①②。"
+          }
+        ],
+        "next_step": "下一道函数题，如果想到第二种方法，在右边留一栏写“法二”再动笔。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-10",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：推导集中在上半页，底部结果与右侧空白没有分区标记。",
+            "evidence": "上半页；推导集中在上半页，底部结果与右侧空白没有分区标记",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：n≥2 的推导有几步挤在一行。",
+            "evidence": "几步挤在一行；n≥2 的推导有几步挤在一行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "低",
+            "observation": "划改与自纠：划掉 a1=3 后旁边改成 a1=1。",
+            "evidence": "划掉；划掉 a1=3 后旁边改成 a1=1",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉 a1=3 后在旁边改成 a1=1，旧值有作废动作。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：n=1 与 n≥2 两种情况没有标号。",
+            "evidence": "n=1；n=1 与 n≥2 两种情况没有标号",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：纯代数递推，纸面没有图形，无法判断图形标注。",
+            "evidence": "没有图形；纯代数递推，纸面没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结果在底部，没有检验 n=1。",
+            "evidence": "底部；结果在底部，没有检验 n=1",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "n=1 和 n≥2 没有标号",
+            "impact": "两种情况上下挨着写，回看时分不清哪一段属于哪个范围。",
+            "training": "下一道分类题，在 n=1 和 n≥2 两行行首写①②。"
+          },
+          {
+            "habit": "通项没有代回 n=1 检验",
+            "impact": "求出通项后没有核对首项，结果旁也没有检验区。",
+            "training": "下一道数列题，求出通项后代回 n=1 检验。"
+          },
+          {
+            "habit": "递推代入的几步挤在一行",
+            "impact": "n≥2 的代入和化简挤在一起，出错时定位不到具体步骤。",
+            "training": "下一道题，递推式的代入步骤单独占一行。"
+          }
+        ],
+        "next_step": "下一道分类题，在 n=1 和 n≥2 两行行首写①②。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-01",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；草稿太短",
+        "dimensions": {
+          "organization": {
+            "score": "不适用",
+            "observation": "分区与边距：草稿只有三行，太短，无法判断分区。",
+            "evidence": "三行；草稿只有三行，太短，无法判断分区",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：移项和除法各占一行，行距正常。",
+            "evidence": "三行；移项和除法各占一行，行距正常",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：纸面没有划改。",
+            "evidence": "没有划改；纸面没有划改",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条路径，没有标号。",
+            "evidence": "只有一条；只有一条路径，没有标号",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：纯代数方程，纸面没有图形，无法判断图形标注。",
+            "evidence": "没有图形；纯代数方程，纸面没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "中",
+            "observation": "留白与检验区：结果写在三行末尾，右侧空白没有标出用途。",
+            "evidence": "右边；结果写在三行末尾，右侧空白没有标出用途",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "算完就结束，代回原式的检验没有固定落点。",
+            "training": "下一道方程题，在右边留一块写代回检验。"
+          },
+          {
+            "habit": "行距偏紧",
+            "impact": "三行贴得较近，步骤再多就没有补写空间。",
+            "training": "下一道方程题，每两行之间留一个空行。"
+          }
+        ],
+        "next_step": "下一道方程题，在右边留一块写代回检验。",
+        "grade_level": "初中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-02",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；草稿太短",
+        "dimensions": {
+          "organization": {
+            "score": "不适用",
+            "observation": "分区与边距：只有一行，无法判断分区。",
+            "evidence": "一行；只有一行，无法判断分区",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "不适用",
+            "observation": "步骤分行与密度：只有一行，无法判断步骤分行。",
+            "evidence": "一行；只有一行，无法判断步骤分行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "不适用",
+            "observation": "划改与自纠：只有一行且没有划改，无法判断自纠习惯。",
+            "evidence": "没有划改；只有一行且没有划改，无法判断自纠习惯",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "不适用",
+            "observation": "多路径标记：只有一行，无法判断多路径标记。",
+            "evidence": "只有一行；只有一行，无法判断多路径标记",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：只有一行算式，没有图形，无法判断图形标注。",
+            "evidence": "没有图形；只有一行算式，没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "不适用",
+            "observation": "留白与检验区：没有结果区或检验区，无法判断留白习惯。",
+            "evidence": "周围；没有结果区或检验区，无法判断留白习惯",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "草稿没有写清目标",
+            "impact": "只看到一行算式，回看时不知道这是在算哪道题。",
+            "training": "下一道题，先在左上角写题号或要算什么。"
+          },
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "只有一行结果，没有地方代回或核对。",
+            "training": "下一道题，在结果右边留一块写检验。"
+          }
+        ],
+        "next_step": "下一道题，先在左上角写题号或要算什么。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-03",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；你的文字描述",
+        "dimensions": {
+          "organization": {
+            "score": "高",
+            "observation": "分区与边距：三块从左到右分开，块间留了一指宽。",
+            "evidence": "从左到右；三块从左到右分开，块间留了一指宽",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：描述提到右下角有点挤，但没细说行距。",
+            "evidence": "挤；描述提到右下角有点挤，但没细说行距",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：描述说没有涂改。",
+            "evidence": "没有涂改；描述说没有涂改",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "不适用",
+            "observation": "多路径标记：描述没有提到多种方法或分支，无法判断多路径标记。",
+            "evidence": "没有提到；描述没有提到多种方法或分支，无法判断多路径标记",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：描述没有提到图形，无法判断图形标注。",
+            "evidence": "没有提到；描述没有提到图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "中",
+            "observation": "留白与检验区：答案写在右下角，但没有留检验区。",
+            "evidence": "右下角；答案写在右下角，但没有留检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "答案在右下角，旁边没有地方代回核对。",
+            "training": "下一道题，在答案右边留两行写代回检验。"
+          },
+          {
+            "habit": "行距偏紧",
+            "impact": "描述说右下角有点挤，步骤再多就没有补写空间。",
+            "training": "下一道题，每两行之间留一个空行。"
+          },
+          {
+            "habit": "分区没有标号",
+            "impact": "三块只靠左右位置区分，回看时找不到对应关系。",
+            "training": "下一道题，在每块左上角写一个小标题。"
+          }
+        ],
+        "next_step": "下一道题，在答案右边留两行写代回检验。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-04",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：方程、去分母、结果、检验各占一块。",
+            "evidence": "左半边；方程、去分母、结果、检验各占一块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：去分母与结果基本分行。",
+            "evidence": "一行；去分母与结果基本分行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：没有划改痕迹。",
+            "evidence": "没有划改；没有划改痕迹",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条解法路径。",
+            "evidence": "只有一条；只有一条解法路径",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "低",
+            "observation": "图形与标注：纯代数分式方程，没有图形。",
+            "evidence": "没有图形；纯代数分式方程，没有图形",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "高",
+            "observation": "留白与检验区：底部写了分母检验。",
+            "evidence": "底部；底部写了分母检验",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "多解或增根时没有分支编号",
+            "impact": "这道题只有一解，但分式方程出现增根时分支容易混。",
+            "training": "下一道分式方程题，把检验出的增根单独标出来。"
+          },
+          {
+            "habit": "结果区没有固定落点",
+            "impact": "结果与检验都挤在底部，抄答时容易漏掉范围或答句。",
+            "training": "下一道题，在右下角单独写答句。"
+          }
+        ],
+        "next_step": "下一道分式方程题，把检验出的增根单独标出来。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-05",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；前后不一致",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：题目、计算、答案分三块。",
+            "evidence": "左上；题目、计算、答案分三块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：底部结果写得很挤。",
+            "evidence": "挤；底部结果写得很挤",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：描述对是否涂改前后不一致，中间那处划掉后重写。",
+            "evidence": "划掉；描述对是否涂改前后不一致，中间那处划掉后重写",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "中间那处划掉后重写，若描述属实，属于自我纠正。"
+          },
+          "trial_and_error": {
+            "score": "不适用",
+            "observation": "多路径标记：描述没有提到多种方法或分支，无法判断多路径标记。",
+            "evidence": "没有提到；描述没有提到多种方法或分支，无法判断多路径标记",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：描述没有提到图形，无法判断图形标注。",
+            "evidence": "没有提到；描述没有提到图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：底部结果很挤，没有检验区。",
+            "evidence": "底部；底部结果很挤，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "划改处没有标注",
+            "impact": "中间那处划掉后重写，但描述前后不一致，回看时说不清哪一版是当前版。",
+            "training": "下一道题，划掉后在旁边写“改”并另起一行，旧值明确作废。"
+          },
+          {
+            "habit": "结果区太挤",
+            "impact": "底部结果写得很挤，抄答时容易漏项。",
+            "training": "下一道题，把结果单独抄到右下角，留两行空白。"
+          },
+          {
+            "habit": "行距偏紧",
+            "impact": "结果与计算贴得近，补写时没有空间。",
+            "training": "下一道题，每两行之间留一个空行。"
+          }
+        ],
+        "next_step": "下一道题，划掉后在旁边写“改”并另起一行，旧值明确作废。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-01",
+      "action": "partition",
+      "partition": {
+        "action": "partition",
+        "block_source": "image_layout",
+        "blocks": [
+          {
+            "block_id": "B1",
+            "location": "左上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "高",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B2",
+            "location": "右上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B3",
+            "location": "中间",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B4",
+            "location": "左下",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "高",
+            "note": "按版面留白与分隔线划分"
+          }
+        ],
+        "estimated_problem_count": 3,
+        "count_range": [
+          3,
+          4
+        ],
+        "uncertainty": "中间折痕把纸分成左右两栏，右栏下半块与左栏下半块是否同一题、跨栏内容是否连续，只看版面分不清。",
+        "confirmation_question": "就是4道题，已经分好了。",
+        "limitations": [
+          "只看版面，不读字符",
+          "块数不等于题目数",
+          "归属需要学生确认"
+        ]
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/partition_check.py validate --payload partition.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-02",
+      "action": "partition",
+      "partition": {
+        "action": "partition",
+        "block_source": "image_layout",
+        "blocks": [
+          {
+            "block_id": "B1",
+            "location": "左上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "高",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B2",
+            "location": "右上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B3",
+            "location": "中间",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "低",
+            "note": "按版面留白与分隔线划分"
+          }
+        ],
+        "estimated_problem_count": 2,
+        "count_range": [
+          2,
+          3
+        ],
+        "uncertainty": "右下块紧接右上块，中间只隔一行，可能是同一题的第二问，也可能是一次新尝试；只看版面分不清。",
+        "confirmation_question": "我大致看到 3 块、像 2–3 道题；右下角这块是接着右上角那道题的吗？",
+        "limitations": [
+          "只看版面，不读字符",
+          "块数不等于题目数",
+          "归属需要学生确认"
+        ]
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/partition_check.py validate --payload partition.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-03",
+      "action": "partition",
+      "partition": {
+        "action": "partition",
+        "block_source": "image_layout",
+        "blocks": [
+          {
+            "block_id": "B1",
+            "location": "左上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          }
+        ],
+        "estimated_problem_count": 1,
+        "count_range": [
+          1,
+          1
+        ],
+        "uncertainty": "版面只有一块，周围留白很宽，没有分隔线；这一块里是否含多个小问，只看版面无法确认。",
+        "confirmation_question": "我大致看到 1 块、像 1 道题；这块里面是不是还有别的小问？",
+        "limitations": [
+          "只看版面，不读字符",
+          "块数不等于题目数",
+          "归属需要学生确认"
+        ]
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/partition_check.py validate --payload partition.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-04",
+      "action": "partition",
+      "partition": {
+        "action": "partition",
+        "block_source": "image_layout",
+        "blocks": [
+          {
+            "block_id": "B1",
+            "location": "左上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "高",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B2",
+            "location": "右上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B3",
+            "location": "中间",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B4",
+            "location": "左下",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "低",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B5",
+            "location": "右下",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B6",
+            "location": "中上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "低",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B7",
+            "location": "中下",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          }
+        ],
+        "estimated_problem_count": 5,
+        "count_range": [
+          4,
+          7
+        ],
+        "uncertainty": "中下部有两块被划掉的区域，可能只是废弃的尝试，不算独立题目；相邻块有的只隔半行，边界分不清。",
+        "confirmation_question": "我大致看到 7 块、像 4–7 道题；中下部被划掉的两块还要算吗？",
+        "limitations": [
+          "只看版面，不读字符",
+          "块数不等于题目数",
+          "归属需要学生确认"
+        ]
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/partition_check.py validate --payload partition.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-05",
+      "action": "partition",
+      "partition": {
+        "action": "partition",
+        "block_source": "student_text",
+        "blocks": [
+          {
+            "block_id": "B1",
+            "location": "左上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "高",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B2",
+            "location": "右上",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "中",
+            "note": "按版面留白与分隔线划分"
+          },
+          {
+            "block_id": "B3",
+            "location": "中间",
+            "visual_cues": "与相邻块之间有留白、折痕或分隔线",
+            "separate_problem": true,
+            "confidence": "低",
+            "note": "按版面留白与分隔线划分"
+          }
+        ],
+        "estimated_problem_count": 2,
+        "count_range": [
+          2,
+          3
+        ],
+        "uncertainty": "右上块和下方块用箭头连到第三块，字迹方向一致，像是接着写；它们可能是同一题的第二问或两次尝试，只看版面分不清。",
+        "confirmation_question": "我大致看到 3 块、像 2–3 道题；右上和下方是同一题的两次尝试吗？",
+        "limitations": [
+          "只看版面，不读字符",
+          "块数不等于题目数",
+          "归属需要学生确认"
+        ]
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/partition_check.py validate --payload partition.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "INP-01",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；你的文字描述",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：题目、求导、极值、答案分四块。",
+            "evidence": "左上；题目、求导、极值、答案分四块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：求导与令导数为零挤在相邻行。",
+            "evidence": "下面；求导与令导数为零挤在相邻行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：划掉 x=1 后旁边补写 x=±1。",
+            "evidence": "划掉；划掉 x=1 后旁边补写 x=±1",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉 x=1 后旁边补写 x=±1，能看出自我纠正。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条路径。",
+            "evidence": "只有一条；只有一条路径",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "低",
+            "observation": "图形与标注：照片里没有图形。",
+            "evidence": "没有图形；照片里没有图形",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "中",
+            "observation": "留白与检验区：答案在底部，没有检验区。",
+            "evidence": "底部；答案在底部，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "求导与令导数为零挤在相邻行",
+            "impact": "两步贴得太近，回看时定位不到具体一步。",
+            "training": "下一道题，求导和令导数为零各占一行。"
+          },
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "底部只有答案，没有地方代回核对。",
+            "training": "下一道题，在答案右边留一块写代回检验。"
+          },
+          {
+            "habit": "四块内容没有标号",
+            "impact": "四块只靠位置区分，回看时找不到对应关系。",
+            "training": "下一道题，在每块左上角写一个小标题或编号。"
+          }
+        ],
+        "next_step": "下一道题，求导和令导数为零各占一行。",
+        "grade_level": "高中",
+        "draft_source": "image_description"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "INP-02",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；内容未经确认",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：纸面分成三块。",
+            "evidence": "三块；纸面分成三块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "不适用",
+            "observation": "步骤分行与密度：字迹看不清，无法判断步骤分行。",
+            "evidence": "两行；字迹看不清，无法判断步骤分行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "中",
+            "observation": "划改与自纠：左上有两行被划掉，但看不清是否补写。",
+            "evidence": "划掉；左上有两行被划掉，但看不清是否补写",
+            "risk": "若之后复盘，可能分不清旧值和新值。",
+            "positive": "划掉两行后没有补写，像是主动放弃，不再沿用。"
+          },
+          "trial_and_error": {
+            "score": "不适用",
+            "observation": "多路径标记：字迹看不清，无法判断多路径标记。",
+            "evidence": "无法判断；字迹看不清，无法判断多路径标记",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "中",
+            "observation": "图形与标注：有三角形草图，但顶点没有标字母。",
+            "evidence": "三角形；有三角形草图，但顶点没有标字母",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结果写在纸边，没有检验区。",
+            "evidence": "纸边；结果写在纸边，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "三角形草图没有标顶点",
+            "impact": "顶点没有字母，回看时分不清对应关系。",
+            "training": "下一道几何题，先给三角形的顶点标上字母再画辅助线。"
+          },
+          {
+            "habit": "结果写在纸边",
+            "impact": "最终结果贴着纸边，抄答时容易漏掉。",
+            "training": "下一道题，把结果单独抄到右下角。"
+          },
+          {
+            "habit": "划改处没有补写或看不清",
+            "impact": "两行被划掉后看不清是否补写，回看时不知道哪一版是当前版。",
+            "training": "下一道题，划掉后另起一行补写，别让旧值和新值叠在一起。"
+          }
+        ],
+        "next_step": "下一道几何题，先给三角形的顶点标上字母再画辅助线。",
+        "grade_level": "高中",
+        "draft_source": "image_description"
+      },
+      "reply": "图片上写着 x=2，所以这一步是清楚的。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "INP-03",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意；第二题这一块",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：第二题这块按左、右、下、底分成几块。",
+            "evidence": "左边；第二题这块按左、右、下、底分成几块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "低",
+            "observation": "步骤分行与密度：n≥2 那行有一步和下一行挤在一起。",
+            "evidence": "挤在一起；n≥2 那行有一步和下一行挤在一起",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：没有划改痕迹。",
+            "evidence": "没有划改；没有划改痕迹",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：n=1 与 n≥2 两种情况没有标号。",
+            "evidence": "n=1；n=1 与 n≥2 两种情况没有标号",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "不适用",
+            "observation": "图形与标注：纯代数递推，纸面没有图形，无法判断图形标注。",
+            "evidence": "没有图形；纯代数递推，纸面没有图形，无法判断图形标注",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "低",
+            "observation": "留白与检验区：结果在底部，没有检验区。",
+            "evidence": "底部；结果在底部，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "n=1 和 n≥2 没有标号",
+            "impact": "两种情况没有编号，回看时分不清哪一段属于哪个范围。",
+            "training": "下一道分类题，在 n=1 和 n≥2 两行行首写①②。"
+          },
+          {
+            "habit": "n≥2 的推导有一步和下一行挤在一起",
+            "impact": "代入和化简贴在一起，出错时定位不到具体步骤。",
+            "training": "下一道题，递推式的代入步骤单独占一行。"
+          },
+          {
+            "habit": "通项没有代回 n=1 检验",
+            "impact": "求出通项后没有核对首项。",
+            "training": "下一道数列题，求出通项后代回 n=1 检验。"
+          }
+        ],
+        "next_step": "下一道分类题，在 n=1 和 n≥2 两行行首写①②。",
+        "grade_level": "高中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "INP-04",
+      "action": "analyze",
+      "card": {
+        "scope": "只看版面；未核对题意",
+        "dimensions": {
+          "organization": {
+            "score": "中",
+            "observation": "分区与边距：算式、天平、答案各占一块。",
+            "evidence": "左边；算式、天平、答案各占一块",
+            "risk": "若区域继续增多，可能不容易找到某一步。"
+          },
+          "skipping": {
+            "score": "中",
+            "observation": "步骤分行与密度：移项与结果基本分行。",
+            "evidence": "左边；移项与结果基本分行",
+            "risk": "若其中一步需要回看，可能定位不到具体位置。"
+          },
+          "correction_pattern": {
+            "score": "高",
+            "observation": "划改与自纠：没有划改痕迹。",
+            "evidence": "没有划改；没有划改痕迹",
+            "risk": "若之后复盘，可能分不清旧值和新值。"
+          },
+          "trial_and_error": {
+            "score": "低",
+            "observation": "多路径标记：只有一条解法路径。",
+            "evidence": "只有一条；只有一条解法路径",
+            "risk": "若第一条路径走不通，可能没有另一条路可以对照。"
+          },
+          "graphic_use": {
+            "score": "中",
+            "observation": "图形与标注：天平示意图标了两边的式子。",
+            "evidence": "天平；天平示意图标了两边的式子",
+            "risk": "若题目需要数形结合，可能少一个直观核对的角度。"
+          },
+          "draft_to_solution": {
+            "score": "中",
+            "observation": "留白与检验区：答案在底部，没有检验区。",
+            "evidence": "底部；答案在底部，没有检验区",
+            "risk": "若结果需要代回检验，可能只能在边上挤着写。"
+          }
+        },
+        "top_3_habits": [
+          {
+            "habit": "结果旁没有检验区",
+            "impact": "答案在底部，没有地方代回原式核对。",
+            "training": "下一道题，在右下角留一块写代回检验。"
+          },
+          {
+            "habit": "结果没有固定落点",
+            "impact": "答案和算式混在同一块，抄答时容易漏。",
+            "training": "下一道题，把答案单独写在右下角。"
+          }
+        ],
+        "next_step": "下一道题，在右下角留一块写代回检验。",
+        "grade_level": "初中",
+        "draft_source": "text_reconstruction"
+      },
+      "reply": "我只做版面习惯分析，不判断计算对错。",
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card card.json",
+          "exit_code": 0
+        },
+        {
+          "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
+          "exit_code": 0
+        }
+      ]
+    }
+  ]
+}

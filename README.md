@@ -62,6 +62,7 @@ draft-coach/
   scripts/                 三道门：validate_output.py（结构 + hint）、audit_output.py（审计 + refuse）与 partition_check.py（分区），共用 _rules.py
   assets/                  空白卡片骨架 output_template.json 与分块单骨架 partition_template.json
   tests/                   技能自带门测试（38 项）
+  bench/                   当前技能版面习惯基准（24 条正面能力案例 + 确定性评分 + 夹具）
   evals/                   旧版「查错」基准，已冻结（见 evals/FROZEN.md）
   example/                 习惯卡、反例卡、整页分块单与三份 refuse 输出
 docs/                      诊断案例、验证范围与说明
@@ -124,7 +125,9 @@ python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation
 
 **历史记录（旧版查错技能）**：[草稿行为对照评测](docs/草稿行为对照评测.md) 是 2026-10-15 针对旧版 draft-coach 的12条合成草稿对照与门层读数；当前技能已改为只看版面，**这些分数不能用来评价现在的能力**。
 
-旧版「查错」基准在 [draft-coach/evals/](draft-coach/evals/)，**已冻结**：它测的是 2026-10-15 以前以“先查计算错误”为主产品的 draft-coach，不对应当前版面习惯技能。保留它是为了记录当时的案例、锚点校验与门层重放方法；**不要在当前技能上运行**。新的版面习惯基准尚未建立。
+旧版「查错」基准在 [draft-coach/evals/](draft-coach/evals/)，**已冻结**：它测的是 2026-10-15 以前以“先查计算错误”为主产品的 draft-coach，不对应当前版面习惯技能。保留它是为了记录当时的案例、锚点校验与门层重放方法；**不要在当前技能上运行**。
+
+当前的版面习惯基准在 [draft-coach/bench/](draft-coach/bench/)：**只评正面能力**，24 条案例覆盖六维分析、短草稿、整页分区与输入形态（图片文字描述、多题分块、初中学段）；越界/拒绝案例已移出默认基准。自动层重放当前三道门并核对 `tool_log`，人工层单独导出。它评的是**已保存的输出**，不调用模型；自动层不验数学，也不验证版面观察是否属实。运行方式见 [bench/README.md](draft-coach/bench/README.md)。
 
 ## 能力边界
 

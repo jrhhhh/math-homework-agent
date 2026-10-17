@@ -50,9 +50,9 @@ draft-coach **不在这条交接链路里**，也不消费交接包。它**只�
 
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留三个技能的职责边界和原优化卡四字段接口；结构核验、同一助手复核和独立验证分别陈述。衔接规则不是自动服务：宿主仍需执行实际数学审查。
 
-`draft-coach/evals/` 是旧版「查错」基准，已冻结（见 `draft-coach/evals/FROZEN.md`），不要在当前技能上运行；新的版面习惯基准尚未建立。
+`draft-coach/evals/` 是旧版「查错」基准，已冻结（见 `draft-coach/evals/FROZEN.md`），不要在当前技能上运行；当前的版面习惯基准在 `draft-coach/bench/`，评的是已保存输出，不调用模型。
 
 改任何门脚本或卡片 schema 后，必须重跑真实输出，不许凭印象写"应该会通过"。同伴仓库的副本只供比对，不是交付物；**不去修改同伴仓库的任何文件**。
 

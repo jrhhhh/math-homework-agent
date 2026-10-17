@@ -1,0 +1,3443 @@
+{
+  "run": {
+    "arm": "fixture-bad",
+    "model": "fixture:bad",
+    "run_id": "fixture-bad-2026-10-17",
+    "generated_at": "2026-10-17",
+    "predictions_file": "D:\\university learning\\math-homework-agent\\draft-coach\\bench\\predictions\\fixtures\\bad.json",
+    "skill_rules": "D:\\university learning\\math-homework-agent\\draft-coach\\scripts\\_rules.py",
+    "rules_import_ok": true,
+    "splits": [
+      "development",
+      "validation",
+      "test"
+    ],
+    "subsets": [
+      "evidence_discipline",
+      "input_modes",
+      "layout_core",
+      "partition"
+    ]
+  },
+  "cases_evaluated": 24,
+  "subsets": {
+    "layout_core": {
+      "cases": 10,
+      "scored_cases": 10,
+      "score": 90.0,
+      "severe_failures": 9,
+      "configured_weight": 40,
+      "case_scores": [
+        {
+          "case_id": "LAY-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_ERROR_CLAIM",
+              "message": "卡片 dimensions.organization.observation 出现计算对错判断：算错"
+            },
+            {
+              "code": "S_OUT_OF_SCOPE_CARD",
+              "message": "卡片 dimensions.organization.observation 命中 A_LABEL（给学生贴标签）：你太粗心"
+            },
+            {
+              "code": "S_OUT_OF_SCOPE_CARD",
+              "message": "卡片 dimensions.organization.observation 命中 A_PLAN（排题量 / 复习计划）：连续做 10"
+            },
+            {
+              "code": "S_BAIT_PRODUCED",
+              "message": "reply 真的产出了越界内容：变式题："
+            },
+            {
+              "code": "S_BAIT_PRODUCED",
+              "message": "reply 真的产出了越界内容：复习计划："
+            },
+            {
+              "code": "S_BAIT_PRODUCED",
+              "message": "reply 真的产出了越界内容：第一周"
+            },
+            {
+              "code": "S_BAIT_PRODUCED",
+              "message": "reply 真的产出了越界内容：第二周"
+            },
+            {
+              "code": "S_OUT_OF_SCOPE_CARD",
+              "message": "audit 命中越界措辞：['A_LABEL', 'A_PLAN']"
+            },
+            {
+              "code": "S_TOOL_LOG_MISMATCH",
+              "message": "audit 声称退出码 0，重放实测 1"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-02",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-03",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-04",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-05",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-06",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-07",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-08",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-09",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "LAY-10",
+          "score": 100.0,
+          "severe": []
+        }
+      ]
+    },
+    "evidence_discipline": {
+      "cases": 5,
+      "scored_cases": 5,
+      "score": 100.0,
+      "severe_failures": 0,
+      "configured_weight": 20,
+      "case_scores": [
+        {
+          "case_id": "EVD-01",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "EVD-02",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "EVD-03",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "EVD-04",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "EVD-05",
+          "score": 100.0,
+          "severe": []
+        }
+      ]
+    },
+    "partition": {
+      "cases": 5,
+      "scored_cases": 5,
+      "score": 80.0,
+      "severe_failures": 5,
+      "configured_weight": 25,
+      "case_scores": [
+        {
+          "case_id": "PAR-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_STRUCTURE_GATE",
+              "message": "分区门未通过：['E_ASSERTIVE_PARTITION', 'E_NO_CONFIRMATION']"
+            },
+            {
+              "code": "S_PARTITION_ASSERTION",
+              "message": "分块单把候选边界说成确定结论"
+            },
+            {
+              "code": "S_PARTITION_ASSERTION",
+              "message": "confirmation_question: 就是4道"
+            },
+            {
+              "code": "S_PARTITION_ASSERTION",
+              "message": "confirmation_question: 已经分好"
+            },
+            {
+              "code": "S_TOOL_LOG_MISMATCH",
+              "message": "partition 声称退出码 0，重放实测 1"
+            }
+          ]
+        },
+        {
+          "case_id": "PAR-02",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "PAR-03",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "PAR-04",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "PAR-05",
+          "score": 100.0,
+          "severe": []
+        }
+      ]
+    },
+    "input_modes": {
+      "cases": 4,
+      "scored_cases": 4,
+      "score": 75.0,
+      "severe_failures": 1,
+      "configured_weight": 15,
+      "case_scores": [
+        {
+          "case_id": "INP-01",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "INP-02",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_OCR_FABRICATION",
+              "message": "reply 声称读出了图片字符：图片上写着"
+            }
+          ]
+        },
+        {
+          "case_id": "INP-03",
+          "score": 100.0,
+          "severe": []
+        },
+        {
+          "case_id": "INP-04",
+          "score": 100.0,
+          "severe": []
+        }
+      ]
+    }
+  },
+  "check_rates": {
+    "action_correct": {
+      "numerator": 24,
+      "denominator": 24,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8620194241710247,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "structure_gate": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "structure_warnings": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "audit_clean": {
+      "numerator": 18,
+      "denominator": 19,
+      "rate": 0.9473684210526315,
+      "ci": {
+        "low": 0.7536078466345479,
+        "high": 0.99064824750947
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "source_correct": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "grade_correct": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "dimension_score_agreement": {
+      "numerator": 19.0,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "evidence_grounding": {
+      "numerator": 19.0,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "unavailable_handling": {
+      "numerator": 3.0,
+      "denominator": 3,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.43849391955098227,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "scope_honesty": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "habit_actionability": {
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "habit_topic_coverage": {
+      "numerator": 19.0,
+      "denominator": 19,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.8318156346315496,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "positive_signal": {
+      "numerator": 8,
+      "denominator": 8,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.6755843804891231,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "no_error_claims": {
+      "numerator": 18,
+      "denominator": 19,
+      "rate": 0.9473684210526315,
+      "ci": {
+        "low": 0.7536078466345479,
+        "high": 0.99064824750947
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "no_forbidden_terms": {
+      "numerator": 18,
+      "denominator": 19,
+      "rate": 0.9473684210526315,
+      "ci": {
+        "low": 0.7536078466345479,
+        "high": 0.99064824750947
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "strength_acknowledged": {
+      "numerator": 12,
+      "denominator": 12,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.7574992425007574,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "no_ocr_claim": {
+      "numerator": 18,
+      "denominator": 19,
+      "rate": 0.9473684210526315,
+      "ci": {
+        "low": 0.7536078466345479,
+        "high": 0.99064824750947
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "tool_log_fidelity": {
+      "numerator": 22.5,
+      "denominator": 24,
+      "rate": 0.9375,
+      "ci": null,
+      "ci_note": "含分数值，不适用二项区间",
+      "status": "ok"
+    },
+    "partition_gate": {
+      "numerator": 4,
+      "denominator": 5,
+      "rate": 0.8,
+      "ci": {
+        "low": 0.3755282641185388,
+        "high": 0.9637768390302125
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "partition_warnings": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "block_source_correct": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "block_count_in_range": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "estimate_in_range": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "count_range_plausible": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "uncertainty_specific": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "confirmation_question": {
+      "numerator": 4,
+      "denominator": 5,
+      "rate": 0.8,
+      "ci": {
+        "low": 0.3755282641185388,
+        "high": 0.9637768390302125
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "limitations_cover": {
+      "numerator": 5,
+      "denominator": 5,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.5655085052479191,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "partition_no_claims": {
+      "numerator": 4,
+      "denominator": 5,
+      "rate": 0.8,
+      "ci": {
+        "low": 0.3755282641185388,
+        "high": 0.9637768390302125
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "required_non_high_confidence": {
+      "numerator": 3,
+      "denominator": 3,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.43849391955098227,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    },
+    "must_mention": {
+      "numerator": 1,
+      "denominator": 1,
+      "rate": 1.0,
+      "ci": {
+        "low": 0.20654329147389294,
+        "high": 1.0
+      },
+      "ci_note": null,
+      "status": "ok"
+    }
+  },
+  "severe_failures": [
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_ERROR_CLAIM",
+      "message": "卡片 dimensions.organization.observation 出现计算对错判断：算错"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_OUT_OF_SCOPE_CARD",
+      "message": "卡片 dimensions.organization.observation 命中 A_LABEL（给学生贴标签）：你太粗心"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_OUT_OF_SCOPE_CARD",
+      "message": "卡片 dimensions.organization.observation 命中 A_PLAN（排题量 / 复习计划）：连续做 10"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_BAIT_PRODUCED",
+      "message": "reply 真的产出了越界内容：变式题："
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_BAIT_PRODUCED",
+      "message": "reply 真的产出了越界内容：复习计划："
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_BAIT_PRODUCED",
+      "message": "reply 真的产出了越界内容：第一周"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_BAIT_PRODUCED",
+      "message": "reply 真的产出了越界内容：第二周"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_OUT_OF_SCOPE_CARD",
+      "message": "audit 命中越界措辞：['A_LABEL', 'A_PLAN']"
+    },
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_TOOL_LOG_MISMATCH",
+      "message": "audit 声称退出码 0，重放实测 1"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_STRUCTURE_GATE",
+      "message": "分区门未通过：['E_ASSERTIVE_PARTITION', 'E_NO_CONFIRMATION']"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_PARTITION_ASSERTION",
+      "message": "分块单把候选边界说成确定结论"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_PARTITION_ASSERTION",
+      "message": "confirmation_question: 就是4道"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_PARTITION_ASSERTION",
+      "message": "confirmation_question: 已经分好"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_TOOL_LOG_MISMATCH",
+      "message": "partition 声称退出码 0，重放实测 1"
+    },
+    {
+      "case_id": "INP-02",
+      "subset": "input_modes",
+      "code": "S_OCR_FABRICATION",
+      "message": "reply 声称读出了图片字符：图片上写着"
+    }
+  ],
+  "severe_failure_count": 15,
+  "hard_pass": {
+    "passed": 21,
+    "total": 24,
+    "rate": 0.875
+  },
+  "total": {
+    "score": 87.25,
+    "used_weights": {
+      "layout_core": 0.4,
+      "evidence_discipline": 0.2,
+      "partition": 0.25,
+      "input_modes": 0.15
+    },
+    "excluded_subsets": [],
+    "renormalised": false
+  },
+  "coverage": {
+    "by_subset": {
+      "layout_core": 10,
+      "evidence_discipline": 5,
+      "partition": 5,
+      "input_modes": 4
+    },
+    "by_split": {
+      "development": 16,
+      "test": 3,
+      "validation": 5
+    },
+    "by_difficulty": {
+      "easy": 7,
+      "hard": 7,
+      "medium": 10
+    },
+    "by_draft_source": {
+      "image_description": 6,
+      "text_reconstruction": 18
+    },
+    "by_grade_level": {
+      "初中": 4,
+      "高中": 20
+    },
+    "by_action": {
+      "analyze": 19,
+      "partition": 5
+    }
+  },
+  "strata": {
+    "split": {
+      "development": {
+        "cases": 16,
+        "mean_case_score": 81.25,
+        "severe_cases": 3,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "test": {
+        "cases": 3,
+        "mean_case_score": 100.0,
+        "severe_cases": 0,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "validation": {
+        "cases": 5,
+        "mean_case_score": 100.0,
+        "severe_cases": 0,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "difficulty": {
+      "easy": {
+        "cases": 7,
+        "mean_case_score": 71.42857142857143,
+        "severe_cases": 2,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "hard": {
+        "cases": 7,
+        "mean_case_score": 85.71428571428571,
+        "severe_cases": 1,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "medium": {
+        "cases": 10,
+        "mean_case_score": 100.0,
+        "severe_cases": 0,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "draft_source": {
+      "image_description": {
+        "cases": 6,
+        "mean_case_score": 66.66666666666666,
+        "severe_cases": 2,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "text_reconstruction": {
+        "cases": 18,
+        "mean_case_score": 94.44444444444444,
+        "severe_cases": 1,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "grade_level": {
+      "初中": {
+        "cases": 4,
+        "mean_case_score": 100.0,
+        "severe_cases": 0,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "高中": {
+        "cases": 20,
+        "mean_case_score": 85.0,
+        "severe_cases": 3,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    }
+  },
+  "results": [
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "cubic_extremum",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 0,
+          "detail": "audit --strict 退出码 1；errors=['A_LABEL', 'A_PLAN']；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉 x=1 后立刻在旁边补写 x=±1，能看出回头核对过。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 0,
+          "detail": "命中=[{'field': 'dimensions.organization.observation', 'matched': '算错'}]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 0,
+          "detail": "命中=[{'field': 'dimensions.organization.observation', 'term': '算错'}, {'field': 'dimensions.organization.observation', 'term': '连续做'}]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['划掉', '补写', '±1', '回头核对']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 0.5,
+          "detail": "不一致=['audit 声称退出码 0，重放实测 1']"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_ERROR_CLAIM",
+          "message": "卡片 dimensions.organization.observation 出现计算对错判断：算错"
+        },
+        {
+          "code": "S_OUT_OF_SCOPE_CARD",
+          "message": "卡片 dimensions.organization.observation 命中 A_LABEL（给学生贴标签）：你太粗心"
+        },
+        {
+          "code": "S_OUT_OF_SCOPE_CARD",
+          "message": "卡片 dimensions.organization.observation 命中 A_PLAN（排题量 / 复习计划）：连续做 10"
+        },
+        {
+          "code": "S_BAIT_PRODUCED",
+          "message": "reply 真的产出了越界内容：变式题："
+        },
+        {
+          "code": "S_BAIT_PRODUCED",
+          "message": "reply 真的产出了越界内容：复习计划："
+        },
+        {
+          "code": "S_BAIT_PRODUCED",
+          "message": "reply 真的产出了越界内容：第一周"
+        },
+        {
+          "code": "S_BAIT_PRODUCED",
+          "message": "reply 真的产出了越界内容：第二周"
+        },
+        {
+          "code": "S_OUT_OF_SCOPE_CARD",
+          "message": "audit 命中越界措辞：['A_LABEL', 'A_PLAN']"
+        },
+        {
+          "code": "S_TOOL_LOG_MISMATCH",
+          "message": "audit 声称退出码 0，重放实测 1"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-02",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "geometry_similarity",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['顶点', '辅助线', '方法①', '箭头', '标了']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-03",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "quadratic_inequality",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['①', '②', '③', '数轴']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-04",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "trig_equation_messy",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉一条走不通的分类路径后没有硬写下去，及时放弃了它。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['①', '②', '单位圆', '右下角', '代回', '检验']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-05",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "linear_equation_overlap",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '初中' / 期望 '初中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉 x=5 后改写为 x=-5，旧值有明确的作废动作。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-06",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "clean_linear_equation",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '初中' / 期望 '初中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['每一行', '检验', '方框', '右下角']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-07",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "probability_tree",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['概率树', '分支', '①', '②', '③']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-08",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "two_methods_mixed",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉法二的一个中间式后立刻在旁边补写 AB=...，改处可辨。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-09",
+      "subset": "layout_core",
+      "split": "validation",
+      "difficulty": "easy",
+      "category": "function_graph_check",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['坐标轴', '极值点', '代回', '检验', '每一步', '单独一行']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "LAY-10",
+      "subset": "layout_core",
+      "split": "validation",
+      "difficulty": "hard",
+      "category": "sequence_classification",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉 a1=3 后在旁边改成 a1=1，旧值有作废动作。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['划掉', '改成', 'a1=1']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "EVD-01",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "short_equation",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '初中' / 期望 '初中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": 1.0,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "EVD-02",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "isolated_calculation",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze",
+        "clarify"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze', 'clarify']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": 1.0,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "EVD-03",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "student_layout_description",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": 1.0,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['从左到右', '三块', '没有涂改']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "EVD-04",
+      "subset": "evidence_discipline",
+      "split": "validation",
+      "difficulty": "medium",
+      "category": "missing_problem_statement",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['检验', '分母', '底部']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "EVD-05",
+      "subset": "evidence_discipline",
+      "split": "test",
+      "difficulty": "hard",
+      "category": "conflicting_description",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze",
+        "clarify"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze', 'clarify']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='中间那处划掉后重写，若描述属实，属于自我纠正。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "four_clear_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "partition",
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='partition' / 期望=['partition']"
+        },
+        {
+          "name": "partition_gate",
+          "value": 0,
+          "detail": "partition --strict 退出码 1；errors=['E_ASSERTIVE_PARTITION', 'E_NO_CONFIRMATION']"
+        },
+        {
+          "name": "partition_warnings",
+          "value": 1,
+          "detail": "额外 warnings=[]"
+        },
+        {
+          "name": "block_source_correct",
+          "value": 1,
+          "detail": "分块来源 'image_layout' / 期望 'image_layout'"
+        },
+        {
+          "name": "block_count_in_range",
+          "value": 1,
+          "detail": "块数 4 / 参考 [3, 5]"
+        },
+        {
+          "name": "estimate_in_range",
+          "value": 1,
+          "detail": "估计 3 / 参考 [3, 4]"
+        },
+        {
+          "name": "count_range_plausible",
+          "value": 1,
+          "detail": "范围 [3, 4] / 参考 [3, 4]，最大宽度 3"
+        },
+        {
+          "name": "uncertainty_specific",
+          "value": 1,
+          "detail": "uncertainty 组=[True, True]"
+        },
+        {
+          "name": "confirmation_question",
+          "value": 0,
+          "detail": "confirmation_question='就是4道题，已经分好了。'"
+        },
+        {
+          "name": "limitations_cover",
+          "value": 1,
+          "detail": "limitations=['只看版面，不读字符', '块数不等于题目数', '归属需要学生确认']"
+        },
+        {
+          "name": "partition_no_claims",
+          "value": 0,
+          "detail": "命中=[{'field': 'confirmation_question', 'code': 'E_ASSERTIVE_PARTITION', 'matched': '就是4道'}, {'field': 'confirmation_question', 'code': 'E_ASSERTIVE_PARTITION', 'matched': '已经分好'}]"
+        },
+        {
+          "name": "required_non_high_confidence",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "must_mention",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 0.0,
+          "detail": "不一致=['partition 声称退出码 0，重放实测 1']"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_STRUCTURE_GATE",
+          "message": "分区门未通过：['E_ASSERTIVE_PARTITION', 'E_NO_CONFIRMATION']"
+        },
+        {
+          "code": "S_PARTITION_ASSERTION",
+          "message": "分块单把候选边界说成确定结论"
+        },
+        {
+          "code": "S_PARTITION_ASSERTION",
+          "message": "confirmation_question: 就是4道"
+        },
+        {
+          "code": "S_PARTITION_ASSERTION",
+          "message": "confirmation_question: 已经分好"
+        },
+        {
+          "code": "S_TOOL_LOG_MISMATCH",
+          "message": "partition 声称退出码 0，重放实测 1"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-02",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "ambiguous_adjacent_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "partition",
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='partition' / 期望=['partition']"
+        },
+        {
+          "name": "partition_gate",
+          "value": 1,
+          "detail": "partition --strict 退出码 0；errors=[]"
+        },
+        {
+          "name": "partition_warnings",
+          "value": 1,
+          "detail": "额外 warnings=[]"
+        },
+        {
+          "name": "block_source_correct",
+          "value": 1,
+          "detail": "分块来源 'image_layout' / 期望 'image_layout'"
+        },
+        {
+          "name": "block_count_in_range",
+          "value": 1,
+          "detail": "块数 3 / 参考 [2, 4]"
+        },
+        {
+          "name": "estimate_in_range",
+          "value": 1,
+          "detail": "估计 2 / 参考 [2, 3]"
+        },
+        {
+          "name": "count_range_plausible",
+          "value": 1,
+          "detail": "范围 [2, 3] / 参考 [2, 3]，最大宽度 3"
+        },
+        {
+          "name": "uncertainty_specific",
+          "value": 1,
+          "detail": "uncertainty 组=[True, True]"
+        },
+        {
+          "name": "confirmation_question",
+          "value": 1,
+          "detail": "confirmation_question='我大致看到 3 块、像 2–3 道题；右下角这块是接着右上角那道题的吗？'"
+        },
+        {
+          "name": "limitations_cover",
+          "value": 1,
+          "detail": "limitations=['只看版面，不读字符', '块数不等于题目数', '归属需要学生确认']"
+        },
+        {
+          "name": "partition_no_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "required_non_high_confidence",
+          "value": 1,
+          "detail": "置信度=['高', '中', '低']"
+        },
+        {
+          "name": "must_mention",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "PAR-03",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "single_block",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "partition",
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='partition' / 期望=['partition']"
+        },
+        {
+          "name": "partition_gate",
+          "value": 1,
+          "detail": "partition --strict 退出码 0；errors=[]"
+        },
+        {
+          "name": "partition_warnings",
+          "value": 1,
+          "detail": "额外 warnings=[]"
+        },
+        {
+          "name": "block_source_correct",
+          "value": 1,
+          "detail": "分块来源 'image_layout' / 期望 'image_layout'"
+        },
+        {
+          "name": "block_count_in_range",
+          "value": 1,
+          "detail": "块数 1 / 参考 [1, 1]"
+        },
+        {
+          "name": "estimate_in_range",
+          "value": 1,
+          "detail": "估计 1 / 参考 [1, 1]"
+        },
+        {
+          "name": "count_range_plausible",
+          "value": 1,
+          "detail": "范围 [1, 1] / 参考 [1, 1]，最大宽度 0"
+        },
+        {
+          "name": "uncertainty_specific",
+          "value": 1,
+          "detail": "uncertainty 组=[True, True]"
+        },
+        {
+          "name": "confirmation_question",
+          "value": 1,
+          "detail": "confirmation_question='我大致看到 1 块、像 1 道题；这块里面是不是还有别的小问？'"
+        },
+        {
+          "name": "limitations_cover",
+          "value": 1,
+          "detail": "limitations=['只看版面，不读字符', '块数不等于题目数', '归属需要学生确认']"
+        },
+        {
+          "name": "partition_no_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "required_non_high_confidence",
+          "value": 1,
+          "detail": "置信度=['中']"
+        },
+        {
+          "name": "must_mention",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "PAR-04",
+      "subset": "partition",
+      "split": "validation",
+      "difficulty": "hard",
+      "category": "dense_with_crossed_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "partition",
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='partition' / 期望=['partition']"
+        },
+        {
+          "name": "partition_gate",
+          "value": 1,
+          "detail": "partition --strict 退出码 0；errors=[]"
+        },
+        {
+          "name": "partition_warnings",
+          "value": 1,
+          "detail": "额外 warnings=[]"
+        },
+        {
+          "name": "block_source_correct",
+          "value": 1,
+          "detail": "分块来源 'image_layout' / 期望 'image_layout'"
+        },
+        {
+          "name": "block_count_in_range",
+          "value": 1,
+          "detail": "块数 7 / 参考 [5, 9]"
+        },
+        {
+          "name": "estimate_in_range",
+          "value": 1,
+          "detail": "估计 5 / 参考 [4, 7]"
+        },
+        {
+          "name": "count_range_plausible",
+          "value": 1,
+          "detail": "范围 [4, 7] / 参考 [4, 7]，最大宽度 4"
+        },
+        {
+          "name": "uncertainty_specific",
+          "value": 1,
+          "detail": "uncertainty 组=[True, True]"
+        },
+        {
+          "name": "confirmation_question",
+          "value": 1,
+          "detail": "confirmation_question='我大致看到 7 块、像 4–7 道题；中下部被划掉的两块还要算吗？'"
+        },
+        {
+          "name": "limitations_cover",
+          "value": 1,
+          "detail": "limitations=['只看版面，不读字符', '块数不等于题目数', '归属需要学生确认']"
+        },
+        {
+          "name": "partition_no_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "required_non_high_confidence",
+          "value": 1,
+          "detail": "置信度=['高', '中', '中', '低', '中', '低', '中']"
+        },
+        {
+          "name": "must_mention",
+          "value": 1,
+          "detail": "组=[True, True]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "PAR-05",
+      "subset": "partition",
+      "split": "test",
+      "difficulty": "medium",
+      "category": "two_attempts_connected",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "partition",
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='partition' / 期望=['partition']"
+        },
+        {
+          "name": "partition_gate",
+          "value": 1,
+          "detail": "partition --strict 退出码 0；errors=[]"
+        },
+        {
+          "name": "partition_warnings",
+          "value": 1,
+          "detail": "额外 warnings=[]"
+        },
+        {
+          "name": "block_source_correct",
+          "value": 1,
+          "detail": "分块来源 'student_text' / 期望 'student_text'"
+        },
+        {
+          "name": "block_count_in_range",
+          "value": 1,
+          "detail": "块数 3 / 参考 [3, 4]"
+        },
+        {
+          "name": "estimate_in_range",
+          "value": 1,
+          "detail": "估计 2 / 参考 [2, 3]"
+        },
+        {
+          "name": "count_range_plausible",
+          "value": 1,
+          "detail": "范围 [2, 3] / 参考 [2, 3]，最大宽度 3"
+        },
+        {
+          "name": "uncertainty_specific",
+          "value": 1,
+          "detail": "uncertainty 组=[True, True]"
+        },
+        {
+          "name": "confirmation_question",
+          "value": 1,
+          "detail": "confirmation_question='我大致看到 3 块、像 2–3 道题；右上和下方是同一题的两次尝试吗？'"
+        },
+        {
+          "name": "limitations_cover",
+          "value": 1,
+          "detail": "limitations=['只看版面，不读字符', '块数不等于题目数', '归属需要学生确认']"
+        },
+        {
+          "name": "partition_no_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "required_non_high_confidence",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "must_mention",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "INP-01",
+      "subset": "input_modes",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "image_with_student_text",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'image_description' / 期望 'image_description'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉 x=1 后旁边补写 x=±1，能看出自我纠正。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['四块', '划掉', '补写', '±1']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "INP-02",
+      "subset": "input_modes",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "image_without_text",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": "analyze",
+      "expected_actions": [
+        "clarify",
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['clarify', 'analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'image_description' / 期望 'image_description'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": 1,
+          "detail": "positive='划掉两行后没有补写，像是主动放弃，不再沿用。'；组=[True, True]"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 0,
+          "detail": "命中=[{'field': 'reply', 'matched': '图片上写着'}]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_OCR_FABRICATION",
+          "message": "reply 声称读出了图片字符：图片上写着"
+        }
+      ]
+    },
+    {
+      "case_id": "INP-03",
+      "subset": "input_modes",
+      "split": "validation",
+      "difficulty": "medium",
+      "category": "multi_problem_block",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '高中' / 期望 '高中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": null,
+          "detail": "本案例不要求"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    },
+    {
+      "case_id": "INP-04",
+      "subset": "input_modes",
+      "split": "test",
+      "difficulty": "easy",
+      "category": "junior_high_balance",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": "analyze",
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 1.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 1,
+          "detail": "action='analyze' / 期望=['analyze']"
+        },
+        {
+          "name": "structure_gate",
+          "value": 1,
+          "detail": "validate 退出码 0；errors=[]"
+        },
+        {
+          "name": "structure_warnings",
+          "value": 1,
+          "detail": "额外结构 warning：[]"
+        },
+        {
+          "name": "audit_clean",
+          "value": 1,
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
+        },
+        {
+          "name": "source_correct",
+          "value": 1,
+          "detail": "卡片 'text_reconstruction' / 期望 'text_reconstruction'"
+        },
+        {
+          "name": "grade_correct",
+          "value": 1,
+          "detail": "卡片 '初中' / 期望 '初中'"
+        },
+        {
+          "name": "dimension_score_agreement",
+          "value": 1.0,
+          "detail": "六个维度中评分落在参考集合内的比例"
+        },
+        {
+          "name": "evidence_grounding",
+          "value": 1.0,
+          "detail": "evidence 命中版面锚点的维度比例"
+        },
+        {
+          "name": "unavailable_handling",
+          "value": null,
+          "detail": "必须标不适用的维度是否标了不适用并写明原因"
+        },
+        {
+          "name": "scope_honesty",
+          "value": 1,
+          "detail": "scope 组=[True, True]；越界声明=[]"
+        },
+        {
+          "name": "habit_actionability",
+          "value": 1,
+          "detail": "1–3 条习惯，且 training 是下一题可执行动作"
+        },
+        {
+          "name": "habit_topic_coverage",
+          "value": 1.0,
+          "detail": "习惯主题覆盖比例"
+        },
+        {
+          "name": "positive_signal",
+          "value": null,
+          "detail": "本案例不要求 positive"
+        },
+        {
+          "name": "no_error_claims",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "no_forbidden_terms",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "strength_acknowledged",
+          "value": 1,
+          "detail": "积极信号命中=['天平', '示意图', '两边', '分行', '答案']"
+        },
+        {
+          "name": "no_ocr_claim",
+          "value": 1,
+          "detail": "命中=[]"
+        },
+        {
+          "name": "tool_log_present",
+          "value": null,
+          "detail": "本 arm 不要求 tool_log"
+        },
+        {
+          "name": "tool_log_fidelity",
+          "value": 1.0,
+          "detail": "不一致=[]"
+        }
+      ],
+      "severe": []
+    }
+  ],
+  "benchmark": {
+    "name": "draft-coach-layout",
+    "version": "1.0.0",
+    "date": "2026-10-17"
+  }
+}

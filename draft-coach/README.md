@@ -42,6 +42,7 @@ references/    细节文档 —— analysis-rules.md、output-schema.md、exampl
 assets/        output_template.json（输出模板）、partition_template.json（分块单模板）
 example/       固定 fixture：习惯卡、反例、整页分块单、refuse 输出
 tests/         技能自带测试 —— 38 项：结构门、审计门、分区门
+bench/         当前技能的版面习惯基准 —— 24 条正面能力案例、确定性评分、夹具、人工层导出
 evals/         旧版「查错」基准，已冻结；见 evals/FROZEN.md，不对应当前技能
 ```
 
@@ -50,6 +51,19 @@ evals/         旧版「查错」基准，已冻结；见 evals/FROZEN.md，不�
 ```bash
 python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'
 ```
+
+版面习惯基准（在 `draft-coach/bench/` 下）：
+
+```bash
+python3 schema_check.py
+python3 -m unittest discover -s tests -p 'test_*.py'
+python3 make_fixture_predictions.py --mode oracle --out predictions/fixtures/oracle.json
+python3 evaluate.py --predictions predictions/fixtures/oracle.json
+python3 evaluate.py --predictions predictions/fixtures/bad.json --strict   # 应退出 1
+```
+
+它评的是已保存的输出，不调用模型；自动层不判断版面观察是否属实。细则见
+[`bench/README.md`](bench/README.md) 与 [`bench/DESIGN.md`](bench/DESIGN.md)。
 
 ## 能力边界
 

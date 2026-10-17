@@ -1,0 +1,1234 @@
+{
+  "run": {
+    "arm": "fixture-empty",
+    "model": "fixture:empty",
+    "run_id": "fixture-empty-2026-10-17",
+    "generated_at": "2026-10-17",
+    "predictions_file": "D:\\university learning\\math-homework-agent\\draft-coach\\bench\\predictions\\fixtures\\empty.json",
+    "skill_rules": "D:\\university learning\\math-homework-agent\\draft-coach\\scripts\\_rules.py",
+    "rules_import_ok": true,
+    "splits": [
+      "development",
+      "validation",
+      "test"
+    ],
+    "subsets": [
+      "evidence_discipline",
+      "input_modes",
+      "layout_core",
+      "partition"
+    ]
+  },
+  "cases_evaluated": 24,
+  "subsets": {
+    "layout_core": {
+      "cases": 10,
+      "scored_cases": 10,
+      "score": 0.0,
+      "severe_failures": 10,
+      "configured_weight": 40,
+      "case_scores": [
+        {
+          "case_id": "LAY-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-02",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-03",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-04",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-05",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-06",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-07",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-08",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-09",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "LAY-10",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        }
+      ]
+    },
+    "evidence_discipline": {
+      "cases": 5,
+      "scored_cases": 5,
+      "score": 0.0,
+      "severe_failures": 5,
+      "configured_weight": 20,
+      "case_scores": [
+        {
+          "case_id": "EVD-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "EVD-02",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "EVD-03",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "EVD-04",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "EVD-05",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        }
+      ]
+    },
+    "partition": {
+      "cases": 5,
+      "scored_cases": 5,
+      "score": 0.0,
+      "severe_failures": 5,
+      "configured_weight": 25,
+      "case_scores": [
+        {
+          "case_id": "PAR-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "PAR-02",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "PAR-03",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "PAR-04",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "PAR-05",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        }
+      ]
+    },
+    "input_modes": {
+      "cases": 4,
+      "scored_cases": 4,
+      "score": 0.0,
+      "severe_failures": 4,
+      "configured_weight": 15,
+      "case_scores": [
+        {
+          "case_id": "INP-01",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "INP-02",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "INP-03",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        },
+        {
+          "case_id": "INP-04",
+          "score": 0.0,
+          "severe": [
+            {
+              "code": "S_MISSING_PREDICTION",
+              "message": "案例没有对应的预测输出"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "check_rates": {
+    "action_correct": {
+      "numerator": 0,
+      "denominator": 24,
+      "rate": 0.0,
+      "ci": {
+        "low": 0.0,
+        "high": 0.13798057582897535
+      },
+      "ci_note": null,
+      "status": "ok"
+    }
+  },
+  "severe_failures": [
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-02",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-03",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-04",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-05",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-06",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-07",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-08",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-09",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "LAY-10",
+      "subset": "layout_core",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "EVD-01",
+      "subset": "evidence_discipline",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "EVD-02",
+      "subset": "evidence_discipline",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "EVD-03",
+      "subset": "evidence_discipline",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "EVD-04",
+      "subset": "evidence_discipline",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "EVD-05",
+      "subset": "evidence_discipline",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "PAR-02",
+      "subset": "partition",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "PAR-03",
+      "subset": "partition",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "PAR-04",
+      "subset": "partition",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "PAR-05",
+      "subset": "partition",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "INP-01",
+      "subset": "input_modes",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "INP-02",
+      "subset": "input_modes",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "INP-03",
+      "subset": "input_modes",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    },
+    {
+      "case_id": "INP-04",
+      "subset": "input_modes",
+      "code": "S_MISSING_PREDICTION",
+      "message": "案例没有对应的预测输出"
+    }
+  ],
+  "severe_failure_count": 24,
+  "hard_pass": {
+    "passed": 0,
+    "total": 24,
+    "rate": 0.0
+  },
+  "total": {
+    "score": 0.0,
+    "used_weights": {
+      "layout_core": 0.4,
+      "evidence_discipline": 0.2,
+      "partition": 0.25,
+      "input_modes": 0.15
+    },
+    "excluded_subsets": [],
+    "renormalised": false
+  },
+  "coverage": {
+    "by_subset": {
+      "layout_core": 10,
+      "evidence_discipline": 5,
+      "partition": 5,
+      "input_modes": 4
+    },
+    "by_split": {
+      "development": 16,
+      "test": 3,
+      "validation": 5
+    },
+    "by_difficulty": {
+      "easy": 7,
+      "hard": 7,
+      "medium": 10
+    },
+    "by_draft_source": {
+      "image_description": 6,
+      "text_reconstruction": 18
+    },
+    "by_grade_level": {
+      "初中": 4,
+      "高中": 20
+    },
+    "by_action": {
+      "None": 24
+    }
+  },
+  "strata": {
+    "split": {
+      "development": {
+        "cases": 16,
+        "mean_case_score": 0.0,
+        "severe_cases": 16,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "test": {
+        "cases": 3,
+        "mean_case_score": 0.0,
+        "severe_cases": 3,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "validation": {
+        "cases": 5,
+        "mean_case_score": 0.0,
+        "severe_cases": 5,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "difficulty": {
+      "easy": {
+        "cases": 7,
+        "mean_case_score": 0.0,
+        "severe_cases": 7,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "hard": {
+        "cases": 7,
+        "mean_case_score": 0.0,
+        "severe_cases": 7,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "medium": {
+        "cases": 10,
+        "mean_case_score": 0.0,
+        "severe_cases": 10,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "draft_source": {
+      "image_description": {
+        "cases": 6,
+        "mean_case_score": 0.0,
+        "severe_cases": 6,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "text_reconstruction": {
+        "cases": 18,
+        "mean_case_score": 0.0,
+        "severe_cases": 18,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    },
+    "grade_level": {
+      "初中": {
+        "cases": 4,
+        "mean_case_score": 0.0,
+        "severe_cases": 4,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      },
+      "高中": {
+        "cases": 20,
+        "mean_case_score": 0.0,
+        "severe_cases": 20,
+        "note": "粗口径：案例分均值（0–100），不是子集分"
+      }
+    }
+  },
+  "results": [
+    {
+      "case_id": "LAY-01",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "cubic_extremum",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-02",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "geometry_similarity",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-03",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "quadratic_inequality",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-04",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "trig_equation_messy",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-05",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "linear_equation_overlap",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-06",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "clean_linear_equation",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-07",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "probability_tree",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-08",
+      "subset": "layout_core",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "two_methods_mixed",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-09",
+      "subset": "layout_core",
+      "split": "validation",
+      "difficulty": "easy",
+      "category": "function_graph_check",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "LAY-10",
+      "subset": "layout_core",
+      "split": "validation",
+      "difficulty": "hard",
+      "category": "sequence_classification",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-01",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "short_equation",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-02",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "isolated_calculation",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze",
+        "clarify"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-03",
+      "subset": "evidence_discipline",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "student_layout_description",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-04",
+      "subset": "evidence_discipline",
+      "split": "validation",
+      "difficulty": "medium",
+      "category": "missing_problem_statement",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "EVD-05",
+      "subset": "evidence_discipline",
+      "split": "test",
+      "difficulty": "hard",
+      "category": "conflicting_description",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze",
+        "clarify"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-01",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "four_clear_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-02",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "ambiguous_adjacent_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-03",
+      "subset": "partition",
+      "split": "development",
+      "difficulty": "easy",
+      "category": "single_block",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-04",
+      "subset": "partition",
+      "split": "validation",
+      "difficulty": "hard",
+      "category": "dense_with_crossed_blocks",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "PAR-05",
+      "subset": "partition",
+      "split": "test",
+      "difficulty": "medium",
+      "category": "two_attempts_connected",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "partition"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "INP-01",
+      "subset": "input_modes",
+      "split": "development",
+      "difficulty": "medium",
+      "category": "image_with_student_text",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "INP-02",
+      "subset": "input_modes",
+      "split": "development",
+      "difficulty": "hard",
+      "category": "image_without_text",
+      "grade_level": "高中",
+      "draft_source": "image_description",
+      "action": null,
+      "expected_actions": [
+        "clarify",
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "INP-03",
+      "subset": "input_modes",
+      "split": "validation",
+      "difficulty": "medium",
+      "category": "multi_problem_block",
+      "grade_level": "高中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    },
+    {
+      "case_id": "INP-04",
+      "subset": "input_modes",
+      "split": "test",
+      "difficulty": "easy",
+      "category": "junior_high_balance",
+      "grade_level": "初中",
+      "draft_source": "text_reconstruction",
+      "action": null,
+      "expected_actions": [
+        "analyze"
+      ],
+      "score": 0.0,
+      "checks": [
+        {
+          "name": "action_correct",
+          "value": 0,
+          "detail": "没有预测"
+        }
+      ],
+      "severe": [
+        {
+          "code": "S_MISSING_PREDICTION",
+          "message": "案例没有对应的预测输出"
+        }
+      ]
+    }
+  ],
+  "benchmark": {
+    "name": "draft-coach-layout",
+    "version": "1.0.0",
+    "date": "2026-10-17"
+  }
+}
