@@ -50,7 +50,8 @@ def codes(payload):
 
 class DraftCoachValidateTests(unittest.TestCase):
     def test_real_example_cards_pass_clean(self):
-        for name in ("high_school_cubic.json", "junior_high_substitution.json"):
+        for name in ("high_school_cubic.json", "junior_high_substitution.json",
+                     "junior_high_transposition.json", "layout_habits.json"):
             with self.subTest(card=name):
                 result = run_validate("validate", "--card", str(EXAMPLES / name))
                 payload = json.loads(result.stdout)
@@ -65,10 +66,18 @@ class DraftCoachValidateTests(unittest.TestCase):
              "E_MISSING_DIMENSION"),
             ("评分越界", lambda d: d["dimensions"]["skipping"].update(score="很好"),
              "E_BAD_SCORE"),
-            ("只有两条习惯", lambda d: d.update(top_3_habits=d["top_3_habits"][:2]),
+            ("没有习惯", lambda d: d.update(top_3_habits=[]),
+             "E_HABIT_COUNT"),
+            ("超过三条习惯", lambda d: d.update(
+                top_3_habits=d["top_3_habits"] + [dict(d["top_3_habits"][0],
+                                                      habit="第四条不同的习惯")]),
              "E_HABIT_COUNT"),
             ("多余的顶层字段", lambda d: d.update(process_status="valid"),
              "E_EXTRA_FIELD"),
+            ("缺少 scope", lambda d: d.pop("scope"),
+             "E_MISSING_FIELD"),
+            ("scope 为空", lambda d: d.update(scope="  "),
+             "E_EMPTY_TEXT"),
             ("缺少 next_step", lambda d: d.pop("next_step"),
              "E_MISSING_FIELD"),
             ("学段非法", lambda d: d.update(grade_level="研究生"),
@@ -82,17 +91,9 @@ class DraftCoachValidateTests(unittest.TestCase):
             ("习惯重复", lambda d: d["top_3_habits"][1].update(
                 habit=d["top_3_habits"][0]["habit"]),
              "E_DUPLICATE_HABIT"),
-            ("缺少错误清单", lambda d: d.pop("error_check"),
-             "E_MISSING_FIELD"),
-            ("错误清单缺 errors", lambda d: d["error_check"].pop("errors"),
-             "E_MISSING_FIELD"),
-            ("错误清单范围为空", lambda d: d["error_check"].update(scope=" "),
-             "E_EMPTY_TEXT"),
-            ("errors 不是数组", lambda d: d["error_check"].update(errors={}),
-             "E_BAD_ERROR_LIST"),
-            ("错误条目缺 fix", lambda d: d["error_check"].update(errors=[
-                {"location": "中部", "evidence": "草稿写 3x²=3", "explanation": "此处存疑"}]),
-             "E_MISSING_FIELD"),
+            ("混入错误清单", lambda d: d.update(error_check={
+                "scope": "x", "errors": []}),
+             "E_EXTRA_FIELD"),
         ]
         for label, mutate, expected in cases:
             with self.subTest(case=label):
@@ -100,16 +101,30 @@ class DraftCoachValidateTests(unittest.TestCase):
                 self.assertEqual(code, 1, payload)
                 self.assertIn(expected, codes(payload))
 
-    def test_unavailable_score_only_allowed_for_draft_utilization(self):
-        # 「不适用」是给"没有最终解答"留的口子，不能挪到别的维度
-        code, payload = validate(
-            lambda d: d["dimensions"]["organization"].update(score="不适用"))
-        self.assertEqual(code, 1)
-        self.assertIn("E_BAD_SCORE", codes(payload))
+    def test_unavailable_score_allowed_with_reason(self):
+        # 观察不足时任一维度都可以标「不适用」，但 observation 要写明原因。
+        code, payload = validate(lambda d: d["dimensions"]["organization"].update(
+            score="不适用", observation="草稿太短，无法判断有没有分区。"))
+        self.assertEqual(code, 0, payload)
+        self.assertNotIn("W_UNAVAILABLE_WITHOUT_REASON",
+                         [w["code"] for w in payload["warnings"]])
+
+        code, payload = validate(lambda d: d["dimensions"]["organization"].update(
+            score="不适用", observation="左上角写题目，过程在中间。"))
+        self.assertEqual(code, 0, payload)
+        self.assertIn("W_UNAVAILABLE_WITHOUT_REASON",
+                      [w["code"] for w in payload["warnings"]])
 
         code, payload = validate(
             lambda d: d["dimensions"]["draft_to_solution"].update(score="不适用"))
         self.assertEqual(code, 0, payload)
+
+    def test_one_to_three_habits_are_structurally_allowed(self):
+        for count in (1, 2, 3):
+            with self.subTest(count=count):
+                code, payload = validate(
+                    lambda d: d.update(top_3_habits=d["top_3_habits"][:count]))
+                self.assertEqual(code, 0, payload)
 
     def test_positive_field_is_correction_pattern_only(self):
         code, payload = validate(lambda d: d["dimensions"]["organization"].update(
@@ -160,6 +175,16 @@ class DraftCoachHintTests(unittest.TestCase):
                           "trial_and_error", "graphic_use", "draft_to_solution"])
         self.assertEqual([g["grade"] for g in payload["grade_menu"]],
                          ["小学", "初中", "高中", "大学"])
+
+    def test_hint_detects_math_layout_cues(self):
+        draft = ("分类讨论：① 当 x>0；② 当 x<0。几何图画了图，辅助线没标顶点；"
+                 "最后没有留检验区。")
+        result = run_validate("hint", "--draft", draft, "--grade-level", "高中")
+        payload = json.loads(result.stdout)
+        keys = {item["dimension"] for item in payload["detected_signals"]}
+        self.assertIn("trial_and_error", keys)
+        self.assertIn("graphic_use", keys)
+        self.assertIn("draft_to_solution", keys)
 
     def test_hint_rejects_bad_grade_and_empty_draft(self):
         self.assertEqual(run_validate("hint", "--draft", "x=1", "--grade-level", "研究生").returncode, 2)

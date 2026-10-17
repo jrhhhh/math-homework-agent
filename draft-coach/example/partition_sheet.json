@@ -1,0 +1,39 @@
+{
+  "action": "partition",
+  "block_source": "image_layout",
+  "blocks": [
+    {
+      "block_id": "B1",
+      "location": "左上",
+      "visual_cues": "与右侧有一大段留白，顶部有一行像题号的短标记",
+      "separate_problem": true,
+      "confidence": "高",
+      "note": "左侧自成一栏，和右边没有穿插"
+    },
+    {
+      "block_id": "B2",
+      "location": "右上",
+      "visual_cues": "位于右栏上半部，与下方内容之间有一条横向空隙",
+      "separate_problem": true,
+      "confidence": "中",
+      "note": "与 B1 分隔清楚；题号没看清"
+    },
+    {
+      "block_id": "B3",
+      "location": "右下",
+      "visual_cues": "紧接 B2 下方，中间只隔一行，书写方向与 B2 一致",
+      "separate_problem": false,
+      "confidence": "低",
+      "note": "可能是 B2 的第二问，也可能是同一题换方法的另一次尝试"
+    }
+  ],
+  "estimated_problem_count": 2,
+  "count_range": [2, 3],
+  "uncertainty": "B3 与 B2 之间只有一行空隙，既像同一题的第二问，也像一次新尝试；只凭版面分不清。",
+  "confirmation_question": "我大致看到 3 块、像 2–3 道题；B3 是不是接着 B2 的？",
+  "limitations": [
+    "只看版面，不读字符",
+    "块数不等于题目数",
+    "归属需要学生确认"
+  ]
+}

@@ -1,6 +1,6 @@
 # 高中数学作业三 Skill 项目
 
-一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Solution Refiner**（`solution-refiner`）在当前解答的结论与完整过程都成立、且用户请求优化后，提供三个优化方向；**skill：Draft Coach**（`draft-coach`）看学生的**草稿**——首要检查草稿里的计算错误，其次分析过程习惯（分区、跳步、涂改、试错、画图、草稿利用率）——输出错误清单 + 六维观察 + 下一道题就能执行的动作。它不诊断知识漏洞、不贴标签、不给整题重写。
+一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Solution Refiner**（`solution-refiner`）在当前解答的结论与完整过程都成立、且用户请求优化后，提供三个优化方向；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
@@ -20,18 +20,28 @@
 
 也可以向能读取本地文件的 Agent 指定 `math-error-diagnosis/SKILL.md`，要求按其规则检查题目和学生解答。Skill 需要宿主模型执行，Python 脚本不提供通用诊断服务。
 
-学生交的是**草稿纸**（不是作业本上的正式解答）时用 `$draft-coach`：它先报草稿里的计算错误，再讲过程习惯。
+学生交的是**草稿纸**（不是作业本上的正式解答）时用 `$draft-coach`：它只看版面习惯，不判断对错。
 
 ```text
-请使用 $draft-coach 检查我的草稿，先看有没有算错，再说过程习惯。
+请使用 $draft-coach 看看我的草稿习惯。
 
 草稿：左上角写 x^3-3x 求极值；中间写 f'(x)=3x^2-3；下面写 3x^2=3 → x^2=1 → x=1（划掉）x=±1；
 右边写 f(1)=-2；右下角写 f(-1)=2；底部写 极大值2 极小值-2
 ```
 
-两条使用要点：**带上原题，查错才有完整依据**——没有原题时它只能查草稿内部自洽（前后矛盾、代回不成立），方向性错误基本查不出来，而且必须在卡片 `scope` 里写明降级范围；**手写草稿要由你自己把纸上的内容打成文字给它**，读错一个数字就会变成一条凭空指控你的"错误"。
+两条使用要点：**习惯分析不需要原题**；**手写草稿要由你自己把纸上的内容打成文字、或说出版面布局给它**，它不读字符。卡片里的 `scope` 会写明这次只看了版面、没核对题意。
 
-与 `$math-error-diagnosis` 的分界靠输入，不靠问题：**正式解答**走诊断，**草稿**走这里。
+要判断对错、找错因，请走 `$math-error-diagnosis`，不要用本技能。`triage` 出口已移除。
+
+如果发的是**一整张草稿纸**、只想问「我大概做了几道题」，走 `partition` 出口：
+
+```text
+请使用 $draft-coach 看一下这张草稿纸，大概做了几道题？
+```
+
+它只按版面分块（留白、分隔线、栏位、区域大小），给一个估计范围，并把分不准的地方写出来请你确认。**块数不等于题目数**：一块可能是一道题的一问、一次换方法的尝试或废弃草稿；它不会读纸上的字符。
+
+与 `$math-error-diagnosis` 的分界靠输入，不靠问题：**正式解答**走诊断，**草稿**走这里；**已判错的选择/填空题**先走分诊，确认后再走诊断。
 
 默认模式是过程检查。可要求“完整纠正”“只给一个提示，别告诉答案”或“仅核对答案”；只有最终答案时不会推断未提供的过程。默认使用高中方法，不擅自扣分，参考答案也需核验。
 
@@ -47,13 +57,13 @@ solution-refiner/
   solution_card_check.py   优化卡的结构门与越界审计
   example/                 三份示例卡（含混入诊断的反例）
 draft-coach/
-  SKILL.md                 草稿检查入口（行为契约与 Workflow）
-  references/              六维判定尺度、输出 Schema、7 份示例说明
-  scripts/                 两道门：validate_output.py（结构 + hint）与 audit_output.py（审计 + refuse），共用 _rules.py
-  assets/output_template.json  空白卡片骨架
-  tests/                   技能自带门测试（22 项）
-  evals/                   评测子系统：38 个案例、评测器、报告模板与测试（85 项）
-  example/                 三份示例卡、一份编造错误的反例、三份 refuse 输出
+  SKILL.md                 草稿习惯入口（行为契约与 Workflow）
+  references/              六维版面尺度、输出 Schema、示例说明、图片入口、题目分区
+  scripts/                 三道门：validate_output.py（结构 + hint）、audit_output.py（审计 + refuse）与 partition_check.py（分区），共用 _rules.py
+  assets/                  空白卡片骨架 output_template.json 与分块单骨架 partition_template.json
+  tests/                   技能自带门测试（38 项）
+  evals/                   旧版「查错」基准，已冻结（见 evals/FROZEN.md）
+  example/                 习惯卡、反例卡、整页分块单与三份 refuse 输出
 docs/                      诊断案例、验证范围与说明
 tests/                     衔接回归测试、草稿门层报告测试与固定案例计算脚本
 scripts/handoff_check.py   交接元信息与当前解答版本检查
@@ -80,18 +90,27 @@ python3 tests/高中题型计算核验.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（22 项，覆盖草稿卡的结构、越界、关联度与三个 refuse 出口），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、编造错误只有在 `--strict` 下才拦得住、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
+覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（38 项，覆盖版面习惯卡的结构、越界、三个 refuse 出口与分区门），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、越界反例、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
 
 draft-coach 的两道门可直接复现：
 
 ```bash
 cd draft-coach
 python3 scripts/validate_output.py validate --card example/high_school_cubic.json
-python3 scripts/audit_output.py audit --card example/fabricated_error.json \
-  --draft "左上角写 x^3-3x 求极值；下面写 3x^2=3 → x^2=1 → x=1（划掉）x=±1"
+python3 scripts/audit_output.py audit --card example/out_of_scope_label.json \
+  --draft "左上角写 x^3-3x 求极值；下面写 3x^2=3 → x^2=1 → x=1（划掉）x=±1" --strict
 ```
 
-第一道应退出 0；第二道结构合格但审计应退出 1——它报了一条草稿里根本没有的错误（`48÷4=12`，`W_ERROR_NOT_IN_DRAFT` 会列出查不到的候选记号），还给学生贴标签、写了题量计划。
+第一道应退出 0；第二道结构合格但审计应退出 1——它给学生贴标签（`A_LABEL`），还写了题量计划（`A_PLAN`）。
+
+分区门可直接复现：
+
+```bash
+cd draft-coach
+python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict
+```
+
+应退出 0。它只查分块单的形状与措辞：块 1–12 个、数量与范围自洽、有不确定说明与确认问题、限制说明齐全，并拦「就是 N 道题」「算错」「我看出来这行写的是…」这类措辞。**它不判断分块是否真的对应题目，也不验证图片。**
 
 草稿评测里每张卡片过不过门，可以只重放退出码、不调用模型：
 
@@ -99,20 +118,20 @@ python3 scripts/audit_output.py audit --card example/fabricated_error.json \
 python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation/draft-coach-2026-10-15
 ```
 
-它读 `inputs.json` 与 `skill.json`，对保存下来的卡片重跑 `validate` 与 `audit --strict`，记录真实退出码与命中代码，写到 `gates.json`。退出码沿用 0/1/2：0 = 每张卡都过两道门，1 = 有效输入但有卡未过门（或一张卡都没产出），2 = 输入非法。它只说明卡片有没有越过结构线与措辞线，**不说明"这处算错了"判得对不对**。
+它读 `inputs.json` 与 `skill.json`，对保存下来的卡片重跑 `validate` 与 `audit --strict`，记录真实退出码与命中代码，写到 `gates.json`。退出码沿用 0/1/2：0 = 每张卡都过两道门，1 = 有效输入但有卡未过门（或一张卡都没产出），2 = 输入非法。它只说明卡片有没有越过结构线与措辞线，**不说明版面观察是否属实**。
 
 三个技能于2026-10-10通过宿主 skill-creator 的 `quick_validate.py`；全部26项单元测试、27组固定计算、参考链接与界面配置检查通过。新增 [行为对照评测](docs/行为对照评测.md) 保存12题普通问答、Skill回答及匿名独立上下文复核的真实记录；这些小样本结果不构成普遍准确率保证。
 
-新增 [草稿行为对照评测](docs/草稿行为对照评测.md)：12条合成草稿的普通问答/Skill 对照与匿名独立复核（`skill` 12/12、普通问答 10/12，两项都失败在不越界这一项），外加一层可重跑、不由模型产出的门层读数（交付的 9 张卡片全部通过两道门）。两条限制必须一起读：两项条件在数学判断上都是满分，存在天花板效应，**没有证明 Skill 判定得更准**；门层只重放退出码，不构成数学结论。
+**历史记录（旧版查错技能）**：[草稿行为对照评测](docs/草稿行为对照评测.md) 是 2026-10-15 针对旧版 draft-coach 的12条合成草稿对照与门层读数；当前技能已改为只看版面，**这些分数不能用来评价现在的能力**。
 
-草稿技能的评测子系统在 [draft-coach/evals/](draft-coach/evals/)：38 个案例分六个子集（数学错误定位、证据忠实度、六维分析、边界与拒绝、复杂草稿、输出与工具合规），案例与标准答案分放 `cases.jsonl` 与 `ground_truth.jsonl`，带 JSON Schema、自动评测器、三层评分（自动／模型辅助／人工）、严重失败硬门槛与报告模板。`python3 draft-coach/evals/engine/schema_check.py` 可校验案例与标准答案。**其中没有任何真实模型输出**：三组实验与模型辅助／人工两层均标为未运行，已跑的只有夹具。该评测还查出技能门脚本的一处假阳性（`方法①` 被当成题号，正确卡片过不了 `audit --strict`），见 [FINDINGS](draft-coach/evals/docs/FINDINGS.md)。
+旧版「查错」基准在 [draft-coach/evals/](draft-coach/evals/)，**已冻结**：它测的是 2026-10-15 以前以“先查计算错误”为主产品的 draft-coach，不对应当前版面习惯技能。保留它是为了记录当时的案例、锚点校验与门层重放方法；**不要在当前技能上运行**。新的版面习惯基准尚未建立。
 
 ## 能力边界
 
-图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不含任何手写转写（OCR）技能，也不附带学生数据库**。
+图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不内置任何手写转写（OCR）技能，也不附带学生数据库**；外部 OCR 只能当线索，**不作证据**。
 
 复杂题目仍应审查实际数学依据，不能把有限案例结果视为任意高考题的准确率保证。
 
-draft-coach **首要功能是查错，而"这处算错了"恰恰是它两道门唯一验不了的东西**。`validate` 只看错误条目有没有四个字段；`audit` 只能查"你说的那处在草稿里找不找得到"（`W_ERROR_NOT_IN_DRAFT`），查不了"你判得对不对"——引用了草稿却把对的判成错的，它一声不响。**没有人工复核的草稿检查卡不构成数学结论。**
+draft-coach **只看版面习惯，不判断计算对错**。`validate` 只查卡片结构，`audit` 只查越界措辞；两者都**不验证版面观察是否属实**。通过两道门只说明卡片没越过结构线与措辞线，不说明这份习惯分析真的说中了这个学生。
 
-draft-coach 自身只处理**文字还原，或学生自己看照片写下的文字描述**，不做笔迹识别、也不许助手自己看图读字符。学生没给文字时它应当请他打字 / 口述 / 重拍，或只出版面维度的降级卡，而不是猜。手写照片的内容、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头。
+draft-coach 自身只处理**文字还原，或学生自己看照片写下的文字描述**，不做笔迹识别、也不许助手自己看图读字符。学生没给文字时它应当请他打字 / 口述 / 重拍，或只出版面能支撑的习惯卡，而不是猜。手写照片的内容、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头。

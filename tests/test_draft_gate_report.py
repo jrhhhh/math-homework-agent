@@ -65,7 +65,7 @@ class DraftGateReportTests(unittest.TestCase):
     def test_structural_damage_fails_validate_but_is_still_valid_input(self):
         card = json.loads((EXAMPLES / "high_school_cubic.json").read_text(encoding="utf-8"))
         del card["next_step"]                      # 结构门应当报 E_MISSING_FIELD
-        card["top_3_habits"] = card["top_3_habits"][:2]   # 习惯不足 3 条
+        card["top_3_habits"] = []                  # 习惯不足 1 条
         with tempfile.TemporaryDirectory() as tmp:
             write_case(tmp, CUBIC_DRAFT, card)
             result = run_report(tmp)
@@ -78,30 +78,9 @@ class DraftGateReportTests(unittest.TestCase):
         self.assertEqual(payload["gate_failed_cases"], ["X01"])
         self.assertFalse(payload["passed"])
 
-    def test_fabricated_error_only_shows_up_under_strict(self):
-        """只说「这处算错了」而证据在草稿里找不到：两道门都只报警告，--strict 才拦得住。"""
-        card = json.loads((EXAMPLES / "high_school_cubic.json").read_text(encoding="utf-8"))
-        card["error_check"]["errors"] = [{
-            "location": "草稿下面一行",
-            "evidence": "草稿下面还写了一行 48÷4=12，这一步用了错误的除数。",
-            "explanation": "除数用错了，后面的结果跟着一起偏。",
-            "fix": "把这一行的除数换回正确的那个再重算。",
-        }]
-        with tempfile.TemporaryDirectory() as tmp:
-            write_case(tmp, CUBIC_DRAFT, card)
-            result = run_report(tmp)
-        payload = json.loads(result.stdout)
-        case = payload["per_case"][0]["card"]
-        self.assertEqual(case["validate"]["exit"], 0)       # 结构门只数四个字段，齐了
-        self.assertEqual(case["audit"]["exit"], 0)          # 不带 --strict：warning 不算失败
-        self.assertEqual(case["audit_strict"]["exit"], 1)   # 带 --strict：才拦得住
-        self.assertIn("W_ERROR_NOT_IN_DRAFT", case["audit_strict"]["warnings"])
-        self.assertEqual(result.returncode, 1)
-        self.assertFalse(payload["passed"])
-
     def test_documented_counterexample_card_fails_audit(self):
         """仓库自带的反例卡：结构门退出 0，审计因为越界措辞直接退出 1。"""
-        card = json.loads((EXAMPLES / "fabricated_error.json").read_text(encoding="utf-8"))
+        card = json.loads((EXAMPLES / "out_of_scope_label.json").read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:
             write_case(tmp, CUBIC_DRAFT, card)
             result = run_report(tmp)
@@ -111,7 +90,6 @@ class DraftGateReportTests(unittest.TestCase):
         self.assertEqual(case["audit"]["exit"], 1)          # A 组是 error，不用 --strict 也失败
         self.assertIn("A_LABEL", case["audit"]["errors"])
         self.assertIn("A_PLAN", case["audit"]["errors"])
-        self.assertIn("W_ERROR_NOT_IN_DRAFT", case["audit"]["warnings"])
         self.assertEqual(result.returncode, 1)
 
     def test_missing_card_is_reported_as_none_and_checks_refusal_wording(self):

@@ -7,12 +7,12 @@
   validate_output.py hint     --draft "草稿内容" [--grade-level 高中]
 
 退出码：
-  0 = 结构通过；1 = 结构不合格（缺错误清单、错误条目缺字段、缺维度、评分越界、
-  习惯不是 3 条、多余字段）；2 = 输入非法（卡片文件读不了、草稿为空、学段非法）。
+  0 = 结构通过；1 = 结构不合格（缺维度、评分越界、习惯不在 1–3 条、多余字段）；
+  2 = 输入非法（卡片文件读不了、草稿为空、学段非法）。
   `hint` 在输入合法时总是退出 0。
 
-**它不判断你报的那处错误在数学上是否真的错**——那要人来算。越界与证据审计在
-`audit_output.py`。共用常量与能力边界见 `_rules.py`。
+**它只查卡片结构，不判断任何数学内容。** 越界措辞审计在 `audit_output.py`。
+共用常量与能力边界见 `_rules.py`。
 """
 
 import argparse
@@ -23,9 +23,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _rules import (  # noqa: E402
     DEFAULT_GRADE, DIMENSIONS_FIELD, DIM_FIELDS, DIM_KEYS, DIM_LABEL, DIM_RUBRIC,
-    ERROR_FIELD, ERROR_ITEM_FIELDS, FIX_NON_ACTIONABLE_RE, GRADE_TABLE, GRADES,
-    HABIT_COUNT, HABIT_FIELD, HABIT_FIELDS, POSITIVE_DIM, REQUIRED_FIELDS,
-    SCORES, SCORES_LAST, SIGNAL_CUES, SOURCES, VAGUE_ACTION_RE, emit, load_card, norm,
+    GRADE_TABLE, GRADES, HABIT_FIELD, HABIT_FIELDS, HABIT_MAX, HABIT_MIN,
+    POSITIVE_DIM, REQUIRED_FIELDS, SCORES_ANY, SCOPE_FIELD, SIGNAL_CUES, SOURCES,
+    UNAVAILABLE, UNAVAILABLE_REASON_RE, VAGUE_ACTION_RE, emit, load_card, norm,
 )
 
 
@@ -42,55 +42,14 @@ def cmd_validate(args):
     for field in card:
         if field not in REQUIRED_FIELDS:
             errors.append({"code": "E_EXTRA_FIELD", "field": field,
-                           "detail": "分析卡只能包含五个标准字段；交接状态、诊断结论请放在卡片之外"})
+                           "detail": "分析卡只能包含五个标准字段；错误清单、诊断结论、"
+                                     "交接状态请放在卡片之外"})
 
-    # -- 错误清单（首要产出，排在六个维度前面）
-    error_check = card.get(ERROR_FIELD)
-    if ERROR_FIELD in card:
-        if not isinstance(error_check, dict):
-            errors.append({"code": "E_BAD_ERROR_CHECK", "field": ERROR_FIELD,
-                           "detail": "必须是对象：scope 说明本次检查范围，errors 是错误数组"})
-            error_check = None
-        else:
-            for field in error_check:
-                if field not in ("scope", "errors"):
-                    errors.append({"code": "E_EXTRA_FIELD", "field": "%s.%s" % (ERROR_FIELD, field),
-                                   "detail": "非标准字段，建议删除"})
-            scope = error_check.get("scope")
-            if not isinstance(scope, str) or not scope.strip():
-                errors.append({"code": "E_EMPTY_TEXT", "field": "%s.scope" % ERROR_FIELD,
-                               "detail": "必须写明这次实际检查了什么、什么没查"})
-
-    if isinstance(error_check, dict):
-        found = error_check.get("errors")
-        if "errors" not in error_check:
-            errors.append({"code": "E_MISSING_FIELD", "field": "%s.errors" % ERROR_FIELD,
-                           "detail": "必须是数组；没发现错误就写空数组，不能不写"})
-        elif not isinstance(found, list):
-            errors.append({"code": "E_BAD_ERROR_LIST", "field": "%s.errors" % ERROR_FIELD,
-                           "detail": "必须是数组"})
-        else:
-            for index, item in enumerate(found, start=1):
-                tag = "%s.errors[%d]" % (ERROR_FIELD, index)
-                if not isinstance(item, dict):
-                    errors.append({"code": "E_BAD_ERROR_ITEM", "field": tag,
-                                   "detail": "每条错误必须是 JSON 对象"})
-                    continue
-                for field in ERROR_ITEM_FIELDS:
-                    if field not in item:
-                        errors.append({"code": "E_MISSING_FIELD", "field": "%s.%s" % (tag, field),
-                                       "detail": "缺少必需字段"})
-                    elif not isinstance(item[field], str) or not item[field].strip():
-                        errors.append({"code": "E_EMPTY_TEXT", "field": "%s.%s" % (tag, field),
-                                       "detail": "必须是非空字符串"})
-                for field in item:
-                    if field not in ERROR_ITEM_FIELDS:
-                        errors.append({"code": "E_EXTRA_FIELD", "field": "%s.%s" % (tag, field),
-                                       "detail": "非标准字段，建议删除"})
-                fix = item.get("fix")
-                if isinstance(fix, str) and fix.strip() and FIX_NON_ACTIONABLE_RE.match(fix):
-                    warnings.append({"code": "W_VAGUE_FIX", "field": "%s.fix" % tag, "text": fix,
-                                     "detail": "修改写成这样等于没说；要写出改成什么"})
+    # -- scope：这次看了什么、没看什么
+    scope = card.get(SCOPE_FIELD)
+    if SCOPE_FIELD in card and (not isinstance(scope, str) or not scope.strip()):
+        errors.append({"code": "E_EMPTY_TEXT", "field": SCOPE_FIELD,
+                       "detail": "必须写明这次看了什么、没看什么（例如只看版面，未读字符）"})
 
     # -- 六个维度
     dimensions = card.get(DIMENSIONS_FIELD)
@@ -131,7 +90,7 @@ def cmd_validate(args):
                                    "field": "%s.%s" % (tag, field),
                                    "detail": "必须是非空字符串"})
 
-            allowed_scores = SCORES_LAST if key == "draft_to_solution" else SCORES
+            allowed_scores = SCORES_ANY
             score = dim.get("score")
             if isinstance(score, str) and score.strip():
                 if score.strip() not in allowed_scores:
@@ -139,12 +98,19 @@ def cmd_validate(args):
                                    "text": score,
                                    "detail": "评分取值非法",
                                    "allowed": list(allowed_scores),
-                                   "note": None if key == "draft_to_solution"
-                                           else "只有「草稿利用率」在缺少最终解答时可用「不适用」"})
+                                   "note": "观察不足时可用「不适用」，"
+                                           "但 observation 必须写明为什么无法判断"})
+                elif score.strip() == UNAVAILABLE:
+                    if not UNAVAILABLE_REASON_RE.search(str(dim.get("observation") or "")):
+                        warnings.append({"code": "W_UNAVAILABLE_WITHOUT_REASON",
+                                         "field": "%s.observation" % tag,
+                                         "detail": "score=不适用 时，observation 必须写明"
+                                                   "为什么这一维无法判断（草稿太短 / 证据不足 / "
+                                                   "缺最终解答）"})
             if "positive" in dim:
                 if key != POSITIVE_DIM:
                     errors.append({"code": "E_EXTRA_FIELD", "field": "%s.positive" % tag,
-                                   "detail": "只有「涂改模式」可以写 positive；"
+                                   "detail": "只有「划改与自纠」可以写 positive；"
                                              "其他维度的积极信号写进 observation"})
                 elif not isinstance(dim["positive"], str) or not dim["positive"].strip():
                     errors.append({"code": "E_EMPTY_TEXT", "field": "%s.positive" % tag,
@@ -182,16 +148,17 @@ def cmd_validate(args):
                              "text": next_step,
                              "detail": "看不出下一道题具体做什么；写成能立刻执行的动作"})
 
-    # -- 三条习惯
+    # -- 1–3 条习惯
     habits = card.get(HABIT_FIELD)
     if HABIT_FIELD in card:
         if not isinstance(habits, list):
             errors.append({"code": "E_BAD_HABITS", "field": HABIT_FIELD,
                            "detail": "必须是数组，数组里每条是一个习惯"})
             habits = None
-        elif len(habits) != HABIT_COUNT:
+        elif not (HABIT_MIN <= len(habits) <= HABIT_MAX):
             errors.append({"code": "E_HABIT_COUNT", "count": len(habits),
-                           "detail": "习惯必须恰好 %d 条，实为 %d 条" % (HABIT_COUNT, len(habits))})
+                           "detail": "习惯必须 1–3 条（普通草稿 3 条；短草稿或证据不足可 1–2 条），"
+                                     "实为 %d 条" % len(habits)})
 
     if isinstance(habits, list):
         seen = {}
@@ -218,7 +185,7 @@ def cmd_validate(args):
                 if key in seen:
                     errors.append({"code": "E_DUPLICATE_HABIT", "field": "%s.habit" % tag,
                                    "text": habit.get("habit"),
-                                   "detail": "与第 %d 条习惯重复；三条习惯要说三件事" % seen[key]})
+                                   "detail": "与第 %d 条习惯重复；同一张卡里的习惯不能重复" % seen[key]})
                 else:
                     seen[key] = index
 
@@ -235,22 +202,27 @@ def cmd_validate(args):
         scores = [dimensions[k].get("score") for k in DIM_KEYS
                   if isinstance(dimensions.get(k), dict)]
         if len(scores) == len(DIM_KEYS) and len(set(scores)) == 1:
-            warnings.append({"code": "W_SCORE_UNIFORM", "field": DIMENSIONS_FIELD,
-                             "detail": "六个维度评分完全相同（%s）；"
-                                       "先确认这不是没有逐维看草稿" % scores[0]})
+            if scores[0] == UNAVAILABLE:
+                warnings.append({"code": "W_ALL_UNAVAILABLE", "field": DIMENSIONS_FIELD,
+                                 "detail": "六个维度全部标为不适用；"
+                                           "如果草稿确实不足以判断，应在 observation 里说明；"
+                                           "否则至少有几维可以观察"})
+            else:
+                warnings.append({"code": "W_SCORE_UNIFORM", "field": DIMENSIONS_FIELD,
+                                 "detail": "六个维度评分完全相同（%s）；"
+                                           "先确认这不是没有逐维看草稿" % scores[0]})
 
     passed = not errors
     emit({
         "action": "validate",
         "input": {"card": args.card},
-        "method": "字段完整性 + 错误清单四字段 + 恰好六个维度 + 评分取值 + 恰好三条习惯"
-                  " + 学段与来源合法性",
+        "method": "字段完整性 + 恰好六个维度 + 评分取值（含不适用）"
+                  " + 1–3 条习惯 + 学段与来源合法性",
         "errors": errors,
         "warnings": warnings,
         "passed": passed,
-        "capability_note": "结构门只查卡片长得对不对：**它不判断你报的错误是不是真的错**，"
-                           "也不判断习惯观察是否成立。错误指控是否有草稿依据由 audit 的"
-                           " W_ERROR_NOT_IN_DRAFT 提醒，数学本身只能人工复核。",
+        "capability_note": "结构门只查卡片长得对不对：**它不判断任何数学内容，"
+                           "也不判断版面观察是否成立。** 本技能只看版面习惯，不判对错。",
     }, 0 if passed else 1)
 
 
@@ -287,7 +259,8 @@ def cmd_hint(args):
         "authority": "heuristic-hint-only",
         "capability_note": "关键词命中只是提示，可能误判；必须以读完草稿后的判断为准，"
                            "不得用本输出替代对草稿的理解，也不得凭关键词就下习惯结论。"
-                           "六个维度都要给评分，不能因为没命中关键词就跳过。",
+                           "六个维度都要逐维看；确实观察不足时标「不适用」并写明原因，"
+                           "不能因为没命中关键词就跳过。",
     }, 0)
 
 
