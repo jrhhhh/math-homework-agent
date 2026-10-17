@@ -68,11 +68,11 @@
         "final_solution": {"type": ["string", "null"], "description": "最终解答；未提供时为 null。"},
         "draft_source": {
           "type": "string",
-          "enum": ["text_reconstruction", "image_description", "absent"]
+          "enum": ["text_reconstruction", "image_description", "machine_transcription", "absent"]
         },
         "image_confirmed": {
           "type": "boolean",
-          "description": "图片类草稿的转写是否已由学生核对。未核对不得据此判定确定结论。"
+          "description": "图片类草稿（image_description / machine_transcription）的转写是否已由学生核对。未核对不得据此判定确定结论。"
         }
       }
     },

@@ -8,7 +8,8 @@
 
 退出码：
   0 = 结构通过；1 = 结构不合格（缺错误清单、错误条目缺字段、缺维度、评分越界、
-  习惯不是 3 条、多余字段）；2 = 输入非法（卡片文件读不了、草稿为空、学段非法）。
+  习惯条数不合法、分析依据与评分/来源不符、多余字段）；2 = 输入非法（卡片文件读不了、
+  草稿为空、学段非法）。
   `hint` 在输入合法时总是退出 0。
 
 **它不判断你报的那处错误在数学上是否真的错**——那要人来算。越界与证据审计在
@@ -22,10 +23,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _rules import (  # noqa: E402
-    DEFAULT_GRADE, DIMENSIONS_FIELD, DIM_FIELDS, DIM_KEYS, DIM_LABEL, DIM_RUBRIC,
-    ERROR_FIELD, ERROR_ITEM_FIELDS, FIX_NON_ACTIONABLE_RE, GRADE_TABLE, GRADES,
-    HABIT_COUNT, HABIT_FIELD, HABIT_FIELDS, POSITIVE_DIM, REQUIRED_FIELDS,
-    SCORES, SCORES_LAST, SIGNAL_CUES, SOURCES, VAGUE_ACTION_RE, emit, load_card, norm,
+    ANALYSIS_BASES, ANALYSIS_BASIS_FIELD, DEFAULT_GRADE, DIMENSIONS_FIELD, DIM_FIELDS,
+    DIM_KEYS, DIM_LABEL, DIM_RUBRIC, ERROR_FIELD, ERROR_ITEM_FIELDS,
+    FIX_NON_ACTIONABLE_RE, GRADE_TABLE, GRADES, HABIT_COUNT, HABIT_COUNT_LAYOUT,
+    HABIT_FIELD, HABIT_FIELDS, LAYOUT_ONLY, LAYOUT_ONLY_OPTIONAL_DIMS,
+    LAYOUT_ONLY_REQUIRED_DIMS, LAYOUT_ONLY_UNAVAILABLE_DIMS, LAYOUT_SOURCES, POSITIVE_DIM,
+    REQUIRED_FIELDS, SCORES, SCORES_LAST, SIGNAL_CUES, SOURCES, UNAVAILABLE,
+    VAGUE_ACTION_RE, emit, load_card, norm,
 )
 
 
@@ -42,7 +46,17 @@ def cmd_validate(args):
     for field in card:
         if field not in REQUIRED_FIELDS:
             errors.append({"code": "E_EXTRA_FIELD", "field": field,
-                           "detail": "分析卡只能包含五个标准字段；交接状态、诊断结论请放在卡片之外"})
+                           "detail": "分析卡只能包含 %d 个标准字段；"
+                                     "交接状态、诊断结论请放在卡片之外" % len(REQUIRED_FIELDS)})
+
+    # -- 分析依据：完整卡（内容 + 版面）/ 版面卡（只有助手亲眼看的版面）
+    basis = card.get(ANALYSIS_BASIS_FIELD)
+    basis_value = basis.strip() if isinstance(basis, str) else ""
+    if basis_value and basis_value not in ANALYSIS_BASES:
+        errors.append({"code": "E_BAD_ANALYSIS_BASIS", "field": ANALYSIS_BASIS_FIELD,
+                       "text": basis, "detail": "分析依据取值非法",
+                       "allowed": list(ANALYSIS_BASES)})
+    layout_only = basis_value == LAYOUT_ONLY
 
     # -- 错误清单（首要产出，排在六个维度前面）
     error_check = card.get(ERROR_FIELD)
@@ -131,7 +145,23 @@ def cmd_validate(args):
                                    "field": "%s.%s" % (tag, field),
                                    "detail": "必须是非空字符串"})
 
-            allowed_scores = SCORES_LAST if key == "draft_to_solution" else SCORES
+            if layout_only:
+                if key in LAYOUT_ONLY_UNAVAILABLE_DIMS:
+                    allowed_scores = (UNAVAILABLE,)
+                    note = "版面卡没有确认过的内容，这一维给不出，必须标「不适用」"
+                elif key in LAYOUT_ONLY_REQUIRED_DIMS:
+                    allowed_scores = SCORES
+                    note = "版面卡里这一维必须给真实评分"
+                elif key in LAYOUT_ONLY_OPTIONAL_DIMS:  # 图形使用
+                    allowed_scores = SCORES + (UNAVAILABLE,)
+                    note = "只有草稿上无图、且题型判不了时才可用「不适用」"
+                else:
+                    allowed_scores = SCORES
+                    note = "版面卡里这一维必须给真实评分"
+            else:
+                allowed_scores = SCORES_LAST if key == "draft_to_solution" else SCORES
+                note = None if key == "draft_to_solution" \
+                    else "只有「草稿利用率」在缺少最终解答时可用「不适用」"
             score = dim.get("score")
             if isinstance(score, str) and score.strip():
                 if score.strip() not in allowed_scores:
@@ -139,8 +169,7 @@ def cmd_validate(args):
                                    "text": score,
                                    "detail": "评分取值非法",
                                    "allowed": list(allowed_scores),
-                                   "note": None if key == "draft_to_solution"
-                                           else "只有「草稿利用率」在缺少最终解答时可用「不适用」"})
+                                   "note": note})
             if "positive" in dim:
                 if key != POSITIVE_DIM:
                     errors.append({"code": "E_EXTRA_FIELD", "field": "%s.positive" % tag,
@@ -171,6 +200,22 @@ def cmd_validate(args):
         errors.append({"code": "E_BAD_SOURCE", "field": "draft_source", "text": source,
                        "detail": "草稿来源取值非法", "allowed": list(SOURCES)})
 
+    # -- 版面卡的不变量：没有确认过的内容，就不许有计算错误判断，也不许来自文字草稿
+    if layout_only:
+        found = error_check.get("errors") if isinstance(error_check, dict) else None
+        if isinstance(found, list) and found:
+            errors.append({"code": "E_BASIS_ERRORS", "field": "%s.errors" % ERROR_FIELD,
+                           "count": len(found),
+                           "detail": "版面卡没有确认过的内容，不得包含任何计算错误判断；"
+                                     "errors 必须为空"})
+        source_value = source.strip() if isinstance(source, str) else ""
+        if source_value not in LAYOUT_SOURCES:
+            errors.append({"code": "E_BASIS_SOURCE", "field": "draft_source",
+                           "text": source,
+                           "detail": "版面卡没有确认过的内容，来源只能是学生描述的照片；"
+                                     "机器转写意味着已经有内容，应当走完整卡",
+                           "allowed": list(LAYOUT_SOURCES)})
+
     # -- next_step
     next_step = card.get("next_step")
     if "next_step" in card and (not isinstance(next_step, str) or not next_step.strip()):
@@ -189,6 +234,13 @@ def cmd_validate(args):
             errors.append({"code": "E_BAD_HABITS", "field": HABIT_FIELD,
                            "detail": "必须是数组，数组里每条是一个习惯"})
             habits = None
+        elif layout_only:
+            if len(habits) not in HABIT_COUNT_LAYOUT:
+                errors.append({"code": "E_HABIT_COUNT", "count": len(habits),
+                               "detail": "版面卡的习惯允许 %d–%d 条，实为 %d 条；"
+                                         "只写版面能支撑的，不要凑数"
+                                         % (HABIT_COUNT_LAYOUT[0],
+                                            HABIT_COUNT_LAYOUT[-1], len(habits))})
         elif len(habits) != HABIT_COUNT:
             errors.append({"code": "E_HABIT_COUNT", "count": len(habits),
                            "detail": "习惯必须恰好 %d 条，实为 %d 条" % (HABIT_COUNT, len(habits))})
@@ -232,19 +284,22 @@ def cmd_validate(args):
 
     # -- 整卡层面的警告
     if isinstance(dimensions, dict):
+        # 只比真实评分的维度：版面卡里有「不适用」，把它算进去这项检查必然空转
         scores = [dimensions[k].get("score") for k in DIM_KEYS
-                  if isinstance(dimensions.get(k), dict)]
-        if len(scores) == len(DIM_KEYS) and len(set(scores)) == 1:
+                  if isinstance(dimensions.get(k), dict)
+                  and dimensions[k].get("score") in SCORES]
+        if len(scores) >= 3 and len(set(scores)) == 1:
             warnings.append({"code": "W_SCORE_UNIFORM", "field": DIMENSIONS_FIELD,
-                             "detail": "六个维度评分完全相同（%s）；"
-                                       "先确认这不是没有逐维看草稿" % scores[0]})
+                             "detail": "可评的 %d 个维度评分完全相同（%s）；"
+                                       "先确认这不是没有逐维看草稿" % (len(scores), scores[0])})
 
     passed = not errors
     emit({
         "action": "validate",
         "input": {"card": args.card},
-        "method": "字段完整性 + 错误清单四字段 + 恰好六个维度 + 评分取值 + 恰好三条习惯"
-                  " + 学段与来源合法性",
+        "method": "字段完整性 + 错误清单四字段 + 恰好六个维度 + 评分取值（按分析依据校验）"
+                  " + 习惯条数 + 学段、来源与分析依据的合法性"
+                  " + 版面卡不变量（错误清单为空、来源为图片、内容三维不适用）",
         "errors": errors,
         "warnings": warnings,
         "passed": passed,

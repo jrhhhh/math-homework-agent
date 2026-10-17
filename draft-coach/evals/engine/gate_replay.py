@@ -22,7 +22,8 @@ from pathlib import Path
 
 # 子命令 → gate_scripts 里的键
 SUBCOMMAND_TO_SCRIPT = {"validate": "validate", "hint": "validate",
-                        "audit": "audit", "refuse": "audit"}
+                        "audit": "audit", "refuse": "audit",
+                        "clarify": "audit", "transcribe": "audit"}
 
 
 def _script_path(config, key):
@@ -80,7 +81,7 @@ def replay_card(config, card, draft, final_solution=None):
         return out
 
 
-_SUBCOMMANDS = ("validate", "audit", "refuse", "hint")
+_SUBCOMMANDS = ("validate", "audit", "refuse", "hint", "clarify", "transcribe")
 
 
 def claimed_exit_codes(tool_log):

@@ -1,6 +1,6 @@
 # 示例说明
 
-`example/` 里是 7 份真实输出：4 张卡片（3 张正例 + 1 张反例）和 3 份 `refuse` 输出。本文把它们整理成可读说明，并给出**实跑的退出码**，不必再去翻 JSON。
+`example/` 里是 10 份真实输出：5 张卡片（3 张完整卡正例 + 1 张版面卡 + 1 张反例）、3 份 `refuse` 输出、1 份 `clarify` 问题单和 1 份 `transcribe` 候选稿。本文把它们整理成可读说明，并给出**实跑的退出码**，不必再去翻 JSON。
 
 **退出码是实跑得到的**，用本机解释器，工作目录 `d:/university learning/math-homework-agent`：
 
@@ -17,6 +17,7 @@ PY="D:/Program Files/anaconda3/python.exe"
 | `high_school_cubic.json` | 正例卡 | 0 | 0 | 0 |
 | `junior_high_substitution.json` | 正例卡 | 0 | 0 | 0 |
 | `junior_high_transposition.json` | 正例卡 | 0 | 0 | 0 |
+| `layout_only_photo.json` | 版面卡（`layout_only`） | 0 | 0 | 0 |
 | `fabricated_error.json` | 反例卡 | 0 | 1 | 1 |
 | `refuse_empty.json` | refuse 输出 | 不适用 | 不适用 | 不适用（由 `refuse` 产出，退出码 2） |
 | `refuse_unreadable.json` | refuse 输出 | 不适用 | 不适用 | 不适用（退出码 2） |
@@ -56,6 +57,18 @@ PY="D:/Program Files/anaconda3/python.exe"
 
 退出码：`validate` 0 · `audit` 0 · `audit --strict` 0。
 
+## 版面卡：`layout_only_photo.json`（只有照片，没有文字描述）
+
+配套 `--draft` **不是草稿原文，而是助手自己的版面描述**（学生没给文字描述，也没有任何字符内容进入这张卡）：
+
+> 整张纸分左右两块，中间一条竖线；左边从上往下一共六行，第三行后半段被横向划掉，右侧补写了一小段；右边只有两行；整张纸没有图形；行距较密。
+
+卡片要点：`analysis_basis` 为 `layout_only`，`draft_source` 为 `image_description`，`error_check.errors` 为空，`scope` 写明"内容未经学生确认，因此不含任何计算错误的判断"。六维——组织度高（左右分块、有竖线隔开）、涂改中（第三行被划掉后原位补写，`positive` 肯定保留了修改痕迹）、图形使用「不适用」（无图且题型判不了）、跳步/试错/草稿利用率「不适用」（没有内容）。习惯只有 **2 条**（分块内不标步骤位置、划掉不说明理由）——版面卡允许 1–3 条。
+
+审计行为：`W_DETACHED_DRAFT`、`W_ERROR_NOT_IN_DRAFT`、`W_MULTI_PROBLEM_DRAFT`、`W_UTILIZATION_UNAVAILABLE` 都不出现（版面卡上这几项只会自我循环）；`scope` 必须命中「内容未经学生确认」之类的边界句，否则报 `W_LAYOUT_ONLY_SCOPE_SILENT`。
+
+退出码：`validate` 0 · `audit` 0 · `audit --strict` 0。
+
 ## 反例：`fabricated_error.json`（结构门过、审计门不过）
 
 配套草稿：与正例 1 相同的 `CUBIC_DRAFT`（见上）。
@@ -91,6 +104,44 @@ PY="D:/Program Files/anaconda3/python.exe"
 "$PY" draft-coach/scripts/audit_output.py refuse --reason unreadable   # 退出码 2
 "$PY" draft-coach/scripts/audit_output.py refuse --reason out_of_scope # 退出码 1
 ```
+
+## 澄清出口：`clarify_marks.json`
+
+`clarify` 不是卡片，是**本轮不产出分析卡时的出口**：关键记号拿不准、且不同读法会改变结论，就只问那几处（协议见 [key-marks.md](key-marks.md)）。
+
+这份问题单有两项，正好覆盖两种合法问法：
+
+1. **学生点过名 → 可以给候选**：学生说"最后有个不等号，没写清"，于是问「是 `<` 还是 `≤`？」。
+2. **只在版面上看到有个记号 → 只能开放式问**：问「那里有一个记号，写的是什么？」，**不给候选**——给出"可能是不等号"就已经是在读字形了。
+
+每项都带 `affects`，说清哪条结论会跟着变；学生据此判断值不值得回答。整张问题单 2 项，远低于 5 项上限——**问的是"补几处"，不是"重述整页"**。
+
+生成命令与退出码（实跑）：
+
+```bash
+"$PY" draft-coach/scripts/audit_output.py clarify --input questions.json   # 退出码 0
+```
+
+输出字段：`action` / `message` / `questions` / `method` / `errors` / `warnings` / `passed` / `note` / `capability_note`。**退出码 0 只说明问题单合格，不说明有卡片**——调用方看 `action`。
+
+## 转写出口：`transcribe_candidate.json`
+
+`transcribe` 是**机器先读时的候选稿出口**：整份候选 + 至多 5 处不确定，输出带 `status: "awaiting_student_confirmation"` 与 `confirmation_scope: "full"`。它不是卡片，也不是证据——学生逐行核对后，确认稿才作 `--draft`，来源写 `machine_transcription`（协议见 [transcription.md](transcription.md)）。
+
+这份示例有一处 `uncertain`，用 `readings`（机器读法）而不是 `candidates`（学生点过名的角色）：
+
+```json
+{"location": "第二行", "question": "等号右边是 7+3 还是 7-3？",
+ "readings": ["7+3", "7-3"], "affects": "移项是否变号；这会决定 x=5 还是 x=2"}
+```
+
+生成命令与退出码（实跑）：
+
+```bash
+"$PY" draft-coach/scripts/audit_output.py transcribe --input candidate.json   # 退出码 0
+```
+
+**退出码 0 只说明候选稿合格，不说明学生已确认、也不说明有卡片。** `candidate` 与 `readings` 不按助手的越界措辞扫描；`message` 与 `uncertain` 的助手措辞照扫。
 
 ## 两道门都不验数学
 
