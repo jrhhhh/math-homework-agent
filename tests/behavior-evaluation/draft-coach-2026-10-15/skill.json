@@ -71,8 +71,7 @@
       ],
       "next_step": "下一道方程题，移项那一行先把变号后的式子单独写出来再做计算。",
       "grade_level": "初中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -140,8 +139,7 @@
       ],
       "next_step": "下一道带条件的方程题，先把所有根（含 ±）写全，再按条件逐个筛选。",
       "grade_level": "高中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -209,8 +207,7 @@
       ],
       "next_step": "保持这次每一步落笔、末尾代回检验的做法，下一道题再给检验单独起一行写“检验：”。",
       "grade_level": "初中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -278,8 +275,7 @@
       ],
       "next_step": "下一道求极值题，先画一行导数符号表再判断极大极小。",
       "grade_level": "高中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -354,8 +350,7 @@
       ],
       "next_step": "下一道三角方程题，同除含未知数的式子之前先把两边移到一边提公因式，写出所有因式为 0 的情况。",
       "grade_level": "高中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -430,8 +425,7 @@
       ],
       "next_step": "下一道乘法公式题，先把展开的每一项（含交叉项）都写出来再合并。",
       "grade_level": "高中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -505,8 +499,7 @@
       ],
       "next_step": "下一道极值题，先画一行导数符号表再判断极大极小。",
       "grade_level": "高中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -582,8 +575,7 @@
       ],
       "next_step": "下一道方程题，移项那一行先把变号后的式子单独写出来再做计算。",
       "grade_level": "初中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   },
   {
@@ -661,8 +653,7 @@
       ],
       "next_step": "下一道方程题，移项和除法分成两行写，写完再把解代回检验一行。",
       "grade_level": "初中",
-      "draft_source": "text_reconstruction",
-      "analysis_basis": "full"
+      "draft_source": "text_reconstruction"
     }
   }
 ]

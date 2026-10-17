@@ -9,7 +9,7 @@
 
   - 产出了卡片：把卡片写到临时文件，跑
       scripts/validate_output.py validate --card CARD
-      scripts/audit_output.py    audit    --card CARD --draft DRAFT [--final-solution SOL]
+      scripts/audit_output.py    audit    --card CARD --draft DRAFT
       scripts/audit_output.py audit --card CARD --draft DRAFT … --strict
     把**真实退出码与命中的 error / warning 代码**原样记录。
 每条回答都跑一遍 refuse 的三个出口，检查回答里是否出现对应的标准话术。
@@ -20,9 +20,8 @@
 整张草稿纸按 SKILL.md 必须分块逐题过门，`audit_draft` 就是那条题所在块的原文；
 拿整张纸去审一张块级卡片，任何合规卡片都会触发 W_MULTI_PROBLEM_DRAFT。
 
-它不验数学：validate 只查卡片结构，audit 只查越界措辞与证据在不在草稿里。
-「这处算错了」判得对不对，本脚本永远判不了——查不了「你判错了」，
-只能查「你说的那处在草稿上找不找得到」。**没有人工复核的读数不构成数学结论。**
+它不验数学：validate 只查卡片结构，audit 只查越界措辞。
+本技能只看版面习惯，不判断计算对错。**没有人工复核的读数不构成数学结论。**
 
 退出码（沿用本项目约定）：
   0 = 每条产出的卡片都过两道门（含 --strict）；
@@ -100,7 +99,7 @@ def read_json(path):
         raise InputError("%s 不是合法 UTF-8：%s" % (path, exc))
 
 
-def gate_check(card, draft, final_solution):
+def gate_check(card, draft):
     """跑两道门，返回真实退出码与代码；顺带把脚本的原始 JSON 存下来。"""
     with tempfile.TemporaryDirectory() as tmp:
         card_path = Path(tmp) / "card.json"
@@ -114,8 +113,6 @@ def gate_check(card, draft, final_solution):
                               "raw": payload}
 
         base = ["audit", "--card", str(card_path), "--draft", draft]
-        if final_solution:
-            base += ["--final-solution", final_solution]
         for key, extra in (("audit", []), ("audit_strict", ["--strict"])):
             code, payload = checker_json(*(base + extra))
             result[key] = {"exit": code, "passed": payload.get("passed"),
@@ -186,7 +183,7 @@ def report(directory):
             cards_produced += 1
             if not audit_draft.strip():
                 raise InputError("%s 产出了卡片，但 inputs.json 里没有可传给 --draft 的草稿" % case_id)
-            item["card"] = gate_check(card, audit_draft, row.get("final_solution"))
+            item["card"] = gate_check(card, audit_draft)
             if item["card"]["validate"]["exit"] != 0 or item["card"]["audit_strict"]["exit"] != 0:
                 gate_failures.append(case_id)
         per_case.append(item)

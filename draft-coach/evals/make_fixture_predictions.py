@@ -96,7 +96,6 @@ def build_oracle_card(case):
         "next_step": "下一道题，只做一件事：把关键那一步单独写一行，再往下算。",
         "grade_level": case.get("grade_level") or "高中",
         "draft_source": data.get("draft_source") if data.get("draft_source") in GATE.SOURCES else SAFE_SOURCE,
-        "analysis_basis": GATE.FULL,
     }
 
 

@@ -89,13 +89,9 @@ python3 draft-coach/evals/engine/schema_check.py
 
 缺原题但草稿可读 → **是 `analyze`，不是 `clarify`**；此时 `unevaluable_scope` 必须写明「题意是否抄对」「解题方向是否正确」，`scope` 未声明降级即为不合格。
 
-> **动作分类里没有 `transcribe`**：它是 `analyze` 之前的中间步（机器出候选、学生逐行核对），暂不进入动作分类。含 `machine_transcription` 的案例仍标 `analyze`，用 `input.image_confirmed` 记录确认状态；识别准确率与"学生是否真的核对过"都不在本评测能验证的范围内。
-
 ## 7. 六维评分如何判定
 
-标签只有 `高 / 中 / 低`；**完整卡**里 `draft_to_solution` 在**未提供最终解答**时可用 `不适用`。每个维度都必须写 `basis`，且 `basis` 只能引用草稿里看得见的记号。
-
-> 版面卡（`analysis_basis: "layout_only"`）里有更多维度标 `不适用`，但**当前评测集没有这类案例**（`schema_check.py` 仍按完整卡的规则校验金标）。为版面卡造案例需要同时放宽 `E_DRAFT_SOURCE_CONFLICT`、`E_DIM_LABEL` 与 `gate_replay` 的草稿假设，属独立跟进项。
+标签只有 `高 / 中 / 低`；`draft_to_solution` 在**未提供最终解答**时可用 `不适用`。每个维度都必须写 `basis`，且 `basis` 只能引用草稿里看得见的记号。
 
 | 维度 | 高 | 中 | 低 |
 | --- | --- | --- | --- |

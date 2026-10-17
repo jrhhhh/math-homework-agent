@@ -1,0 +1,56 @@
+{
+  "scope": "只看版面：三行算式的位置、行距和空白；未读字符，未核对题意。",
+  "dimensions": {
+    "organization": {
+      "score": "不适用",
+      "observation": "草稿只有三行，太短，无法判断有没有分区。",
+      "evidence": "三行分别是原式、移项、结果，没有分隔区域。",
+      "risk": "若以后步骤变多，仍不分区可能难以定位。"
+    },
+    "skipping": {
+      "score": "中",
+      "observation": "移项和除法各占一行，行距正常。",
+      "evidence": "2x+3=7、2x=7-3=4、x=2 三行依次排下来。",
+      "risk": "若再多两步，行距可能不够用。"
+    },
+    "correction_pattern": {
+      "score": "高",
+      "observation": "没有划改，三行都是直接写下的。",
+      "evidence": "纸面上没有划痕、涂改或重写痕迹。",
+      "risk": "若之后出现不确定的步骤，没有留下检查痕迹。"
+    },
+    "trial_and_error": {
+      "score": "低",
+      "observation": "只有一条路径，没有标号或箭头。",
+      "evidence": "三行沿同一条纵向书写线排列。",
+      "risk": "若移项出错，没有另一条路可以对照。"
+    },
+    "graphic_use": {
+      "score": "不适用",
+      "observation": "这是纯代数方程，纸面没有图形；无法判断是否该画图。",
+      "evidence": "草稿只有算式，没有坐标轴或草图。",
+      "risk": "若题目需要数形结合，会少一个直观核对角度。"
+    },
+    "draft_to_solution": {
+      "score": "中",
+      "observation": "纸面右侧有大片空白，但没有标出检验区。",
+      "evidence": "三行算式靠左写，右边留白，留白里没有代回检验的痕迹。",
+      "risk": "空白可能只是没写满，不一定会用来检验。"
+    }
+  },
+  "top_3_habits": [
+    {
+      "habit": "没有留检验区",
+      "impact": "算完就结束，结果偏了也不容易当场发现。",
+      "training": "下一道题，在草稿右下角留一小块，把解代回原式写一行。"
+    },
+    {
+      "habit": "行距偏紧",
+      "impact": "步骤一多就没有补写空间。",
+      "training": "下一道方程题，每两行之间留一个空行。"
+    }
+  ],
+  "next_step": "下一道方程题，在右下角留一小块，把解代回原式写一行。",
+  "grade_level": "初中",
+  "draft_source": "text_reconstruction"
+}

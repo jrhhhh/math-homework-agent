@@ -15,21 +15,18 @@
     2 = 输入非法。`refuse` 另有一套映射，见 REFUSALS。
   - 仅使用 Python 标准库，无第三方依赖。
 
-定位（2026-10-11 起）：**首要是查计算错误，其次是讲草稿习惯。**
-所以判对错、指出"这一步算错了"、给出该写成什么，**都是本职**，不再越界。
+定位（2026-10-17 起）：**只看草稿的版面习惯，不判断计算对错，也不做手写转写。**
+分析单位是一道题的草稿；整个技能围绕“分区、分行、划改、多路径、图形、留白”六个
+版面可观察的习惯，不产生任何错误指控。
 
 能力边界（诚实声明，别把它当正确性证明）：
-  - 结构门只查"卡片长得对不对"：错误清单与六个维度是否齐全、评分是否在取值集合内、
-    每条错误的四个字段是否填了、习惯条数是否合法（完整卡恰好 3 条，版面卡 1–3 条）、
-    学段、草稿来源与分析依据是否合法。
-    **它不判断你报的那处错误在数学上是否真的错**——那要人来算。
+  - 结构门只查"卡片长得对不对"：六个维度是否齐全、评分是否在取值集合内、
+    习惯是否 1–3 条、学段与草稿来源是否合法。**它不判断任何数学内容。**
   - 越界审计靠措辞规则，抓的是"诊断知识漏洞 / 给学生贴标签 / 排题量计划 /
     出变式题 / 给完整解答 / 评分扣分"。它是便宜的确定性门，不是语义理解；
     换个说法绕过去，它抓不住。
-  - **本门唯一能守住的错误相关约束是"错误指控必须有草稿证据"**（W_ERROR_NOT_IN_DRAFT）：
-    每条错误的 evidence 必须引用草稿里的记号。它拦不住"引用了草稿却把对的判成错的"——
-    那只能靠人复核。**没有人工复核的草稿检查卡不构成数学结论。**
-  - 草稿关联度用记号重合判断；短草稿可能整段跳过这项检查。
+  - **本技能不判断草稿上的计算对错。** 版面观察也不是数学结论；要查对错请走
+    `math-error-diagnosis`，要优化已成立的解法请走 `solution-refiner`。
 """
 
 import json
@@ -45,112 +42,101 @@ except Exception:
 
 # ---------------------------------------------------------------- 常量
 
-ERROR_FIELD = "error_check"
+SCOPE_FIELD = "scope"
 DIMENSIONS_FIELD = "dimensions"
 HABIT_FIELD = "top_3_habits"
-ANALYSIS_BASIS_FIELD = "analysis_basis"
-REQUIRED_FIELDS = (ERROR_FIELD, DIMENSIONS_FIELD, HABIT_FIELD,
-                   "next_step", "grade_level", "draft_source", ANALYSIS_BASIS_FIELD)
+# 纯习惯卡：没有错误清单，也没有交接/诊断字段。
+REQUIRED_FIELDS = (SCOPE_FIELD, DIMENSIONS_FIELD, HABIT_FIELD,
+                   "next_step", "grade_level", "draft_source")
 
-# 错误清单：每条恰好四个字段。errors 允许为空数组（草稿没错就说没错）。
-ERROR_ITEM_FIELDS = ("location", "evidence", "explanation", "fix")
-
-# 六个分析维度，键名固定、顺序固定
+# 六个**版面习惯**维度，键名保留兼容，含义已改为只看版面。
 DIM_KEYS = ("organization", "skipping", "correction_pattern",
             "trial_and_error", "graphic_use", "draft_to_solution")
 DIM_LABEL = {
-    "organization": "组织度",
-    "skipping": "跳步模式",
-    "correction_pattern": "涂改模式",
-    "trial_and_error": "试错痕迹",
-    "graphic_use": "图形使用",
-    "draft_to_solution": "草稿利用率",
+    "organization": "分区与边距",
+    "skipping": "步骤分行与密度",
+    "correction_pattern": "划改与自纠",
+    "trial_and_error": "多路径标记",
+    "graphic_use": "图形与标注",
+    "draft_to_solution": "留白与检验区",
 }
 DIM_FIELDS = ("score", "observation", "evidence", "risk")
-POSITIVE_DIM = "correction_pattern"   # 只有涂改模式允许 positive 字段
+POSITIVE_DIM = "correction_pattern"   # 只有划改维度允许 positive 字段
 
 SCORES = ("高", "中", "低")
-# 没有最终解答时，"草稿利用率"无法评分。宁可留空，也不虚构一个分数。
+# 版面本身看不出时宁可标"不适用"，也不虚构一个分数。
 UNAVAILABLE = "不适用"
-SCORES_LAST = SCORES + (UNAVAILABLE,)   # 仅 draft_to_solution 允许
+SCORES_ANY = SCORES + (UNAVAILABLE,)
+SCORES_LAST = SCORES_ANY   # 兼容旧导入
+
+# score=不适用 时，observation 里应出现的原因词（只用来提醒，不做硬门）。
+UNAVAILABLE_REASON_RE = re.compile(
+    r"无法|看不出|不足|未提供|缺失|不可判|未核对|草稿太短|短草稿|不适用|"
+    r"没有提供|不清晰|拍不到")
 
 HABIT_FIELDS = ("habit", "impact", "training")
-HABIT_COUNT = 3
+HABIT_COUNT = 3          # 目标条数
+HABIT_MIN = 1            # 至少给一条可执行动作
+HABIT_MAX = 3
 
 GRADES = ("小学", "初中", "高中", "大学")
 DEFAULT_GRADE = "高中"
-MACHINE_TRANSCRIPTION = "machine_transcription"
-SOURCES = ("text_reconstruction", "image_description", MACHINE_TRANSCRIPTION)
-# machine_transcription：机器先出候选转写，学生逐行核对后才作为 --draft。
-# 未确认的机器读数不是内容，只能当待核对稿——见 references/transcription.md。
-
-# 分析依据。draft_source 说"输入从哪来"，analysis_basis 说"这次到底根据什么分析"：
-#   full        内容（学生给的字）+ 版面，六维全可评；
-#   layout_only 只有助手亲眼看的版面，没有确认过的内容——错误清单必须为空，
-#               内容相关的三维必须标注「不适用」，且只许来自图片草稿。
-FULL = "full"
-LAYOUT_ONLY = "layout_only"
-ANALYSIS_BASES = (FULL, LAYOUT_ONLY)
-# 不读字符就给不出的三维
-LAYOUT_ONLY_UNAVAILABLE_DIMS = ("skipping", "trial_and_error", "draft_to_solution")
-# 版面看得见，但"该不该画图"要题型；无图且题型判不了时允许不适用
-LAYOUT_ONLY_OPTIONAL_DIMS = ("graphic_use",)
-# 纯版面就能评的两维，版面卡必须给真实评分
-LAYOUT_ONLY_REQUIRED_DIMS = ("organization", "correction_pattern")
-# 版面卡的习惯条数：能支撑几条说几条，不为凑数硬写
-HABIT_COUNT_LAYOUT = (1, 2, 3)
-# 版面卡必须在 scope 里声明的边界。接受的说法：
-#   「内容未经学生确认」「未核对」「未确认」「不含计算错误判断」
-LAYOUT_ONLY_SCOPE_RE = re.compile(r"未经.{0,10}(?:确认|核对)|未核对|未确认|不含.{0,10}计算错误")
-
-# 澄清出口（clarify）：本轮不产出分析卡，只列几处需要学生确认的关键记号。
-# 它是"补几处"，不是"重述整页"，所以一轮最多 5 项；候选可选、给了就要 2–4 个。
-CLARIFY_MAX_QUESTIONS = 5
-CLARIFY_REQUIRED_FIELDS = ("location", "question", "affects")
-CLARIFY_ITEM_FIELDS = ("location", "question", "candidates", "affects")
-CLARIFY_CANDIDATE_RANGE = (2, 4)
+SOURCES = ("text_reconstruction", "image_description")
 
 # 学段适配表。SKILL.md 的「学段适配指南」同内容；此处常量供 hint 子命令回显，
 # 两处不一致时以本常量为准。
 GRADE_TABLE = (
     ("小学", "简单、具体、像口令", "折纸分区、每步落笔、画图", ("organization", "skipping")),
-    ("初中", "清晰、鼓励、可操作", "先观察再选方法、草稿标号", ("skipping", "trial_and_error")),
+    ("初中", "清晰、鼓励、可操作", "草稿标号、改错留因", ("skipping", "correction_pattern")),
     ("高中", "简洁、策略导向", "先画图再算、多路径标号", ("graphic_use", "trial_and_error")),
     ("大学", "平等、元认知导向", "探索路径标注、草稿即检查", ("draft_to_solution", "organization")),
 )
 
 # 六维检查要点（hint 回显用，不构成判断）
 DIM_RUBRIC = (
-    ("organization", "组织度", "是否分区、有序、可追溯；已知条件 / 推导 / 计算结果是否分开写"),
-    ("skipping", "跳步模式", "哪些步骤没有落笔、哪些靠心算；跳的是哪一类（解方程 / 代数变形 / 代入计算 / 分类讨论）"),
-    ("correction_pattern", "涂改模式", "涂改的频率、位置、类型；有没有留下修改理由；是不是想清楚再改"),
-    ("trial_and_error", "试错痕迹", "有没有尝试第二条路、有没有标号区分、第一条路失败后有没有换方法"),
-    ("graphic_use", "图形使用", "有没有画图、图形是否标注完整、画图时机是否在动笔计算之前"),
-    ("draft_to_solution", "草稿利用率", "草稿算出的结果有多少进入最终解答；草稿是思考工具还是废纸"),
+    ("organization", "分区与边距",
+     "有没有题号/分块、已知/求/推导是否分开；条件与推导是否混写；多题是否混写。"
+     "不要求横平竖直"),
+    ("skipping", "步骤分行与密度",
+     "高风险步骤（移项变号、去括号、开方、分类边界、代入）是否单独落行；"
+     "不要求每步都写，低风险步骤可以心算"),
+    ("correction_pattern", "划改与自纠",
+     "划改后旧值是否明确作废、新值是否可辨；不要求重抄整页"),
+    ("trial_and_error", "多路径标记",
+     "分类讨论/多解/多方法有没有 ①②、箭头或分支标记；不要求整齐"),
+    ("graphic_use", "图形与标注",
+     "几何图有没有标顶点/辅助线/关键点；函数图有没有坐标轴/极值点；"
+     "不要求画得漂亮"),
+    ("draft_to_solution", "留白与检验区",
+     "有没有留出检验区，答句/单位/范围有没有固定落点；结果有没有写在纸边/题缝。"
+     "不要求专门划区"),
 )
 
 # 草稿里的启发式信号（只作提示）
 SIGNAL_CUES = (
-    ("correction_pattern", "出现涂改 / 划掉 / 重写痕迹",
+    ("correction_pattern", "出现划改 / 重写痕迹",
      ("划掉", "涂改", "重写", "划去", "打叉", "涂掉", "改了", "改掉")),
     ("graphic_use", "出现图形 / 草图痕迹",
-     ("画图", "草图", "图象", "图像", "数轴", "坐标", "辅助线", "树状图", "韦恩图", "示意图")),
-    ("skipping", "疑似心算 / 跳步",
-     ("心算", "口算", "直接得", "显然", "易得", "略")),
-    ("trial_and_error", "疑似多路径尝试",
-     ("另一", "方法二", "换一种", "换元", "另解", "再试", "改用")),
-    ("organization", "疑似分区书写",
-     ("左上", "右上", "左下", "右下", "左边", "右边", "上面", "下面", "第一块", "分区", "一格", "分块")),
+     ("画图", "草图", "图象", "图像", "数轴", "坐标", "辅助线", "顶点",
+      "树状图", "韦恩图", "示意图", "极值点")),
+    ("skipping", "疑似高风险步骤挤在一起",
+     ("一行", "连写", "挤在", "没分行", "未分行", "写在了一起", "连着写",
+      "移项", "开方", "去括号", "代入", "分类边界")),
+    ("trial_and_error", "疑似多路径 / 分类讨论标记",
+     ("标号", "方法一", "方法二", "另一", "箭头", "圈出", "另起", "换了",
+      "分类讨论", "①", "②", "第一种", "第二种")),
+    ("organization", "疑似分区 / 题号书写",
+     ("左上", "右上", "左下", "右下", "左边", "右边", "上面", "下面",
+      "第一块", "分区", "一格", "分块", "边距", "题号", "已知", "求", "条件")),
+    ("draft_to_solution", "疑似留白 / 检验区",
+     ("留白", "空白", "检验区", "写满", "空着", "右下角留", "代回", "答句",
+      "单位", "范围", "纸边", "题缝", "背面")),
 )
 
 PUNCT_RE = re.compile(r"[\s　，。？！、；：,.?!;:'\"“”‘’（）()【】\[\]]+")
-NUM_RE = re.compile(r"\d+(?:\.\d+)?")
-IDENT_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,7}")
-STOP_TOKENS = frozenset({"已知", "求其", "下列", "的是", "一个", "以及", "其中", "如何", "什么"})
 
 # 越界措辞：命中即说明卡片跑到了别的 skill 的疆域。
-# 注意：**判对错、指出某处算错了、给出该写成什么，都不在禁列**——那是本职。
-# 剩下的边界是"别越到能力评价和别的技能的地盘上去"。
+# 本技能不判对错；边界是"别越到能力评价、别的技能和评分的地盘上去"。
 OUT_OF_SCOPE = (
     ("A_CAUSE", "诊断知识漏洞 / 给学生能力定级",
      re.compile(
@@ -192,28 +178,34 @@ OUT_OF_SCOPE = (
 NEGATION_BEFORE_RE = re.compile(
     r"(?:没有|没|不|未|无需|不需要|不必要|不用|谈不上)\s*$")
 
-# 手写图片里形近、一眼分不清的记号。从图片读来的这类记号**不许单独支撑一条错误**：
-# ≤ 与 <、± 与 +、6 与 8 在手写里近乎同形，读错一个就会变成一条凭空指控学生的错误，
-# 而两道门都拦不住它。audit 对图片来源的卡片报 W_MIXED_SYMBOL_EVIDENCE 提醒。
-# 只收比较号与 ±：加减号满地都是（f(-1)=-1-3 里就有两个），收进来只会把提醒变成噪音。
-AMBIGUOUS_SYMBOL_RE = re.compile(r"[≤≥<>±≦≧≪≫≈]")
-# 内容来自"别人看图写下来的描述"而不是学生自己打字/口述，见 references/image-intake.md
-# 形近记号提醒只针对"学生自己描述的照片"。machine_transcription 的文字已经过学生
-# 逐行确认，确认本身就是"回原纸看一眼"；再报这条只会让不等式题永远过不了 --strict。
-# 残余风险（橡皮图章式确认）没有任何脚本能管，文档里如实写明。
-IMAGE_SOURCES = ("image_description",)
-# 版面卡没有确认过的内容，只可能是"学生描述的照片"或"纯版面"，不可能是转写。
-LAYOUT_SOURCES = ("image_description",)
-# 机器转写必须由学生全文核对；scope 里要写明这件事。
-TRANSCRIPTION_SCOPE_RE = re.compile(
-    r"学生.{0,10}(?:确认|核对|更正)|逐行(?:核对|确认)|已核对|已确认|核对过")
-TRANSCRIPTION_MAX_UNCERTAIN = 5
-# uncertain 里是机器读法（readings），不是学生点过名的角色，所以允许比 clarify 多。
-TRANSCRIPTION_READING_RANGE = (2, 10)
-
-# 错误清单里禁止出现的"空话式修改"：说了等于没说
-FIX_NON_ACTIONABLE_RE = re.compile(
-    r"^\s*(?:注意|小心|认真|仔细|再算算|重算|检查一下)[。！!]*\s*$")
+# ---------------------------------------------------------------- 题目分区（partition）
+# 只做版面分块：看留白、分隔线、区域大小、书写方向，**不读字符**。
+# 块数不等于题目数；输出必须给范围、写不确定处，并请学生确认。
+PARTITION_ACTION = "partition"
+PARTITION_SOURCES = ("image_layout", "student_text")
+PARTITION_BLOCK_FIELDS = ("block_id", "location", "visual_cues", "separate_problem",
+                          "confidence", "note")
+PARTITION_REQUIRED_FIELDS = (
+    "action", "block_source", "blocks", "estimated_problem_count", "count_range",
+    "uncertainty", "confirmation_question", "limitations",
+)
+PARTITION_MIN_BLOCKS = 1
+PARTITION_MAX_BLOCKS = 12
+PARTITION_SCORES = ("高", "中", "低")
+# 分区只能给"大致"，不能把版面块说成已确认的题目边界。
+PARTITION_ASSERTIVE_RE = re.compile(
+    r"就是\s*\d+\s*道|一定是|已经分好|确实是|毫无疑问|肯定只有|绝对|完全确定")
+# 分区出口不做错因诊断，也不许报错误。
+PARTITION_ERROR_CLAIM_RE = re.compile(
+    r"算错|错在|写错|这一步错了|错误是|漏了(?:根|一步|条件|符号|项|解)")
+# 分区出口不读字符；"我看出这行写的是…"属于越界。
+PARTITION_OCR_CLAIM_RE = re.compile(
+    r"我(?:读|看)出.{0,12}(?:字|式子|内容|数字|写的是)|"
+    r"识别出.{0,8}(?:文字|式子|数字)|转写|OCR")
+PARTITION_LIMITATION_CUES = ("版面", "不读", "字符", "确认", "大致", "块数",
+                             "不等于", "题目数", "留白", "分隔")
+PARTITION_CONFIRM_CUES = ("确认", "像不像", "是不是", "哪", "对吗", "请你看",
+                          "你核对", "对不对")
 
 # 训练动作里的空话。出现这些说明这条"建议"下一道题没法执行。
 VAGUE_ACTION_RE = re.compile(
@@ -245,13 +237,14 @@ PROBLEM_MARKER_RE = re.compile(
 REFUSALS = {
     "empty": ("无草稿",
               "没有检测到草稿内容。如果你是在脑子里算的，建议下次把关键步骤写下来，"
-              "这样才能检查计算过程、也才能分析习惯。", 2),
+              "这样才能看草稿的版面习惯。", 2),
     "unreadable": ("草稿无法识别",
                    "草稿内容太乱或图片不清晰，无法分析。建议重新拍一张更清晰的草稿，"
                    "或把草稿内容用文字描述出来。", 2),
     "out_of_scope": ("超出范围",
-                     "我检查草稿里的计算错误和过程习惯。要优化已经做对的解法，"
-                     "或者要变式题、复习计划，请交给对应的技能。", 1),
+                     "我只看草稿的版面习惯，不判断计算对错。"
+                     "要检查解答、优化已经做对的解法，或者要变式题、复习计划，"
+                     "请交给对应的技能。", 1),
 }
 
 
@@ -267,53 +260,31 @@ def norm(text):
     return PUNCT_RE.sub("", str(text)).lower()
 
 
-def load_json_object(path, what="card"):
-    """读一个 JSON 对象；读不了就按退出码 2 输出错误并退出。
-
-    `what` 只影响错误文案（"card file not found" / "questions file not found"）。
-    """
+def load_card(path):
     try:
         with open(path, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
+            card = json.load(fh)
     except FileNotFoundError:
-        emit({"error": "%s file not found" % what, "path": path}, 2)
+        emit({"error": "card file not found", "path": path}, 2)
     except json.JSONDecodeError as exc:
-        emit({"error": "%s file is not valid JSON" % what, "path": path,
-              "detail": str(exc)}, 2)
+        emit({"error": "card file is not valid JSON", "path": path, "detail": str(exc)}, 2)
     except UnicodeError as exc:
-        emit({"error": "%s file is not valid UTF-8" % what, "path": path,
-              "detail": str(exc)}, 2)
+        emit({"error": "card file is not valid UTF-8", "path": path, "detail": str(exc)}, 2)
     except OSError as exc:
-        emit({"error": "cannot read %s file" % what, "path": path,
-              "detail": str(exc)}, 2)
-    if not isinstance(data, dict):
-        emit({"error": "%s must be a JSON object" % what, "path": path,
-              "got": type(data).__name__}, 2)
-    return data
-
-
-def load_card(path):
-    return load_json_object(path, "card")
+        emit({"error": "cannot read card file", "path": path, "detail": str(exc)}, 2)
+    if not isinstance(card, dict):
+        emit({"error": "card must be a JSON object", "path": path,
+              "got": type(card).__name__}, 2)
+    return card
 
 
 def card_texts(card):
     """把卡片里所有文字摊平成 [(字段名, 文本)]，便于逐条扫描。"""
     out = []
 
-    error_check = card.get(ERROR_FIELD)
-    if isinstance(error_check, dict):
-        value = error_check.get("scope")
-        if isinstance(value, str):
-            out.append(("%s.scope" % ERROR_FIELD, value))
-        errors = error_check.get("errors")
-        if isinstance(errors, list):
-            for index, item in enumerate(errors, start=1):
-                if not isinstance(item, dict):
-                    continue
-                for field in ERROR_ITEM_FIELDS:
-                    value = item.get(field)
-                    if isinstance(value, str):
-                        out.append(("%s.errors[%d].%s" % (ERROR_FIELD, index, field), value))
+    value = card.get(SCOPE_FIELD)
+    if isinstance(value, str):
+        out.append((SCOPE_FIELD, value))
 
     dimensions = card.get(DIMENSIONS_FIELD)
     if isinstance(dimensions, dict):
@@ -342,30 +313,6 @@ def card_texts(card):
     if isinstance(value, str):
         out.append(("next_step", value))
     return out
-
-
-def draft_tokens(text):
-    """草稿里的"地标记号"：数字与 ASCII 标识符（f、x、a_n 之类）。
-
-    与 solution-refiner 的 text_tokens 不同：这里**保留个位数字**，因为草稿天生
-    挤满单字符记号（x=±1、n≥2）。为避免"2"命中"25"，匹配时改用数字边界
-    （见 token_hit），所以保留个位数是安全的。
-    """
-    tokens = NUM_RE.findall(text) + IDENT_RE.findall(text)
-    seen, out = set(), []
-    for token in tokens:
-        if token in STOP_TOKENS or token in seen:
-            continue
-        seen.add(token)
-        out.append(token)
-    return out
-
-
-def token_hit(haystack_norm, token):
-    """归一化文本里是否出现该记号；纯数字按数字边界匹配，避免子串误命中。"""
-    if token[0].isdigit():
-        return re.search(r"(?<!\d)" + re.escape(token) + r"(?!\d)", haystack_norm) is not None
-    return token in haystack_norm
 
 
 def out_of_scope_matches(text):

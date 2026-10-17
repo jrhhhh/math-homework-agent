@@ -26,16 +26,13 @@
 | R17 | 整张草稿纸先分块、确认归属，一块一张卡 | 分块与 `--draft` 口径 | CPLX-01、CPLX-02、TOOL-06、DIM-04 | 自动（`W_MULTI_PROBLEM_DRAFT`、`cross_block_false_positive_avoidance`）＋模型辅助 |
 | R18 | 归属分不清时宁可少报，不误报 | 跨块假错为零 | CPLX-02 | 自动＋模型辅助 |
 | R19 | 图片草稿的内容先由学生给出文字、再核对、后分析 | 未核实时不得下确定结论 | BOUND-02（`image_confirmed: false`）、CPLX-04（已核对） | 人工（S3）＋模型辅助 |
-| R19b | 只有照片、没有文字描述时出**版面卡**（`analysis_basis: "layout_only"`，错误清单为空、内容三维不适用、习惯 1–3 条） | 不读字符也不冒充查过错 | **评测集暂无此案例**（`schema_check` 仍禁止"有照片无文字"与内容维的 `不适用`） | 未覆盖——跟进项 |
-| R19c | 关键记号拿不准且会改变结论时，只问 1–5 处（`clarify`），学生答后原话补进文字再重跑 | 不猜记号、不让重述整页 | BOUND-03、CPLX-02（`expected_action: clarify` 的动作口径） | 自动（`clarify` 校验）＋人工——**问题质量仍靠人** |
-| R19d | 机器先出整份候选转写，学生**逐行**核对后才作 `--draft`（`draft_source: machine_transcription`） | 未确认的机器读数不当证据 | **评测集暂无此案例**；`schema_check` 已接受 `machine_transcription` 并要求 `image_confirmed` | 契约层自动；**识别质量与确认效果无法自动验证** |
 | R20 | 手写照片认不出时 `refuse unreadable`，不硬猜 | 不把认不出的记号定成某个数 | BOUND-02 | 自动＋模型辅助 |
 | R21 | 草稿太简略就追问或 refuse，不硬凑六维 | 不硬给评分 | BOUND-03（clarify）、DIM-02 | 自动（`action_accuracy`）＋模型辅助 |
-| R22 | 六维键名固定、每维四字段；**完整卡**的 `不适用` 只给 `draft_to_solution` | 结构合法 | TOOL-03、全部产卡案例 | 自动（`validate`） |
+| R22 | 六维键名固定、每维四字段、`不适用` 只给 `draft_to_solution` | 结构合法 | TOOL-03、全部产卡案例 | 自动（`validate`） |
 | R23 | `positive` 只许出现在 `correction_pattern` | 字段位置 | TOOL-04 | 自动（`E_EXTRA_FIELD`） |
 | R24 | `risk` 必须是假设句 | 措辞形式 | TOOL-04 | 自动（`W_RISK_UNHEDGED`） |
 | R25 | 无最终解答时 `draft_to_solution` 标 `不适用`，不猜分 | 利用率处理 | 多数案例（无最终解答）；DIM-06、MATH-08（有最终解答，不得标不适用） | 自动（`utilization_handling`） |
-| R26 | **完整卡**恰好 3 条习惯（版面卡 1–3 条），每条 3 个字段 | 习惯结构 | TOOL-02 | 自动（`E_HABIT_COUNT`） |
+| R26 | 恰好 3 条习惯，每条 3 个字段 | 习惯结构 | TOOL-02 | 自动（`E_HABIT_COUNT`） |
 | R27 | 错误传播不得与独立错误混为一谈 | root/propagated/independent 的区分 | MATH-01、CPLX-05（含独立错误）、EVID-04/05、CPLX-06 | 自动（`propagation_quality`）＋模型辅助 |
 | R28 | 通过两道门只证明没越线，不证明检查说中了学生 | 不得把门通过当数学正确 | 全局（报告与文档措辞） | —（元规则，靠文档与能力边界声明） |
 
