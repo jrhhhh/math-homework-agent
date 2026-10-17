@@ -67,5 +67,6 @@
   ],
   "next_step": "下一道题，只做一件事：解方程时每一步都落笔，开方那一步单独写一行。",
   "grade_level": "高中",
-  "draft_source": "text_reconstruction"
+  "draft_source": "text_reconstruction",
+  "analysis_basis": "full"
 }

@@ -68,5 +68,6 @@
   ],
   "next_step": "<下一道题只做的一件事，一句话>",
   "grade_level": "<小学 / 初中 / 高中 / 大学，默认 高中>",
-  "draft_source": "<text_reconstruction / image_description>"
+  "draft_source": "<text_reconstruction / image_description / machine_transcription>",
+  "analysis_basis": "<full / layout_only；layout_only 时 errors 必须为空、三个内容维必须为不适用、来源必须是 image_description；machine_transcription 只能配 full，且在 scope 写明学生已逐行核对>"
 }

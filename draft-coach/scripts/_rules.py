@@ -20,7 +20,8 @@
 
 能力边界（诚实声明，别把它当正确性证明）：
   - 结构门只查"卡片长得对不对"：错误清单与六个维度是否齐全、评分是否在取值集合内、
-    每条错误的四个字段是否填了、习惯是否恰好 3 条、学段与草稿来源是否合法。
+    每条错误的四个字段是否填了、习惯条数是否合法（完整卡恰好 3 条，版面卡 1–3 条）、
+    学段、草稿来源与分析依据是否合法。
     **它不判断你报的那处错误在数学上是否真的错**——那要人来算。
   - 越界审计靠措辞规则，抓的是"诊断知识漏洞 / 给学生贴标签 / 排题量计划 /
     出变式题 / 给完整解答 / 评分扣分"。它是便宜的确定性门，不是语义理解；
@@ -47,8 +48,9 @@ except Exception:
 ERROR_FIELD = "error_check"
 DIMENSIONS_FIELD = "dimensions"
 HABIT_FIELD = "top_3_habits"
+ANALYSIS_BASIS_FIELD = "analysis_basis"
 REQUIRED_FIELDS = (ERROR_FIELD, DIMENSIONS_FIELD, HABIT_FIELD,
-                   "next_step", "grade_level", "draft_source")
+                   "next_step", "grade_level", "draft_source", ANALYSIS_BASIS_FIELD)
 
 # 错误清单：每条恰好四个字段。errors 允许为空数组（草稿没错就说没错）。
 ERROR_ITEM_FIELDS = ("location", "evidence", "explanation", "fix")
@@ -77,7 +79,36 @@ HABIT_COUNT = 3
 
 GRADES = ("小学", "初中", "高中", "大学")
 DEFAULT_GRADE = "高中"
-SOURCES = ("text_reconstruction", "image_description")
+MACHINE_TRANSCRIPTION = "machine_transcription"
+SOURCES = ("text_reconstruction", "image_description", MACHINE_TRANSCRIPTION)
+# machine_transcription：机器先出候选转写，学生逐行核对后才作为 --draft。
+# 未确认的机器读数不是内容，只能当待核对稿——见 references/transcription.md。
+
+# 分析依据。draft_source 说"输入从哪来"，analysis_basis 说"这次到底根据什么分析"：
+#   full        内容（学生给的字）+ 版面，六维全可评；
+#   layout_only 只有助手亲眼看的版面，没有确认过的内容——错误清单必须为空，
+#               内容相关的三维必须标注「不适用」，且只许来自图片草稿。
+FULL = "full"
+LAYOUT_ONLY = "layout_only"
+ANALYSIS_BASES = (FULL, LAYOUT_ONLY)
+# 不读字符就给不出的三维
+LAYOUT_ONLY_UNAVAILABLE_DIMS = ("skipping", "trial_and_error", "draft_to_solution")
+# 版面看得见，但"该不该画图"要题型；无图且题型判不了时允许不适用
+LAYOUT_ONLY_OPTIONAL_DIMS = ("graphic_use",)
+# 纯版面就能评的两维，版面卡必须给真实评分
+LAYOUT_ONLY_REQUIRED_DIMS = ("organization", "correction_pattern")
+# 版面卡的习惯条数：能支撑几条说几条，不为凑数硬写
+HABIT_COUNT_LAYOUT = (1, 2, 3)
+# 版面卡必须在 scope 里声明的边界。接受的说法：
+#   「内容未经学生确认」「未核对」「未确认」「不含计算错误判断」
+LAYOUT_ONLY_SCOPE_RE = re.compile(r"未经.{0,10}(?:确认|核对)|未核对|未确认|不含.{0,10}计算错误")
+
+# 澄清出口（clarify）：本轮不产出分析卡，只列几处需要学生确认的关键记号。
+# 它是"补几处"，不是"重述整页"，所以一轮最多 5 项；候选可选、给了就要 2–4 个。
+CLARIFY_MAX_QUESTIONS = 5
+CLARIFY_REQUIRED_FIELDS = ("location", "question", "affects")
+CLARIFY_ITEM_FIELDS = ("location", "question", "candidates", "affects")
+CLARIFY_CANDIDATE_RANGE = (2, 4)
 
 # 学段适配表。SKILL.md 的「学段适配指南」同内容；此处常量供 hint 子命令回显，
 # 两处不一致时以本常量为准。
@@ -167,7 +198,18 @@ NEGATION_BEFORE_RE = re.compile(
 # 只收比较号与 ±：加减号满地都是（f(-1)=-1-3 里就有两个），收进来只会把提醒变成噪音。
 AMBIGUOUS_SYMBOL_RE = re.compile(r"[≤≥<>±≦≧≪≫≈]")
 # 内容来自"别人看图写下来的描述"而不是学生自己打字/口述，见 references/image-intake.md
+# 形近记号提醒只针对"学生自己描述的照片"。machine_transcription 的文字已经过学生
+# 逐行确认，确认本身就是"回原纸看一眼"；再报这条只会让不等式题永远过不了 --strict。
+# 残余风险（橡皮图章式确认）没有任何脚本能管，文档里如实写明。
 IMAGE_SOURCES = ("image_description",)
+# 版面卡没有确认过的内容，只可能是"学生描述的照片"或"纯版面"，不可能是转写。
+LAYOUT_SOURCES = ("image_description",)
+# 机器转写必须由学生全文核对；scope 里要写明这件事。
+TRANSCRIPTION_SCOPE_RE = re.compile(
+    r"学生.{0,10}(?:确认|核对|更正)|逐行(?:核对|确认)|已核对|已确认|核对过")
+TRANSCRIPTION_MAX_UNCERTAIN = 5
+# uncertain 里是机器读法（readings），不是学生点过名的角色，所以允许比 clarify 多。
+TRANSCRIPTION_READING_RANGE = (2, 10)
 
 # 错误清单里禁止出现的"空话式修改"：说了等于没说
 FIX_NON_ACTIONABLE_RE = re.compile(
@@ -225,22 +267,33 @@ def norm(text):
     return PUNCT_RE.sub("", str(text)).lower()
 
 
-def load_card(path):
+def load_json_object(path, what="card"):
+    """读一个 JSON 对象；读不了就按退出码 2 输出错误并退出。
+
+    `what` 只影响错误文案（"card file not found" / "questions file not found"）。
+    """
     try:
         with open(path, "r", encoding="utf-8") as fh:
-            card = json.load(fh)
+            data = json.load(fh)
     except FileNotFoundError:
-        emit({"error": "card file not found", "path": path}, 2)
+        emit({"error": "%s file not found" % what, "path": path}, 2)
     except json.JSONDecodeError as exc:
-        emit({"error": "card file is not valid JSON", "path": path, "detail": str(exc)}, 2)
+        emit({"error": "%s file is not valid JSON" % what, "path": path,
+              "detail": str(exc)}, 2)
     except UnicodeError as exc:
-        emit({"error": "card file is not valid UTF-8", "path": path, "detail": str(exc)}, 2)
+        emit({"error": "%s file is not valid UTF-8" % what, "path": path,
+              "detail": str(exc)}, 2)
     except OSError as exc:
-        emit({"error": "cannot read card file", "path": path, "detail": str(exc)}, 2)
-    if not isinstance(card, dict):
-        emit({"error": "card must be a JSON object", "path": path,
-              "got": type(card).__name__}, 2)
-    return card
+        emit({"error": "cannot read %s file" % what, "path": path,
+              "detail": str(exc)}, 2)
+    if not isinstance(data, dict):
+        emit({"error": "%s must be a JSON object" % what, "path": path,
+              "got": type(data).__name__}, 2)
+    return data
+
+
+def load_card(path):
+    return load_json_object(path, "card")
 
 
 def card_texts(card):

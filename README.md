@@ -48,12 +48,12 @@ solution-refiner/
   example/                 三份示例卡（含混入诊断的反例）
 draft-coach/
   SKILL.md                 草稿检查入口（行为契约与 Workflow）
-  references/              六维判定尺度、输出 Schema、7 份示例说明
-  scripts/                 两道门：validate_output.py（结构 + hint）与 audit_output.py（审计 + refuse），共用 _rules.py
+  references/              六维判定尺度、输出 Schema、关键记号协议、示例说明
+  scripts/                 两道门：validate_output.py（结构 + hint）与 audit_output.py（审计 + refuse + clarify），共用 _rules.py
   assets/output_template.json  空白卡片骨架
-  tests/                   技能自带门测试（22 项）
+  tests/                   技能自带门测试（57 项）
   evals/                   评测子系统：38 个案例、评测器、报告模板与测试（85 项）
-  example/                 三份示例卡、一份编造错误的反例、三份 refuse 输出
+  example/                 四份完整卡与版面卡、一份编造错误的反例、三份 refuse 输出、clarify 问题单与 transcribe 候选稿
 docs/                      诊断案例、验证范围与说明
 tests/                     衔接回归测试、草稿门层报告测试与固定案例计算脚本
 scripts/handoff_check.py   交接元信息与当前解答版本检查
@@ -80,7 +80,7 @@ python3 tests/高中题型计算核验.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（22 项，覆盖草稿卡的结构、越界、关联度与三个 refuse 出口），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、编造错误只有在 `--strict` 下才拦得住、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
+覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（57 项，覆盖草稿卡的结构、版面卡不变量、越界、关联度、clarify 问题单、transcribe 候选稿与三个 refuse 出口），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、编造错误只有在 `--strict` 下才拦得住、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
 
 draft-coach 的两道门可直接复现：
 
@@ -109,10 +109,10 @@ python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation
 
 ## 能力边界
 
-图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不含任何手写转写（OCR）技能，也不附带学生数据库**。
+图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不内置任何识别引擎，也不附带学生数据库**：机器候选转写由宿主提供，本仓只校验形状与"学生是否已确认"的声明；**未确认的机器读数不算内容**。
 
 复杂题目仍应审查实际数学依据，不能把有限案例结果视为任意高考题的准确率保证。
 
 draft-coach **首要功能是查错，而"这处算错了"恰恰是它两道门唯一验不了的东西**。`validate` 只看错误条目有没有四个字段；`audit` 只能查"你说的那处在草稿里找不找得到"（`W_ERROR_NOT_IN_DRAFT`），查不了"你判得对不对"——引用了草稿却把对的判成错的，它一声不响。**没有人工复核的草稿检查卡不构成数学结论。**
 
-draft-coach 自身只处理**文字还原，或学生自己看照片写下的文字描述**，不做笔迹识别、也不许助手自己看图读字符。学生没给文字时它应当请他打字 / 口述 / 重拍，或只出版面维度的降级卡，而不是猜。手写照片的内容、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头。
+draft-coach 自身只处理**文字还原、学生自己看照片写下的文字描述，或学生逐行核对过的机器候选转写**；不做笔迹识别、也不许把未确认的读数当内容。学生没给文字时它不等：版面看得清就直接出一张**版面卡**（只依据版面，`analysis_basis: "layout_only"`，错误清单为空、内容三维「不适用」、习惯 1–3 条）；学生愿意核对就让机器出整份候选（`transcribe`），**逐行**确认/更正后以 `machine_transcription` 出完整卡。同时可以请他打字 / 口述 / 重拍。手写照片的**内容**、整张纸上哪块属于哪道题，都没有任何脚本能核，唯一防线是让学生在核对那一步点头；**版面**（分块、涂改、图形、行序）则本来就该由助手自己看，两条流不许互相替代。拿不准的记号**不猜也不让他重打整页**：只问 1–5 处（`clarify` 出口），学生答后把原话补进文字再重跑；**候选只能来自学生文字点过名的角色，不许从字形推断**。机器转写的**确认是否真的发生、识别是否准确，脚本都验不了**；在真实手写草稿照片上验收之前，这条路是实验性的，不是默认路径。

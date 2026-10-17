@@ -44,6 +44,10 @@ python3 evals/make_fixture_predictions.py --mode empty      --arm skill       --
 python3 evals/make_fixture_predictions.py --mode fabricated --arm skill_gates --out predictions/fixtures/fabricated.skill_gates.json
 ```
 
+## 早于 `analysis_basis` 的历史产物
+
+`baseline.2026-10-15.json`、`skill_gates.2026-10-15.json` 以及 `../runs/2026-10-15/out/**` 里的卡片产生于 2026-10-15，**没有 `analysis_basis` 字段**。它们保持原样、不重写——那是当时的真实输出，改写会伪造记录。用当前门脚本回放时，这些卡会报 `E_MISSING_FIELD(analysis_basis)`，`tool_log_fidelity` 因而下降并可能显示假的 S5；读旧报告时要记得这一点。`fixtures/` 是生成物，已随 schema 重新生成。
+
 ## 还没有的东西
 
 **本批没有任何真实模型输出。** `predictions/` 里除夹具外为空，因此评分报告里三组实验都标为「未运行」，见 [../reports/README.md](../reports/README.md)。要产出真实输出，需要一个能读 `SKILL.md`、按流程作答、并能执行本机门脚本的宿主 agent（或用你自己的模型管线），逐条处理 `cases.jsonl` 里的 `input.prompt`。

@@ -34,7 +34,11 @@ def card(name):
 
 def validate(mutate=None):
     """把示例卡改坏一点，写到临时文件里跑结构门，返回 (退出码, 输出)。"""
-    data = card("high_school_cubic.json")
+    return validate_card("high_school_cubic.json", mutate)
+
+
+def validate_card(name, mutate=None):
+    data = card(name)
     if mutate:
         mutate(data)
     with tempfile.TemporaryDirectory() as directory:
@@ -93,6 +97,10 @@ class DraftCoachValidateTests(unittest.TestCase):
             ("错误条目缺 fix", lambda d: d["error_check"].update(errors=[
                 {"location": "中部", "evidence": "草稿写 3x²=3", "explanation": "此处存疑"}]),
              "E_MISSING_FIELD"),
+            ("缺少分析依据", lambda d: d.pop("analysis_basis"),
+             "E_MISSING_FIELD"),
+            ("分析依据非法", lambda d: d.update(analysis_basis="half"),
+             "E_BAD_ANALYSIS_BASIS"),
         ]
         for label, mutate, expected in cases:
             with self.subTest(case=label):
@@ -127,6 +135,77 @@ class DraftCoachValidateTests(unittest.TestCase):
                            "risk": "无。"}))
         self.assertEqual(code, 1)
         self.assertIn("E_EXTRA_DIMENSION", codes(payload))
+
+    def test_layout_only_example_passes_clean(self):
+        result = run_validate("validate", "--card", str(EXAMPLES / "layout_only_photo.json"))
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(payload["errors"], [])
+        self.assertEqual(payload["warnings"], [])
+
+    def test_layout_only_invariants(self):
+        # 版面卡：没有确认过的内容，就不许有错误判断、不许来自文字草稿
+        cases = [
+            ("带错误清单", lambda d: d["error_check"]["errors"].append(
+                {"location": "第三行", "evidence": "划掉处右侧补写",
+                 "explanation": "补写与上一行不一致。", "fix": "按上一行改写。"}),
+             "E_BASIS_ERRORS"),
+            ("来源是文字草稿", lambda d: d.update(draft_source="text_reconstruction"),
+             "E_BASIS_SOURCE"),
+            ("组织度标不适用", lambda d: d["dimensions"]["organization"].update(score="不适用"),
+             "E_BAD_SCORE"),
+            ("涂改模式标不适用", lambda d: d["dimensions"]["correction_pattern"].update(score="不适用"),
+             "E_BAD_SCORE"),
+            ("跳步给了评分", lambda d: d["dimensions"]["skipping"].update(score="中"),
+             "E_BAD_SCORE"),
+            ("试错给了评分", lambda d: d["dimensions"]["trial_and_error"].update(score="中"),
+             "E_BAD_SCORE"),
+            ("草稿利用率给了评分", lambda d: d["dimensions"]["draft_to_solution"].update(score="中"),
+             "E_BAD_SCORE"),
+        ]
+        for label, mutate, expected in cases:
+            with self.subTest(case=label):
+                code, payload = validate_card("layout_only_photo.json", mutate)
+                self.assertEqual(code, 1, payload)
+                self.assertIn(expected, codes(payload))
+
+    def test_layout_only_habit_count_allows_one_to_three(self):
+        def habits(count):
+            return [{"habit": "习惯%d" % i,
+                     "impact": "影响%d：回头核对时容易漏看。" % i,
+                     "training": "下一道题第%d步单独写一行再往下算。" % i}
+                    for i in range(1, count + 1)]
+
+        for count in (1, 2, 3):
+            with self.subTest(count=count):
+                code, payload = validate_card(
+                    "layout_only_photo.json",
+                    lambda d, n=count: d.update(top_3_habits=habits(n)))
+                self.assertEqual(code, 0, payload)
+        for count in (0, 4):
+            with self.subTest(count=count):
+                code, payload = validate_card(
+                    "layout_only_photo.json",
+                    lambda d, n=count: d.update(top_3_habits=habits(n)))
+                self.assertEqual(code, 1, payload)
+                self.assertIn("E_HABIT_COUNT", codes(payload))
+
+    def test_machine_transcription_is_a_valid_source_for_full_cards(self):
+        code, payload = validate(lambda d: d.update(draft_source="machine_transcription"))
+        self.assertEqual(code, 0, payload)
+
+    def test_layout_card_cannot_be_machine_transcribed(self):
+        # 版面卡没有内容；机器转写意味着已经有内容，应当走完整卡
+        code, payload = validate_card(
+            "layout_only_photo.json",
+            lambda d: d.update(draft_source="machine_transcription"))
+        self.assertEqual(code, 1, payload)
+        self.assertIn("E_BASIS_SOURCE", codes(payload))
+
+    def test_full_card_still_forbids_unavailable_on_content_dimensions(self):
+        code, payload = validate(lambda d: d["dimensions"]["skipping"].update(score="不适用"))
+        self.assertEqual(code, 1, payload)
+        self.assertIn("E_BAD_SCORE", codes(payload))
 
     def test_input_errors_use_exit_code_two(self):
         with tempfile.TemporaryDirectory() as directory:

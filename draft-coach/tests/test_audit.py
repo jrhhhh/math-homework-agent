@@ -22,6 +22,11 @@ CUBIC_DRAFT = ("左上角写 x^3-3x 求极值；中间写 f'(x)=3x^2-3；下面�
                "底部写 极大值2 极小值-2")
 SUBSTITUTION_DRAFT = ("解 2x+3y=12, x-y=1。写了代入法：由 x-y=1 得 x=y+1，代入得 "
                       "2(y+1)+3y=12，然后划掉一大段，重新写 2y+2+3y=12 → 5y=10 → y=2 → x=3")
+# 版面卡传给 --draft 的是助手自己的版面描述：只有分块、涂改、图形、行序，没有字符内容。
+# 用 ①② 标块是正常写法，不能被 W_MULTI_PROBLEM_DRAFT 当成多个题号。
+LAYOUT_DRAFT = ("整张纸分左右两块，中间一条竖线；① 左边一块从上往下一共六行，"
+                "第三行后半段被横向划掉，右侧补写了一小段；② 右边只有两行；"
+                "整张纸没有图形；行距较密。")
 
 
 def run_validate(*args):
@@ -259,6 +264,313 @@ class DraftCoachAuditTests(unittest.TestCase):
             path.write_text("not JSON", encoding="utf-8")
             result = run_audit("audit", "--card", str(path), "--draft", CUBIC_DRAFT)
         self.assertEqual(result.returncode, 2)
+
+
+def run_clarify(payload):
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "questions.json"
+        path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        return run_audit("clarify", "--input", str(path))
+
+
+QUESTIONNAIRE = {
+    "message": "这张草稿里有 2 处会改变结论，只需要你补这两个记号，不用重打整页。",
+    "questions": [
+        {"location": "第二块最后一行右端",
+         "question": "你提到那里有个不等号但没写清：是 < 还是 ≤？",
+         "candidates": ["<", "≤"],
+         "affects": "解集的右端点是否取到；如果和上一行的写法不一致，这里就自相矛盾"},
+        {"location": "左边第一行开头",
+         "question": "那里有一个记号，写的是什么？",
+         "affects": "它决定这一项的正负；读错会让后面几行的结果都跟着变"},
+    ],
+}
+
+
+class DraftCoachClarifyTests(unittest.TestCase):
+    """clarify 是"不分析时的出口"，不是卡片：它只校验问题单。"""
+
+    def test_valid_questionnaire_is_emitted(self):
+        result = run_clarify(QUESTIONNAIRE)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(payload["action"], "clarify")
+        self.assertEqual(payload["message"], QUESTIONNAIRE["message"])
+        self.assertEqual(len(payload["questions"]), 2)
+        self.assertEqual(payload["errors"], [])
+        self.assertTrue(payload["passed"])
+
+    def test_candidates_are_optional(self):
+        data = json.loads(json.dumps(QUESTIONNAIRE))
+        data["questions"][0].pop("candidates")
+        result = run_clarify(data)
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_question_count_is_capped(self):
+        for count, expected in ((0, 1), (6, 1)):
+            with self.subTest(count=count):
+                data = json.loads(json.dumps(QUESTIONNAIRE))
+                data["questions"] = [
+                    {"location": "第 %d 处" % i,
+                     "question": "第 %d 处写的是什么？" % i,
+                     "affects": "第 %d 条结论会跟着变" % i}
+                    for i in range(1, count + 1)]
+                result = run_clarify(data)
+                self.assertEqual(result.returncode, expected, result.stdout)
+                if expected:
+                    self.assertIn("E_CLARIFY_COUNT",
+                                  [e["code"] for e in json.loads(result.stdout)["errors"]])
+
+    def test_duplicate_questions_are_rejected(self):
+        data = json.loads(json.dumps(QUESTIONNAIRE))
+        data["questions"][1]["question"] = data["questions"][0]["question"]
+        result = run_clarify(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("E_DUPLICATE_QUESTION", [e["code"] for e in payload["errors"]])
+
+    def test_missing_affects_is_rejected(self):
+        data = json.loads(json.dumps(QUESTIONNAIRE))
+        data["questions"][0].pop("affects")
+        result = run_clarify(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("E_MISSING_FIELD", [e["code"] for e in payload["errors"]])
+
+    def test_bad_candidates_are_rejected(self):
+        cases = [("one", ["<"]), ("five", ["a", "b", "c", "d", "e"]),
+                 ("duplicate", ["<", "<"]), ("not a list", "<")]
+        for label, candidates in cases:
+            with self.subTest(case=label):
+                data = json.loads(json.dumps(QUESTIONNAIRE))
+                data["questions"][0]["candidates"] = candidates
+                result = run_clarify(data)
+                payload = json.loads(result.stdout)
+                self.assertEqual(result.returncode, 1, result.stdout)
+                self.assertIn("E_BAD_CANDIDATES", [e["code"] for e in payload["errors"]])
+
+    def test_out_of_scope_wording_is_rejected(self):
+        data = json.loads(json.dumps(QUESTIONNAIRE))
+        data["message"] = "你基础薄弱，先补知识点漏洞。"
+        result = run_clarify(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("A_CAUSE", [e["code"] for e in payload["errors"]])
+
+    def test_documented_example_is_reproducible(self):
+        saved = card("clarify_marks.json")
+        rebuilt = run_clarify({"message": saved["message"],
+                               "questions": saved["questions"]})
+        self.assertEqual(rebuilt.returncode, 0, rebuilt.stdout)
+        self.assertEqual(json.loads(rebuilt.stdout), saved)
+
+    def test_bad_input_uses_exit_code_two(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad.json"
+            path.write_text("not JSON", encoding="utf-8")
+            result = run_audit("clarify", "--input", str(path))
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(json.loads(result.stdout)["error"], "questions file is not valid JSON")
+        self.assertNotIn("Traceback", result.stderr)
+
+
+def run_transcribe(payload):
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "candidate.json"
+        path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        return run_audit("transcribe", "--input", str(path))
+
+
+CANDIDATE = {
+    "message": "下面是我从照片转写的草稿，共 3 行。请逐行核对：不对的地方直接指出来；"
+               "你确认之前我不会用它判断对错。",
+    "candidate": "第一行 2x+3=7\n第二行 2x=7+3=10\n第三行 x=5",
+    "uncertain": [
+        {"location": "第二行", "question": "等号右边是 7+3 还是 7-3？",
+         "readings": ["7+3", "7-3"], "affects": "移项是否变号；这会决定 x=5 还是 x=2"},
+    ],
+}
+
+
+class DraftCoachTranscribeTests(unittest.TestCase):
+    """transcribe 只校验候选稿与问题单；它不产出卡片，也不证明转写准确。"""
+
+    def test_valid_candidate_is_emitted(self):
+        result = run_transcribe(CANDIDATE)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(payload["action"], "transcribe")
+        self.assertEqual(payload["candidate"], CANDIDATE["candidate"])
+        self.assertEqual(payload["errors"], [])
+        self.assertTrue(payload["passed"])
+
+    def test_missing_candidate_is_rejected(self):
+        data = {k: v for k, v in CANDIDATE.items() if k != "candidate"}
+        result = run_transcribe(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("E_EMPTY_TEXT", [e["code"] for e in payload["errors"]])
+
+    def test_uncertain_is_capped(self):
+        data = json.loads(json.dumps(CANDIDATE))
+        data["uncertain"] = [
+            {"location": "第 %d 处" % i, "question": "第 %d 处写的是什么？" % i,
+             "affects": "第 %d 条结论会跟着变" % i} for i in range(1, 7)]
+        result = run_transcribe(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("E_UNCERTAIN_COUNT", [e["code"] for e in payload["errors"]])
+
+    def test_candidate_text_is_not_scanned_for_out_of_scope(self):
+        # candidate 是引用的学生材料，不是助手的建议；越界规则只管 message 与 uncertain
+        data = json.loads(json.dumps(CANDIDATE))
+        data["candidate"] = "你基础薄弱，先补知识点漏洞。"
+        result = run_transcribe(data)
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_machine_readings_are_not_scanned_for_out_of_scope(self):
+        # readings 同样是机器读到的学生材料，不是助手措辞
+        data = json.loads(json.dumps(CANDIDATE))
+        data["uncertain"][0]["readings"] = ["基础薄弱", "知识点漏洞"]
+        result = run_transcribe(data)
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_transcribe_declares_awaiting_confirmation(self):
+        result = run_transcribe(CANDIDATE)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["status"], "awaiting_student_confirmation")
+        self.assertEqual(payload["confirmation_scope"], "full")
+
+    def test_message_is_scanned_for_out_of_scope(self):
+        data = json.loads(json.dumps(CANDIDATE))
+        data["message"] = "你基础薄弱，先补知识点漏洞。"
+        result = run_transcribe(data)
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("A_CAUSE", [e["code"] for e in payload["errors"]])
+
+    def test_documented_example_is_reproducible(self):
+        saved = card("transcribe_candidate.json")
+        rebuilt = run_transcribe({"message": saved["message"],
+                                  "candidate": saved["candidate"],
+                                  "uncertain": saved["uncertain"]})
+        self.assertEqual(rebuilt.returncode, 0, rebuilt.stdout)
+        self.assertEqual(json.loads(rebuilt.stdout), saved)
+
+    def test_bad_input_uses_exit_code_two(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad.json"
+            path.write_text("not JSON", encoding="utf-8")
+            result = run_audit("transcribe", "--input", str(path))
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(json.loads(result.stdout)["error"], "candidate file is not valid JSON")
+        self.assertNotIn("Traceback", result.stderr)
+
+
+class DraftCoachMachineTranscriptionTests(unittest.TestCase):
+    """机器转写只有在学生确认后才算证据；卡片必须写明这一点。"""
+
+    def make_card(self, scope):
+        data = card("high_school_cubic.json")
+        data["draft_source"] = "machine_transcription"
+        data["error_check"]["scope"] = scope
+        return data
+
+    def run_card(self, data):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "card.json"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            return run_audit("audit", "--card", str(path),
+                             "--draft", CUBIC_DRAFT, "--strict")
+
+    def test_confirmed_transcription_passes_strict(self):
+        result = self.run_card(self.make_card(
+            "机器转写，学生已逐行核对，更正 1 处。核对了求导、解方程、代入三步。"))
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(payload["warnings"], [])
+
+    def test_silent_scope_warns(self):
+        result = self.run_card(self.make_card("核对了求导、解方程、代入三步。"))
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("W_TRANSCRIPTION_SCOPE_SILENT",
+                      [w["code"] for w in payload["warnings"]])
+
+    def test_mixed_symbol_warning_is_exempt_for_confirmed_transcription(self):
+        # 形近记号提醒只针对"学生自己描述的照片"；机器转写已经过学生逐行确认，
+        # 确认本身就是回原纸看一眼。再报这条会让不等式题永远过不了 --strict。
+        data = self.make_card("机器转写，学生已逐行核对，更正 1 处。")
+        data["error_check"]["errors"] = [{
+            "location": "中部", "evidence": "草稿写 x≤1", "explanation": "端点写错了。",
+            "fix": "改成 x<1。"}]
+        result = self.run_card(data)
+        payload = json.loads(result.stdout)
+        self.assertNotIn("W_MIXED_SYMBOL_EVIDENCE",
+                         [w["code"] for w in payload["warnings"]])
+
+
+class DraftCoachLayoutOnlyAuditTests(unittest.TestCase):
+    """版面卡：--draft 是助手自己的版面描述，不能拿它做证据检查。"""
+
+    def test_layout_only_card_passes_strict_gates(self):
+        result = run_audit("audit", "--card", str(EXAMPLES / "layout_only_photo.json"),
+                           "--draft", LAYOUT_DRAFT, "--strict")
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(payload["errors"], [])
+        self.assertEqual(payload["warnings"], [])
+        self.assertEqual(payload["analysis_basis"], "layout_only")
+
+    def test_layout_only_card_skips_draft_grounding_checks(self):
+        # 版面描述里全是版面词，卡片也不会引用里面的记号；两项检查都必须跳过。
+        # ①② 标块也不能被当成多个题号。
+        result = run_audit("audit", "--card", str(EXAMPLES / "layout_only_photo.json"),
+                           "--draft", LAYOUT_DRAFT, "--strict")
+        found = [w["code"] for w in json.loads(result.stdout)["warnings"]]
+        for code in ("W_DETACHED_DRAFT", "W_ERROR_NOT_IN_DRAFT",
+                     "W_MULTI_PROBLEM_DRAFT"):
+            with self.subTest(code=code):
+                self.assertNotIn(code, found)
+
+    def test_layout_only_scope_must_state_the_boundary(self):
+        data = card("layout_only_photo.json")
+        data["error_check"]["scope"] = "本次检查了草稿的版面。"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "card.json"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            result = run_audit("audit", "--card", str(path),
+                               "--draft", LAYOUT_DRAFT, "--strict")
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("W_LAYOUT_ONLY_SCOPE_SILENT",
+                      [w["code"] for w in payload["warnings"]])
+        # 带标准说法时不该报（示例卡里写的是「内容未经学生确认」「不含…计算错误」）
+        clean = run_audit("audit", "--card", str(EXAMPLES / "layout_only_photo.json"),
+                          "--draft", LAYOUT_DRAFT, "--strict")
+        self.assertNotIn("W_LAYOUT_ONLY_SCOPE_SILENT",
+                         [w["code"] for w in json.loads(clean.stdout)["warnings"]])
+
+    def test_missing_analysis_basis_is_treated_as_full(self):
+        # 历史卡片没有这个字段；审计对旧卡的判据不能变，严格性只放在结构门。
+        data = card("high_school_cubic.json")
+        data.pop("analysis_basis")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "card.json"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            result = run_audit("audit", "--card", str(path), "--draft", "9 8 7 6 5")
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("W_DETACHED_DRAFT", [w["code"] for w in payload["warnings"]])
+
+    def test_layout_only_ignores_utilization_when_solution_given(self):
+        # 内容没进卡，利用率本来就无从判断；给了最终解答也不构成漏评
+        result = run_audit("audit", "--card", str(EXAMPLES / "layout_only_photo.json"),
+                           "--draft", LAYOUT_DRAFT, "--final-solution", "x=5", "--strict")
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("W_UTILIZATION_UNAVAILABLE",
+                         [w["code"] for w in payload["warnings"]])
 
 
 class DraftCoachRefuseTests(unittest.TestCase):
