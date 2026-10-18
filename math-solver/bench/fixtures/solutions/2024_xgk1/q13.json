@@ -1,0 +1,104 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "若曲线 y=e^x+x 在 x=0 处的切线也是曲线 y=ln(x+1)+a 的切线，求 a。",
+    "topic": "导数",
+    "subtopics": [
+      "切线方程",
+      "公切线",
+      "导数的几何意义"
+    ],
+    "givens": [
+      "y=e^x+x",
+      "y=ln(x+1)+a",
+      "x=0 处的切线也是后者的切线"
+    ],
+    "variables": [
+      "a：实数参数",
+      "t：后者的切点横坐标"
+    ],
+    "constraints": [
+      "t>-1"
+    ],
+    "goal": "求 a",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先求第一条曲线在 x=0 的切线，再令第二条曲线在某点的切线与之重合。",
+    "method": "导数的几何意义与公切线",
+    "prerequisites": [
+      "切线斜率等于导数值",
+      "点斜式",
+      "两直线重合的条件"
+    ],
+    "steps": [
+      "求第一条切线",
+      "设第二条切点",
+      "令斜率相等",
+      "比较截距"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "y=e^x+x 在 x=0 处 y=1，y'=2，切线为 y=2x+1",
+        "justification": "导数的几何意义"
+      },
+      {
+        "step": 2,
+        "expression": "设 y=ln(x+1)+a 的切点为 x=t，则 1/(t+1)=2 ⇒ t=-1/2",
+        "justification": "切线斜率相等"
+      },
+      {
+        "step": 3,
+        "expression": "切点纵坐标为 a-ln2，切线为 y=2x+1+a-ln2",
+        "justification": "点斜式"
+      },
+      {
+        "step": 4,
+        "expression": "与 y=2x+1 重合 ⇒ a-ln2=0 ⇒ a=ln2",
+        "justification": "比较常数项"
+      }
+    ],
+    "answer": "ln2",
+    "conditions": [
+      "t>-1"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "切线斜率检查",
+        "status": "passed",
+        "details": "第一条曲线在 x=0 的斜率为 e^0+1=2；第二条曲线在 t 处斜率为 1/(t+1)，令其等于 2 得 t=-1/2。"
+      },
+      {
+        "name": "切点代入检查",
+        "status": "passed",
+        "details": "切点 (-1/2, a-ln2) 在切线 y=2x+1 上，得 a-ln2=0，故 a=ln2。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "公切线问题要同时匹配斜率和切点。",
+    "difficult_steps": [
+      "第二条曲线的切点不在 x=0",
+      "比较截距时注意 ln(1/2)=-ln2"
+    ],
+    "common_mistakes": [
+      "直接把 x=0 代入第二条曲线",
+      "只比较斜率而忘记截距"
+    ],
+    "prerequisite_explanations": [
+      "导数的几何意义",
+      "对数函数的导数"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

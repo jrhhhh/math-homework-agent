@@ -1,0 +1,116 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "记 △ABC 的内角 A、B、C 的对边分别为 a、b、c，已知 sin C=√2 cos B，a²+b²-c²=√2 ab。(1) 求 B；(2) 若 △ABC 的面积为 3+√3，求 c。",
+    "topic": "解三角形",
+    "subtopics": [
+      "余弦定理",
+      "正弦定理",
+      "三角形面积"
+    ],
+    "givens": [
+      "sin C=√2 cos B",
+      "a²+b²-c²=√2 ab",
+      "S=3+√3"
+    ],
+    "variables": [
+      "A、B、C：三角形内角",
+      "a、b、c：对边"
+    ],
+    "constraints": [
+      "A、B、C∈(0,π)",
+      "a、b、c>0"
+    ],
+    "goal": "求 B 与 c",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先用余弦定理求 C，再由已知求 B，最后用正弦定理把 a、b 用 c 表示并代入面积。",
+    "method": "余弦定理 + 正弦定理 + 面积公式",
+    "prerequisites": [
+      "余弦定理",
+      "正弦定理",
+      "两角和正弦公式"
+    ],
+    "steps": [
+      "由余弦定理求 C",
+      "由 sinC=√2cosB 求 B",
+      "求 A 与 sinA",
+      "用 c 表示 a、b",
+      "代入面积求 c"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a²+b²-c²=2ab cos C=√2 ab ⇒ cos C=√2/2 ⇒ C=π/4",
+        "justification": "余弦定理"
+      },
+      {
+        "step": 2,
+        "expression": "sin C=√2/2=√2 cos B ⇒ cos B=1/2 ⇒ B=π/3",
+        "justification": "已知条件与 B∈(0,π)"
+      },
+      {
+        "step": 3,
+        "expression": "A=π-π/3-π/4=5π/12",
+        "justification": "三角形内角和"
+      },
+      {
+        "step": 4,
+        "expression": "sin A=sin(5π/12)=(√6+√2)/4",
+        "justification": "两角和的正弦公式"
+      },
+      {
+        "step": 5,
+        "expression": "由正弦定理 a=c sinA/sinC，b=c sinB/sinC",
+        "justification": "正弦定理"
+      },
+      {
+        "step": 6,
+        "expression": "S=ab sinC/2=c²(3+√3)/8=3+√3 ⇒ c²=8 ⇒ c=2√2",
+        "justification": "面积公式与代数化简"
+      }
+    ],
+    "answer": "(1) B=π/3；(2) c=2√2",
+    "conditions": [
+      "c>0"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "余弦定理与角范围检查",
+        "status": "passed",
+        "details": "由余弦定理得 cos C=√2/2，C∈(0,π)，故 C=π/4；再由 sin C=√2 cos B 得 cos B=1/2，B=π/3。"
+      },
+      {
+        "name": "正弦定理与面积代回检查",
+        "status": "passed",
+        "details": "A=5π/12，a=(√3+1)c/2，b=√6 c/2；面积 (3+√3)c²/8=3+√3 得 c²=8，c=2√2。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "先用余弦定理锁定 C，再用已知锁定 B，最后整体用 c 表示。",
+    "difficult_steps": [
+      "sin(5π/12) 的展开",
+      "面积公式选择哪两边"
+    ],
+    "common_mistakes": [
+      "把 a²+b²-c² 与 2ab cos C 的系数弄错",
+      "忽略 B 的范围导致多解"
+    ],
+    "prerequisite_explanations": [
+      "余弦定理",
+      "正弦定理与三角形面积公式"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

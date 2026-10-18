@@ -1,0 +1,105 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "甲、乙两人各有四张卡片，甲的卡片上分别标有数字 1,3,5,7，乙的卡片上分别标有数字 2,4,6,8。两人进行四轮比赛，每轮各自从自己持有的卡片中随机选一张，数字大的人得 1 分，数字小的人得 0 分，然后各自弃掉此轮所选的卡片。求四轮比赛后甲的总得分不小于 2 的概率。",
+    "topic": "概率与统计",
+    "subtopics": [
+      "古典概型",
+      "排列",
+      "分类计数"
+    ],
+    "givens": [
+      "甲：1,3,5,7",
+      "乙：2,4,6,8",
+      "四轮逐轮比较，大者得 1 分"
+    ],
+    "variables": [
+      "甲、乙的出牌顺序：各自的随机排列",
+      "S：甲的总得分"
+    ],
+    "constraints": [
+      "每轮从剩余卡片中等可能选择",
+      "四轮后比较总分"
+    ],
+    "goal": "求 P(S≥2)",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把出牌过程看成随机排列；固定甲的顺序，枚举乙的 24 种排列，按数字 2 的位置分类计数。",
+    "method": "古典概型与分类枚举",
+    "prerequisites": [
+      "排列与等可能性",
+      "分类计数",
+      "对称性"
+    ],
+    "steps": [
+      "固定甲的顺序",
+      "写出得分表达式",
+      "按 2 的位置分类",
+      "求和得概率"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "每人的出牌顺序等可能，固定甲的顺序为 1,3,5,7",
+        "justification": "得分只依赖逐轮配对，交换甲的轮次是对称变换"
+      },
+      {
+        "step": 2,
+        "expression": "设乙的顺序为 (a,b,c,d)，甲得分 S=1_{b=2}+1_{c∈{2,4}}+1_{d≠8}",
+        "justification": "逐轮比较：1 不可能赢，3 只赢 2，5 赢 2 或 4，7 除 8 外都赢"
+      },
+      {
+        "step": 3,
+        "expression": "按 2 在乙的第 1,2,3,4 轮分类，S≥2 的排列数分别为 1,5,4,2",
+        "justification": "每类枚举其余三个数的 6 种排列"
+      },
+      {
+        "step": 4,
+        "expression": "合计 12 种，P=12/24=1/2",
+        "justification": "乙的 4! 种排列等可能"
+      }
+    ],
+    "answer": "1/2",
+    "conditions": [
+      "两人的出牌顺序均为均匀随机排列"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "样本空间与对称性检查",
+        "status": "passed",
+        "details": "甲、乙各有 4!=24 种等可能顺序；固定甲的顺序不改变得分分布。"
+      },
+      {
+        "name": "分类枚举与得分检查",
+        "status": "passed",
+        "details": "按数字 2 的位置分四类，逐类枚举 6 种排列，S≥2 的排列数为 1+5+4+2=12，概率 1/2。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把“每轮随机选一张”看成随机排列，再用对称性固定一方。",
+    "difficult_steps": [
+      "得分表达式的分段",
+      "按 2 的位置分类而不重不漏"
+    ],
+    "common_mistakes": [
+      "把每轮选择当成独立有放回",
+      "枚举时重复计数"
+    ],
+    "prerequisite_explanations": [
+      "排列与等可能性",
+      "分类计数"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

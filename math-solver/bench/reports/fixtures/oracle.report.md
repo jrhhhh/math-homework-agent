@@ -10,19 +10,19 @@
 | 指标 | 数值 |
 | --- | ---: |
 | 总分 | **100** |
-| 答案正确率 | 100%（95% CI 87.94–100） |
-| 状态正确率 | 100%（95% CI 87.94–100） |
+| 答案正确率 | 100%（95% CI 92.44–100） |
+| 状态正确率 | 100%（95% CI 92.44–100） |
 | 核验诚实率 | 100% |
 | 边界路由分 | 100 |
-| 案例数 | 32 |
+| 案例数 | 51 |
 | 严重失败数 | 0 |
 
 ## 子集
 
 | 子集 | 案例 | 权重 | 得分 |
 | --- | ---: | ---: | ---: |
-| `answer_core` | 14 | 45 | 100 |
-| `verification_discipline` | 9 | 30 | 100 |
+| `answer_core` | 26 | 45 | 100 |
+| `verification_discipline` | 16 | 30 | 100 |
 | `status_handling` | 5 | 15 | 100 |
 | `boundary_routing` | 4 | 10 | 100 |
 
@@ -30,7 +30,7 @@
 
 | 划分 | 案例 | 得分 |
 | --- | ---: | ---: |
-| `development` | 27 | 100 |
+| `development` | 46 | 100 |
 | `test` | 5 | 100 |
 
 ## 严重失败
@@ -73,6 +73,25 @@
 | `MATH-30` | `boundary_routing` | route | 100 | — | — | — | ✓ | — |
 | `MATH-31` | `boundary_routing` | clarify | 100 | — | — | — | ✓ | — |
 | `MATH-32` | `boundary_routing` | clarify | 100 | — | — | — | ✓ | — |
+| `MATH-33` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-34` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-35` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-36` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-37` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-38` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-39` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-40` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-41` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-42` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-43` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-44` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-45` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-46` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-47` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-48` | `answer_core` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-49` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-50` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
+| `MATH-51` | `verification_discipline` | solve | 100 | ✓ | ✓ | ✓ | — | — |
 
 ## 读分口径
 
@@ -80,5 +99,5 @@
 - 答案检查面向本基准的固定案例：`value_set`、`interval_set`、`text_forms`、`piecewise`、`empty_set`。
 - 严重失败直接把案例记 0，不参与加权抵消。
 - 答案正确率与状态正确率单独列出，不应只用总分概括。
-- 括号内是 95% Wilson 区间；32 条样本下区间很宽，不要把点估计当作稳定准确率。
+- 括号内是 95% Wilson 区间；51 条样本下区间很宽，不要把点估计当作稳定准确率。
 

@@ -1,0 +1,145 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知函数 f(x)=ln(x/(2-x))+ax+b(x-1)³。(1) 若 b=0，且 f'(x)≥0，求 a 的最小值；(2) 证明：曲线 y=f(x) 是中心对称图形；(3) 若 f(x)>-2 当且仅当 1<x<2，求 b 的取值范围。",
+    "topic": "函数与导数",
+    "subtopics": [
+      "导数",
+      "中心对称",
+      "恒成立",
+      "参数范围",
+      "必要性充分性"
+    ],
+    "givens": [
+      "f(x)=ln(x/(2-x))+ax+b(x-1)³",
+      "定义域 0<x<2"
+    ],
+    "variables": [
+      "a、b：实数参数",
+      "x：定义域内的变量"
+    ],
+    "constraints": [
+      "0<x<2"
+    ],
+    "goal": "求 a 的最小值、证明对称性、求 b 的范围",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "第(1)问求导后用 x(2-x)≤1 放缩；第(2)问计算 f(x)+f(2-x)；第(3)问先由 x=1 定 a，再分必要性与充分性。",
+    "method": "导数 + 对称性 + 端点效应",
+    "prerequisites": [
+      "对数求导",
+      "中心对称的判别式",
+      "恒成立问题的必要性/充分性"
+    ],
+    "steps": [
+      "求导",
+      "放缩求 a 的范围",
+      "计算 f(x)+f(2-x)",
+      "由 x=1 定 a",
+      "证明 b≥-2/3 必要",
+      "构造 h 证明充分"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "b=0 时 f'(x)=1/x+1/(2-x)+a=2/[x(2-x)]+a",
+        "justification": "求导并通分"
+      },
+      {
+        "step": 2,
+        "expression": "x(2-x)≤1 ⇒ 2/[x(2-x)]≥2，等号在 x=1",
+        "justification": "二次函数配方"
+      },
+      {
+        "step": 3,
+        "expression": "f'(x)≥0 对一切 x 成立 ⇔ a≥-2",
+        "justification": "下界"
+      },
+      {
+        "step": 4,
+        "expression": "f(2-x)=-ln(x/(2-x))+2a-ax-b(x-1)³",
+        "justification": "代入 2-x"
+      },
+      {
+        "step": 5,
+        "expression": "f(x)+f(2-x)=2a",
+        "justification": "相加消去"
+      },
+      {
+        "step": 6,
+        "expression": "曲线关于 (1,a) 中心对称",
+        "justification": "中心对称的定义"
+      },
+      {
+        "step": 7,
+        "expression": "f(1)=-2 ⇒ a=-2",
+        "justification": "条件在 x=1 处取等号"
+      },
+      {
+        "step": 8,
+        "expression": "f'(x)=u²[2/(1-u²)+3b]，u=x-1",
+        "justification": "求导并配方"
+      },
+      {
+        "step": 9,
+        "expression": "b<-2/3 时在 1 右侧 f'<0，违反条件，故 b≥-2/3",
+        "justification": "必要性"
+      },
+      {
+        "step": 10,
+        "expression": "b≥-2/3 时构造 h(x)=ln(x/(2-x))-2x-(2/3)(x-1)³，h'≥0，故 f(x)>-2 ⇔ 1<x<2",
+        "justification": "充分性"
+      }
+    ],
+    "answer": "(1) a_min=-2；(2) 对称中心 (1,a)；(3) b≥-2/3",
+    "conditions": [
+      "x∈(0,2)"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "导数恒非负与最小值检查",
+        "status": "passed",
+        "details": "f'(x)=2/[x(2-x)]+a，x(2-x)≤1，故 f'≥a+2，a 的最小值为 -2。"
+      },
+      {
+        "name": "中心对称检查",
+        "status": "passed",
+        "details": "f(x)+f(2-x)=2a，定义域 (0,2) 关于 x=1 对称，故对称中心为 (1,a)。"
+      },
+      {
+        "name": "必要性与充分性检查",
+        "status": "passed",
+        "details": "b<-2/3 时 x=1 右侧导数变负，违反条件；b≥-2/3 时 h(x)=ln(x/(2-x))-2x-(2/3)(x-1)³ 递增，且 f(x)≥h(x)（x>1）或 f(x)≤h(x)（x<1），得 b≥-2/3。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "第(3)问的关键是由 x=1 处取等号定出 a=-2，再用端点效应得到 b 的下界。",
+    "difficult_steps": [
+      "x(2-x)≤1 的放缩",
+      "中心对称的判别式 f(x)+f(2-x)=2a",
+      "必要性与充分性的双向论证"
+    ],
+    "common_mistakes": [
+      "把 f(1)=-2 与 f'(1)=0 混淆",
+      "只证必要性而漏掉充分性",
+      "把 b 的下界写成 a 的下界"
+    ],
+    "prerequisite_explanations": [
+      "对数函数的导数",
+      "中心对称的定义",
+      "恒成立问题的端点效应"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

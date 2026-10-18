@@ -1,0 +1,104 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知圆柱和圆锥的底面半径相等，侧面积相等，且它们的高均为 √3，求圆锥的体积。",
+    "topic": "立体几何",
+    "subtopics": [
+      "圆柱侧面积",
+      "圆锥侧面积",
+      "圆锥体积"
+    ],
+    "givens": [
+      "圆柱与圆锥底面半径相等",
+      "侧面积相等",
+      "高均为 √3"
+    ],
+    "variables": [
+      "r：底面半径",
+      "l：圆锥母线"
+    ],
+    "constraints": [
+      "r>0"
+    ],
+    "goal": "求圆锥的体积",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "用侧面积相等求底面半径，再代入圆锥体积公式。",
+    "method": "侧面积与体积公式",
+    "prerequisites": [
+      "圆柱侧面积 2πrh",
+      "圆锥侧面积 πrl",
+      "圆锥体积 V=πr²h/3"
+    ],
+    "steps": [
+      "表示母线",
+      "列侧面积等式",
+      "解半径",
+      "求体积"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "设底面半径为 r，圆锥母线 l=√(r²+3)",
+        "justification": "高为 √3，由勾股定理"
+      },
+      {
+        "step": 2,
+        "expression": "圆柱侧面积为 2πr√3，圆锥侧面积为 πr√(r²+3)",
+        "justification": "侧面积公式"
+      },
+      {
+        "step": 3,
+        "expression": "πr√(r²+3)=2πr√3 ⇒ r²+3=12 ⇒ r=3",
+        "justification": "r>0，约去 πr 后平方"
+      },
+      {
+        "step": 4,
+        "expression": "V=(1/3)πr²h=(1/3)π·9·√3=3√3π",
+        "justification": "圆锥体积公式"
+      }
+    ],
+    "answer": "B：3√3π",
+    "conditions": [
+      "r>0"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "侧面积相等检查",
+        "status": "passed",
+        "details": "圆柱侧面积 2πr√3；圆锥母线 √(r²+3)，侧面积 πr√(r²+3)；相等解得 r=3。"
+      },
+      {
+        "name": "体积公式检查",
+        "status": "passed",
+        "details": "V=πr²h/3=π·9·√3/3=3√3π，与选项 B 一致。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "先由侧面积相等求半径，再算体积。",
+    "difficult_steps": [
+      "圆锥母线要用勾股定理",
+      "侧面积公式不要与底面积混淆"
+    ],
+    "common_mistakes": [
+      "把圆锥侧面积写成 πr²",
+      "忘记母线而用高代替"
+    ],
+    "prerequisite_explanations": [
+      "圆柱与圆锥的侧面积公式",
+      "圆锥的母线、高、半径关系"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

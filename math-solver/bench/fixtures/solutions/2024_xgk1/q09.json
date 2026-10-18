@@ -1,0 +1,105 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "为了解推动出口后的亩收入，从该种植区抽取样本，得到推动出口后亩收入的样本均值 x̄=2.1，样本方差 s²=0.01。已知该种植区以往的亩收入 X~N(1.8,0.1²)，假设推动出口后的亩收入 Y~N(x̄,s²)。判断：A. P(X>2)>0.2 B. P(X>2)<0.5 C. P(Y>2)>0.2 D. P(Y>2)<0.8。（若 Z~N(μ,σ²)，P(Z<μ+σ)≈0.8413）",
+    "topic": "概率与统计",
+    "subtopics": [
+      "正态分布",
+      "标准化",
+      "对称性"
+    ],
+    "givens": [
+      "X~N(1.8,0.1²)",
+      "Y~N(2.1,0.01)",
+      "P(Z<μ+σ)≈0.8413"
+    ],
+    "variables": [
+      "X：以往亩收入",
+      "Y：推动出口后亩收入",
+      "Z：标准正态变量"
+    ],
+    "constraints": [
+      "σ_X=0.1",
+      "σ_Y=0.1"
+    ],
+    "goal": "判断四个概率不等式",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把 X、Y 分别标准化，再用已知的 0.8413 和对称性比较。",
+    "method": "正态分布标准化",
+    "prerequisites": [
+      "标准正态分布",
+      "P(Z<-1)=P(Z>1)",
+      "正态分布的对称性"
+    ],
+    "steps": [
+      "标准化 X>2",
+      "标准化 Y>2",
+      "比较数值"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "X~N(1.8,0.1²)，σ_X=0.1",
+        "justification": "正态分布记号"
+      },
+      {
+        "step": 2,
+        "expression": "P(X>2)=P(Z>2)<P(Z>1)=0.1587<0.2",
+        "justification": "标准化与已知 P(Z<1)=0.8413"
+      },
+      {
+        "step": 3,
+        "expression": "Y~N(2.1,0.1²)，P(Y>2)=P(Z>-1)=P(Z<1)=0.8413",
+        "justification": "标准化与对称性"
+      },
+      {
+        "step": 4,
+        "expression": "0.8413>0.2 且 0.8413>0.8",
+        "justification": "直接比较"
+      }
+    ],
+    "answer": "BC",
+    "conditions": [
+      "Z 为标准正态变量"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "正态标准化检查",
+        "status": "passed",
+        "details": "X 的标准化：P(X>2)=P(Z>2)；Y 的标准化：P(Y>2)=P(Z>-1)。"
+      },
+      {
+        "name": "概率数值与选项核对",
+        "status": "passed",
+        "details": "P(Z>2)<P(Z>1)=0.1587<0.2；P(Z>-1)=0.8413>0.2 且 >0.8，故 B、C 正确。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把两个正态变量都标准化到同一个 Z，再比较概率。",
+    "difficult_steps": [
+      "Y 的方差是 0.01，标准差是 0.1 而不是 0.01",
+      "P(Y>2) 对应 Z>-1 而不是 Z>1"
+    ],
+    "common_mistakes": [
+      "把 s²=0.01 当成标准差",
+      "忽略正态分布的对称性"
+    ],
+    "prerequisite_explanations": [
+      "正态分布的标准化",
+      "标准正态分布的对称性"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知函数 f(x) 的定义域为 R，f(x)>f(x-1)+f(x-2)，且当 x<3 时 f(x)=x。下列结论中一定正确的是：A. f(10)>100 B. f(20)>1000 C. f(10)<1000 D. f(20)<10000。",
+    "topic": "数列与不等式",
+    "subtopics": [
+      "递推不等式",
+      "斐波那契下界",
+      "数学归纳法"
+    ],
+    "givens": [
+      "f(x)>f(x-1)+f(x-2)",
+      "x<3 时 f(x)=x"
+    ],
+    "variables": [
+      "f：R→R",
+      "n：整数下标"
+    ],
+    "constraints": [
+      "递推不等式对一切实数 x 成立"
+    ],
+    "goal": "判断哪个选项一定正确",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "沿整数下标反复使用递推不等式，得到与斐波那契数列比较的下界，再逐项判断。",
+    "method": "递推下界与归纳法",
+    "prerequisites": [
+      "斐波那契数列",
+      "数学归纳法",
+      "严格不等式的传递"
+    ],
+    "steps": [
+      "写出初值",
+      "逐步求下界",
+      "归纳得 f(n)>F_(n+1)",
+      "比较各选项"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "由 x<3 时 f(x)=x，得 f(1)=1，f(2)=2",
+        "justification": "代入定义"
+      },
+      {
+        "step": 2,
+        "expression": "f(3)>f(2)+f(1)=3",
+        "justification": "在 x=3 处使用递推不等式"
+      },
+      {
+        "step": 3,
+        "expression": "f(4)>f(3)+f(2)>5",
+        "justification": "在 x=4 处使用递推不等式并代入 f(3)>3"
+      },
+      {
+        "step": 4,
+        "expression": "归纳得 f(n)>F_(n+1)（F_1=F_2=1）",
+        "justification": "斐波那契递推与数学归纳法"
+      },
+      {
+        "step": 5,
+        "expression": "f(20)>F_21=10946>1000",
+        "justification": "逐项计算斐波那契数"
+      },
+      {
+        "step": 6,
+        "expression": "f(10)>89 只给出下界；f(10) 可任意大；f(20)>10946>10000，故 A、C、D 均不一定正确",
+        "justification": "递推只给下界，初值可放大或取到接近下界"
+      }
+    ],
+    "answer": "B：f(20)>1000",
+    "conditions": [
+      "f(x)>f(x-1)+f(x-2) 对一切实数 x 成立"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "递推下界与归纳检查",
+        "status": "passed",
+        "details": "从 f(3)>3、f(4)>5 出发，归纳得到 f(n)>F_(n+1)；F_21=10946。"
+      },
+      {
+        "name": "选项边界检查",
+        "status": "passed",
+        "details": "f(10)>89 不足以推出 100 下界；f(10) 可任意大；f(20)>10946 使 10000 上界不成立。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把递推不等式与斐波那契数列比较，得到指数级下界。",
+    "difficult_steps": [
+      "严格不等式逐层传递",
+      "区分“下界”与“一定正确”"
+    ],
+    "common_mistakes": [
+      "把 f(3)>3 当成 f(3)=3",
+      "由 f(20)>10946 误判 D"
+    ],
+    "prerequisite_explanations": [
+      "斐波那契数列的递推",
+      "数学归纳法"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

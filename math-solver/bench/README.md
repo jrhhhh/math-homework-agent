@@ -13,14 +13,14 @@
 
 | 项目 | 状态 |
 | --- | --- |
-| 案例 | **32 条**：answer_core 14 / verification_discipline 9 / status_handling 5 / boundary_routing 4 |
-| 数据划分 | development 27 / test 5（MATH-08、12、14、21、29） |
+| 案例 | **51 条**：answer_core 26 / verification_discipline 16 / status_handling 5 / boundary_routing 4 |
+| 数据划分 | development 46 / test 5（MATH-08、12、14、21、29） |
 | 自动层 | 已实现：结构门、答案检查、核验点、分支、禁词、tool_log、严重失败 |
-| 基准测试 | **27 项通过**（`tests/`） |
-| 夹具读数 | oracle **100**、0 严重失败、退出 0；bad **60.5**、12 类严重失败、退出 1 |
+| 基准测试 | **29 项通过**（`tests/`） |
+| 夹具读数 | oracle **100**、0 严重失败、退出 0；bad **76.11**、12 类严重失败、退出 1 |
 | 人工层 | 接口已实现（`engine/human_review.py`），尚未运行 |
 | 模型运行 | **没有**。`predictions/fixtures/` 是夹具，不是模型成绩 |
-| 数学真值 | 25 道扩充题来自独立核验的输出；另 3 道新增求解题（概率、向量、证明）和 4 条边界案例 |
+| 数学真值 | 25 道扩充题来自独立核验的输出；另 3 道新增求解题（概率、向量、证明）、4 条边界案例与 2024 新高考Ⅰ卷 19 题 |
 
 ## 真值来源
 
@@ -30,6 +30,12 @@
 
 另 3 道求解题（概率、向量、证明）与 4 条边界案例是本基准新增的，答案在
 `fixtures/solutions/` 与 `tools/data.py` 中给出。
+
+**2024 新高考Ⅰ卷 19 题**（MATH-33–MATH-51）单独收录在
+[`tools/exam_2024.py`](tools/exam_2024.py)，solution 夹具在
+`fixtures/solutions/2024_xgk1/`。题面采用通行真题版本，修正了原始转录中的错误：
+第 16(2) 按“△ABP 面积为 9”收两条直线，第 17–19 题按标准题面。所有 19 条均为
+`development`，不算独立 test 留出集。
 
 ## 快速开始
 
@@ -114,7 +120,7 @@ Windows 上 `python3` 可能是应用商店占位程序；本机用
 3. **子集分** = 该子集案例分均值 × 100。
 4. **总分** = 子集分按上表权重加权。
 5. 另列 **答案正确率**、**状态正确率**、**核验诚实率**、**边界路由分** 与 **数据划分分**；
-   答案/状态正确率附 **95% Wilson 区间**。32 条样本下区间很宽，不要把点估计当作稳定准确率。
+   答案/状态正确率附 **95% Wilson 区间**。51 条样本下区间仍然很宽，不要把点估计当作稳定准确率。
 
 读分时必须同时看：总分、答案正确率、严重失败列表、覆盖度。
 一个总分不低但带若干严重失败的运行，不是可交付的运行。
@@ -171,7 +177,7 @@ python3 engine/human_review.py merge --reviews reviews/human.template.json
 - **结构门不验数学**；答案检查只覆盖固定案例的答案形态，不能替代一般性证明。
 - **核验点检查是关键词匹配**：可能出现“写了关键词但没真的做检查”的情况，也可能误判同义表述。
 - **分支检查依赖句子切分**：同一句里堆多个分支时，标签与结论的对应可能被放宽。
-- **32 条是合成/整理出来的案例**，不是随机抽样；不能外推为任意高考题的准确率。
+- **51 条是合成/整理出来的案例**，不是随机抽样；不能外推为任意高考题的准确率。2024 新高考Ⅰ卷 19 题虽是真题，但标准答案仍是人工整理，自动分不验证推导严谨性。
 - **test 划分不是独立留出集**：MATH-08、12、14、21、29 也参与过技能与数据开发，
   只能当作报告分层，不能当作泛化估计。
 - **没有模型运行数据**；`predictions/fixtures/` 是夹具。
@@ -194,16 +200,19 @@ engine/scoring.py                  聚合、子集/划分分
 engine/report.py                   Markdown 报告
 engine/human_review.py             人工层导出 / 回读
 tools/data.py                      案例与标准答案源
+tools/exam_2024.py                 2024 新高考Ⅰ卷 19 条案例与真值
 tools/build_dataset.py             重建 JSONL
 fixtures/solutions/                概率、向量、证明三份新增求解输出
-tests/                             27 项单元与端到端测试
+fixtures/solutions/2024_xgk1/      2024 新高考Ⅰ卷 19 份 solution 夹具
+tests/                             29 项单元与端到端测试
 predictions/fixtures/              夹具（不是模型输出）
 reports/fixtures/                  夹具报告
 ```
 
 ## 改案例
 
-改 `tools/data.py`，然后：
+改 `tools/data.py`；2024 新高考Ⅰ卷的 19 条案例改 `tools/exam_2024.py`，并同步更新
+`fixtures/solutions/2024_xgk1/` 下对应的 solution JSON。然后：
 
 ```bash
 python3 tools/build_dataset.py

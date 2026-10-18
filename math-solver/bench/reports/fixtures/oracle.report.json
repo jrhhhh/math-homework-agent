@@ -1,6 +1,6 @@
 {
   "benchmark": "math-solver-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "run": {
     "predictions": "predictions/fixtures/oracle.json",
     "arm": "skill_gates",
@@ -9,10 +9,10 @@
   },
   "unmatched_predictions": [],
   "summary": {
-    "case_count": 32,
+    "case_count": 51,
     "subset_counts": {
-      "answer_core": 14,
-      "verification_discipline": 9,
+      "answer_core": 26,
+      "verification_discipline": 16,
       "status_handling": 5,
       "boundary_routing": 4
     },
@@ -33,18 +33,18 @@
       "test": 100.0
     },
     "split_counts": {
-      "development": 27,
+      "development": 46,
       "test": 5
     },
     "total": 100.0,
     "answer_accuracy": 100.0,
     "answer_accuracy_ci": [
-      87.94,
+      92.44,
       100.0
     ],
     "status_accuracy": 100.0,
     "status_accuracy_ci": [
-      87.94,
+      92.44,
       100.0
     ],
     "verification_honesty": 100.0,
@@ -2013,6 +2013,1260 @@
             "value": true,
             "weight": 2,
             "detail": "未命中禁词"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-33",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "expected=['-1', '0'] actual=['-1', '0']"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-34",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-35",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "expected=['2'] actual=['2']"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-36",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-37",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-38",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "expected=[(-1.0, 0.0, True, True)] actual=[(-1.0, 0.0, True, True)]"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-39",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "expected=['6'] actual=['6']"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-40",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-41",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-42",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-43",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-44",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-45",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-46",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-47",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-48",
+        "subset": "answer_core",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-49",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-50",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          }
+        },
+        "severe": [],
+        "notes": [],
+        "score": 1.0
+      },
+      {
+        "case_id": "MATH-51",
+        "subset": "verification_discipline",
+        "split": "development",
+        "expected_action": "solve",
+        "checks": {
+          "action_correct": {
+            "value": true,
+            "weight": 3,
+            "detail": "action=solve"
+          },
+          "structure_gate": {
+            "value": true,
+            "weight": 3,
+            "detail": "validate exit=0"
+          },
+          "status_correct": {
+            "value": true,
+            "weight": 2,
+            "detail": "status=solved"
+          },
+          "answer_correct": {
+            "value": true,
+            "weight": 5,
+            "detail": "all groups matched"
+          },
+          "required_checks": {
+            "value": true,
+            "weight": 2,
+            "detail": "必需核验点齐全"
+          },
+          "required_terms": {
+            "value": true,
+            "weight": 2,
+            "detail": "结论项齐全"
+          },
+          "verification_honest": {
+            "value": true,
+            "weight": 2,
+            "detail": "核验说明非占位"
+          },
+          "curriculum_appropriate": {
+            "value": true,
+            "weight": 1,
+            "detail": "未使用超纲方法"
+          },
+          "no_forbidden_claims": {
+            "value": true,
+            "weight": 2,
+            "detail": "未命中禁词"
+          },
+          "tool_log_present": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
+          },
+          "tool_log_fidelity": {
+            "value": true,
+            "weight": 1,
+            "detail": "声称与实测一致（exit 0）"
           }
         },
         "severe": [],

@@ -1,0 +1,119 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "曲线 C 过坐标原点 O，C 上的点满足横坐标大于 -2，到点 F(2,0) 的距离与到定直线 x=a(a<0) 的距离之积为 4。判断：A. a=-2 B. 点(2√2,0)在 C 上 C. C 在第一象限内的点的纵坐标的最大值为 1 D. 当(x0,y0)在 C 上时，y0≤4/(x0+2)。",
+    "topic": "圆锥曲线",
+    "subtopics": [
+      "曲线方程",
+      "距离公式",
+      "不等式上界"
+    ],
+    "givens": [
+      "C 过原点 O",
+      "横坐标大于 -2",
+      "到 F(2,0) 的距离与到 x=a 的距离之积为 4"
+    ],
+    "variables": [
+      "P(x,y)：C 上的点",
+      "a：负数参数"
+    ],
+    "constraints": [
+      "x>-2",
+      "a<0"
+    ],
+    "goal": "判断四个结论",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先由原点在曲线上确定 a，再写出曲线方程，逐项代入或放缩。",
+    "method": "距离公式与方程代入",
+    "prerequisites": [
+      "两点间距离",
+      "点到直线的距离",
+      "平方的非负性"
+    ],
+    "steps": [
+      "代入原点求 a",
+      "写出曲线方程",
+      "逐项验证"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "设 P(x,y)，则 √((x-2)²+y²)·|x-a|=4",
+        "justification": "两点间距离与点到直线距离公式"
+      },
+      {
+        "step": 2,
+        "expression": "代入 O(0,0)：2|a|=4，a<0 ⇒ a=-2",
+        "justification": "原点在曲线上"
+      },
+      {
+        "step": 3,
+        "expression": "方程化为 √((x-2)²+y²)(x+2)=4",
+        "justification": "x>-2 时 |x+2|=x+2"
+      },
+      {
+        "step": 4,
+        "expression": "B：x=2√2,y=0 时 (2√2-2)(2√2+2)=4，成立",
+        "justification": "代入方程"
+      },
+      {
+        "step": 5,
+        "expression": "C：x=3/2 时 y²=16/(3.5)²-(0.5)²>1，故最大值大于 1",
+        "justification": "取一个反例点"
+      },
+      {
+        "step": 6,
+        "expression": "D：y²=16/(x+2)²-(x-2)²≤16/(x+2)² ⇒ y≤4/(x+2)",
+        "justification": "平方项非负与开方"
+      }
+    ],
+    "answer": "ABD",
+    "conditions": [
+      "x>-2"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "原点与参数检查",
+        "status": "passed",
+        "details": "O 到 F 的距离为 2，到 x=a 的距离为 -a，故 2(-a)=4，a=-2。"
+      },
+      {
+        "name": "曲线方程与选项检查",
+        "status": "passed",
+        "details": "点 (2√2,0) 代入曲线方程得 4；x=3/2 时 y²>1，故 C 错。"
+      },
+      {
+        "name": "纵坐标上界检查",
+        "status": "passed",
+        "details": "纵坐标满足 y²≤16/(x+2)²，故 y≤4/(x+2)，这是不等式上界。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "先用原点确定 a，再把曲线方程写成可代入的形式。",
+    "difficult_steps": [
+      "点到直线的距离带绝对值",
+      "C 选项要用反例点说明最大值大于 1"
+    ],
+    "common_mistakes": [
+      "忽略 x>-2 而去绝对值出错",
+      "把 D 的上界写成 x/(x+2)"
+    ],
+    "prerequisite_explanations": [
+      "两点间距离公式",
+      "点到直线的距离公式"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

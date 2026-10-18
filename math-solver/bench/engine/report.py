@@ -90,6 +90,6 @@ def render_markdown(report, meta):
     lines.append("- 答案检查面向本基准的固定案例：`value_set`、`interval_set`、`text_forms`、`piecewise`、`empty_set`。")
     lines.append("- 严重失败直接把案例记 0，不参与加权抵消。")
     lines.append("- 答案正确率与状态正确率单独列出，不应只用总分概括。")
-    lines.append("- 括号内是 95% Wilson 区间；32 条样本下区间很宽，不要把点估计当作稳定准确率。")
+    lines.append(f"- 括号内是 95% Wilson 区间；{report.get('case_count', len(report['cases']))} 条样本下区间很宽，不要把点估计当作稳定准确率。")
     lines.append("")
     return "\n".join(lines)

@@ -67,7 +67,7 @@ math-solver/
   scripts/validate_output.py  结构化输出的结构门（仅标准库）
   references/              输出 Schema 与按题型核验清单
   example/                 完整求解、条件不足示例与可行性测试夹具
-  bench/                   32 条案例的确定性评分、oracle/bad 夹具与测试
+  bench/                   51 条案例的确定性评分、oracle/bad 夹具与测试
   tests/                   结构门回归测试（20 项）
 draft-coach/
   SKILL.md                 草稿习惯入口（行为契约与 Workflow）

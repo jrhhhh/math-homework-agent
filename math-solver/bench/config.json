@@ -1,6 +1,6 @@
 {
   "benchmark": "math-solver-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "benchmark_date": "2026-10-18",
   "skill_ref": "../SKILL.md",
   "subset_weights": {

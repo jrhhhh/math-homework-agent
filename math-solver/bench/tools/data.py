@@ -709,3 +709,11 @@ GROUND_TRUTH = {
         "rationale": "只有图片、没有文字题面；本技能不做 OCR，应请学生提供文字。",
     },
 }
+
+
+# ------------------------------------------------------------ 2024 新高考Ⅰ卷
+# 19 题单独放在 tools/exam_2024.py；这里合并，保持 CASES / GROUND_TRUTH 两个名字。
+from tools.exam_2024 import EXAM_CASES, EXAM_GROUND_TRUTH  # noqa: E402
+
+CASES = CASES + EXAM_CASES
+GROUND_TRUTH = {**GROUND_TRUTH, **EXAM_GROUND_TRUTH}

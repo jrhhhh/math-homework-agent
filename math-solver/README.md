@@ -72,7 +72,7 @@ python3 -m unittest discover -s math-solver/tests -p 'test_*.py'
 
 ## 基准（bench）
 
-`bench/` 对**已保存的输出**做确定性评分，不调用模型。32 条案例分四组：`answer_core` 14 / `verification_discipline` 9 / `status_handling` 5 / `boundary_routing` 4；其中 5 条为 test 划分。评分覆盖答案形态、核验点、状态一致性、分支完备、边界转交与 tool_log 真实性。
+`bench/` 对**已保存的输出**做确定性评分，不调用模型。51 条案例分四组：`answer_core` 26 / `verification_discipline` 16 / `status_handling` 5 / `boundary_routing` 4；其中 5 条为 test 划分。评分覆盖答案形态、核验点、状态一致性、分支完备、边界转交与 tool_log 真实性。案例中包含 2024 新高考Ⅰ卷 19 题（MATH-33–MATH-51，全部 development）。
 
 ```bash
 cd math-solver/bench
@@ -99,7 +99,7 @@ example/
   ambiguous_needs_clarification.json      条件不足、要求补充信息
   mvp-2026-10-18/                         五类题最小可行性测试夹具与记录
   mvp-2026-10-18-expanded/                五类共 25 题扩充测试夹具、核验脚本与记录
-bench/                                    32 条案例、确定性评分、oracle/bad 夹具、27 项测试
+bench/                                    51 条案例、确定性评分、oracle/bad 夹具、29 项测试
 tests/test_validate_output.py             20 项结构门回归测试
 ```
 
