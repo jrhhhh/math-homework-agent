@@ -1,0 +1,66 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：3(x+2)-5=2x。",
+    "topic": "方程与不等式",
+    "subtopics": ["一元一次方程", "去括号", "移项"],
+    "givens": ["方程 3(x+2)-5=2x"],
+    "variables": ["x：未知数"],
+    "constraints": [],
+    "goal": "求出满足方程的实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "去括号、合并同类项，再把含 x 的项移到一边。",
+    "method": "一元一次方程的标准解法",
+    "prerequisites": ["分配律", "等式两边同加同减"],
+    "steps": ["去括号", "合并常数项", "移项并求解", "代回检验"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "3x+6-5=2x",
+        "justification": "去括号，3(x+2)=3x+6"
+      },
+      {
+        "step": 2,
+        "expression": "3x+1=2x",
+        "justification": "合并常数项 6-5=1"
+      },
+      {
+        "step": 3,
+        "expression": "x=-1",
+        "justification": "两边同减 2x，再同减 1"
+      }
+    ],
+    "answer": "x=-1",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "左边 3(-1+2)-5=3-5=-2，右边 2(-1)=-2，成立。"
+      },
+      {
+        "name": "等价变形检查",
+        "status": "passed",
+        "details": "去括号与移项都是等式两边同时作相同运算，没有引入或丢失解。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "一元一次方程先化简成 ax=b 的形式，再两边同除以 a。",
+    "difficult_steps": ["去括号时把 3 乘到括号内每一项", "移项时符号变化"],
+    "common_mistakes": ["把 3(x+2) 写成 3x+2", "移项忘记变号"],
+    "prerequisite_explanations": ["分配律", "等式的基本性质"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

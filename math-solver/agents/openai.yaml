@@ -1,0 +1,4 @@
+interface:
+  display_name: "skill：Math Solver"
+  short_description: "从零求解高中数学题，分步推导并独立核验，输出结构化解答与教学备注"
+  default_prompt: "请使用 $math-solver 求解下面这道高中数学题，给出分步推导与核验，并用中文讲解。"

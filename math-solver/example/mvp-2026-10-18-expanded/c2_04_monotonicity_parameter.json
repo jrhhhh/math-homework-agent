@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知函数 f(x)=x²-2ax+1，讨论 f(x) 在区间 [0,2] 上的单调性。",
+    "topic": "函数与不等式",
+    "subtopics": ["二次函数", "单调性", "含参分类讨论"],
+    "givens": ["f(x)=x²-2ax+1", "讨论区间 [0,2]"],
+    "variables": ["x：自变量", "a：参数"],
+    "constraints": ["x∈[0,2]"],
+    "goal": "按参数 a 的取值讨论 f 在 [0,2] 上的单调性",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "求导得 f'(x)=2(x-a)，对称轴为 x=a；比较 a 与区间 [0,2] 的位置。",
+    "method": "导数符号与对称轴位置分类",
+    "prerequisites": ["二次函数的对称轴", "导数与单调性的关系"],
+    "steps": ["求导", "写出对称轴", "分 a≤0、0<a<2、a≥2 讨论", "合并结论"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "f'(x)=2x-2a=2(x-a)",
+        "justification": "对二次函数求导"
+      },
+      {
+        "step": 2,
+        "expression": "当 a≤0 时，在 [0,2] 上 x-a≥0，所以 f'(x)≥0，f 在 [0,2] 上单调递增",
+        "justification": "导数非负；a=0 时只在 x=0 处为 0，不影响单调递增"
+      },
+      {
+        "step": 3,
+        "expression": "当 0<a<2 时，f 在 [0,a] 上单调递减，在 [a,2] 上单调递增",
+        "justification": "x<a 时 f'(x)<0，x>a 时 f'(x)>0"
+      },
+      {
+        "step": 4,
+        "expression": "当 a≥2 时，在 [0,2] 上 x-a≤0，所以 f'(x)≤0，f 在 [0,2] 上单调递减",
+        "justification": "导数非正；a=2 时只在 x=2 处为 0，不影响单调递减"
+      },
+      {
+        "step": 5,
+        "expression": "综上：a≤0 时在 [0,2] 上递增；0<a<2 时在 [0,a] 上递减、在 [a,2] 上递增；a≥2 时在 [0,2] 上递减",
+        "justification": "合并三种情形"
+      }
+    ],
+    "answer": "a≤0：f 在 [0,2] 上递增；0<a<2：f 在 [0,a] 上递减、在 [a,2] 上递增；a≥2：f 在 [0,2] 上递减。",
+    "conditions": ["x∈[0,2]"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "导数符号检查",
+        "status": "passed",
+        "details": "f'(x)=2(x-a)，符号只由 x-a 决定；在给定区间上比较 x 与 a 即可。"
+      },
+      {
+        "name": "边界参数检查",
+        "status": "passed",
+        "details": "a=0 时 f'(x)=2x≥0，递增；a=2 时 f'(x)=2(x-2)≤0，递减；两个边界都并入相应情形，没有遗漏。"
+      },
+      {
+        "name": "特殊值抽样",
+        "status": "passed",
+        "details": "取 a=-1：f'(x)=2(x+1)>0，递增；取 a=1：f'在 [0,1) 为负、在 (1,2] 为正；取 a=3：f'(x)=2(x-3)<0，递减。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "二次函数在区间上的单调性由对称轴 x=a 与区间的位置关系决定。",
+    "difficult_steps": ["把 a 与区间端点 0、2 比较", "处理 a=0 与 a=2 两个边界"],
+    "common_mistakes": ["只讨论 a>0", "把顶点处写成单调区间的一部分时方向弄反", "漏掉 a=0 或 a=2"],
+    "prerequisite_explanations": ["二次函数的对称轴", "导数符号与函数单调性的关系"],
+    "alternative_method": "也可配方 f(x)=(x-a)²+1-a²，直接从顶点位置读出单调性。",
+    "follow_up_exercise_suggestion": null
+  }
+}

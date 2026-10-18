@@ -1,0 +1,91 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解关于 x 的不等式：ax²-(a+1)x+1<0。",
+    "topic": "不等式",
+    "subtopics": ["含参二次不等式", "因式分解", "分类讨论"],
+    "givens": ["不等式 ax²-(a+1)x+1<0"],
+    "variables": ["x：未知数", "a：参数"],
+    "constraints": ["a 的符号与 1/a 和 1 的大小关系决定解集"],
+    "goal": "按参数 a 的取值写出解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先因式分解为 (x-1)(ax-1)<0，再按 a<0、a=0、0<a<1、a=1、a>1 讨论。",
+    "method": "因式分解与分类讨论",
+    "prerequisites": ["十字相乘", "二次函数开口方向", "根的大小比较"],
+    "steps": ["因式分解", "讨论 a<0", "讨论 a=0", "讨论 0<a<1", "讨论 a=1", "讨论 a>1"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "ax²-(a+1)x+1=(x-1)(ax-1)",
+        "justification": "十字相乘验证：展开得 ax²-x-ax+1=ax²-(a+1)x+1"
+      },
+      {
+        "step": 2,
+        "expression": "原不等式等价于 (x-1)(ax-1)<0",
+        "justification": "代入因式分解结果"
+      },
+      {
+        "step": 3,
+        "expression": "当 a<0 时，解集为 (-∞,1/a)∪(1,+∞)",
+        "justification": "开口向下；两根为 1/a<0 与 1，小于零取两根之外"
+      },
+      {
+        "step": 4,
+        "expression": "当 a=0 时，原式为 1-x<0，解集为 (1,+∞)",
+        "justification": "a=0 时不能使用 1/a，需单独代入"
+      },
+      {
+        "step": 5,
+        "expression": "当 0<a<1 时，1/a>1，解集为 (1,1/a)",
+        "justification": "开口向上；小于零取两根之间，且 1<1/a"
+      },
+      {
+        "step": 6,
+        "expression": "当 a=1 时，原式为 (x-1)²<0，无解",
+        "justification": "平方不可能小于零"
+      },
+      {
+        "step": 7,
+        "expression": "当 a>1 时，1/a<1，解集为 (1/a,1)",
+        "justification": "开口向上；小于零取两根之间，且 1/a<1"
+      }
+    ],
+    "answer": "a<0：x<1/a 或 x>1；a=0：x>1；0<a<1：1<x<1/a；a=1：无解；a>1：1/a<x<1。",
+    "conditions": ["a=0 与 a=1 需要单独处理"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "因式展开检查",
+        "status": "passed",
+        "details": "(x-1)(ax-1)=ax²-(a+1)x+1，与原式一致。"
+      },
+      {
+        "name": "特殊值代回",
+        "status": "passed",
+        "details": "a=-1：解集 x<-1 或 x>1；a=1/2：解集 1<x<2；a=2：解集 1/2<x<1。分别取点代入均与不等式一致。"
+      },
+      {
+        "name": "a=0 与 a=1 检查",
+        "status": "passed",
+        "details": "a=0 时 1-x<0，解为 x>1；a=1 时 (x-1)²<0，确实无解。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "含参二次不等式先因式分解，再按开口方向与两根大小分类。",
+    "difficult_steps": ["把 1/a 与 1 的大小随 a 变化分清楚", "a=0 时不能写 1/a", "a=1 时两根重合导致无解"],
+    "common_mistakes": ["不讨论 a 的符号直接取两根之间", "漏掉 a=0", "把 a=1 时写成 x≠1"],
+    "prerequisite_explanations": ["因式分解", "二次函数开口方向与不等式解集", "分类讨论的完备性"],
+    "alternative_method": "也可先比较 1 与 1/a 的位置，画数轴后按开口方向读出解集。",
+    "follow_up_exercise_suggestion": null
+  }
+}

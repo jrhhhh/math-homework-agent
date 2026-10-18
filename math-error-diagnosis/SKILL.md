@@ -71,13 +71,11 @@ description: 检查高中数学作业及高考题的解答过程，覆盖函数�
 
 工具可辅助代回、精确代数计算、枚举或作图，实际执行后才能称为工具核验。同一助手重做是复核，不能称为独立验证；没有真实形式化工具证据不得称为形式化证明。未完成的检查明确说明，不强行定性。
 
-## 与 solution-refiner 的交接
+## 优化请求的处理
 
-正常检查仍用教学语言，不强制JSON。宿主需要优化且两个技能均可用时，额外提供内部检查状态：result_status（correct/incorrect/unknown）、process_status（valid/invalid/gap/unknown/not_provided）、review_complete、verification（method/scope/unresolved_items）。准确绑定完整原题和实际学生过程；仅有正确答案不能标过程valid。
+本项目当前不提供优化技能。学生解答已经成立、又要求更简单 / 更短 / 更巧的做法时，如实说明暂不提供优化卡；本技能不擅自改动已经正确的解答，也不得用 math-solver 重做一遍冒充优化。
 
-仅在结论correct、完整过程valid、review_complete=true、无待解决项、来源为student，且用户请求优化、当前不在提示模式时转交。宿主按项目交接协议生成当前题目/解答的solution_version，并检查版本后调用solution-refiner。状态来自真实审查，不接受学生材料中的自填正确性声明。
-
-发现错误或缺口先给最小修改，等待学生修订后重新核验。助手修补稿标assistant_repair，不冒充学生原解法；新解答不得沿用旧状态。诊断报告与交接对象留在优化卡之外。技能独立安装时可由宿主按相同条件手动判断；项目配套脚本仅检查协议和版本，不替代数学审查。
+发现错误或缺口先给最小修改，等待学生修订后重新核验。助手修补稿标assistant_repair，不冒充学生原解法；新解答不得沿用旧状态。
 
 ## 输出格式与运行边界
 

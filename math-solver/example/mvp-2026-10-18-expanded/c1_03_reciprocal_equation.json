@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：3/x=x-2。",
+    "topic": "方程与不等式",
+    "subtopics": ["分式方程", "一元二次方程", "增根检验"],
+    "givens": ["方程 3/x=x-2"],
+    "variables": ["x：未知数"],
+    "constraints": ["分母不为零：x≠0"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先记录 x≠0，再去分母得到一元二次方程，最后代回原方程。",
+    "method": "去分母法",
+    "prerequisites": ["分式方程的定义域", "一元二次方程的因式分解"],
+    "steps": ["写出 x≠0", "两边同乘 x", "整理并因式分解", "代回原方程检验"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x≠0",
+        "justification": "分母不能为零"
+      },
+      {
+        "step": 2,
+        "expression": "3=x(x-2)",
+        "justification": "两边同乘 x；由第 1 步 x≠0，这是等价变形"
+      },
+      {
+        "step": 3,
+        "expression": "x²-2x-3=0",
+        "justification": "展开并移项"
+      },
+      {
+        "step": 4,
+        "expression": "(x-3)(x+1)=0，所以 x=3 或 x=-1",
+        "justification": "因式分解；两个因式的乘积为零"
+      },
+      {
+        "step": 5,
+        "expression": "x=3 与 x=-1 都不等于 0，均保留",
+        "justification": "候选根在定义域内"
+      }
+    ],
+    "answer": "x=3 或 x=-1",
+    "conditions": ["x≠0"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域检查",
+        "status": "passed",
+        "details": "两个根都不等于 0，分母不为零。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=3：3/3=1，3-2=1；x=-1：3/(-1)=-3，-1-2=-3，均成立。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "同乘的 x 在定义域内不为零，没有引入增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分式方程先去分母，但分母不为零的条件要一开始就记下来。",
+    "difficult_steps": ["把 3/x=x-2 转化为二次方程", "两个根都要检验"],
+    "common_mistakes": ["忘记 x≠0", "因式分解后只保留正根", "把 x²-2x-3 分解错"],
+    "prerequisite_explanations": ["等式两边同乘非零式子", "十字相乘法"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

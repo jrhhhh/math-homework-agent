@@ -1,8 +1,7 @@
 """draft-coach 边界审计（audit）与 refuse 的回归测试。
 
-注意：仓库里 test_handoff.py 用字面量 "python3" 起子进程，而本机 PATH 上的 python3
-是应用商店占位程序（静默退出）。这里改用 sys.executable，跑测试的解释器就是子进程
-用的解释器，测试因此可移植。
+注意：本机 PATH 上的 python3 可能是应用商店占位程序（静默退出）。这里改用
+sys.executable，跑测试的解释器就是子进程用的解释器，测试因此可移植。
 """
 
 import json

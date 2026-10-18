@@ -1,0 +1,66 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "求函数 f(x)=√(x-2) 的定义域。",
+    "topic": "函数与不等式",
+    "subtopics": ["定义域", "算术平方根"],
+    "givens": ["f(x)=√(x-2)"],
+    "variables": ["x：自变量"],
+    "constraints": ["根号下非负：x-2≥0"],
+    "goal": "求函数的定义域",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "令根号下的表达式非负，解出 x 的范围。",
+    "method": "根式函数的定义域",
+    "prerequisites": ["算术平方根的定义"],
+    "steps": ["写出 x-2≥0", "解不等式", "写成区间"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x-2≥0",
+        "justification": "偶次根号下的表达式必须非负"
+      },
+      {
+        "step": 2,
+        "expression": "x≥2",
+        "justification": "不等式两边同时加 2"
+      },
+      {
+        "step": 3,
+        "expression": "定义域为 [2,+∞)",
+        "justification": "x=2 时根号内为 0，可以取到，因此左端点闭合"
+      }
+    ],
+    "answer": "[2,+∞)",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "端点检查",
+        "status": "passed",
+        "details": "x=2 时根号内为 0，f(2)=0 有定义，端点应包含。"
+      },
+      {
+        "name": "区间外检查",
+        "status": "passed",
+        "details": "x=1 时根号内为 -1，函数无定义，因此不能包含小于 2 的数。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "根式函数的定义域只看根号下是否非负，端点能否取到看根号内是否允许为 0。",
+    "difficult_steps": ["区分开区间与闭区间"],
+    "common_mistakes": ["写成 (2,+∞)，漏掉端点 2", "把 x-2≥0 解成 x≥-2"],
+    "prerequisite_explanations": ["算术平方根的定义", "区间表示法"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程 √(x+2) = x。",
+    "topic": "方程与不等式",
+    "subtopics": ["无理方程", "增根检验", "定义域"],
+    "givens": ["方程 √(x+2)=x"],
+    "variables": ["x：未知数"],
+    "constraints": ["根号下非负：x+2≥0，即 x≥-2", "算术平方根的值非负，因此右边 x≥0"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先由算术平方根非负得到 x≥0，再两边平方化为一元二次方程，最后代回原方程确认。",
+    "method": "平方后求解并代回检验",
+    "prerequisites": ["算术平方根非负", "一元二次方程的因式分解"],
+    "steps": ["确定定义域与 x≥0", "两边平方得到 x²-x-2=0", "因式分解求候选根", "代回原方程排除增根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x+2≥0 且 x≥0，所以 x≥0",
+        "justification": "偶次根号下非负；算术平方根的值非负，而它等于 x，故 x≥0"
+      },
+      {
+        "step": 2,
+        "expression": "x+2=x²",
+        "justification": "在 x≥0 时两边都非负，平方是等价变形"
+      },
+      {
+        "step": 3,
+        "expression": "x²-x-2=0",
+        "justification": "移项整理"
+      },
+      {
+        "step": 4,
+        "expression": "(x-2)(x+1)=0，所以 x=2 或 x=-1",
+        "justification": "因式分解；两个因式的乘积为零，则至少一个因式为零"
+      },
+      {
+        "step": 5,
+        "expression": "x=-1 不满足 x≥0，舍去；x=2 满足",
+        "justification": "候选根必须落在定义域与 x≥0 内"
+      },
+      {
+        "step": 6,
+        "expression": "原方程的解为 x=2",
+        "justification": "代回验证：√(2+2)=2，左边等于右边"
+      }
+    ],
+    "answer": "x=2",
+    "conditions": ["在实数范围内求解"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域与非负性检查",
+        "status": "passed",
+        "details": "要求 x+2≥0 且 x≥0，合并为 x≥0；候选根 x=-1 不在此范围，已舍去。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=2 代入左边得 √4=2，右边得 2，成立。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "平方前已限制 x≥0，平方在该范围内等价；仍逐个代回确认，没有保留增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "算术平方根非负，所以由 √(x+2)=x 必须先得到 x≥0；这一步既缩小了范围，也让平方成为等价变形。",
+    "difficult_steps": ["由算术平方根非负推出 x≥0", "平方后仍要代回原方程检查增根"],
+    "common_mistakes": ["平方后直接保留 x=-1", "只写 x+2≥0，漏掉 x≥0", "把平方当作无条件等价变形"],
+    "prerequisite_explanations": ["算术平方根的值非负", "解一元二次方程与因式分解"],
+    "alternative_method": "也可研究 f(x)=√(x+2)-x（x≥0）的单调性：f'(x)=1/(2√(x+2))-1<0，故至多一个零点；观察得 f(2)=0。",
+    "follow_up_exercise_suggestion": null
+  }
+}

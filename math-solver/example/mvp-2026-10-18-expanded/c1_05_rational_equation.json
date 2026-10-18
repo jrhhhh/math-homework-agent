@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：x/(x-2)+1/(x+2)=8/(x²-4)。",
+    "topic": "方程与不等式",
+    "subtopics": ["分式方程", "最简公分母", "增根检验"],
+    "givens": ["方程 x/(x-2)+1/(x+2)=8/(x²-4)"],
+    "variables": ["x：未知数"],
+    "constraints": ["分母不为零：x≠2 且 x≠-2"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先分解 x²-4 并记录排除值，再乘最简公分母去分母，最后检验。",
+    "method": "去分母法",
+    "prerequisites": ["平方差公式", "分式方程的定义域"],
+    "steps": ["分解 x²-4=(x-2)(x+2)", "写出 x≠±2", "两边同乘 (x-2)(x+2)", "整理求解", "代回并排除增根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²-4=(x-2)(x+2)，且 x≠2、x≠-2",
+        "justification": "平方差公式；分母不能为零"
+      },
+      {
+        "step": 2,
+        "expression": "x(x+2)+(x-2)=8",
+        "justification": "两边同乘 (x-2)(x+2)；由第 1 步该式不为零"
+      },
+      {
+        "step": 3,
+        "expression": "x²+3x-10=0",
+        "justification": "展开并合并同类项"
+      },
+      {
+        "step": 4,
+        "expression": "(x+5)(x-2)=0，所以 x=-5 或 x=2",
+        "justification": "因式分解"
+      },
+      {
+        "step": 5,
+        "expression": "x=2 使分母为零，舍去；x=-5 保留",
+        "justification": "候选根必须在定义域内"
+      },
+      {
+        "step": 6,
+        "expression": "原方程的解为 x=-5",
+        "justification": "代回：左边 (-5)/(-7)+1/(-3)=5/7-1/3=8/21，右边 8/21"
+      }
+    ],
+    "answer": "x=-5",
+    "conditions": ["x≠2 且 x≠-2"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域检查",
+        "status": "passed",
+        "details": "x=-5 不等于 2 或 -2，分母均不为零；x=2 是排除值。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "左边 5/7-1/3=(15-7)/21=8/21，右边 8/(25-4)=8/21，成立。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "去分母得到的 x=2 使原分母为零，是增根，已舍去；x=-5 不是增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分式方程的关键不是算得快，而是先写排除值，最后把候选根逐个对照。",
+    "difficult_steps": ["正确找到最简公分母 (x-2)(x+2)", "识别 x=2 是增根"],
+    "common_mistakes": ["漏乘不含分母的项", "不检验，保留 x=2", "把 x²-4 分解错"],
+    "prerequisite_explanations": ["平方差公式", "分式方程增根的来源"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

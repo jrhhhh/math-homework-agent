@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解一元二次不等式：x²-x-2<0。",
+    "topic": "函数与不等式",
+    "subtopics": ["一元二次不等式", "因式分解"],
+    "givens": ["不等式 x²-x-2<0"],
+    "variables": ["x：未知数"],
+    "constraints": [],
+    "goal": "求不等式的解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "因式分解后，利用开口向上的二次函数在两根之间小于零。",
+    "method": "因式分解与符号判断",
+    "prerequisites": ["一元二次不等式的解法", "二次函数图象"],
+    "steps": ["分解 x²-x-2", "求两根", "判断小于零的区间", "写出解集"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²-x-2=(x-2)(x+1)",
+        "justification": "十字相乘：-2 与 1 的和为 -1，积为 -2"
+      },
+      {
+        "step": 2,
+        "expression": "(x-2)(x+1)<0",
+        "justification": "代入原不等式"
+      },
+      {
+        "step": 3,
+        "expression": "两根为 x=-1 与 x=2",
+        "justification": "令每个因式为零"
+      },
+      {
+        "step": 4,
+        "expression": "-1<x<2",
+        "justification": "开口向上的二次函数在两根之间取负值"
+      }
+    ],
+    "answer": "(-1,2)",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "区间内取点检查",
+        "status": "passed",
+        "details": "取 x=0：0-0-2=-2<0，成立。"
+      },
+      {
+        "name": "区间外取点检查",
+        "status": "passed",
+        "details": "取 x=3：9-3-2=4>0，不成立；取 x=-2：4+2-2=4>0，不成立。"
+      },
+      {
+        "name": "端点检查",
+        "status": "passed",
+        "details": "x=-1、x=2 时左边等于 0，不满足严格小于零，因此端点不包含。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "开口向上的二次函数，小于零取两根之间，大于零取两根之外。",
+    "difficult_steps": ["正确求出两根", "区分严格与非严格不等式"],
+    "common_mistakes": ["写成 x<-1 或 x>2", "把端点包含进去", "因式分解符号错"],
+    "prerequisite_explanations": ["二次函数图象与 x 轴的关系", "十字相乘法"],
+    "alternative_method": "也可先求方程 x²-x-2=0 的两根，再画抛物线草图判断区间。",
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,3364 @@
+{
+  "arm": "skill_gates",
+  "model": "oracle-fixture",
+  "run_id": "fixture-oracle-2026-10-18",
+  "predictions": [
+    {
+      "case_id": "MATH-01",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：3(x+2)-5=2x。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "一元一次方程",
+            "去括号",
+            "移项"
+          ],
+          "givens": [
+            "方程 3(x+2)-5=2x"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [],
+          "goal": "求出满足方程的实数 x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "去括号、合并同类项，再把含 x 的项移到一边。",
+          "method": "一元一次方程的标准解法",
+          "prerequisites": [
+            "分配律",
+            "等式两边同加同减"
+          ],
+          "steps": [
+            "去括号",
+            "合并常数项",
+            "移项并求解",
+            "代回检验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "3x+6-5=2x",
+              "justification": "去括号，3(x+2)=3x+6"
+            },
+            {
+              "step": 2,
+              "expression": "3x+1=2x",
+              "justification": "合并常数项 6-5=1"
+            },
+            {
+              "step": 3,
+              "expression": "x=-1",
+              "justification": "两边同减 2x，再同减 1"
+            }
+          ],
+          "answer": "x=-1",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "左边 3(-1+2)-5=3-5=-2，右边 2(-1)=-2，成立。"
+            },
+            {
+              "name": "等价变形检查",
+              "status": "passed",
+              "details": "去括号与移项都是等式两边同时作相同运算，没有引入或丢失解。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "一元一次方程先化简成 ax=b 的形式，再两边同除以 a。",
+          "difficult_steps": [
+            "去括号时把 3 乘到括号内每一项",
+            "移项时符号变化"
+          ],
+          "common_mistakes": [
+            "把 3(x+2) 写成 3x+2",
+            "移项忘记变号"
+          ],
+          "prerequisite_explanations": [
+            "分配律",
+            "等式的基本性质"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-01.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-02",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：x²-5x+6=0。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "一元二次方程",
+            "因式分解"
+          ],
+          "givens": [
+            "方程 x²-5x+6=0"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [],
+          "goal": "求出方程的所有实数根",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "把二次三项式分解为两个一次因式的乘积，再用零乘积性质求根。",
+          "method": "因式分解法",
+          "prerequisites": [
+            "十字相乘",
+            "零乘积性质"
+          ],
+          "steps": [
+            "分解 x²-5x+6",
+            "令每个因式为零",
+            "写出两个根",
+            "代回检验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-5x+6=(x-2)(x-3)",
+              "justification": "十字相乘：-2 与 -3 的和为 -5，积为 6"
+            },
+            {
+              "step": 2,
+              "expression": "(x-2)(x-3)=0",
+              "justification": "代入原方程"
+            },
+            {
+              "step": 3,
+              "expression": "x=2 或 x=3",
+              "justification": "两个因式的乘积为零，则至少一个因式为零"
+            }
+          ],
+          "answer": "x=2 或 x=3",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "因式展开检查",
+              "status": "passed",
+              "details": "(x-2)(x-3)=x²-5x+6，与原式一致。"
+            },
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=2：4-10+6=0；x=3：9-15+6=0，均成立。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "能分解的二次方程优先用因式分解，比求根公式更快。",
+          "difficult_steps": [
+            "找到和为 -5、积为 6 的两个数",
+            "把两个根都写出来"
+          ],
+          "common_mistakes": [
+            "只写一个根",
+            "因式符号写反",
+            "把 (x-2)(x-3) 展开成 x²-5x-6"
+          ],
+          "prerequisite_explanations": [
+            "十字相乘法",
+            "零乘积性质"
+          ],
+          "alternative_method": "也可用求根公式 x=(5±√(25-24))/2，得到同样的 2 与 3。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-02.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-03",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：3/x=x-2。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "分式方程",
+            "一元二次方程",
+            "增根检验"
+          ],
+          "givens": [
+            "方程 3/x=x-2"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [
+            "分母不为零：x≠0"
+          ],
+          "goal": "求出满足原方程的所有实数 x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先记录 x≠0，再去分母得到一元二次方程，最后代回原方程。",
+          "method": "去分母法",
+          "prerequisites": [
+            "分式方程的定义域",
+            "一元二次方程的因式分解"
+          ],
+          "steps": [
+            "写出 x≠0",
+            "两边同乘 x",
+            "整理并因式分解",
+            "代回原方程检验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x≠0",
+              "justification": "分母不能为零"
+            },
+            {
+              "step": 2,
+              "expression": "3=x(x-2)",
+              "justification": "两边同乘 x；由第 1 步 x≠0，这是等价变形"
+            },
+            {
+              "step": 3,
+              "expression": "x²-2x-3=0",
+              "justification": "展开并移项"
+            },
+            {
+              "step": 4,
+              "expression": "(x-3)(x+1)=0，所以 x=3 或 x=-1",
+              "justification": "因式分解；两个因式的乘积为零"
+            },
+            {
+              "step": 5,
+              "expression": "x=3 与 x=-1 都不等于 0，均保留",
+              "justification": "候选根在定义域内"
+            }
+          ],
+          "answer": "x=3 或 x=-1",
+          "conditions": [
+            "x≠0"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "定义域检查",
+              "status": "passed",
+              "details": "两个根都不等于 0，分母不为零。"
+            },
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=3：3/3=1，3-2=1；x=-1：3/(-1)=-3，-1-2=-3，均成立。"
+            },
+            {
+              "name": "增根检查",
+              "status": "passed",
+              "details": "同乘的 x 在定义域内不为零，没有引入增根。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "分式方程先去分母，但分母不为零的条件要一开始就记下来。",
+          "difficult_steps": [
+            "把 3/x=x-2 转化为二次方程",
+            "两个根都要检验"
+          ],
+          "common_mistakes": [
+            "忘记 x≠0",
+            "因式分解后只保留正根",
+            "把 x²-2x-3 分解错"
+          ],
+          "prerequisite_explanations": [
+            "等式两边同乘非零式子",
+            "十字相乘法"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-03.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-04",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数 f(x)=√(x-2) 的定义域。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "定义域",
+            "算术平方根"
+          ],
+          "givens": [
+            "f(x)=√(x-2)"
+          ],
+          "variables": [
+            "x：自变量"
+          ],
+          "constraints": [
+            "根号下非负：x-2≥0"
+          ],
+          "goal": "求函数的定义域",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "令根号下的表达式非负，解出 x 的范围。",
+          "method": "根式函数的定义域",
+          "prerequisites": [
+            "算术平方根的定义"
+          ],
+          "steps": [
+            "写出 x-2≥0",
+            "解不等式",
+            "写成区间"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x-2≥0",
+              "justification": "偶次根号下的表达式必须非负"
+            },
+            {
+              "step": 2,
+              "expression": "x≥2",
+              "justification": "不等式两边同时加 2"
+            },
+            {
+              "step": 3,
+              "expression": "定义域为 [2,+∞)",
+              "justification": "x=2 时根号内为 0，可以取到，因此左端点闭合"
+            }
+          ],
+          "answer": "[2,+∞)",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "端点检查",
+              "status": "passed",
+              "details": "x=2 时根号内为 0，f(2)=0 有定义，端点应包含。"
+            },
+            {
+              "name": "区间外检查",
+              "status": "passed",
+              "details": "x=1 时根号内为 -1，函数无定义，因此不能包含小于 2 的数。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "根式函数的定义域只看根号下是否非负，端点能否取到看根号内是否允许为 0。",
+          "difficult_steps": [
+            "区分开区间与闭区间"
+          ],
+          "common_mistakes": [
+            "写成 (2,+∞)，漏掉端点 2",
+            "把 x-2≥0 解成 x≥-2"
+          ],
+          "prerequisite_explanations": [
+            "算术平方根的定义",
+            "区间表示法"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-04.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-05",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解一元二次不等式：x²-x-2<0。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "一元二次不等式",
+            "因式分解"
+          ],
+          "givens": [
+            "不等式 x²-x-2<0"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [],
+          "goal": "求不等式的解集",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "因式分解后，利用开口向上的二次函数在两根之间小于零。",
+          "method": "因式分解与符号判断",
+          "prerequisites": [
+            "一元二次不等式的解法",
+            "二次函数图象"
+          ],
+          "steps": [
+            "分解 x²-x-2",
+            "求两根",
+            "判断小于零的区间",
+            "写出解集"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-x-2=(x-2)(x+1)",
+              "justification": "十字相乘：-2 与 1 的和为 -1，积为 -2"
+            },
+            {
+              "step": 2,
+              "expression": "(x-2)(x+1)<0",
+              "justification": "代入原不等式"
+            },
+            {
+              "step": 3,
+              "expression": "两根为 x=-1 与 x=2",
+              "justification": "令每个因式为零"
+            },
+            {
+              "step": 4,
+              "expression": "-1<x<2",
+              "justification": "开口向上的二次函数在两根之间取负值"
+            }
+          ],
+          "answer": "(-1,2)",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "区间内取点检查",
+              "status": "passed",
+              "details": "取 x=0：0-0-2=-2<0，成立。"
+            },
+            {
+              "name": "区间外取点检查",
+              "status": "passed",
+              "details": "取 x=3：9-3-2=4>0，不成立；取 x=-2：4+2-2=4>0，不成立。"
+            },
+            {
+              "name": "端点检查",
+              "status": "passed",
+              "details": "x=-1、x=2 时左边等于 0，不满足严格小于零，因此端点不包含。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "开口向上的二次函数，小于零取两根之间，大于零取两根之外。",
+          "difficult_steps": [
+            "正确求出两根",
+            "区分严格与非严格不等式"
+          ],
+          "common_mistakes": [
+            "写成 x<-1 或 x>2",
+            "把端点包含进去",
+            "因式分解符号错"
+          ],
+          "prerequisite_explanations": [
+            "二次函数图象与 x 轴的关系",
+            "十字相乘法"
+          ],
+          "alternative_method": "也可先求方程 x²-x-2=0 的两根，再画抛物线草图判断区间。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-05.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-06",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数 f(x)=ln(x+1)/(x-3) 的定义域。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "定义域",
+            "对数函数",
+            "分式函数"
+          ],
+          "givens": [
+            "f(x)=ln(x+1)/(x-3)"
+          ],
+          "variables": [
+            "x：自变量"
+          ],
+          "constraints": [
+            "对数真数为正：x+1>0",
+            "分母不为零：x-3≠0"
+          ],
+          "goal": "求函数的定义域",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "同时满足对数真数为正与分母不为零，再取交集。",
+          "method": "复合函数定义域",
+          "prerequisites": [
+            "对数函数的定义域",
+            "分式有意义的条件"
+          ],
+          "steps": [
+            "写出 x+1>0",
+            "写出 x-3≠0",
+            "取交集",
+            "写成区间"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x+1>0，即 x>-1",
+              "justification": "对数 ln 的真数必须为正"
+            },
+            {
+              "step": 2,
+              "expression": "x-3≠0，即 x≠3",
+              "justification": "分母不能为零"
+            },
+            {
+              "step": 3,
+              "expression": "x>-1 且 x≠3",
+              "justification": "两个条件必须同时满足"
+            },
+            {
+              "step": 4,
+              "expression": "定义域为 (-1,3)∪(3,+∞)",
+              "justification": "把 x>-1 中挖去 x=3"
+            }
+          ],
+          "answer": "(-1,3)∪(3,+∞)",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "真数条件检查",
+              "status": "passed",
+              "details": "x>-1 时 x+1>0，对数有意义；x=-1 时真数为 0，不在定义域。"
+            },
+            {
+              "name": "分母条件检查",
+              "status": "passed",
+              "details": "x=3 时分母为零，必须从定义域中排除。"
+            },
+            {
+              "name": "区间取点检查",
+              "status": "passed",
+              "details": "取 x=0 与 x=4 均在定义域内；取 x=-2 与 x=3 均不在定义域内。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "复合函数的定义域要把每一层的限制都列出来，再取交集。",
+          "difficult_steps": [
+            "同时处理对数真数与分母两个条件",
+            "把 x=3 从区间中挖掉"
+          ],
+          "common_mistakes": [
+            "漏掉 x≠3",
+            "把 x+1>0 写成 x+1≥0",
+            "把定义域写成 (-1,+∞)"
+          ],
+          "prerequisite_explanations": [
+            "对数函数的定义域",
+            "分式有意义的条件"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-06.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-07",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知等差数列 {a_n}，a_1=1，公差 d=3，求 a_5。",
+          "topic": "数列",
+          "subtopics": [
+            "等差数列",
+            "通项公式"
+          ],
+          "givens": [
+            "a_1=1",
+            "d=3"
+          ],
+          "variables": [
+            "a_n：第 n 项",
+            "n：正整数"
+          ],
+          "constraints": [
+            "n 为正整数"
+          ],
+          "goal": "求 a_5",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "直接代入等差数列通项公式 a_n=a_1+(n-1)d。",
+          "method": "通项公式法",
+          "prerequisites": [
+            "等差数列通项公式"
+          ],
+          "steps": [
+            "写出通项公式",
+            "代入 a_1=1、d=3、n=5",
+            "计算"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a_n=a_1+(n-1)d",
+              "justification": "等差数列通项公式"
+            },
+            {
+              "step": 2,
+              "expression": "a_5=1+(5-1)×3",
+              "justification": "代入 a_1=1、d=3、n=5"
+            },
+            {
+              "step": 3,
+              "expression": "a_5=1+12=13",
+              "justification": "计算"
+            }
+          ],
+          "answer": "a_5=13",
+          "conditions": [
+            "n 为正整数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "逐项列出检查",
+              "status": "passed",
+              "details": "a_1=1，a_2=4，a_3=7，a_4=10，a_5=13，逐项加 3，结果一致。"
+            },
+            {
+              "name": "公式代入检查",
+              "status": "passed",
+              "details": "a_5=a_1+4d=1+12=13。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "等差数列的第 n 项等于首项加 n-1 个公差。",
+          "difficult_steps": [
+            "注意是 n-1 个公差而不是 n 个"
+          ],
+          "common_mistakes": [
+            "算成 1+5×3=16",
+            "把公差与项数弄混"
+          ],
+          "prerequisite_explanations": [
+            "等差数列的定义",
+            "通项公式的推导"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-07.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-08",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "在 △ABC 中，A=π/3，b=2，c=3，求 BC 边长。",
+          "topic": "解三角形",
+          "subtopics": [
+            "余弦定理",
+            "三角形边长"
+          ],
+          "givens": [
+            "A=π/3",
+            "b=2",
+            "c=3"
+          ],
+          "variables": [
+            "a：BC 边长",
+            "b：AC 边长",
+            "c：AB 边长"
+          ],
+          "constraints": [
+            "A 是边 a 所对的角"
+          ],
+          "goal": "求 a=BC",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "已知两边及其夹角，直接用余弦定理求第三边。",
+          "method": "余弦定理",
+          "prerequisites": [
+            "余弦定理",
+            "特殊角的余弦值"
+          ],
+          "steps": [
+            "写出余弦定理",
+            "代入 b、c、A",
+            "计算 a²",
+            "取正平方根"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a²=b²+c²-2bc cos A",
+              "justification": "余弦定理"
+            },
+            {
+              "step": 2,
+              "expression": "a²=2²+3²-2×2×3×cos(π/3)",
+              "justification": "代入 b=2、c=3、A=π/3"
+            },
+            {
+              "step": 3,
+              "expression": "cos(π/3)=1/2，所以 a²=4+9-6=7",
+              "justification": "计算 2×2×3×1/2=6"
+            },
+            {
+              "step": 4,
+              "expression": "a=√7",
+              "justification": "边长为正，取正的平方根"
+            }
+          ],
+          "answer": "BC=√7",
+          "conditions": [
+            "A=π/3",
+            "b=2，c=3"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "三角形不等式检查",
+              "status": "passed",
+              "details": "2+3=5>√7≈2.65，2+√7>3，3+√7>2，三边能组成三角形。"
+            },
+            {
+              "name": "余弦定理反向核对",
+              "status": "passed",
+              "details": "cos A=(b²+c²-a²)/(2bc)=(4+9-7)/(12)=6/12=1/2，与 A=π/3 一致。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "已知两边及其夹角求第三边，余弦定理是最直接的工具。",
+          "difficult_steps": [
+            "确认角 A 对应的是边 a",
+            "正确计算 2bc cos A"
+          ],
+          "common_mistakes": [
+            "把余弦定理写成 a²=b²+c²+2bc cos A",
+            "把 cos(π/3) 记成 √3/2",
+            "忘了取正根"
+          ],
+          "prerequisite_explanations": [
+            "余弦定理",
+            "特殊角三角函数值"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-08.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-09",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 △ABC 内角 A、B、C 对应的边为 a、b、c，满足 a cos B + b cos A = 2c cos C，求角 C。",
+          "topic": "解三角形",
+          "subtopics": [
+            "正弦定理",
+            "两角和公式",
+            "投影公式"
+          ],
+          "givens": [
+            "a cos B + b cos A = 2c cos C",
+            "A、B、C 是三角形内角"
+          ],
+          "variables": [
+            "a、b、c：三边",
+            "A、B、C：三角",
+            "R：外接圆半径"
+          ],
+          "constraints": [
+            "A+B+C=π",
+            "a、b、c>0",
+            "C∈(0,π)"
+          ],
+          "goal": "求角 C",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "用正弦定理把边化为角，左边合并为 sin(A+B)=sin C，再解 cos C。",
+          "method": "正弦定理与两角和公式",
+          "prerequisites": [
+            "正弦定理",
+            "sin(A+B)=sin C",
+            "特殊角余弦值"
+          ],
+          "steps": [
+            "用 2R sin A 等表示三边",
+            "合并左边",
+            "利用 A+B=π-C",
+            "解出 cos C",
+            "确定 C"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a=2R sin A，b=2R sin B，c=2R sin C",
+              "justification": "正弦定理"
+            },
+            {
+              "step": 2,
+              "expression": "a cos B + b cos A = 2R(sin A cos B + sin B cos A)",
+              "justification": "代入并提取公因式 2R"
+            },
+            {
+              "step": 3,
+              "expression": "sin A cos B + sin B cos A = sin(A+B)",
+              "justification": "两角和的正弦公式"
+            },
+            {
+              "step": 4,
+              "expression": "sin(A+B)=sin(π-C)=sin C",
+              "justification": "三角形内角和 A+B+C=π"
+            },
+            {
+              "step": 5,
+              "expression": "2R sin C = 2c cos C，即 c=2c cos C",
+              "justification": "左边等于 2R sin C=c，代回已知等式"
+            },
+            {
+              "step": 6,
+              "expression": "cos C=1/2，所以 C=π/3",
+              "justification": "c>0，两边同除以 2c；C∈(0,π)，余弦为 1/2 的角只有 π/3"
+            }
+          ],
+          "answer": "C=π/3",
+          "conditions": [
+            "A、B、C 是三角形内角"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "投影公式对照",
+              "status": "passed",
+              "details": "由投影公式 a cos B + b cos A=c，已知等式化为 c=2c cos C，直接得到 cos C=1/2。"
+            },
+            {
+              "name": "角度范围检查",
+              "status": "passed",
+              "details": "C∈(0,π)，cos C=1/2 在该范围内只有 C=π/3，没有第二解。"
+            },
+            {
+              "name": "特殊三角形抽样",
+              "status": "passed",
+              "details": "取等边三角形 A=B=C=π/3，左边 c/2+c/2=c，右边 2c·1/2=c，等式成立。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "边角混合的等式先用正弦定理统一成角，再用两角和公式合并。",
+          "difficult_steps": [
+            "想到 sin A cos B + sin B cos A=sin(A+B)",
+            "利用 A+B=π-C 把 sin(A+B) 化为 sin C"
+          ],
+          "common_mistakes": [
+            "忘记 c>0 就直接除以 c 后不做说明",
+            "把 sin(A+B) 写成 sin C 时符号出错",
+            "忽略 C 的范围导致多解"
+          ],
+          "prerequisite_explanations": [
+            "正弦定理",
+            "两角和的正弦公式",
+            "三角形内角和"
+          ],
+          "alternative_method": "也可直接用投影公式 a cos B+b cos A=c，一步化到 c=2c cos C。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-09.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-10",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "方程 x²-2ax+a+2=0 有两个不等实根，求实数 a 的取值范围。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "一元二次方程",
+            "判别式",
+            "参数范围"
+          ],
+          "givens": [
+            "方程 x²-2ax+a+2=0",
+            "有两个不等实根"
+          ],
+          "variables": [
+            "x：未知数",
+            "a：参数"
+          ],
+          "constraints": [
+            "二次项系数为 1，确实是二次方程"
+          ],
+          "goal": "求 a 的取值范围",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "两个不等实根等价于判别式大于零，解关于 a 的二次不等式。",
+          "method": "判别式法",
+          "prerequisites": [
+            "一元二次方程判别式",
+            "二次不等式"
+          ],
+          "steps": [
+            "写出判别式 Δ",
+            "化简 Δ",
+            "令 Δ>0",
+            "解关于 a 的不等式"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "Δ=(-2a)²-4·1·(a+2)",
+              "justification": "一元二次方程 ax²+bx+c=0 的判别式 Δ=b²-4ac；此处二次项系数为 1"
+            },
+            {
+              "step": 2,
+              "expression": "Δ=4a²-4a-8=4(a²-a-2)",
+              "justification": "展开并提取公因式 4"
+            },
+            {
+              "step": 3,
+              "expression": "a²-a-2=(a-2)(a+1)",
+              "justification": "因式分解"
+            },
+            {
+              "step": 4,
+              "expression": "4(a-2)(a+1)>0，即 (a-2)(a+1)>0",
+              "justification": "两个不等实根要求 Δ>0；两边同除以正数 4"
+            },
+            {
+              "step": 5,
+              "expression": "a<-1 或 a>2",
+              "justification": "开口向上，大于零取两根之外"
+            }
+          ],
+          "answer": "a∈(-∞,-1)∪(2,+∞)",
+          "conditions": [
+            "方程有两个不等实根"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "边界值检查",
+              "status": "passed",
+              "details": "a=-1 时 Δ=0，只有一个实根；a=2 时 Δ=0，也只有一个实根；两端点都不应包含。"
+            },
+            {
+              "name": "区间内抽样",
+              "status": "passed",
+              "details": "a=-2：Δ=4( -4 )( -1 )=16>0；a=3：Δ=4(1)(4)=16>0，均有两个不等实根。"
+            },
+            {
+              "name": "区间外抽样",
+              "status": "passed",
+              "details": "a=0：Δ=4(-2)(1)=-8<0，没有实根，不在解集中。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "“两个不等实根”对应 Δ>0，不是 Δ≥0；边界值要单独排除。",
+          "difficult_steps": [
+            "正确写出判别式",
+            "解 (a-2)(a+1)>0 时取两根之外"
+          ],
+          "common_mistakes": [
+            "把 Δ>0 写成 Δ≥0",
+            "把解集写成 -1<a<2",
+            "展开判别式时符号错"
+          ],
+          "prerequisite_explanations": [
+            "判别式与根的关系",
+            "一元二次不等式的解法"
+          ],
+          "alternative_method": "也可先求 Δ=0 的两个临界值 a=-1、2，再取使 Δ 为正的两侧区间。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-10.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-11",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "若 √(x²)=3，求实数 x。",
+          "topic": "根式与绝对值",
+          "subtopics": [
+            "算术平方根",
+            "绝对值"
+          ],
+          "givens": [
+            "√(x²)=3"
+          ],
+          "variables": [
+            "x：实数"
+          ],
+          "constraints": [
+            "√(x²)=|x|"
+          ],
+          "goal": "求 x 的值",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用 √(x²)=|x| 把方程化为 |x|=3，再写出正负两个解。",
+          "method": "绝对值恒等式",
+          "prerequisites": [
+            "√(a²)=|a|",
+            "绝对值的定义"
+          ],
+          "steps": [
+            "把 √(x²) 写成 |x|",
+            "解 |x|=3",
+            "代回检验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "√(x²)=|x|",
+              "justification": "算术平方根非负，且 √(a²)=|a|"
+            },
+            {
+              "step": 2,
+              "expression": "|x|=3",
+              "justification": "代入原方程"
+            },
+            {
+              "step": 3,
+              "expression": "x=3 或 x=-3",
+              "justification": "绝对值为 3 的数有两个：3 与 -3"
+            },
+            {
+              "step": 4,
+              "expression": "x=±3 都满足原方程",
+              "justification": "√(3²)=3，√((-3)²)=3"
+            }
+          ],
+          "answer": "x=3 或 x=-3，即 x=±3。",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=3 时 √9=3；x=-3 时 √9=3，均成立。"
+            },
+            {
+              "name": "恒等式检查",
+              "status": "passed",
+              "details": "√(x²)=|x|，不能写成 x；负根正是容易被忽略的部分。"
+            },
+            {
+              "name": "增根检查",
+              "status": "passed",
+              "details": "两个解都满足原方程，没有增根。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "看到 √(x²) 要立刻写成 |x|，它不等于 x。",
+          "difficult_steps": [
+            "区分 √(x²) 与 (√x)²",
+            "写出正负两个解"
+          ],
+          "common_mistakes": [
+            "把 √(x²) 写成 x，只得到 x=3",
+            "只写一个根",
+            "误以为会产生增根"
+          ],
+          "prerequisite_explanations": [
+            "算术平方根的值非负",
+            "绝对值的几何意义"
+          ],
+          "alternative_method": "也可两边平方得 x²=9，再开方得 x=±3；两边非负，平方不引入增根。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-11.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-12",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "袋中有 3 个红球和 2 个白球，从中任取 2 个球，求恰有 1 个红球的概率。",
+          "topic": "概率与统计",
+          "subtopics": [
+            "古典概型",
+            "组合计数"
+          ],
+          "givens": [
+            "3 个红球",
+            "2 个白球",
+            "任取 2 个球"
+          ],
+          "variables": [
+            "样本空间：从 5 个球中任取 2 个的组合"
+          ],
+          "constraints": [
+            "每个球被取到的机会相同",
+            "不放回抽取"
+          ],
+          "goal": "求恰有 1 个红球的概率",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": [
+            "各球除颜色外完全相同，抽取是等可能的"
+          ]
+        },
+        "plan": {
+          "main_idea": "先求样本空间总数，再用组合数求恰有 1 红 1 白的有利结果数。",
+          "method": "古典概型与组合计数",
+          "prerequisites": [
+            "组合数公式",
+            "古典概型的概率公式"
+          ],
+          "steps": [
+            "求任取 2 球的总数",
+            "求恰有 1 红 1 白的取法数",
+            "用有利结果数除以总数"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "样本空间总数 C(5,2)=10",
+              "justification": "从 3+2=5 个球中任取 2 个，不计顺序"
+            },
+            {
+              "step": 2,
+              "expression": "恰有 1 红的取法数 C(3,1)·C(2,1)=3×2=6",
+              "justification": "从 3 个红球中取 1 个，从 2 个白球中取 1 个"
+            },
+            {
+              "step": 3,
+              "expression": "P=6/10=3/5",
+              "justification": "古典概型：概率等于有利结果数除以样本空间总数"
+            }
+          ],
+          "answer": "3/5",
+          "conditions": [
+            "各球等可能被取到",
+            "不放回抽取"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "样本空间检查",
+              "status": "passed",
+              "details": "5 个球任取 2 个，共 C(5,2)=10 种，且每种等可能。"
+            },
+            {
+              "name": "组合计数检查",
+              "status": "passed",
+              "details": "恰有 1 红 1 白：C(3,1)C(2,1)=6；没有重复计数，也没有漏掉白白或红红的情形。"
+            },
+            {
+              "name": "概率范围检查",
+              "status": "passed",
+              "details": "3/5 在 0 与 1 之间；用补集核对：两红的概率 C(3,2)/10=3/10，两白的概率 C(2,2)/10=1/10，三者之和 6/10+3/10+1/10=1。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "先分清楚“取 2 个”是不计顺序的组合，再分别数分子和分母。",
+          "difficult_steps": [
+            "确定样本空间用 C(5,2) 而不是排列",
+            "把“恰有 1 红”拆成 1 红 1 白"
+          ],
+          "common_mistakes": [
+            "用排列数导致分子分母都多乘 2",
+            "把恰有 1 红算成 C(3,1)C(5,1)",
+            "忘记除以样本空间总数"
+          ],
+          "prerequisite_explanations": [
+            "组合数与排列数的区别",
+            "古典概型的基本公式"
+          ],
+          "alternative_method": "也可用补集：1 - P(两红) - P(两白) = 1 - 3/10 - 1/10 = 3/5。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-12.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-13",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知向量 a=(1,2)，b=(2,-1)，求 a·b 及 a 与 b 的夹角。",
+          "topic": "向量",
+          "subtopics": [
+            "数量积",
+            "向量模",
+            "夹角公式"
+          ],
+          "givens": [
+            "a=(1,2)",
+            "b=(2,-1)"
+          ],
+          "variables": [
+            "a、b：平面向量",
+            "θ：a 与 b 的夹角"
+          ],
+          "constraints": [
+            "θ∈[0,π]"
+          ],
+          "goal": "求 a·b 及 θ",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先算数量积，再算两个模，最后用 cosθ=a·b/(|a||b|) 求夹角。",
+          "method": "坐标形式的数量积与夹角公式",
+          "prerequisites": [
+            "数量积的坐标公式",
+            "向量模的公式",
+            "夹角公式"
+          ],
+          "steps": [
+            "计算 a·b",
+            "计算 |a|、|b|",
+            "代入夹角公式",
+            "由余弦值确定角"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a·b=1×2+2×(-1)=2-2=0",
+              "justification": "数量积的坐标公式 a·b=x₁x₂+y₁y₂"
+            },
+            {
+              "step": 2,
+              "expression": "|a|=√(1²+2²)=√5，|b|=√(2²+(-1)²)=√5",
+              "justification": "向量模的坐标公式"
+            },
+            {
+              "step": 3,
+              "expression": "cosθ=a·b/(|a||b|)=0/(√5·√5)=0",
+              "justification": "两向量夹角的余弦公式"
+            },
+            {
+              "step": 4,
+              "expression": "θ=π/2",
+              "justification": "θ∈[0,π]，余弦为 0 的角只有 π/2"
+            }
+          ],
+          "answer": "a·b=0，a 与 b 的夹角为 π/2。",
+          "conditions": [
+            "θ∈[0,π]"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "数量积检查",
+              "status": "passed",
+              "details": "1×2+2×(-1)=0，计算正确。"
+            },
+            {
+              "name": "模长检查",
+              "status": "passed",
+              "details": "|a|=√5，|b|=√5，均非零，夹角公式可用。"
+            },
+            {
+              "name": "垂直条件检查",
+              "status": "passed",
+              "details": "a·b=0 等价于 a⊥b；两向量坐标满足 1×2+2×(-1)=0，结论一致。"
+            },
+            {
+              "name": "角度范围检查",
+              "status": "passed",
+              "details": "θ∈[0,π]，cosθ=0 只对应 θ=π/2，没有第二解。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "数量积为 0 直接说明两向量垂直，不必再求模长也能判断夹角。",
+          "difficult_steps": [
+            "正确计算含负坐标的数量积",
+            "由 cosθ=0 在 [0,π] 内确定 θ"
+          ],
+          "common_mistakes": [
+            "把 2×(-1) 算成 +2",
+            "忘记夹角范围导致多解",
+            "把模长算成坐标相加"
+          ],
+          "prerequisite_explanations": [
+            "数量积的坐标公式",
+            "向量垂直的充要条件"
+          ],
+          "alternative_method": "也可由 a·b=0 直接得 a⊥b，从而夹角为 π/2。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-13.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-14",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 a>0，b>0，证明：a/b + b/a ≥ 2。",
+          "topic": "不等式与证明",
+          "subtopics": [
+            "基本不等式",
+            "等号条件"
+          ],
+          "givens": [
+            "a>0",
+            "b>0"
+          ],
+          "variables": [
+            "a、b：正实数"
+          ],
+          "constraints": [
+            "a>0，b>0"
+          ],
+          "goal": "证明 a/b + b/a ≥ 2，并说明等号成立条件",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "把 a/b 与 b/a 看成两个正数，用基本不等式 x+y≥2√(xy)。",
+          "method": "基本不等式（均值不等式）",
+          "prerequisites": [
+            "基本不等式 x+y≥2√(xy)（x,y>0）",
+            "等号成立条件"
+          ],
+          "steps": [
+            "说明两项为正",
+            "对两项用基本不等式",
+            "化简得 ≥2",
+            "求等号条件"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "因为 a>0、b>0，所以 a/b>0，b/a>0",
+              "justification": "正数除以正数为正"
+            },
+            {
+              "step": 2,
+              "expression": "由基本不等式，对正数 x=a/b、y=b/a，有 x+y≥2√(xy)",
+              "justification": "基本不等式 x+y≥2√(xy) 对任意正数 x、y 成立"
+            },
+            {
+              "step": 3,
+              "expression": "a/b+b/a ≥ 2√((a/b)(b/a))=2√1=2",
+              "justification": "代入并化简根号内的乘积"
+            },
+            {
+              "step": 4,
+              "expression": "等号成立当且仅当 a/b=b/a，即 a²=b²；又 a、b>0，所以 a=b",
+              "justification": "基本不等式取等号的条件是 x=y"
+            }
+          ],
+          "answer": "a/b+b/a≥2，命题得证；等号当且仅当 a=b 时成立。",
+          "conditions": [
+            "a>0，b>0",
+            "等号当且仅当 a=b"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "正数条件检查",
+              "status": "passed",
+              "details": "a>0、b>0 保证 a/b 与 b/a 都为正，基本不等式的前提满足。"
+            },
+            {
+              "name": "基本不等式检查",
+              "status": "passed",
+              "details": "x+y≥2√(xy) 对 x=a/b、y=b/a 适用，右边化简为 2。"
+            },
+            {
+              "name": "等号条件检查",
+              "status": "passed",
+              "details": "x=y 给出 a/b=b/a，即 a²=b²；由 a、b>0 得 a=b，等号确实可取到。"
+            },
+            {
+              "name": "独立推导对照",
+              "status": "passed",
+              "details": "由 (a-b)²≥0 得 a²+b²≥2ab，两边除以 ab>0 也得到 a/b+b/a≥2，与基本不等式结论一致。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "把 a/b 和 b/a 看成一对正数，基本不等式就能一步到位；关键是检查它们为正。",
+          "difficult_steps": [
+            "想到把两项作为基本不等式的 x、y",
+            "说明等号条件并利用 a、b>0"
+          ],
+          "common_mistakes": [
+            "忽略 a、b>0 的前提",
+            "只证 ≥2 不说明等号条件",
+            "把 a/b=b/a 直接约成 a=b 而不说明正数"
+          ],
+          "prerequisite_explanations": [
+            "基本不等式及其等号条件",
+            "正数的除法封闭性"
+          ],
+          "alternative_method": "由 (a-b)²≥0 展开得 a²+b²≥2ab，再除以 ab>0。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-14.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-15",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：√(2x+1)=x-1。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "无理方程",
+            "定义域",
+            "增根检验"
+          ],
+          "givens": [
+            "方程 √(2x+1)=x-1"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [
+            "根号下非负：2x+1≥0，即 x≥-1/2",
+            "右边为非负的算术平方根，因此 x-1≥0，即 x≥1"
+          ],
+          "goal": "求出满足原方程的所有实数 x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先由根号非负与右边非负得到 x≥1，再平方求解，最后代回排除增根。",
+          "method": "平方后求解并检验",
+          "prerequisites": [
+            "算术平方根非负",
+            "一元二次方程的因式分解"
+          ],
+          "steps": [
+            "确定 x≥1",
+            "两边平方",
+            "整理求候选根",
+            "代回原方程排除增根"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "2x+1≥0 且 x-1≥0，所以 x≥1",
+              "justification": "根号下非负；算术平方根的值非负，而它等于 x-1"
+            },
+            {
+              "step": 2,
+              "expression": "2x+1=(x-1)²",
+              "justification": "在 x≥1 时两边都非负，平方是等价变形"
+            },
+            {
+              "step": 3,
+              "expression": "x²-4x=0，即 x(x-4)=0",
+              "justification": "展开右边并移项"
+            },
+            {
+              "step": 4,
+              "expression": "x=0 或 x=4",
+              "justification": "零乘积性质"
+            },
+            {
+              "step": 5,
+              "expression": "x=0 不满足 x≥1，舍去；x=4 保留",
+              "justification": "候选根必须在定义域与右边非负条件内"
+            },
+            {
+              "step": 6,
+              "expression": "原方程的解为 x=4",
+              "justification": "代回：√9=3，4-1=3，成立"
+            }
+          ],
+          "answer": "x=4",
+          "conditions": [
+            "x≥1"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "定义域与非负性检查",
+              "status": "passed",
+              "details": "要求 x≥-1/2 且 x≥1，合并为 x≥1；x=0 不满足，已舍去。"
+            },
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=4：左边 √9=3，右边 3，成立。"
+            },
+            {
+              "name": "增根检查",
+              "status": "passed",
+              "details": "平方前已限制 x≥1，平方在该范围内等价；仍逐个代回确认，没有保留增根。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "算术平方根非负，所以右边 x-1 必须非负；这一步能提前排除增根。",
+          "difficult_steps": [
+            "同时考虑根号下非负与右边非负",
+            "平方后仍要代回检验"
+          ],
+          "common_mistakes": [
+            "只写 2x+1≥0，漏掉 x-1≥0",
+            "保留 x=0",
+            "把 (x-1)² 展开错"
+          ],
+          "prerequisite_explanations": [
+            "算术平方根的值非负",
+            "平方在两边非负时才是等价变形"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-15.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-16",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：x/(x-2)+1/(x+2)=8/(x²-4)。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "分式方程",
+            "最简公分母",
+            "增根检验"
+          ],
+          "givens": [
+            "方程 x/(x-2)+1/(x+2)=8/(x²-4)"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [
+            "分母不为零：x≠2 且 x≠-2"
+          ],
+          "goal": "求出满足原方程的所有实数 x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先分解 x²-4 并记录排除值，再乘最简公分母去分母，最后检验。",
+          "method": "去分母法",
+          "prerequisites": [
+            "平方差公式",
+            "分式方程的定义域"
+          ],
+          "steps": [
+            "分解 x²-4=(x-2)(x+2)",
+            "写出 x≠±2",
+            "两边同乘 (x-2)(x+2)",
+            "整理求解",
+            "代回并排除增根"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-4=(x-2)(x+2)，且 x≠2、x≠-2",
+              "justification": "平方差公式；分母不能为零"
+            },
+            {
+              "step": 2,
+              "expression": "x(x+2)+(x-2)=8",
+              "justification": "两边同乘 (x-2)(x+2)；由第 1 步该式不为零"
+            },
+            {
+              "step": 3,
+              "expression": "x²+3x-10=0",
+              "justification": "展开并合并同类项"
+            },
+            {
+              "step": 4,
+              "expression": "(x+5)(x-2)=0，所以 x=-5 或 x=2",
+              "justification": "因式分解"
+            },
+            {
+              "step": 5,
+              "expression": "x=2 使分母为零，舍去；x=-5 保留",
+              "justification": "候选根必须在定义域内"
+            },
+            {
+              "step": 6,
+              "expression": "原方程的解为 x=-5",
+              "justification": "代回：左边 (-5)/(-7)+1/(-3)=5/7-1/3=8/21，右边 8/21"
+            }
+          ],
+          "answer": "x=-5",
+          "conditions": [
+            "x≠2 且 x≠-2"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "定义域检查",
+              "status": "passed",
+              "details": "x=-5 不等于 2 或 -2，分母均不为零；x=2 是排除值。"
+            },
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "左边 5/7-1/3=(15-7)/21=8/21，右边 8/(25-4)=8/21，成立。"
+            },
+            {
+              "name": "增根检查",
+              "status": "passed",
+              "details": "去分母得到的 x=2 使原分母为零，是增根，已舍去；x=-5 不是增根。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "分式方程的关键不是算得快，而是先写排除值，最后把候选根逐个对照。",
+          "difficult_steps": [
+            "正确找到最简公分母 (x-2)(x+2)",
+            "识别 x=2 是增根"
+          ],
+          "common_mistakes": [
+            "漏乘不含分母的项",
+            "不检验，保留 x=2",
+            "把 x²-4 分解错"
+          ],
+          "prerequisite_explanations": [
+            "平方差公式",
+            "分式方程增根的来源"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-16.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-17",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知函数 f(x)=x²-2ax+1，讨论 f(x) 在区间 [0,2] 上的单调性。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "二次函数",
+            "单调性",
+            "含参分类讨论"
+          ],
+          "givens": [
+            "f(x)=x²-2ax+1",
+            "讨论区间 [0,2]"
+          ],
+          "variables": [
+            "x：自变量",
+            "a：参数"
+          ],
+          "constraints": [
+            "x∈[0,2]"
+          ],
+          "goal": "按参数 a 的取值讨论 f 在 [0,2] 上的单调性",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "求导得 f'(x)=2(x-a)，对称轴为 x=a；比较 a 与区间 [0,2] 的位置。",
+          "method": "导数符号与对称轴位置分类",
+          "prerequisites": [
+            "二次函数的对称轴",
+            "导数与单调性的关系"
+          ],
+          "steps": [
+            "求导",
+            "写出对称轴",
+            "分 a≤0、0<a<2、a≥2 讨论",
+            "合并结论"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "f'(x)=2x-2a=2(x-a)",
+              "justification": "对二次函数求导"
+            },
+            {
+              "step": 2,
+              "expression": "当 a≤0 时，在 [0,2] 上 x-a≥0，所以 f'(x)≥0，f 在 [0,2] 上单调递增",
+              "justification": "导数非负；a=0 时只在 x=0 处为 0，不影响单调递增"
+            },
+            {
+              "step": 3,
+              "expression": "当 0<a<2 时，f 在 [0,a] 上单调递减，在 [a,2] 上单调递增",
+              "justification": "x<a 时 f'(x)<0，x>a 时 f'(x)>0"
+            },
+            {
+              "step": 4,
+              "expression": "当 a≥2 时，在 [0,2] 上 x-a≤0，所以 f'(x)≤0，f 在 [0,2] 上单调递减",
+              "justification": "导数非正；a=2 时只在 x=2 处为 0，不影响单调递减"
+            },
+            {
+              "step": 5,
+              "expression": "综上：a≤0 时在 [0,2] 上递增；0<a<2 时在 [0,a] 上递减、在 [a,2] 上递增；a≥2 时在 [0,2] 上递减",
+              "justification": "合并三种情形"
+            }
+          ],
+          "answer": "a≤0：f 在 [0,2] 上递增；0<a<2：f 在 [0,a] 上递减、在 [a,2] 上递增；a≥2：f 在 [0,2] 上递减。",
+          "conditions": [
+            "x∈[0,2]"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "导数符号检查",
+              "status": "passed",
+              "details": "f'(x)=2(x-a)，符号只由 x-a 决定；在给定区间上比较 x 与 a 即可。"
+            },
+            {
+              "name": "边界参数检查",
+              "status": "passed",
+              "details": "a=0 时 f'(x)=2x≥0，递增；a=2 时 f'(x)=2(x-2)≤0，递减；两个边界都并入相应情形，没有遗漏。"
+            },
+            {
+              "name": "特殊值抽样",
+              "status": "passed",
+              "details": "取 a=-1：f'(x)=2(x+1)>0，递增；取 a=1：f'在 [0,1) 为负、在 (1,2] 为正；取 a=3：f'(x)=2(x-3)<0，递减。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "二次函数在区间上的单调性由对称轴 x=a 与区间的位置关系决定。",
+          "difficult_steps": [
+            "把 a 与区间端点 0、2 比较",
+            "处理 a=0 与 a=2 两个边界"
+          ],
+          "common_mistakes": [
+            "只讨论 a>0",
+            "把顶点处写成单调区间的一部分时方向弄反",
+            "漏掉 a=0 或 a=2"
+          ],
+          "prerequisite_explanations": [
+            "二次函数的对称轴",
+            "导数符号与函数单调性的关系"
+          ],
+          "alternative_method": "也可配方 f(x)=(x-a)²+1-a²，直接从顶点位置读出单调性。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-17.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-18",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解不等式：(x-1)/(x+2)≥2。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "分式不等式",
+            "符号表",
+            "定义域"
+          ],
+          "givens": [
+            "不等式 (x-1)/(x+2)≥2"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [
+            "分母不为零：x≠-2"
+          ],
+          "goal": "求不等式的解集",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "把 2 移到左边通分，化为一个分式与零比较，再用符号表求解。",
+          "method": "移项通分与符号表",
+          "prerequisites": [
+            "分式不等式不能直接乘含未知数的分母",
+            "符号表"
+          ],
+          "steps": [
+            "写出 x≠-2",
+            "移项并通分",
+            "整理分子",
+            "求临界点并作符号表",
+            "写出解集"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x≠-2",
+              "justification": "分母不能为零"
+            },
+            {
+              "step": 2,
+              "expression": "(x-1)/(x+2)-2≥0",
+              "justification": "两边同时减去 2"
+            },
+            {
+              "step": 3,
+              "expression": "(x-1-2x-4)/(x+2)≥0",
+              "justification": "通分：2=2(x+2)/(x+2)"
+            },
+            {
+              "step": 4,
+              "expression": "(-x-5)/(x+2)≥0，即 (x+5)/(x+2)≤0",
+              "justification": "合并分子；两边同乘 -1 时不等号方向改变"
+            },
+            {
+              "step": 5,
+              "expression": "临界点为 x=-5 与 x=-2；符号表给出 -5≤x<-2",
+              "justification": "分子 x+5 在 x=-5 处变号，分母 x+2 在 x=-2 处变号；x=-2 不能取"
+            },
+            {
+              "step": 6,
+              "expression": "解集为 [-5,-2)",
+              "justification": "x=-5 使分式为 0，满足 ≥；x=-2 使分母为零，排除"
+            }
+          ],
+          "answer": "[-5,-2)",
+          "conditions": [
+            "x≠-2"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "定义域检查",
+              "status": "passed",
+              "details": "解集中的 x 都满足 x≠-2；端点 -2 已排除。"
+            },
+            {
+              "name": "符号表检查",
+              "status": "passed",
+              "details": "(x+5)/(x+2)≤0：x<-5 时为正，-5<x<-2 时为负，x>-2 时为正，故解集为 [-5,-2)。"
+            },
+            {
+              "name": "代回原不等式",
+              "status": "passed",
+              "details": "x=-5：(-6)/(-3)=2≥2，成立；x=-3：(-4)/(-1)=4≥2，成立；x=0：(-1)/2=-1/2≥2，不成立。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "分式不等式先移项通分，化成“分式与 0 比较”，不要直接乘分母。",
+          "difficult_steps": [
+            "通分后正确合并分子",
+            "乘 -1 时改变不等号方向",
+            "处理端点 -5 与 -2"
+          ],
+          "common_mistakes": [
+            "直接两边乘 x+2，忽略其符号",
+            "把解集写成 (-5,-2]",
+            "漏掉 x=-5 可取"
+          ],
+          "prerequisite_explanations": [
+            "分式不等式的标准解法",
+            "符号表与临界点"
+          ],
+          "alternative_method": "也可把两边都看成函数，画 y=(x-1)/(x+2) 与 y=2 的图象找交点与高低关系。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-18.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-19",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数 y=2sin(2x+π/4) 的单调递增区间。",
+          "topic": "三角函数",
+          "subtopics": [
+            "正弦函数",
+            "单调区间",
+            "复合函数"
+          ],
+          "givens": [
+            "y=2sin(2x+π/4)"
+          ],
+          "variables": [
+            "x：自变量",
+            "k：整数"
+          ],
+          "constraints": [
+            "k∈Z"
+          ],
+          "goal": "求函数的单调递增区间",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "令整体相位 u=2x+π/4，利用 sin u 在 [-π/2+2kπ, π/2+2kπ] 上递增，再解出 x。",
+          "method": "整体代换与正弦函数单调性",
+          "prerequisites": [
+            "正弦函数的单调区间",
+            "复合函数单调性"
+          ],
+          "steps": [
+            "写出 sin u 的递增区间",
+            "代入 u=2x+π/4",
+            "解出 x 的范围",
+            "写成区间并注明 k∈Z"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "sin u 在 [-π/2+2kπ, π/2+2kπ]（k∈Z）上单调递增",
+              "justification": "正弦函数的标准单调区间"
+            },
+            {
+              "step": 2,
+              "expression": "-π/2+2kπ ≤ 2x+π/4 ≤ π/2+2kπ",
+              "justification": "令 u=2x+π/4"
+            },
+            {
+              "step": 3,
+              "expression": "-3π/4+2kπ ≤ 2x ≤ π/4+2kπ",
+              "justification": "不等式各部分同时减去 π/4"
+            },
+            {
+              "step": 4,
+              "expression": "-3π/8+kπ ≤ x ≤ π/8+kπ",
+              "justification": "各部分同时除以正数 2，不等号方向不变"
+            },
+            {
+              "step": 5,
+              "expression": "单调递增区间为 [kπ-3π/8, kπ+π/8]，k∈Z",
+              "justification": "把解出的 x 范围写成区间"
+            }
+          ],
+          "answer": "[kπ-3π/8, kπ+π/8]，k∈Z。",
+          "conditions": [
+            "k∈Z"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "导数符号检查",
+              "status": "passed",
+              "details": "y'=4cos(2x+π/4)；当 2x+π/4∈[-π/2+2kπ, π/2+2kπ] 时余弦非负，函数递增。"
+            },
+            {
+              "name": "k=0 取点检查",
+              "status": "passed",
+              "details": "区间 [-3π/8, π/8] 内取 x=0，相位 π/4∈[-π/2,π/2]，函数处于递增段。"
+            },
+            {
+              "name": "端点检查",
+              "status": "passed",
+              "details": "端点处相位为 ±π/2，导数为 0，单调区间可以包含端点。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "把 2x+π/4 看成一个整体 u，先写 sin u 的递增区间，再解出 x。",
+          "difficult_steps": [
+            "不等式各部分同时减 π/4、再除以 2",
+            "保留 k∈Z 表示所有周期"
+          ],
+          "common_mistakes": [
+            "把 2x+π/4 的区间直接当成 x 的区间",
+            "漏写 k∈Z",
+            "除以 2 时忘记端点也除以 2"
+          ],
+          "prerequisite_explanations": [
+            "正弦函数的图象与单调区间",
+            "复合函数的单调性"
+          ],
+          "alternative_method": "也可用导数 y'=4cos(2x+π/4)≥0 解出同样的区间。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-19.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-20",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解关于 x 的不等式：kx+2>0。",
+          "topic": "不等式",
+          "subtopics": [
+            "含参不等式",
+            "分类讨论"
+          ],
+          "givens": [
+            "不等式 kx+2>0"
+          ],
+          "variables": [
+            "x：未知数",
+            "k：参数"
+          ],
+          "constraints": [
+            "k 的符号决定不等号方向"
+          ],
+          "goal": "按参数 k 的取值写出解集",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "移项得 kx>-2，按 k>0、k=0、k<0 分类讨论。",
+          "method": "含参一次不等式的分类讨论",
+          "prerequisites": [
+            "不等式两边乘除负数时方向改变",
+            "空集与全体的概念"
+          ],
+          "steps": [
+            "移项得 kx>-2",
+            "讨论 k>0",
+            "讨论 k=0",
+            "讨论 k<0"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "kx>-2",
+              "justification": "不等式两边同时减 2"
+            },
+            {
+              "step": 2,
+              "expression": "当 k>0 时，x>-2/k",
+              "justification": "两边同除以正数 k，不等号方向不变"
+            },
+            {
+              "step": 3,
+              "expression": "当 k=0 时，0>-2，对任意实数 x 成立",
+              "justification": "0 确实大于 -2，与 x 无关"
+            },
+            {
+              "step": 4,
+              "expression": "当 k<0 时，x<-2/k",
+              "justification": "两边同除以负数 k，不等号方向改变"
+            },
+            {
+              "step": 5,
+              "expression": "综上：k>0 时解集为 (-2/k,+∞)；k=0 时解集为 R；k<0 时解集为 (-∞,-2/k)",
+              "justification": "合并三种情形"
+            }
+          ],
+          "answer": "k>0：x>-2/k；k=0：x∈R；k<0：x<-2/k。",
+          "conditions": [
+            "k=0 时不等式对任意实数 x 成立"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "分类完整性检查",
+              "status": "passed",
+              "details": "k 的取值被 k>0、k=0、k<0 三类完全覆盖，没有遗漏。"
+            },
+            {
+              "name": "特殊值代回",
+              "status": "passed",
+              "details": "k=2：解集 x>-1；x=0 时 2>0 成立，x=-2 时 -2>0 不成立。k=-2：解集 x<1；x=0 时 2>0 成立，x=2 时 -2>0 不成立。"
+            },
+            {
+              "name": "k=0 检查",
+              "status": "passed",
+              "details": "k=0 时原不等式为 2>0，恒成立，解集是全体实数，不是空集。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "含参数的一次不等式，不能直接除以 k，必须先讨论 k 的正负与零。",
+          "difficult_steps": [
+            "想到 k=0 时解集是全体实数",
+            "k<0 时不等号方向改变"
+          ],
+          "common_mistakes": [
+            "直接写 x>-2/k，忽略 k 的符号",
+            "漏掉 k=0",
+            "把 k=0 误判为无解"
+          ],
+          "prerequisite_explanations": [
+            "不等式两边同乘除负数要变号",
+            "分类讨论要穷尽且互斥"
+          ],
+          "alternative_method": "也可从一次函数 y=kx+2 的图象看：k>0 上升，k=0 水平，k<0 下降。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-20.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-21",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解关于 x 的不等式：(x-a)(x-2)>0。",
+          "topic": "不等式",
+          "subtopics": [
+            "含参二次不等式",
+            "分类讨论",
+            "根的大小比较"
+          ],
+          "givens": [
+            "不等式 (x-a)(x-2)>0"
+          ],
+          "variables": [
+            "x：未知数",
+            "a：参数"
+          ],
+          "constraints": [
+            "a 与 2 的大小关系决定解集结构"
+          ],
+          "goal": "按参数 a 的取值写出解集",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "两根为 a 与 2；开口向上，大于零取两根之外。按 a<2、a=2、a>2 比较两根。",
+          "method": "二次不等式与根的分类讨论",
+          "prerequisites": [
+            "二次函数图象",
+            "两根大小比较"
+          ],
+          "steps": [
+            "写出两根 a 与 2",
+            "讨论 a<2",
+            "讨论 a=2",
+            "讨论 a>2"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "两根为 x=a 与 x=2",
+              "justification": "令每个因式为零"
+            },
+            {
+              "step": 2,
+              "expression": "当 a<2 时，解集为 (-∞,a)∪(2,+∞)",
+              "justification": "开口向上，大于零取两根之外，且 a 在 2 的左边"
+            },
+            {
+              "step": 3,
+              "expression": "当 a=2 时，原式为 (x-2)²>0，解集为 (-∞,2)∪(2,+∞)",
+              "justification": "平方非负，只排除等于零的 x=2"
+            },
+            {
+              "step": 4,
+              "expression": "当 a>2 时，解集为 (-∞,2)∪(a,+∞)",
+              "justification": "开口向上，大于零取两根之外，且 a 在 2 的右边"
+            },
+            {
+              "step": 5,
+              "expression": "综上：a<2 时为 (-∞,a)∪(2,+∞)；a=2 时为 (-∞,2)∪(2,+∞)；a>2 时为 (-∞,2)∪(a,+∞)",
+              "justification": "合并三种情形"
+            }
+          ],
+          "answer": "a<2：x<a 或 x>2；a=2：x≠2；a>2：x<2 或 x>a。",
+          "conditions": [
+            "两根 a 与 2 的大小关系决定解集"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "根的大小检查",
+              "status": "passed",
+              "details": "a<2 时 a 在左，a>2 时 a 在右；a=2 时两根重合。"
+            },
+            {
+              "name": "特殊值代回",
+              "status": "passed",
+              "details": "a=-1：解集 x<-1 或 x>2；取 x=0 得 (-1)(-2)=2>0，成立。a=3：解集 x<2 或 x>3；取 x=0 得 (-3)(-2)=6>0，成立。"
+            },
+            {
+              "name": "a=2 边界检查",
+              "status": "passed",
+              "details": "a=2 时 (x-2)²>0，x=2 不满足，解集是除 2 以外的全体实数。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "含参二次不等式的关键是先比较两根的大小，再按“大于取两边”写解集。",
+          "difficult_steps": [
+            "把 a 与 2 的大小分成三类",
+            "a=2 时两根重合的处理"
+          ],
+          "common_mistakes": [
+            "不比较 a 与 2，直接写 x<a 或 x>2",
+            "漏掉 a=2",
+            "把端点写成闭区间"
+          ],
+          "prerequisite_explanations": [
+            "二次函数图象与不等式解集",
+            "分类讨论的完备性"
+          ],
+          "alternative_method": "也可画数轴，标出 a 与 2 的位置，再按“两根之外”读出解集。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-21.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-22",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解关于 x 的不等式：ax²-(a+1)x+1<0。",
+          "topic": "不等式",
+          "subtopics": [
+            "含参二次不等式",
+            "因式分解",
+            "分类讨论"
+          ],
+          "givens": [
+            "不等式 ax²-(a+1)x+1<0"
+          ],
+          "variables": [
+            "x：未知数",
+            "a：参数"
+          ],
+          "constraints": [
+            "a 的符号与 1/a 和 1 的大小关系决定解集"
+          ],
+          "goal": "按参数 a 的取值写出解集",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先因式分解为 (x-1)(ax-1)<0，再按 a<0、a=0、0<a<1、a=1、a>1 讨论。",
+          "method": "因式分解与分类讨论",
+          "prerequisites": [
+            "十字相乘",
+            "二次函数开口方向",
+            "根的大小比较"
+          ],
+          "steps": [
+            "因式分解",
+            "讨论 a<0",
+            "讨论 a=0",
+            "讨论 0<a<1",
+            "讨论 a=1",
+            "讨论 a>1"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "ax²-(a+1)x+1=(x-1)(ax-1)",
+              "justification": "十字相乘验证：展开得 ax²-x-ax+1=ax²-(a+1)x+1"
+            },
+            {
+              "step": 2,
+              "expression": "原不等式等价于 (x-1)(ax-1)<0",
+              "justification": "代入因式分解结果"
+            },
+            {
+              "step": 3,
+              "expression": "当 a<0 时，解集为 (-∞,1/a)∪(1,+∞)",
+              "justification": "开口向下；两根为 1/a<0 与 1，小于零取两根之外"
+            },
+            {
+              "step": 4,
+              "expression": "当 a=0 时，原式为 1-x<0，解集为 (1,+∞)",
+              "justification": "a=0 时不能使用 1/a，需单独代入"
+            },
+            {
+              "step": 5,
+              "expression": "当 0<a<1 时，1/a>1，解集为 (1,1/a)",
+              "justification": "开口向上；小于零取两根之间，且 1<1/a"
+            },
+            {
+              "step": 6,
+              "expression": "当 a=1 时，原式为 (x-1)²<0，无解",
+              "justification": "平方不可能小于零"
+            },
+            {
+              "step": 7,
+              "expression": "当 a>1 时，1/a<1，解集为 (1/a,1)",
+              "justification": "开口向上；小于零取两根之间，且 1/a<1"
+            }
+          ],
+          "answer": "a<0：x<1/a 或 x>1；a=0：x>1；0<a<1：1<x<1/a；a=1：无解；a>1：1/a<x<1。",
+          "conditions": [
+            "a=0 与 a=1 需要单独处理"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "因式展开检查",
+              "status": "passed",
+              "details": "(x-1)(ax-1)=ax²-(a+1)x+1，与原式一致。"
+            },
+            {
+              "name": "特殊值代回",
+              "status": "passed",
+              "details": "a=-1：解集 x<-1 或 x>1；a=1/2：解集 1<x<2；a=2：解集 1/2<x<1。分别取点代入均与不等式一致。"
+            },
+            {
+              "name": "a=0 与 a=1 检查",
+              "status": "passed",
+              "details": "a=0 时 1-x<0，解为 x>1；a=1 时 (x-1)²<0，确实无解。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "含参二次不等式先因式分解，再按开口方向与两根大小分类。",
+          "difficult_steps": [
+            "把 1/a 与 1 的大小随 a 变化分清楚",
+            "a=0 时不能写 1/a",
+            "a=1 时两根重合导致无解"
+          ],
+          "common_mistakes": [
+            "不讨论 a 的符号直接取两根之间",
+            "漏掉 a=0",
+            "把 a=1 时写成 x≠1"
+          ],
+          "prerequisite_explanations": [
+            "因式分解",
+            "二次函数开口方向与不等式解集",
+            "分类讨论的完备性"
+          ],
+          "alternative_method": "也可先比较 1 与 1/a 的位置，画数轴后按开口方向读出解集。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-22.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-23",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "解方程：1/(x-1)=2/(x²-1)。",
+          "topic": "方程与不等式",
+          "subtopics": [
+            "分式方程",
+            "增根",
+            "定义域"
+          ],
+          "givens": [
+            "方程 1/(x-1)=2/(x²-1)"
+          ],
+          "variables": [
+            "x：未知数"
+          ],
+          "constraints": [
+            "分母不为零：x≠1 且 x≠-1"
+          ],
+          "goal": "求出满足原方程的所有实数 x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先分解 x²-1 并写出排除值，再去分母；得到的候选根若落在排除值中，则是增根。",
+          "method": "去分母法",
+          "prerequisites": [
+            "平方差公式",
+            "分式方程增根的来源"
+          ],
+          "steps": [
+            "分解 x²-1=(x-1)(x+1)",
+            "写出 x≠±1",
+            "去分母求解",
+            "检验候选根"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-1=(x-1)(x+1)，且 x≠1、x≠-1",
+              "justification": "平方差公式；分母不能为零"
+            },
+            {
+              "step": 2,
+              "expression": "x+1=2",
+              "justification": "两边同乘 (x-1)(x+1)；由第 1 步该式不为零"
+            },
+            {
+              "step": 3,
+              "expression": "x=1",
+              "justification": "移项"
+            },
+            {
+              "step": 4,
+              "expression": "x=1 使原分母为零，舍去",
+              "justification": "候选根必须满足 x≠1 且 x≠-1"
+            },
+            {
+              "step": 5,
+              "expression": "原方程无解",
+              "justification": "唯一的候选根是增根，没有其他候选"
+            }
+          ],
+          "answer": "无解（空集）。",
+          "conditions": [
+            "x≠1 且 x≠-1"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "定义域检查",
+              "status": "passed",
+              "details": "x=1 与 x=-1 都使分母为零，均不能取。"
+            },
+            {
+              "name": "候选根代回",
+              "status": "passed",
+              "details": "x=1 时左边 1/0 无意义，右边 2/0 也无意义，不是原方程的解。"
+            },
+            {
+              "name": "增根判定",
+              "status": "passed",
+              "details": "去分母得到的 x=1 是乘了 (x-1)(x+1) 后产生的增根，必须舍去。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "分式方程解出候选根后，必须回到原分母检查；落在排除值中的根要舍去。",
+          "difficult_steps": [
+            "识别 x=1 是增根",
+            "接受“方程无解”这个结论"
+          ],
+          "common_mistakes": [
+            "直接写 x=1",
+            "忘记检查分母",
+            "把无解误写成 x=0"
+          ],
+          "prerequisite_explanations": [
+            "平方差公式",
+            "增根是如何产生的"
+          ],
+          "alternative_method": "也可先通分：左边=(x+1)/(x²-1)，与右边比较分子得 x+1=2，再检查 x=1 是否为排除值。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-23.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-24",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知等比数列 {a_n}，a_1=2，a_3=8，求前 5 项和 S_5。",
+          "topic": "数列",
+          "subtopics": [
+            "等比数列",
+            "公比",
+            "前n项和"
+          ],
+          "givens": [
+            "a_1=2",
+            "a_3=8"
+          ],
+          "variables": [
+            "a_n：第 n 项",
+            "q：公比",
+            "S_n：前 n 项和"
+          ],
+          "constraints": [
+            "等比数列公比 q≠0"
+          ],
+          "goal": "求 S_5",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "由 a_3=a_1 q² 求公比；q²=4 给出 q=2 或 q=-2，两种情形都要算。",
+          "method": "基本量法与前 n 项和公式",
+          "prerequisites": [
+            "等比数列通项公式",
+            "等比数列前 n 项和公式"
+          ],
+          "steps": [
+            "由 a_3=a_1 q² 求 q²",
+            "得到 q=2 或 q=-2",
+            "分别求 S_5",
+            "合并答案"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a_3=a_1 q²，所以 8=2q²",
+              "justification": "等比数列通项公式"
+            },
+            {
+              "step": 2,
+              "expression": "q²=4，所以 q=2 或 q=-2",
+              "justification": "开平方有两个符号；题目没有限定 q>0"
+            },
+            {
+              "step": 3,
+              "expression": "q=2 时，S_5=2(2⁵-1)/(2-1)=2×31=62",
+              "justification": "等比数列求和公式 S_n=a_1(q^n-1)/(q-1)，q≠1"
+            },
+            {
+              "step": 4,
+              "expression": "q=-2 时，S_5=2(1-(-2)⁵)/(1-(-2))=2×33/3=22",
+              "justification": "等比数列求和公式 S_n=a_1(1-q^n)/(1-q)，q≠1"
+            },
+            {
+              "step": 5,
+              "expression": "S_5=62 或 S_5=22",
+              "justification": "两种公比都满足题设，不能只取 q=2"
+            }
+          ],
+          "answer": "S_5=62（q=2）或 S_5=22（q=-2）。",
+          "conditions": [
+            "a_1=2，a_3=8；q=±2"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "q=2 逐项求和",
+              "status": "passed",
+              "details": "数列为 2,4,8,16,32，和为 62；a_3=8 符合题设。"
+            },
+            {
+              "name": "q=-2 逐项求和",
+              "status": "passed",
+              "details": "数列为 2,-4,8,-16,32，和为 22；a_3=8 也符合题设。"
+            },
+            {
+              "name": "公比条件检查",
+              "status": "passed",
+              "details": "q=2 与 q=-2 都不为零，且都能使 a_1=2、a_3=8 成立。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "由 a_3=a_1 q² 只能得到 q²，开方时正负两个公比都可能成立。",
+          "difficult_steps": [
+            "意识到 q 可以为负",
+            "两种公比分别求和"
+          ],
+          "common_mistakes": [
+            "只取 q=2，漏掉 q=-2",
+            "把 q²=4 直接写成 q=2",
+            "求和公式符号用错"
+          ],
+          "prerequisite_explanations": [
+            "等比数列通项公式",
+            "等比数列前 n 项和公式"
+          ],
+          "alternative_method": "也可先写出两种数列的前 5 项再相加，避免公式符号出错。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-24.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-25",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知函数 f(x)=x²-2ax+3，求 f(x) 在区间 [1,3] 上的最小值。",
+          "topic": "函数与不等式",
+          "subtopics": [
+            "二次函数",
+            "最值",
+            "含参分类讨论"
+          ],
+          "givens": [
+            "f(x)=x²-2ax+3",
+            "区间 [1,3]"
+          ],
+          "variables": [
+            "x：自变量",
+            "a：参数"
+          ],
+          "constraints": [
+            "x∈[1,3]"
+          ],
+          "goal": "求 f 在 [1,3] 上的最小值",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "抛物线开口向上，对称轴为 x=a；比较 a 与区间 [1,3] 的位置，分三类求最小值。",
+          "method": "二次函数在闭区间上的最值",
+          "prerequisites": [
+            "二次函数的对称轴",
+            "闭区间上二次函数的最值"
+          ],
+          "steps": [
+            "求对称轴 x=a",
+            "讨论 a<1",
+            "讨论 1≤a≤3",
+            "讨论 a>3",
+            "合并结论"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "f(x)=(x-a)²+3-a²，对称轴为 x=a，开口向上",
+              "justification": "配方"
+            },
+            {
+              "step": 2,
+              "expression": "当 a<1 时，f 在 [1,3] 上递增，最小值为 f(1)=1-2a+3=4-2a",
+              "justification": "对称轴在区间左侧，区间内函数递增"
+            },
+            {
+              "step": 3,
+              "expression": "当 1≤a≤3 时，最小值在顶点处取得，为 f(a)=a²-2a²+3=3-a²",
+              "justification": "对称轴在区间内，开口向上，顶点是最小值点"
+            },
+            {
+              "step": 4,
+              "expression": "当 a>3 时，f 在 [1,3] 上递减，最小值为 f(3)=9-6a+3=12-6a",
+              "justification": "对称轴在区间右侧，区间内函数递减"
+            },
+            {
+              "step": 5,
+              "expression": "综上：a<1 时最小值为 4-2a；1≤a≤3 时为 3-a²；a>3 时为 12-6a",
+              "justification": "合并三种情形"
+            }
+          ],
+          "answer": "a<1：4-2a；1≤a≤3：3-a²；a>3：12-6a。",
+          "conditions": [
+            "x∈[1,3]"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "边界参数 a=1",
+              "status": "passed",
+              "details": "a=1 时 4-2a=2，3-a²=2，两段在边界衔接一致；此时顶点在区间左端点。"
+            },
+            {
+              "name": "边界参数 a=3",
+              "status": "passed",
+              "details": "a=3 时 3-a²=-6，12-6a=-6，两段在边界衔接一致；此时顶点在区间右端点。"
+            },
+            {
+              "name": "特殊值抽样",
+              "status": "passed",
+              "details": "a=0：f 在 [1,3] 递增，最小 f(1)=4；a=2：顶点 x=2 在区间内，最小 3-4=-1；a=4：f 在 [1,3] 递减，最小 f(3)=12-24=-12。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "闭区间上二次函数的最值只看对称轴在区间左、内、右三种位置。",
+          "difficult_steps": [
+            "把 a 与区间端点 1、3 比较",
+            "顶点在区间内时用 f(a)，否则用端点值"
+          ],
+          "common_mistakes": [
+            "不分类直接代顶点",
+            "把 a=1 或 a=3 漏掉",
+            "端点值计算符号错"
+          ],
+          "prerequisite_explanations": [
+            "二次函数配方与顶点",
+            "闭区间上函数的最值"
+          ],
+          "alternative_method": "也可画抛物线草图，分别看顶点在区间左侧、内部、右侧时最低点的位置。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-25.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-26",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 a²=4，b²=9，求 a+b 的值。",
+          "topic": "代数基础",
+          "subtopics": [
+            "平方根",
+            "分类讨论",
+            "条件缺失"
+          ],
+          "givens": [
+            "a²=4",
+            "b²=9"
+          ],
+          "variables": [
+            "a、b：实数"
+          ],
+          "constraints": [
+            "题目没有给出 a、b 的符号"
+          ],
+          "goal": "求 a+b 的所有可能值",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "由平方分别得到 a=±2、b=±3，再枚举四种组合。",
+          "method": "枚举法",
+          "prerequisites": [
+            "平方根的两个符号",
+            "分类讨论"
+          ],
+          "steps": [
+            "由 a²=4 得 a=±2",
+            "由 b²=9 得 b=±3",
+            "枚举四种组合",
+            "写成集合"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a=2 或 a=-2",
+              "justification": "平方为 4 的实数有两个"
+            },
+            {
+              "step": 2,
+              "expression": "b=3 或 b=-3",
+              "justification": "平方为 9 的实数有两个"
+            },
+            {
+              "step": 3,
+              "expression": "四种组合：2+3=5，2+(-3)=-1，(-2)+3=1，(-2)+(-3)=-5",
+              "justification": "枚举 a 与 b 的所有取值组合"
+            },
+            {
+              "step": 4,
+              "expression": "a+b 的可能值为 -5、-1、1、5",
+              "justification": "题目没有限定 a、b 为正，不能只取 5"
+            }
+          ],
+          "answer": "a+b∈{-5,-1,1,5}。",
+          "conditions": [
+            "a、b 为实数；题目未限定符号"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "组合完备性检查",
+              "status": "passed",
+              "details": "a 有 2 种取值，b 有 2 种取值，共 2×2=4 种组合，已全部枚举。"
+            },
+            {
+              "name": "逐个代回",
+              "status": "passed",
+              "details": "2²=4、(-2)²=4、3²=9、(-3)²=9，四组都满足已知条件。"
+            },
+            {
+              "name": "去重检查",
+              "status": "passed",
+              "details": "四个和 -5、-1、1、5 互不相同，没有重复。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "由平方求原数时有两个符号；题目没限定正负，就必须把所有组合列全。",
+          "difficult_steps": [
+            "意识到 a、b 都可能为负",
+            "把四种组合不重不漏地列出"
+          ],
+          "common_mistakes": [
+            "只取 a=2、b=3 得 5",
+            "只考虑 a、b 同号",
+            "漏掉负负组合"
+          ],
+          "prerequisite_explanations": [
+            "平方根的两个符号",
+            "分类讨论的完备性"
+          ],
+          "alternative_method": "也可先写出 a+b=±2±3，再展开成四个值。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-26.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-27",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "命题：若 x²>4，则 x>2。判断该命题是否成立。",
+          "topic": "逻辑与不等式",
+          "subtopics": [
+            "充分条件",
+            "反例",
+            "命题真假"
+          ],
+          "givens": [
+            "命题：x²>4 ⇒ x>2"
+          ],
+          "variables": [
+            "x：实数"
+          ],
+          "constraints": [
+            "x 为实数"
+          ],
+          "goal": "判断命题是否成立，并说明理由",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "要否定一个全称蕴含命题，只需找一个满足前提但不满足结论的反例。",
+          "method": "反例法",
+          "prerequisites": [
+            "蕴含命题的真假",
+            "反例的作用"
+          ],
+          "steps": [
+            "分析 x²>4 的解集",
+            "寻找满足前提但不满足结论的 x",
+            "给出反例",
+            "说明命题为假"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²>4 等价于 x>2 或 x<-2",
+              "justification": "解一元二次不等式"
+            },
+            {
+              "step": 2,
+              "expression": "取 x=-3，则 x²=9>4，但 x=-3 不满足 x>2",
+              "justification": "反例同时满足前提并否定结论"
+            },
+            {
+              "step": 3,
+              "expression": "因此命题“若 x²>4，则 x>2”不成立",
+              "justification": "一个反例足以否定全称蕴含命题"
+            },
+            {
+              "step": 4,
+              "expression": "正确的结论应是：若 x²>4，则 x>2 或 x<-2",
+              "justification": "由第 1 步的解集得到"
+            }
+          ],
+          "answer": "命题不成立；反例 x=-3。",
+          "conditions": [
+            "x 为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "反例有效性检查",
+              "status": "passed",
+              "details": "x=-3 满足 x²=9>4，但不满足 x>2，确实是有效反例。"
+            },
+            {
+              "name": "解集检查",
+              "status": "passed",
+              "details": "x²>4 的解集是 (-∞,-2)∪(2,+∞)，其中 (-∞,-2) 的部分都不满足 x>2。"
+            },
+            {
+              "name": "逆命题区分",
+              "status": "passed",
+              "details": "“若 x>2，则 x²>4”是真命题，但它不是原命题；不能把逆命题的真假当成原命题的真假。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "要证明一个“若 P 则 Q”为假，只需举一个 P 成立而 Q 不成立的反例。",
+          "difficult_steps": [
+            "想到负数反例",
+            "区分原命题与逆命题"
+          ],
+          "common_mistakes": [
+            "只验证几个正数就认为命题成立",
+            "把逆命题的真假套到原命题上",
+            "举的反例不满足前提"
+          ],
+          "prerequisite_explanations": [
+            "蕴含命题的真假",
+            "一元二次不等式的解集"
+          ],
+          "alternative_method": "也可直接解 x²>4 得 x<-2 或 x>2，看出前提并不推出 x>2。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-27.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-28",
+      "action": "solve",
+      "output": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 sin α=1/2，α∈[0,2π]，求 α。",
+          "topic": "三角函数",
+          "subtopics": [
+            "三角方程",
+            "单位圆",
+            "象限"
+          ],
+          "givens": [
+            "sin α=1/2",
+            "α∈[0,2π]"
+          ],
+          "variables": [
+            "α：角"
+          ],
+          "constraints": [
+            "α∈[0,2π]"
+          ],
+          "goal": "求满足条件的所有角 α",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "在 [0,2π] 内，正弦值为 1/2 的角在第一、第二象限各有一个。",
+          "method": "单位圆与参考角",
+          "prerequisites": [
+            "特殊角的正弦值",
+            "正弦函数在各象限的符号"
+          ],
+          "steps": [
+            "找参考角 π/6",
+            "确定第一象限解",
+            "确定第二象限解",
+            "检查区间"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "参考角为 π/6，因为 sin(π/6)=1/2",
+              "justification": "特殊角三角函数值"
+            },
+            {
+              "step": 2,
+              "expression": "第一象限解：α=π/6",
+              "justification": "sin 在第一象限为正"
+            },
+            {
+              "step": 3,
+              "expression": "第二象限解：α=π-π/6=5π/6",
+              "justification": "sin(π-θ)=sin θ，第二象限正弦也为正"
+            },
+            {
+              "step": 4,
+              "expression": "π/6 与 5π/6 都在 [0,2π] 内",
+              "justification": "区间检查"
+            }
+          ],
+          "answer": "α=π/6 或 α=5π/6。",
+          "conditions": [
+            "α∈[0,2π]"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "sin(π/6)=1/2，sin(5π/6)=1/2，均成立。"
+            },
+            {
+              "name": "区间检查",
+              "status": "passed",
+              "details": "π/6≈0.524，5π/6≈2.618，均落在 [0,2π] 内。"
+            },
+            {
+              "name": "完备性检查",
+              "status": "passed",
+              "details": "在 [0,2π] 内正弦为正的只有第一、第二象限，各有一个解，没有遗漏。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "正弦值为正时，解在第一、第二象限；用参考角 π/6 分别写出两个角。",
+          "difficult_steps": [
+            "由参考角写出第二象限角 π-π/6",
+            "确认解都在给定区间内"
+          ],
+          "common_mistakes": [
+            "只写 π/6",
+            "把第二象限角写成 π+π/6",
+            "忽略区间限制导致写出周期解"
+          ],
+          "prerequisite_explanations": [
+            "特殊角三角函数值",
+            "正弦函数在各象限的符号",
+            "诱导公式 sin(π-θ)=sin θ"
+          ],
+          "alternative_method": "也可画单位圆，找与 x 轴夹角为 π/6 的两条射线，读出两个角。",
+          "follow_up_exercise_suggestion": null
+        }
+      },
+      "tool_log": [
+        {
+          "command": "python3 scripts/validate_output.py validate --card MATH-28.json --strict",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "case_id": "MATH-29",
+      "action": "route",
+      "route_to": "math-error-diagnosis",
+      "reply": "这是检查已有解答的任务，应转交 math-error-diagnosis；我不在这里重新求解。"
+    },
+    {
+      "case_id": "MATH-30",
+      "action": "route",
+      "route_to": "draft-coach",
+      "reply": "这是草稿版面习惯问题，应转交 draft-coach；我不判断计算对错。"
+    },
+    {
+      "case_id": "MATH-31",
+      "action": "clarify",
+      "reply": "这是已成立解法的优化请求；当前项目暂不提供优化技能，我不会在这里重做解答或冒充优化。"
+    },
+    {
+      "case_id": "MATH-32",
+      "action": "clarify",
+      "reply": "请把图片里的题面打成文字或口述给我；我不直接读取图片上的字符。"
+    }
+  ]
+}

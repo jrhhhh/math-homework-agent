@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 {a_n} 是等差数列，a_1=2，a_4+a_6=20，求通项公式 a_n 与前 n 项和 S_n。",
+    "topic": "数列",
+    "subtopics": ["等差数列", "通项公式", "前n项和"],
+    "givens": ["a_1=2", "a_4+a_6=20"],
+    "variables": ["a_n：第 n 项", "d：公差", "S_n：前 n 项和"],
+    "constraints": ["n 为正整数"],
+    "goal": "求 a_n 与 S_n",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "用 a_n=a_1+(n-1)d 表示 a_4 与 a_6，先求公差 d，再写通项与求和公式。",
+    "method": "基本量法",
+    "prerequisites": ["等差数列通项公式", "等差数列前 n 项和公式"],
+    "steps": ["设公差为 d", "由 a_4+a_6=20 求 d", "写出 a_n", "用 S_n=n(a_1+a_n)/2 求 S_n"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "设公差为 d，则 a_4=2+3d，a_6=2+5d",
+        "justification": "等差数列通项公式 a_n=a_1+(n-1)d"
+      },
+      {
+        "step": 2,
+        "expression": "(2+3d)+(2+5d)=20",
+        "justification": "代入已知 a_4+a_6=20"
+      },
+      {
+        "step": 3,
+        "expression": "4+8d=20，所以 d=2",
+        "justification": "移项并除以 8"
+      },
+      {
+        "step": 4,
+        "expression": "a_n=2+(n-1)·2=2n",
+        "justification": "代入通项公式并化简"
+      },
+      {
+        "step": 5,
+        "expression": "S_n=n(a_1+a_n)/2=n(2+2n)/2=n(n+1)",
+        "justification": "等差数列前 n 项和公式，或 S_n=na_1+n(n-1)d/2"
+      }
+    ],
+    "answer": "a_n=2n，S_n=n(n+1)=n²+n。",
+    "conditions": ["n 为正整数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "已知条件代回",
+        "status": "passed",
+        "details": "a_4=8，a_6=12，a_4+a_6=20，符合题设。"
+      },
+      {
+        "name": "首项检查",
+        "status": "passed",
+        "details": "a_1=2·1=2，符合题设。"
+      },
+      {
+        "name": "求和公式独立核对",
+        "status": "passed",
+        "details": "S_n=na_1+n(n-1)d/2=2n+n(n-1)=n²+n，与 n(n+1) 一致。"
+      },
+      {
+        "name": "前几项数值检查",
+        "status": "passed",
+        "details": "S_1=2，S_2=2+4=6，与 n(n+1) 在 n=1,2 时的值一致；这只是诊断性检查，一般结论由公式推导保证。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "等差数列问题先把 a_n 与 S_n 都写成基本量 a_1、d 的式子，条件就变成关于 d 的方程。",
+    "difficult_steps": ["由 a_4+a_6 建立关于 d 的方程", "选择求和公式并化简"],
+    "common_mistakes": ["把 a_4+a_6 误写成 2a_5 后算错", "S_n 公式中项数或首末项代入错误", "通项写成 2n+1"],
+    "prerequisite_explanations": ["等差数列通项公式", "前 n 项和的两个常用公式"],
+    "alternative_method": "也可利用 a_4+a_6=2a_5=20 得 a_5=10，再由 a_5=a_1+4d 求 d=2。",
+    "follow_up_exercise_suggestion": null
+  }
+}

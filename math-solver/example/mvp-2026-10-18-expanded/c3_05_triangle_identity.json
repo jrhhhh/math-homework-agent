@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 △ABC 内角 A、B、C 对应的边为 a、b、c，满足 a cos B + b cos A = 2c cos C，求角 C。",
+    "topic": "解三角形",
+    "subtopics": ["正弦定理", "两角和公式", "投影公式"],
+    "givens": ["a cos B + b cos A = 2c cos C", "A、B、C 是三角形内角"],
+    "variables": ["a、b、c：三边", "A、B、C：三角", "R：外接圆半径"],
+    "constraints": ["A+B+C=π", "a、b、c>0", "C∈(0,π)"],
+    "goal": "求角 C",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "用正弦定理把边化为角，左边合并为 sin(A+B)=sin C，再解 cos C。",
+    "method": "正弦定理与两角和公式",
+    "prerequisites": ["正弦定理", "sin(A+B)=sin C", "特殊角余弦值"],
+    "steps": ["用 2R sin A 等表示三边", "合并左边", "利用 A+B=π-C", "解出 cos C", "确定 C"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a=2R sin A，b=2R sin B，c=2R sin C",
+        "justification": "正弦定理"
+      },
+      {
+        "step": 2,
+        "expression": "a cos B + b cos A = 2R(sin A cos B + sin B cos A)",
+        "justification": "代入并提取公因式 2R"
+      },
+      {
+        "step": 3,
+        "expression": "sin A cos B + sin B cos A = sin(A+B)",
+        "justification": "两角和的正弦公式"
+      },
+      {
+        "step": 4,
+        "expression": "sin(A+B)=sin(π-C)=sin C",
+        "justification": "三角形内角和 A+B+C=π"
+      },
+      {
+        "step": 5,
+        "expression": "2R sin C = 2c cos C，即 c=2c cos C",
+        "justification": "左边等于 2R sin C=c，代回已知等式"
+      },
+      {
+        "step": 6,
+        "expression": "cos C=1/2，所以 C=π/3",
+        "justification": "c>0，两边同除以 2c；C∈(0,π)，余弦为 1/2 的角只有 π/3"
+      }
+    ],
+    "answer": "C=π/3",
+    "conditions": ["A、B、C 是三角形内角"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "投影公式对照",
+        "status": "passed",
+        "details": "由投影公式 a cos B + b cos A=c，已知等式化为 c=2c cos C，直接得到 cos C=1/2。"
+      },
+      {
+        "name": "角度范围检查",
+        "status": "passed",
+        "details": "C∈(0,π)，cos C=1/2 在该范围内只有 C=π/3，没有第二解。"
+      },
+      {
+        "name": "特殊三角形抽样",
+        "status": "passed",
+        "details": "取等边三角形 A=B=C=π/3，左边 c/2+c/2=c，右边 2c·1/2=c，等式成立。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "边角混合的等式先用正弦定理统一成角，再用两角和公式合并。",
+    "difficult_steps": ["想到 sin A cos B + sin B cos A=sin(A+B)", "利用 A+B=π-C 把 sin(A+B) 化为 sin C"],
+    "common_mistakes": ["忘记 c>0 就直接除以 c 后不做说明", "把 sin(A+B) 写成 sin C 时符号出错", "忽略 C 的范围导致多解"],
+    "prerequisite_explanations": ["正弦定理", "两角和的正弦公式", "三角形内角和"],
+    "alternative_method": "也可直接用投影公式 a cos B+b cos A=c，一步化到 c=2c cos C。",
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "求函数 f(x)=√(x²-2x-3) 的定义域，并解不等式 f(x)≥0。",
+    "topic": "函数与不等式",
+    "subtopics": ["二次函数", "定义域", "一元二次不等式", "算术平方根"],
+    "givens": ["f(x)=√(x²-2x-3)"],
+    "variables": ["x：自变量"],
+    "constraints": ["根号下非负：x²-2x-3≥0"],
+    "goal": "求定义域，并求 f(x)≥0 的解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先解 x²-2x-3≥0 得定义域；再利用算术平方根非负，说明 f(x)≥0 在定义域上恒成立。",
+    "method": "因式分解与二次不等式",
+    "prerequisites": ["算术平方根非负", "一元二次不等式的解法"],
+    "steps": ["因式分解 x²-2x-3=(x-3)(x+1)", "解 (x-3)(x+1)≥0", "写出定义域", "利用平方根非负写出 f(x)≥0 的解集"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²-2x-3=(x-3)(x+1)",
+        "justification": "因式分解（十字相乘）"
+      },
+      {
+        "step": 2,
+        "expression": "(x-3)(x+1)≥0，所以 x≤-1 或 x≥3",
+        "justification": "二次函数开口向上，大于等于零取两根之外；也可用符号表"
+      },
+      {
+        "step": 3,
+        "expression": "定义域为 (-∞,-1]∪[3,+∞)",
+        "justification": "根号下表达式必须非负"
+      },
+      {
+        "step": 4,
+        "expression": "对定义域内任意 x，f(x)=√(x²-2x-3)≥0",
+        "justification": "算术平方根的值非负"
+      },
+      {
+        "step": 5,
+        "expression": "f(x)≥0 的解集为 (-∞,-1]∪[3,+∞)",
+        "justification": "定义域内恒成立；等号在 x=-1 或 x=3 时取到"
+      }
+    ],
+    "answer": "定义域为 (-∞,-1]∪[3,+∞)；f(x)≥0 的解集也是 (-∞,-1]∪[3,+∞)。",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域端点检查",
+        "status": "passed",
+        "details": "x=-1 与 x=3 时根号内为 0，属于定义域；x=0 时根号内为 -3，不属于定义域。"
+      },
+      {
+        "name": "不等式方向检查",
+        "status": "passed",
+        "details": "(x-3)(x+1)≥0 的解为 x≤-1 或 x≥3，不是两根之间。"
+      },
+      {
+        "name": "平方根非负性检查",
+        "status": "passed",
+        "details": "算术平方根输出非负，因此 f(x)≥0 在定义域上恒成立，无需再平方。"
+      },
+      {
+        "name": "单调性补充观察",
+        "status": "passed",
+        "details": "g(x)=x²-2x-3 的对称轴为 x=1，故 f 在 (-∞,-1] 上递减、在 [3,+∞) 上递增；本题只要求定义域与 f(x)≥0，单调性不改变解集。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "f(x) 是算术平方根，值域天然非负；所以 f(x)≥0 的解集就是定义域，关键是先求对定义域。",
+    "difficult_steps": ["把 x²-2x-3≥0 的解集写成两根之外", "意识到 f(x)≥0 不需要再解一次不等式"],
+    "common_mistakes": ["把解集写成 -1≤x≤3", "对 f(x)≥0 两边平方，绕远且容易出错", "漏掉端点 -1 和 3"],
+    "prerequisite_explanations": ["算术平方根的定义与值域", "一元二次不等式的符号法则"],
+    "alternative_method": "也可先画出 y=x²-2x-3 的图象，由图象在 x 轴上方的部分读出定义域。",
+    "follow_up_exercise_suggestion": null
+  }
+}

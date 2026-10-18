@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "若 √(x²)=3，求实数 x。",
+    "topic": "根式与绝对值",
+    "subtopics": ["算术平方根", "绝对值"],
+    "givens": ["√(x²)=3"],
+    "variables": ["x：实数"],
+    "constraints": ["√(x²)=|x|"],
+    "goal": "求 x 的值",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "利用 √(x²)=|x| 把方程化为 |x|=3，再写出正负两个解。",
+    "method": "绝对值恒等式",
+    "prerequisites": ["√(a²)=|a|", "绝对值的定义"],
+    "steps": ["把 √(x²) 写成 |x|", "解 |x|=3", "代回检验"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "√(x²)=|x|",
+        "justification": "算术平方根非负，且 √(a²)=|a|"
+      },
+      {
+        "step": 2,
+        "expression": "|x|=3",
+        "justification": "代入原方程"
+      },
+      {
+        "step": 3,
+        "expression": "x=3 或 x=-3",
+        "justification": "绝对值为 3 的数有两个：3 与 -3"
+      },
+      {
+        "step": 4,
+        "expression": "x=±3 都满足原方程",
+        "justification": "√(3²)=3，√((-3)²)=3"
+      }
+    ],
+    "answer": "x=3 或 x=-3，即 x=±3。",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=3 时 √9=3；x=-3 时 √9=3，均成立。"
+      },
+      {
+        "name": "恒等式检查",
+        "status": "passed",
+        "details": "√(x²)=|x|，不能写成 x；负根正是容易被忽略的部分。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "两个解都满足原方程，没有增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "看到 √(x²) 要立刻写成 |x|，它不等于 x。",
+    "difficult_steps": ["区分 √(x²) 与 (√x)²", "写出正负两个解"],
+    "common_mistakes": ["把 √(x²) 写成 x，只得到 x=3", "只写一个根", "误以为会产生增根"],
+    "prerequisite_explanations": ["算术平方根的值非负", "绝对值的几何意义"],
+    "alternative_method": "也可两边平方得 x²=9，再开方得 x=±3；两边非负，平方不引入增根。",
+    "follow_up_exercise_suggestion": null
+  }
+}

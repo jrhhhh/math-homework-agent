@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知等比数列 {a_n}，a_1=2，a_3=8，求前 5 项和 S_5。",
+    "topic": "数列",
+    "subtopics": ["等比数列", "公比", "前n项和"],
+    "givens": ["a_1=2", "a_3=8"],
+    "variables": ["a_n：第 n 项", "q：公比", "S_n：前 n 项和"],
+    "constraints": ["等比数列公比 q≠0"],
+    "goal": "求 S_5",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "由 a_3=a_1 q² 求公比；q²=4 给出 q=2 或 q=-2，两种情形都要算。",
+    "method": "基本量法与前 n 项和公式",
+    "prerequisites": ["等比数列通项公式", "等比数列前 n 项和公式"],
+    "steps": ["由 a_3=a_1 q² 求 q²", "得到 q=2 或 q=-2", "分别求 S_5", "合并答案"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a_3=a_1 q²，所以 8=2q²",
+        "justification": "等比数列通项公式"
+      },
+      {
+        "step": 2,
+        "expression": "q²=4，所以 q=2 或 q=-2",
+        "justification": "开平方有两个符号；题目没有限定 q>0"
+      },
+      {
+        "step": 3,
+        "expression": "q=2 时，S_5=2(2⁵-1)/(2-1)=2×31=62",
+        "justification": "等比数列求和公式 S_n=a_1(q^n-1)/(q-1)，q≠1"
+      },
+      {
+        "step": 4,
+        "expression": "q=-2 时，S_5=2(1-(-2)⁵)/(1-(-2))=2×33/3=22",
+        "justification": "等比数列求和公式 S_n=a_1(1-q^n)/(1-q)，q≠1"
+      },
+      {
+        "step": 5,
+        "expression": "S_5=62 或 S_5=22",
+        "justification": "两种公比都满足题设，不能只取 q=2"
+      }
+    ],
+    "answer": "S_5=62（q=2）或 S_5=22（q=-2）。",
+    "conditions": ["a_1=2，a_3=8；q=±2"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "q=2 逐项求和",
+        "status": "passed",
+        "details": "数列为 2,4,8,16,32，和为 62；a_3=8 符合题设。"
+      },
+      {
+        "name": "q=-2 逐项求和",
+        "status": "passed",
+        "details": "数列为 2,-4,8,-16,32，和为 22；a_3=8 也符合题设。"
+      },
+      {
+        "name": "公比条件检查",
+        "status": "passed",
+        "details": "q=2 与 q=-2 都不为零，且都能使 a_1=2、a_3=8 成立。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "由 a_3=a_1 q² 只能得到 q²，开方时正负两个公比都可能成立。",
+    "difficult_steps": ["意识到 q 可以为负", "两种公比分别求和"],
+    "common_mistakes": ["只取 q=2，漏掉 q=-2", "把 q²=4 直接写成 q=2", "求和公式符号用错"],
+    "prerequisite_explanations": ["等比数列通项公式", "等比数列前 n 项和公式"],
+    "alternative_method": "也可先写出两种数列的前 5 项再相加，避免公式符号出错。",
+    "follow_up_exercise_suggestion": null
+  }
+}

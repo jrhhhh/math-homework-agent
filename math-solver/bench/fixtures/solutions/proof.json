@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 a>0，b>0，证明：a/b + b/a ≥ 2。",
+    "topic": "不等式与证明",
+    "subtopics": ["基本不等式", "等号条件"],
+    "givens": ["a>0", "b>0"],
+    "variables": ["a、b：正实数"],
+    "constraints": ["a>0，b>0"],
+    "goal": "证明 a/b + b/a ≥ 2，并说明等号成立条件",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把 a/b 与 b/a 看成两个正数，用基本不等式 x+y≥2√(xy)。",
+    "method": "基本不等式（均值不等式）",
+    "prerequisites": ["基本不等式 x+y≥2√(xy)（x,y>0）", "等号成立条件"],
+    "steps": ["说明两项为正", "对两项用基本不等式", "化简得 ≥2", "求等号条件"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "因为 a>0、b>0，所以 a/b>0，b/a>0",
+        "justification": "正数除以正数为正"
+      },
+      {
+        "step": 2,
+        "expression": "由基本不等式，对正数 x=a/b、y=b/a，有 x+y≥2√(xy)",
+        "justification": "基本不等式 x+y≥2√(xy) 对任意正数 x、y 成立"
+      },
+      {
+        "step": 3,
+        "expression": "a/b+b/a ≥ 2√((a/b)(b/a))=2√1=2",
+        "justification": "代入并化简根号内的乘积"
+      },
+      {
+        "step": 4,
+        "expression": "等号成立当且仅当 a/b=b/a，即 a²=b²；又 a、b>0，所以 a=b",
+        "justification": "基本不等式取等号的条件是 x=y"
+      }
+    ],
+    "answer": "a/b+b/a≥2，命题得证；等号当且仅当 a=b 时成立。",
+    "conditions": ["a>0，b>0", "等号当且仅当 a=b"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "正数条件检查",
+        "status": "passed",
+        "details": "a>0、b>0 保证 a/b 与 b/a 都为正，基本不等式的前提满足。"
+      },
+      {
+        "name": "基本不等式检查",
+        "status": "passed",
+        "details": "x+y≥2√(xy) 对 x=a/b、y=b/a 适用，右边化简为 2。"
+      },
+      {
+        "name": "等号条件检查",
+        "status": "passed",
+        "details": "x=y 给出 a/b=b/a，即 a²=b²；由 a、b>0 得 a=b，等号确实可取到。"
+      },
+      {
+        "name": "独立推导对照",
+        "status": "passed",
+        "details": "由 (a-b)²≥0 得 a²+b²≥2ab，两边除以 ab>0 也得到 a/b+b/a≥2，与基本不等式结论一致。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把 a/b 和 b/a 看成一对正数，基本不等式就能一步到位；关键是检查它们为正。",
+    "difficult_steps": ["想到把两项作为基本不等式的 x、y", "说明等号条件并利用 a、b>0"],
+    "common_mistakes": ["忽略 a、b>0 的前提", "只证 ≥2 不说明等号条件", "把 a/b=b/a 直接约成 a=b 而不说明正数"],
+    "prerequisite_explanations": ["基本不等式及其等号条件", "正数的除法封闭性"],
+    "alternative_method": "由 (a-b)²≥0 展开得 a²+b²≥2ab，再除以 ab>0。",
+    "follow_up_exercise_suggestion": null
+  }
+}

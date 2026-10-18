@@ -1,6 +1,6 @@
 # 高中数学作业三 Skill 项目
 
-一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Solution Refiner**（`solution-refiner`）在当前解答的结论与完整过程都成立、且用户请求优化后，提供三个优化方向；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
+一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Solver**（`math-solver`）从零求解高中数学题：解析题意、选择高中范围内的方法、分步推导并独立核验，输出可核验的解答与结构化教学备注；**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
@@ -8,7 +8,7 @@
 
 将整个 `math-error-diagnosis/` 目录复制到宿主的技能目录。Codex 的常用位置为 `~/.codex/skills/`；若设置了自定义技能目录，则使用相应位置。避免覆盖同名技能，先比较已有版本。
 
-需要协作使用时也安装 `solution-refiner/`，并在本项目工作区使用根目录的 [AGENTS.md](AGENTS.md) 作为调度约定。它引用 [交接协议](docs/handoff-protocol.md) 和 `scripts/handoff_check.py`；宿主需实际执行审查与调度，本仓库没有自动运行的后台Agent服务。只使用诊断技能仍可独立检查作业。
+需要从零求解时安装 `math-solver/`。协作使用时在项目工作区以根目录的 [AGENTS.md](AGENTS.md) 作为调度约定；宿主需实际执行审查与调度，本仓库没有自动运行的后台 Agent 服务。只使用单个技能仍可独立工作。
 
 ```text
 请使用 $math-error-diagnosis 检查我的解题过程，指出首个实质错误并给出最小修改。
@@ -19,6 +19,16 @@
 ```
 
 也可以向能读取本地文件的 Agent 指定 `math-error-diagnosis/SKILL.md`，要求按其规则检查题目和学生解答。Skill 需要宿主模型执行，Python 脚本不提供通用诊断服务。
+
+只有题目、没有学生解答时，用 `$math-solver` 从零求解：
+
+```text
+请使用 $math-solver 求解下面这道题，给出分步推导和核验。
+
+题目：解方程 √(x+2)=x。
+```
+
+它产出的是**助手解答**，不是学生的原解答。已有学生解答、需要判断对错时走 `$math-error-diagnosis`；不要用求解结果替换或冒充学生的过程。
 
 学生交的是**草稿纸**（不是作业本上的正式解答）时用 `$draft-coach`：它只看版面习惯，不判断对错。
 
@@ -52,10 +62,13 @@ math-error-diagnosis/
   SKILL.md                 技能入口、触发描述与审查流程
   agents/openai.yaml       界面信息与默认调用提示
   references/              六份题型清单、判断尺度与示例
-solution-refiner/
-  SKILL.md                 优化卡入口、四字段接口与优化方向表
-  solution_card_check.py   优化卡的结构门与越界审计
-  example/                 三份示例卡（含混入诊断的反例）
+math-solver/
+  SKILL.md                 求解入口、工作流、数学安全规则与输出契约
+  scripts/validate_output.py  结构化输出的结构门（仅标准库）
+  references/              输出 Schema 与按题型核验清单
+  example/                 完整求解、条件不足示例与可行性测试夹具
+  bench/                   32 条案例的确定性评分、oracle/bad 夹具与测试
+  tests/                   结构门回归测试（20 项）
 draft-coach/
   SKILL.md                 草稿习惯入口（行为契约与 Workflow）
   references/              六维版面尺度、输出 Schema、示例说明、图片入口、题目分区
@@ -66,12 +79,11 @@ draft-coach/
   evals/                   旧版「查错」基准，已冻结（见 evals/FROZEN.md）
   example/                 习惯卡、反例卡、整页分块单与三份 refuse 输出
 docs/                      诊断案例、验证范围与说明
-tests/                     衔接回归测试、草稿门层报告测试与固定案例计算脚本
-scripts/handoff_check.py   交接元信息与当前解答版本检查
+tests/                     草稿门层报告测试与固定案例计算脚本
 AGENTS.md                  三个技能的调用与反馈规则
 ```
 
-优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-error-diagnosis`、`$solution-refiner`、`$draft-coach` 调用名保持一致。
+优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-solver`、`$math-error-diagnosis`、`$draft-coach` 调用名保持一致。
 
 ## 复现计算核验
 
@@ -85,13 +97,15 @@ python3 tests/高中题型计算核验.py
 
 它们分别核验10、6、11组固定数学事实。后两个脚本会在同目录生成JSON证据文件，首个脚本将JSON结果输出到终端；生成结果不纳入版本控制。有限样本与浮点容差检查的限制在输出中说明。这些脚本不是模型行为测试，也不代替一般性数学证明。
 
-交接与卡片兼容性测试：
+math-solver 的结构门测试在技能目录内：
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_*.py' -v
+python3 -m unittest discover -s math-solver/tests -p 'test_*.py'
 ```
 
-覆盖过期解答、答案正确但过程无效、论证缺口、只有答案、助手修补稿、提示模式、未请求优化、非法输入及卡片接口。检查状态不放入优化卡。两道卡片门仍不审数学，优化建议需宿主另行核验。草稿技能的门测试在技能目录内：`draft-coach/tests/`（38 项，覆盖版面习惯卡的结构、越界、三个 refuse 出口与分区门），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、越界反例、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
+当前 20 项，覆盖两份示例、字段缺失与多余、状态冲突、检查状态、步骤序号告警、`--strict` 行为与三类输入非法。结构门只查形状与状态一致性，**不验数学**。根目录 `tests/` 保留草稿门层报告测试与固定案例计算脚本。
+
+草稿技能的门测试在技能目录内：`draft-coach/tests/`（38 项，覆盖版面习惯卡的结构、越界、三个 refuse 出口与分区门），跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`；`tests/test_draft_gate_report.py` 覆盖门层报告本身（干净卡与结构损坏卡的退出码、越界反例、多题草稿按块过门的 `audit_draft` 口径、没产卡片记 `none` 并核对标准话术、三类非法输入走退出码 2）。
 
 draft-coach 的两道门可直接复现：
 
@@ -134,6 +148,8 @@ python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation
 图片/PDF识别、工具权限、长期记忆和独立验证服务依赖宿主。本项目**不内置任何手写转写（OCR）技能，也不附带学生数据库**；外部 OCR 只能当线索，**不作证据**。
 
 复杂题目仍应审查实际数学依据，不能把有限案例结果视为任意高考题的准确率保证。
+
+math-solver 的“独立核验”是**同一助手换路线复核**，不是第三方独立验证，也不是形式化证明；有限数值检验只覆盖它实际检查的范围。它的结构门只检查 JSON 的形状与状态一致性，不判断数学是否正确。
 
 draft-coach **只看版面习惯，不判断计算对错**。`validate` 只查卡片结构，`audit` 只查越界措辞；两者都**不验证版面观察是否属实**。通过两道门只说明卡片没越过结构线与措辞线，不说明这份习惯分析真的说中了这个学生。
 

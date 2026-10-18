@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "求函数 y=2sin(2x+π/4) 的单调递增区间。",
+    "topic": "三角函数",
+    "subtopics": ["正弦函数", "单调区间", "复合函数"],
+    "givens": ["y=2sin(2x+π/4)"],
+    "variables": ["x：自变量", "k：整数"],
+    "constraints": ["k∈Z"],
+    "goal": "求函数的单调递增区间",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "令整体相位 u=2x+π/4，利用 sin u 在 [-π/2+2kπ, π/2+2kπ] 上递增，再解出 x。",
+    "method": "整体代换与正弦函数单调性",
+    "prerequisites": ["正弦函数的单调区间", "复合函数单调性"],
+    "steps": ["写出 sin u 的递增区间", "代入 u=2x+π/4", "解出 x 的范围", "写成区间并注明 k∈Z"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "sin u 在 [-π/2+2kπ, π/2+2kπ]（k∈Z）上单调递增",
+        "justification": "正弦函数的标准单调区间"
+      },
+      {
+        "step": 2,
+        "expression": "-π/2+2kπ ≤ 2x+π/4 ≤ π/2+2kπ",
+        "justification": "令 u=2x+π/4"
+      },
+      {
+        "step": 3,
+        "expression": "-3π/4+2kπ ≤ 2x ≤ π/4+2kπ",
+        "justification": "不等式各部分同时减去 π/4"
+      },
+      {
+        "step": 4,
+        "expression": "-3π/8+kπ ≤ x ≤ π/8+kπ",
+        "justification": "各部分同时除以正数 2，不等号方向不变"
+      },
+      {
+        "step": 5,
+        "expression": "单调递增区间为 [kπ-3π/8, kπ+π/8]，k∈Z",
+        "justification": "把解出的 x 范围写成区间"
+      }
+    ],
+    "answer": "[kπ-3π/8, kπ+π/8]，k∈Z。",
+    "conditions": ["k∈Z"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "导数符号检查",
+        "status": "passed",
+        "details": "y'=4cos(2x+π/4)；当 2x+π/4∈[-π/2+2kπ, π/2+2kπ] 时余弦非负，函数递增。"
+      },
+      {
+        "name": "k=0 取点检查",
+        "status": "passed",
+        "details": "区间 [-3π/8, π/8] 内取 x=0，相位 π/4∈[-π/2,π/2]，函数处于递增段。"
+      },
+      {
+        "name": "端点检查",
+        "status": "passed",
+        "details": "端点处相位为 ±π/2，导数为 0，单调区间可以包含端点。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把 2x+π/4 看成一个整体 u，先写 sin u 的递增区间，再解出 x。",
+    "difficult_steps": ["不等式各部分同时减 π/4、再除以 2", "保留 k∈Z 表示所有周期"],
+    "common_mistakes": ["把 2x+π/4 的区间直接当成 x 的区间", "漏写 k∈Z", "除以 2 时忘记端点也除以 2"],
+    "prerequisite_explanations": ["正弦函数的图象与单调区间", "复合函数的单调性"],
+    "alternative_method": "也可用导数 y'=4cos(2x+π/4)≥0 解出同样的区间。",
+    "follow_up_exercise_suggestion": null
+  }
+}

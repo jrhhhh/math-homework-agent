@@ -106,8 +106,8 @@ def cmd_audit(args):
         "warnings": warnings,
         "passed": passed,
         "capability_note": "规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；"
-                           "它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis，"
-                           "要优化已成立的解法请走 solution-refiner。",
+                           "它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；"
+                           "已成立解法的优化当前项目暂不提供。",
     }, 0 if passed else 1)
 
 

@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "命题：若 x²>4，则 x>2。判断该命题是否成立。",
+    "topic": "逻辑与不等式",
+    "subtopics": ["充分条件", "反例", "命题真假"],
+    "givens": ["命题：x²>4 ⇒ x>2"],
+    "variables": ["x：实数"],
+    "constraints": ["x 为实数"],
+    "goal": "判断命题是否成立，并说明理由",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "要否定一个全称蕴含命题，只需找一个满足前提但不满足结论的反例。",
+    "method": "反例法",
+    "prerequisites": ["蕴含命题的真假", "反例的作用"],
+    "steps": ["分析 x²>4 的解集", "寻找满足前提但不满足结论的 x", "给出反例", "说明命题为假"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²>4 等价于 x>2 或 x<-2",
+        "justification": "解一元二次不等式"
+      },
+      {
+        "step": 2,
+        "expression": "取 x=-3，则 x²=9>4，但 x=-3 不满足 x>2",
+        "justification": "反例同时满足前提并否定结论"
+      },
+      {
+        "step": 3,
+        "expression": "因此命题“若 x²>4，则 x>2”不成立",
+        "justification": "一个反例足以否定全称蕴含命题"
+      },
+      {
+        "step": 4,
+        "expression": "正确的结论应是：若 x²>4，则 x>2 或 x<-2",
+        "justification": "由第 1 步的解集得到"
+      }
+    ],
+    "answer": "命题不成立；反例 x=-3。",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "反例有效性检查",
+        "status": "passed",
+        "details": "x=-3 满足 x²=9>4，但不满足 x>2，确实是有效反例。"
+      },
+      {
+        "name": "解集检查",
+        "status": "passed",
+        "details": "x²>4 的解集是 (-∞,-2)∪(2,+∞)，其中 (-∞,-2) 的部分都不满足 x>2。"
+      },
+      {
+        "name": "逆命题区分",
+        "status": "passed",
+        "details": "“若 x>2，则 x²>4”是真命题，但它不是原命题；不能把逆命题的真假当成原命题的真假。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "要证明一个“若 P 则 Q”为假，只需举一个 P 成立而 Q 不成立的反例。",
+    "difficult_steps": ["想到负数反例", "区分原命题与逆命题"],
+    "common_mistakes": ["只验证几个正数就认为命题成立", "把逆命题的真假套到原命题上", "举的反例不满足前提"],
+    "prerequisite_explanations": ["蕴含命题的真假", "一元二次不等式的解集"],
+    "alternative_method": "也可直接解 x²>4 得 x<-2 或 x>2，看出前提并不推出 x>2。",
+    "follow_up_exercise_suggestion": null
+  }
+}

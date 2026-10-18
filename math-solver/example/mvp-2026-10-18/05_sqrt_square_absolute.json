@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "若 √(x²)=4，求 x 的值；思考：解题时容易忽略什么情况，是否会产生增根？",
+    "topic": "根式与绝对值",
+    "subtopics": ["算术平方根", "绝对值", "增根"],
+    "givens": ["√(x²)=4"],
+    "variables": ["x：未知数"],
+    "constraints": ["√(x²)=|x|"],
+    "goal": "求 x 的值，并说明易忽略的情况与增根问题",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "利用 √(x²)=|x| 把方程化为 |x|=4，再分 x≥0 与 x<0 两种情况；最后讨论平方是否引入增根。",
+    "method": "绝对值定义与分类讨论",
+    "prerequisites": ["√(a²)=|a|", "绝对值的定义"],
+    "steps": ["把 √(x²) 写成 |x|", "解 |x|=4", "讨论易忽略的负根", "说明平方是否产生增根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "√(x²)=|x|",
+        "justification": "算术平方根非负，且 √(a²)=|a|"
+      },
+      {
+        "step": 2,
+        "expression": "|x|=4",
+        "justification": "代入原方程"
+      },
+      {
+        "step": 3,
+        "expression": "x=4 或 x=-4",
+        "justification": "绝对值为 4 的数有两个：4 与 -4"
+      },
+      {
+        "step": 4,
+        "expression": "代回：√(4²)=4，√((-4)²)=4，均成立",
+        "justification": "两个候选值都满足原方程"
+      },
+      {
+        "step": 5,
+        "expression": "因此 x=±4；本题不会产生增根",
+        "justification": "两边平方得到 x²=16，x=±4；由于两边都非负，平方是等价变形，且两解都满足原式"
+      }
+    ],
+    "answer": "x=4 或 x=-4，即 x=±4。",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=4 时 √16=4；x=-4 时 √16=4，均成立。"
+      },
+      {
+        "name": "绝对值恒等式检查",
+        "status": "passed",
+        "details": "√(x²)=|x|，不能写成 x；这是本题最容易忽略的地方。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "原方程两边都非负，平方得到 x²=16 与原方程等价；x=±4 都满足原方程，没有增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "看到 √(x²) 要立刻想到 |x|，不能直接约成 x；负根就藏在这里。",
+    "difficult_steps": ["区分 √(x²) 与 (√x)²", "说明平方为什么在这里不产生增根"],
+    "common_mistakes": ["把 √(x²) 写成 x，只得到 x=4", "只写 x=4 或只写 x=-4", "误以为平方一定产生增根"],
+    "prerequisite_explanations": ["算术平方根的值非负", "√(a²)=|a| 与绝对值的几何意义"],
+    "alternative_method": "也可由 √(x²)=4 两边平方得 x²=16，再开方得 x=±4；但要说明两边非负，平方不引入增根。",
+    "follow_up_exercise_suggestion": null
+  }
+}
