@@ -1,0 +1,114 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "当 x∈[0,2π] 时，曲线 y=sin x 与 y=2sin(3x-π/6) 的交点个数为多少？",
+    "topic": "三角函数",
+    "subtopics": [
+      "三角方程",
+      "零点个数",
+      "单调性",
+      "端点符号"
+    ],
+    "givens": [
+      "x∈[0,2π]",
+      "y=sin x",
+      "y=2sin(3x-π/6)"
+    ],
+    "variables": [
+      "x：弧度"
+    ],
+    "constraints": [
+      "x∈[0,2π]"
+    ],
+    "goal": "求两曲线交点的个数",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把交点问题化为零点问题；利用快变函数的零点把区间分段，在每段用单调性保证至多一解，再用端点符号保证存在。",
+    "method": "零点分区 + 导数单调性 + 零点存在定理",
+    "prerequisites": [
+      "正弦函数的零点",
+      "复合函数求导",
+      "零点存在定理"
+    ],
+    "steps": [
+      "求 h 的零点",
+      "排除 |h|>1 的区间",
+      "在每个候选区间证明单调",
+      "列端点符号表"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "令 h(x)=2sin(3x-π/6)，其零点为 x_k=kπ/3+π/18 (k=0,1,...,5)",
+        "justification": "解 3x-π/6=kπ"
+      },
+      {
+        "step": 2,
+        "expression": "在 I_k=[kπ/3,kπ/3+π/9] 外，|h(x)|>1≥|sin x|，无交点",
+        "justification": "|h|≤1 等价于 |3x-π/6-kπ|≤π/6；端点处 |h|=1 但 |sin x|≠1"
+      },
+      {
+        "step": 3,
+        "expression": "在 I_k 上 |h'(x)|=6|cos(3x-π/6)|≥3√3>1≥|cos x|",
+        "justification": "余弦在区间上的下界与 sin 的导数"
+      },
+      {
+        "step": 4,
+        "expression": "故 f(x)=h(x)-sin x 在 I_k 上严格单调，每个区间至多一个零点",
+        "justification": "f'=h'-cos x 与 h' 同号"
+      },
+      {
+        "step": 5,
+        "expression": "端点符号：f(kπ/3) 依次为 -,+,-,+,-,+；f(kπ/3+π/9) 依次为 +,-,+,-,+,-",
+        "justification": "代入 h 的端点值 (-1)^(k+1) 与 (-1)^k，并与 sin 的端点值比较"
+      },
+      {
+        "step": 6,
+        "expression": "每个 I_k 恰有一个零点，共 6 个交点",
+        "justification": "零点存在定理与单调性"
+      }
+    ],
+    "answer": "C：6个交点",
+    "conditions": [
+      "x∈[0,2π]"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "零点区间覆盖检查",
+        "status": "passed",
+        "details": "h 的零点把 [0,2π] 分成 6 个 I_k 与若干间隙；间隙内 |h|>1，不可能与 |sin x|≤1 相交。"
+      },
+      {
+        "name": "单调性与端点符号检查",
+        "status": "passed",
+        "details": "每个 I_k 上 |h'|≥3√3>1，f 严格单调；端点符号交替，6 个区间各有一个零点。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "用快变函数的零点把区间切开，再在每段用导数单调性控制解的个数。",
+    "difficult_steps": [
+      "理解 |h|≤1 只可能在零点附近",
+      "证明 |h'| 大于 |cos x| 从而 f 单调"
+    ],
+    "common_mistakes": [
+      "只画图不证明每段至多一解",
+      "漏掉区间端点处 |h|=1 但 sin x≠±1 的说明"
+    ],
+    "prerequisite_explanations": [
+      "正弦函数的零点与周期",
+      "复合函数求导与零点存在定理"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

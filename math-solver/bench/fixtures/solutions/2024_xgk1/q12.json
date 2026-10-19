@@ -1,0 +1,112 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "设双曲线 C: x²/a²-y²/b²=1 (a>0,b>0) 的左、右焦点分别为 F1、F2，过 F2 作平行于 y 轴的直线交 C 于 A、B 两点，若 |F1A|=13，|AB|=10，求 C 的离心率。",
+    "topic": "圆锥曲线",
+    "subtopics": [
+      "双曲线",
+      "通径",
+      "焦点弦",
+      "离心率"
+    ],
+    "givens": [
+      "双曲线标准方程",
+      "|F1A|=13",
+      "|AB|=10"
+    ],
+    "variables": [
+      "a、b、c：双曲线参数",
+      "A、B：过 F2 的竖直弦端点"
+    ],
+    "constraints": [
+      "a>0",
+      "b>0",
+      "c²=a²+b²"
+    ],
+    "goal": "求离心率 e=c/a",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "利用过焦点的竖直弦长求 b²/a，再用双曲线定义求 a，最后求离心率。",
+    "method": "通径长度与双曲线定义",
+    "prerequisites": [
+      "双曲线通径长 2b²/a",
+      "双曲线定义 ||AF1|-|AF2||=2a",
+      "c²=a²+b²"
+    ],
+    "steps": [
+      "求 A、B 坐标",
+      "用 |AB| 求 b²/a",
+      "用定义求 a",
+      "求 c 与 e"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "过 F2(c,0) 且平行 y 轴的直线为 x=c",
+        "justification": "焦点坐标"
+      },
+      {
+        "step": 2,
+        "expression": "代入双曲线得 y=±b²/a，故 |AB|=2b²/a=10，|AF2|=5",
+        "justification": "通径长度"
+      },
+      {
+        "step": 3,
+        "expression": "由双曲线定义 |AF1|-|AF2|=2a，13-5=8 ⇒ a=4",
+        "justification": "右支上的点满足距离差为 2a"
+      },
+      {
+        "step": 4,
+        "expression": "b²=5a=20，c²=a²+b²=36，c=6",
+        "justification": "双曲线参数关系"
+      },
+      {
+        "step": 5,
+        "expression": "e=c/a=6/4=3/2",
+        "justification": "离心率定义"
+      }
+    ],
+    "answer": "3/2",
+    "conditions": [
+      "A 取右支上半支，|AF2|=b²/a"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "焦点弦长度检查",
+        "status": "passed",
+        "details": "x=c 时 y=±b²/a，故 |AB|=2b²/a=10，|AF2|=5。"
+      },
+      {
+        "name": "双曲线定义与离心率检查",
+        "status": "passed",
+        "details": "|AF1|-|AF2|=13-5=8=2a，a=4；c²=a²+b²=16+20=36，e=6/4=3/2。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "过焦点的竖直弦就是通径，长度 2b²/a。",
+    "difficult_steps": [
+      "通径长度与半通径的区分",
+      "双曲线定义中的距离差"
+    ],
+    "common_mistakes": [
+      "把 |AB| 当成 b²/a",
+      "把定义写成距离和"
+    ],
+    "prerequisite_explanations": [
+      "双曲线的通径",
+      "双曲线的定义与参数关系"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知函数 f(x)=x²-2ax+3，求 f(x) 在区间 [1,3] 上的最小值。",
+    "topic": "函数与不等式",
+    "subtopics": ["二次函数", "最值", "含参分类讨论"],
+    "givens": ["f(x)=x²-2ax+3", "区间 [1,3]"],
+    "variables": ["x：自变量", "a：参数"],
+    "constraints": ["x∈[1,3]"],
+    "goal": "求 f 在 [1,3] 上的最小值",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "抛物线开口向上，对称轴为 x=a；比较 a 与区间 [1,3] 的位置，分三类求最小值。",
+    "method": "二次函数在闭区间上的最值",
+    "prerequisites": ["二次函数的对称轴", "闭区间上二次函数的最值"],
+    "steps": ["求对称轴 x=a", "讨论 a<1", "讨论 1≤a≤3", "讨论 a>3", "合并结论"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "f(x)=(x-a)²+3-a²，对称轴为 x=a，开口向上",
+        "justification": "配方"
+      },
+      {
+        "step": 2,
+        "expression": "当 a<1 时，f 在 [1,3] 上递增，最小值为 f(1)=1-2a+3=4-2a",
+        "justification": "对称轴在区间左侧，区间内函数递增"
+      },
+      {
+        "step": 3,
+        "expression": "当 1≤a≤3 时，最小值在顶点处取得，为 f(a)=a²-2a²+3=3-a²",
+        "justification": "对称轴在区间内，开口向上，顶点是最小值点"
+      },
+      {
+        "step": 4,
+        "expression": "当 a>3 时，f 在 [1,3] 上递减，最小值为 f(3)=9-6a+3=12-6a",
+        "justification": "对称轴在区间右侧，区间内函数递减"
+      },
+      {
+        "step": 5,
+        "expression": "综上：a<1 时最小值为 4-2a；1≤a≤3 时为 3-a²；a>3 时为 12-6a",
+        "justification": "合并三种情形"
+      }
+    ],
+    "answer": "a<1：4-2a；1≤a≤3：3-a²；a>3：12-6a。",
+    "conditions": ["x∈[1,3]"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "边界参数 a=1",
+        "status": "passed",
+        "details": "a=1 时 4-2a=2，3-a²=2，两段在边界衔接一致；此时顶点在区间左端点。"
+      },
+      {
+        "name": "边界参数 a=3",
+        "status": "passed",
+        "details": "a=3 时 3-a²=-6，12-6a=-6，两段在边界衔接一致；此时顶点在区间右端点。"
+      },
+      {
+        "name": "特殊值抽样",
+        "status": "passed",
+        "details": "a=0：f 在 [1,3] 递增，最小 f(1)=4；a=2：顶点 x=2 在区间内，最小 3-4=-1；a=4：f 在 [1,3] 递减，最小 f(3)=12-24=-12。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "闭区间上二次函数的最值只看对称轴在区间左、内、右三种位置。",
+    "difficult_steps": ["把 a 与区间端点 1、3 比较", "顶点在区间内时用 f(a)，否则用端点值"],
+    "common_mistakes": ["不分类直接代顶点", "把 a=1 或 a=3 漏掉", "端点值计算符号错"],
+    "prerequisite_explanations": ["二次函数配方与顶点", "闭区间上函数的最值"],
+    "alternative_method": "也可画抛物线草图，分别看顶点在区间左侧、内部、右侧时最低点的位置。",
+    "follow_up_exercise_suggestion": null
+  }
+}

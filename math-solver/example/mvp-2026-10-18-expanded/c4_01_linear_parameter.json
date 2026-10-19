@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解关于 x 的不等式：kx+2>0。",
+    "topic": "不等式",
+    "subtopics": ["含参不等式", "分类讨论"],
+    "givens": ["不等式 kx+2>0"],
+    "variables": ["x：未知数", "k：参数"],
+    "constraints": ["k 的符号决定不等号方向"],
+    "goal": "按参数 k 的取值写出解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "移项得 kx>-2，按 k>0、k=0、k<0 分类讨论。",
+    "method": "含参一次不等式的分类讨论",
+    "prerequisites": ["不等式两边乘除负数时方向改变", "空集与全体的概念"],
+    "steps": ["移项得 kx>-2", "讨论 k>0", "讨论 k=0", "讨论 k<0"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "kx>-2",
+        "justification": "不等式两边同时减 2"
+      },
+      {
+        "step": 2,
+        "expression": "当 k>0 时，x>-2/k",
+        "justification": "两边同除以正数 k，不等号方向不变"
+      },
+      {
+        "step": 3,
+        "expression": "当 k=0 时，0>-2，对任意实数 x 成立",
+        "justification": "0 确实大于 -2，与 x 无关"
+      },
+      {
+        "step": 4,
+        "expression": "当 k<0 时，x<-2/k",
+        "justification": "两边同除以负数 k，不等号方向改变"
+      },
+      {
+        "step": 5,
+        "expression": "综上：k>0 时解集为 (-2/k,+∞)；k=0 时解集为 R；k<0 时解集为 (-∞,-2/k)",
+        "justification": "合并三种情形"
+      }
+    ],
+    "answer": "k>0：x>-2/k；k=0：x∈R；k<0：x<-2/k。",
+    "conditions": ["k=0 时不等式对任意实数 x 成立"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "分类完整性检查",
+        "status": "passed",
+        "details": "k 的取值被 k>0、k=0、k<0 三类完全覆盖，没有遗漏。"
+      },
+      {
+        "name": "特殊值代回",
+        "status": "passed",
+        "details": "k=2：解集 x>-1；x=0 时 2>0 成立，x=-2 时 -2>0 不成立。k=-2：解集 x<1；x=0 时 2>0 成立，x=2 时 -2>0 不成立。"
+      },
+      {
+        "name": "k=0 检查",
+        "status": "passed",
+        "details": "k=0 时原不等式为 2>0，恒成立，解集是全体实数，不是空集。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "含参数的一次不等式，不能直接除以 k，必须先讨论 k 的正负与零。",
+    "difficult_steps": ["想到 k=0 时解集是全体实数", "k<0 时不等号方向改变"],
+    "common_mistakes": ["直接写 x>-2/k，忽略 k 的符号", "漏掉 k=0", "把 k=0 误判为无解"],
+    "prerequisite_explanations": ["不等式两边同乘除负数要变号", "分类讨论要穷尽且互斥"],
+    "alternative_method": "也可从一次函数 y=kx+2 的图象看：k>0 上升，k=0 水平，k<0 下降。",
+    "follow_up_exercise_suggestion": null
+  }
+}

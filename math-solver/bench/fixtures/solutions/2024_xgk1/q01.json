@@ -1,0 +1,100 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知集合 A={x | -5<x³<5}，B={-3,-1,0,2,3}，求 A∩B。",
+    "topic": "集合与不等式",
+    "subtopics": [
+      "立方根",
+      "集合交集",
+      "区间"
+    ],
+    "givens": [
+      "A={x | -5<x³<5}",
+      "B={-3,-1,0,2,3}"
+    ],
+    "variables": [
+      "x：实数"
+    ],
+    "constraints": [
+      "-5<x³<5"
+    ],
+    "goal": "求 A∩B",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先把三次不等式化成区间，再逐项检验 B 的元素。",
+    "method": "立方根单调性与集合交集",
+    "prerequisites": [
+      "立方根函数在 R 上严格递增",
+      "1<∛5<2"
+    ],
+    "steps": [
+      "解 -5<x³<5",
+      "估计 ∛5 的范围",
+      "逐项判断 B 中元素是否属于 A"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "-5<x³<5 ⇔ -∛5<x<∛5",
+        "justification": "立方根函数 y=∛x 在 R 上严格递增，不等式三边同取立方根"
+      },
+      {
+        "step": 2,
+        "expression": "1<∛5<2",
+        "justification": "1³=1<5<8=2³，故 ∛5 介于 1 与 2 之间"
+      },
+      {
+        "step": 3,
+        "expression": "B 中 -1、0 满足 -∛5<-1<0<∛5；-3、2、3 不满足",
+        "justification": "逐项与区间端点比较"
+      },
+      {
+        "step": 4,
+        "expression": "A∩B={-1,0}",
+        "justification": "交集取同时属于 A 与 B 的元素"
+      }
+    ],
+    "answer": "A：{-1,0}",
+    "conditions": [
+      "∛5≈1.71，故 -3<-∛5，2>∛5"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "区间端点检查",
+        "status": "passed",
+        "details": "由 1<∛5<2 得 A=(-∛5,∛5)；-3 小于左端点，2 与 3 大于右端点。"
+      },
+      {
+        "name": "B 中元素逐项核对",
+        "status": "passed",
+        "details": "逐项检查 -3、-1、0、2、3，只有 -1 与 0 同时落在 A 内。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把三次不等式化为开区间，再逐项筛选。",
+    "difficult_steps": [
+      "估计 ∛5 的大小",
+      "注意区间是开区间，端点不在 A 内"
+    ],
+    "common_mistakes": [
+      "把 ∛5 误当成 5/3",
+      "把 2 误判为在 A 内"
+    ],
+    "prerequisite_explanations": [
+      "立方根函数单调递增",
+      "开区间与闭区间的区别"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

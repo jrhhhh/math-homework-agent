@@ -1,0 +1,69 @@
+{
+  "status": "needs_clarification",
+  "problem": {
+    "statement": "已知一个三角形的两边长分别为 3 和 4，求第三边。",
+    "topic": "解三角形",
+    "subtopics": ["三角形边角关系", "余弦定理"],
+    "givens": ["两边长分别为 3 和 4"],
+    "variables": ["x：第三边的长度"],
+    "constraints": ["由三角形两边之和大于第三边，可得 1<x<7"],
+    "goal": "求第三边的长度",
+    "requested_method": null,
+    "ambiguities": [
+      "题目没有给出两边的夹角、第三边的范围或其他条件，第三边不能唯一确定。",
+      "若补充夹角 θ，则第三边随 θ 变化；不同 θ 会得到不同答案。"
+    ],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先判断条件是否足以确定第三边；仅由两边长只能得到范围，不能得到唯一值。",
+    "method": "三角形不等式与余弦定理的条件分析",
+    "prerequisites": ["三角形两边之和大于第三边", "余弦定理"],
+    "steps": ["由三角形不等式得到第三边的范围", "说明缺少夹角或角度条件", "给出补充条件后的求法"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "设第三边为 x，则 3+4>x、3+x>4、4+x>3，即 1<x<7",
+        "justification": "三角形任意两边之和大于第三边"
+      },
+      {
+        "step": 2,
+        "expression": "仅知道 1<x<7，不能确定 x 的具体值",
+        "justification": "区间内每个值都能与 3、4 组成三角形，题目没有给出进一步条件"
+      },
+      {
+        "step": 3,
+        "expression": "若已知 3 与 4 的夹角为 θ，则 x²=3²+4²-2·3·4·cosθ=25-24cosθ",
+        "justification": "余弦定理"
+      }
+    ],
+    "answer": null,
+    "conditions": ["需要补充夹角、第三边范围或其他能确定三角形的条件"]
+  },
+  "verification": {
+    "status": "needs_review",
+    "checks": [
+      {
+        "name": "条件充分性判断",
+        "status": "passed",
+        "details": "确认仅凭两边长无法唯一确定第三边；题目条件不足。"
+      },
+      {
+        "name": "范围检查",
+        "status": "passed",
+        "details": "由三角形不等式得到 1<x<7，非退化三角形的范围正确。"
+      }
+    ],
+    "issues": ["第三边不唯一；需要补充夹角或范围条件后才能给出具体数值。"]
+  },
+  "teaching_notes": {
+    "key_insight": "两边长只能把第三边限制在 (1,7)，要得到具体值还需要夹角或额外条件。",
+    "difficult_steps": ["意识到题目条件不足，而不是随便取一个数", "用余弦定理表达补充条件后的结果"],
+    "common_mistakes": ["直接写第三边为 5 或 7", "漏掉三角形不等式", "把范围 1<x<7 当成唯一答案"],
+    "prerequisite_explanations": ["三角形两边之和大于第三边", "余弦定理"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": "补充夹角或第三边范围后，再用余弦定理重做一遍。"
+  }
+}

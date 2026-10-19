@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 a²=4，b²=9，求 a+b 的值。",
+    "topic": "代数基础",
+    "subtopics": ["平方根", "分类讨论", "条件缺失"],
+    "givens": ["a²=4", "b²=9"],
+    "variables": ["a、b：实数"],
+    "constraints": ["题目没有给出 a、b 的符号"],
+    "goal": "求 a+b 的所有可能值",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "由平方分别得到 a=±2、b=±3，再枚举四种组合。",
+    "method": "枚举法",
+    "prerequisites": ["平方根的两个符号", "分类讨论"],
+    "steps": ["由 a²=4 得 a=±2", "由 b²=9 得 b=±3", "枚举四种组合", "写成集合"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a=2 或 a=-2",
+        "justification": "平方为 4 的实数有两个"
+      },
+      {
+        "step": 2,
+        "expression": "b=3 或 b=-3",
+        "justification": "平方为 9 的实数有两个"
+      },
+      {
+        "step": 3,
+        "expression": "四种组合：2+3=5，2+(-3)=-1，(-2)+3=1，(-2)+(-3)=-5",
+        "justification": "枚举 a 与 b 的所有取值组合"
+      },
+      {
+        "step": 4,
+        "expression": "a+b 的可能值为 -5、-1、1、5",
+        "justification": "题目没有限定 a、b 为正，不能只取 5"
+      }
+    ],
+    "answer": "a+b∈{-5,-1,1,5}。",
+    "conditions": ["a、b 为实数；题目未限定符号"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "组合完备性检查",
+        "status": "passed",
+        "details": "a 有 2 种取值，b 有 2 种取值，共 2×2=4 种组合，已全部枚举。"
+      },
+      {
+        "name": "逐个代回",
+        "status": "passed",
+        "details": "2²=4、(-2)²=4、3²=9、(-3)²=9，四组都满足已知条件。"
+      },
+      {
+        "name": "去重检查",
+        "status": "passed",
+        "details": "四个和 -5、-1、1、5 互不相同，没有重复。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "由平方求原数时有两个符号；题目没限定正负，就必须把所有组合列全。",
+    "difficult_steps": ["意识到 a、b 都可能为负", "把四种组合不重不漏地列出"],
+    "common_mistakes": ["只取 a=2、b=3 得 5", "只考虑 a、b 同号", "漏掉负负组合"],
+    "prerequisite_explanations": ["平方根的两个符号", "分类讨论的完备性"],
+    "alternative_method": "也可先写出 a+b=±2±3，再展开成四个值。",
+    "follow_up_exercise_suggestion": null
+  }
+}

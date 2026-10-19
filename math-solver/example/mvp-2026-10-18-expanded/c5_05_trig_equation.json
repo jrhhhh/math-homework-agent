@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 sin α=1/2，α∈[0,2π]，求 α。",
+    "topic": "三角函数",
+    "subtopics": ["三角方程", "单位圆", "象限"],
+    "givens": ["sin α=1/2", "α∈[0,2π]"],
+    "variables": ["α：角"],
+    "constraints": ["α∈[0,2π]"],
+    "goal": "求满足条件的所有角 α",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "在 [0,2π] 内，正弦值为 1/2 的角在第一、第二象限各有一个。",
+    "method": "单位圆与参考角",
+    "prerequisites": ["特殊角的正弦值", "正弦函数在各象限的符号"],
+    "steps": ["找参考角 π/6", "确定第一象限解", "确定第二象限解", "检查区间"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "参考角为 π/6，因为 sin(π/6)=1/2",
+        "justification": "特殊角三角函数值"
+      },
+      {
+        "step": 2,
+        "expression": "第一象限解：α=π/6",
+        "justification": "sin 在第一象限为正"
+      },
+      {
+        "step": 3,
+        "expression": "第二象限解：α=π-π/6=5π/6",
+        "justification": "sin(π-θ)=sin θ，第二象限正弦也为正"
+      },
+      {
+        "step": 4,
+        "expression": "π/6 与 5π/6 都在 [0,2π] 内",
+        "justification": "区间检查"
+      }
+    ],
+    "answer": "α=π/6 或 α=5π/6。",
+    "conditions": ["α∈[0,2π]"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "sin(π/6)=1/2，sin(5π/6)=1/2，均成立。"
+      },
+      {
+        "name": "区间检查",
+        "status": "passed",
+        "details": "π/6≈0.524，5π/6≈2.618，均落在 [0,2π] 内。"
+      },
+      {
+        "name": "完备性检查",
+        "status": "passed",
+        "details": "在 [0,2π] 内正弦为正的只有第一、第二象限，各有一个解，没有遗漏。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "正弦值为正时，解在第一、第二象限；用参考角 π/6 分别写出两个角。",
+    "difficult_steps": ["由参考角写出第二象限角 π-π/6", "确认解都在给定区间内"],
+    "common_mistakes": ["只写 π/6", "把第二象限角写成 π+π/6", "忽略区间限制导致写出周期解"],
+    "prerequisite_explanations": ["特殊角三角函数值", "正弦函数在各象限的符号", "诱导公式 sin(π-θ)=sin θ"],
+    "alternative_method": "也可画单位圆，找与 x 轴夹角为 π/6 的两条射线，读出两个角。",
+    "follow_up_exercise_suggestion": null
+  }
+}

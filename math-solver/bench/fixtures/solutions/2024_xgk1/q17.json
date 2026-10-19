@@ -1,0 +1,149 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "如图，四棱锥 P-ABCD 中，PA⊥底面 ABCD，PA=AC=2，BC=1，AB=√3。(1) 若 AD⊥PB，证明：AD∥平面 PBC；(2) 若 AD⊥DC，且二面角 A-CP-D 的正弦值为 √42/7，求 AD。",
+    "topic": "立体几何",
+    "subtopics": [
+      "线面垂直",
+      "线面平行",
+      "二面角",
+      "空间坐标"
+    ],
+    "givens": [
+      "PA⊥底面 ABCD",
+      "PA=AC=2",
+      "BC=1",
+      "AB=√3",
+      "(1) AD⊥PB",
+      "(2) AD⊥DC"
+    ],
+    "variables": [
+      "P、A、B、C、D：四棱锥顶点",
+      "t=AD"
+    ],
+    "constraints": [
+      "底面为平面四边形",
+      "0<t<2"
+    ],
+    "goal": "证明线面平行并求 AD",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "第(1)问用线面垂直判定与平行判定；第(2)问建立坐标系，用两平面法向量表示二面角。",
+    "method": "综合几何 + 空间向量",
+    "prerequisites": [
+      "线面垂直与线面平行判定",
+      "勾股定理逆定理",
+      "二面角的法向量公式"
+    ],
+    "steps": [
+      "证明 AD⊥AB",
+      "证明 AD∥BC",
+      "得线面平行",
+      "建系",
+      "求 D 坐标",
+      "求法向量",
+      "用正弦条件解 t"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "PA⊥底面 ⇒ PA⊥AD",
+        "justification": "线面垂直的定义"
+      },
+      {
+        "step": 2,
+        "expression": "AD⊥PB，AD⊥PA，PA∩PB=P ⇒ AD⊥平面 PAB",
+        "justification": "线面垂直判定"
+      },
+      {
+        "step": 3,
+        "expression": "AD⊥AB",
+        "justification": "AD 垂直于平面 PAB 内的 AB"
+      },
+      {
+        "step": 4,
+        "expression": "AB²+BC²=3+1=4=AC² ⇒ AB⊥BC",
+        "justification": "勾股定理逆定理"
+      },
+      {
+        "step": 5,
+        "expression": "AD、BC 都垂直于 AB ⇒ AD∥BC",
+        "justification": "同一平面内垂直于同一直线的两直线平行"
+      },
+      {
+        "step": 6,
+        "expression": "BC⊂平面 PBC，AD⊄平面 PBC ⇒ AD∥平面 PBC",
+        "justification": "线面平行判定"
+      },
+      {
+        "step": 7,
+        "expression": "建系 A(0,0,0)，P(0,0,2)，C(2,0,0)，设 AD=t",
+        "justification": "选择坐标"
+      },
+      {
+        "step": 8,
+        "expression": "D=(t²/2, -t√(4-t²)/2, 0)",
+        "justification": "AD⊥DC 得 D 在以 AC 为直径的圆上，且与 B 分居 AC 两侧"
+      },
+      {
+        "step": 9,
+        "expression": "平面 ACP 法向量 n1=(0,1,0)，平面 DCP 法向量 n2=(2v,4-2u,2v)",
+        "justification": "法向量计算"
+      },
+      {
+        "step": 10,
+        "expression": "cos²θ=(4-t²)/(4+t²)=1/7 ⇒ t²=3 ⇒ AD=√3",
+        "justification": "sinθ=√42/7 给出 cos²θ=1/7"
+      }
+    ],
+    "answer": "(1) 证明 AD∥平面PBC；(2) AD=√3",
+    "conditions": [
+      "0<t<2"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "线面平行判定检查",
+        "status": "passed",
+        "details": "由 PA⊥AD、AD⊥PB 得 AD⊥平面 PAB，从而 AD⊥AB；又 AB⊥BC，故 AD∥BC，进而 AD∥平面 PBC。"
+      },
+      {
+        "name": "坐标法与二面角检查",
+        "status": "passed",
+        "details": "取 A 为原点，D 在以 AC 为直径的圆上；两平面法向量的夹角余弦平方为 (4-t²)/(4+t²)。"
+      },
+      {
+        "name": "正弦条件解方程检查",
+        "status": "passed",
+        "details": "sinθ=√42/7 给出 cos²θ=1/7，解 (4-t²)/(4+t²)=1/7 得 t²=3，AD=√3。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "第(1)问的关键是由线面垂直推出 AD⊥AB；第(2)问用坐标法把二面角化成法向量夹角。",
+    "difficult_steps": [
+      "线面垂直与线面平行的判定链条",
+      "D 的坐标表示",
+      "二面角正弦与余弦平方的关系"
+    ],
+    "common_mistakes": [
+      "把 AD⊥PB 直接当成结论",
+      "建系后把平面 APD 的法向量写错",
+      "漏掉 D 与 B 分居 AC 两侧"
+    ],
+    "prerequisite_explanations": [
+      "线面垂直、线面平行的判定定理",
+      "空间法向量与二面角"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

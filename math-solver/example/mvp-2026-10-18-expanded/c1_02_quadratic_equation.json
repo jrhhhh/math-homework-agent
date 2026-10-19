@@ -1,0 +1,66 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：x²-5x+6=0。",
+    "topic": "方程与不等式",
+    "subtopics": ["一元二次方程", "因式分解"],
+    "givens": ["方程 x²-5x+6=0"],
+    "variables": ["x：未知数"],
+    "constraints": [],
+    "goal": "求出方程的所有实数根",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把二次三项式分解为两个一次因式的乘积，再用零乘积性质求根。",
+    "method": "因式分解法",
+    "prerequisites": ["十字相乘", "零乘积性质"],
+    "steps": ["分解 x²-5x+6", "令每个因式为零", "写出两个根", "代回检验"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²-5x+6=(x-2)(x-3)",
+        "justification": "十字相乘：-2 与 -3 的和为 -5，积为 6"
+      },
+      {
+        "step": 2,
+        "expression": "(x-2)(x-3)=0",
+        "justification": "代入原方程"
+      },
+      {
+        "step": 3,
+        "expression": "x=2 或 x=3",
+        "justification": "两个因式的乘积为零，则至少一个因式为零"
+      }
+    ],
+    "answer": "x=2 或 x=3",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "因式展开检查",
+        "status": "passed",
+        "details": "(x-2)(x-3)=x²-5x+6，与原式一致。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=2：4-10+6=0；x=3：9-15+6=0，均成立。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "能分解的二次方程优先用因式分解，比求根公式更快。",
+    "difficult_steps": ["找到和为 -5、积为 6 的两个数", "把两个根都写出来"],
+    "common_mistakes": ["只写一个根", "因式符号写反", "把 (x-2)(x-3) 展开成 x²-5x-6"],
+    "prerequisite_explanations": ["十字相乘法", "零乘积性质"],
+    "alternative_method": "也可用求根公式 x=(5±√(25-24))/2，得到同样的 2 与 3。",
+    "follow_up_exercise_suggestion": null
+  }
+}

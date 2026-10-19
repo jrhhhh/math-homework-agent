@@ -1,0 +1,76 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "求函数 f(x)=ln(x+1)/(x-3) 的定义域。",
+    "topic": "函数与不等式",
+    "subtopics": ["定义域", "对数函数", "分式函数"],
+    "givens": ["f(x)=ln(x+1)/(x-3)"],
+    "variables": ["x：自变量"],
+    "constraints": ["对数真数为正：x+1>0", "分母不为零：x-3≠0"],
+    "goal": "求函数的定义域",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "同时满足对数真数为正与分母不为零，再取交集。",
+    "method": "复合函数定义域",
+    "prerequisites": ["对数函数的定义域", "分式有意义的条件"],
+    "steps": ["写出 x+1>0", "写出 x-3≠0", "取交集", "写成区间"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x+1>0，即 x>-1",
+        "justification": "对数 ln 的真数必须为正"
+      },
+      {
+        "step": 2,
+        "expression": "x-3≠0，即 x≠3",
+        "justification": "分母不能为零"
+      },
+      {
+        "step": 3,
+        "expression": "x>-1 且 x≠3",
+        "justification": "两个条件必须同时满足"
+      },
+      {
+        "step": 4,
+        "expression": "定义域为 (-1,3)∪(3,+∞)",
+        "justification": "把 x>-1 中挖去 x=3"
+      }
+    ],
+    "answer": "(-1,3)∪(3,+∞)",
+    "conditions": ["x 为实数"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "真数条件检查",
+        "status": "passed",
+        "details": "x>-1 时 x+1>0，对数有意义；x=-1 时真数为 0，不在定义域。"
+      },
+      {
+        "name": "分母条件检查",
+        "status": "passed",
+        "details": "x=3 时分母为零，必须从定义域中排除。"
+      },
+      {
+        "name": "区间取点检查",
+        "status": "passed",
+        "details": "取 x=0 与 x=4 均在定义域内；取 x=-2 与 x=3 均不在定义域内。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "复合函数的定义域要把每一层的限制都列出来，再取交集。",
+    "difficult_steps": ["同时处理对数真数与分母两个条件", "把 x=3 从区间中挖掉"],
+    "common_mistakes": ["漏掉 x≠3", "把 x+1>0 写成 x+1≥0", "把定义域写成 (-1,+∞)"],
+    "prerequisite_explanations": ["对数函数的定义域", "分式有意义的条件"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

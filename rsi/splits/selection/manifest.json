@@ -1,0 +1,8 @@
+{
+  "name": "selection",
+  "purpose": "循环内计算 g(a)",
+  "source": "混合：模型起草的新题 + 2024 新高考Ⅰ卷中的 MATH-40/43/44/47/48/50（已用于 bench 开发）",
+  "created_at": "2026-10-19",
+  "contaminated": true,
+  "notes": "新题未参与现有 51 条基准的开发；selection 另含 6 道 bench 硬题，仅作选拔集，不作泛化证据。"
+}

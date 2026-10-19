@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：1/(x-1)=2/(x²-1)。",
+    "topic": "方程与不等式",
+    "subtopics": ["分式方程", "增根", "定义域"],
+    "givens": ["方程 1/(x-1)=2/(x²-1)"],
+    "variables": ["x：未知数"],
+    "constraints": ["分母不为零：x≠1 且 x≠-1"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先分解 x²-1 并写出排除值，再去分母；得到的候选根若落在排除值中，则是增根。",
+    "method": "去分母法",
+    "prerequisites": ["平方差公式", "分式方程增根的来源"],
+    "steps": ["分解 x²-1=(x-1)(x+1)", "写出 x≠±1", "去分母求解", "检验候选根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x²-1=(x-1)(x+1)，且 x≠1、x≠-1",
+        "justification": "平方差公式；分母不能为零"
+      },
+      {
+        "step": 2,
+        "expression": "x+1=2",
+        "justification": "两边同乘 (x-1)(x+1)；由第 1 步该式不为零"
+      },
+      {
+        "step": 3,
+        "expression": "x=1",
+        "justification": "移项"
+      },
+      {
+        "step": 4,
+        "expression": "x=1 使原分母为零，舍去",
+        "justification": "候选根必须满足 x≠1 且 x≠-1"
+      },
+      {
+        "step": 5,
+        "expression": "原方程无解",
+        "justification": "唯一的候选根是增根，没有其他候选"
+      }
+    ],
+    "answer": "无解（空集）。",
+    "conditions": ["x≠1 且 x≠-1"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域检查",
+        "status": "passed",
+        "details": "x=1 与 x=-1 都使分母为零，均不能取。"
+      },
+      {
+        "name": "候选根代回",
+        "status": "passed",
+        "details": "x=1 时左边 1/0 无意义，右边 2/0 也无意义，不是原方程的解。"
+      },
+      {
+        "name": "增根判定",
+        "status": "passed",
+        "details": "去分母得到的 x=1 是乘了 (x-1)(x+1) 后产生的增根，必须舍去。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分式方程解出候选根后，必须回到原分母检查；落在排除值中的根要舍去。",
+    "difficult_steps": ["识别 x=1 是增根", "接受“方程无解”这个结论"],
+    "common_mistakes": ["直接写 x=1", "忘记检查分母", "把无解误写成 x=0"],
+    "prerequisite_explanations": ["平方差公式", "增根是如何产生的"],
+    "alternative_method": "也可先通分：左边=(x+1)/(x²-1)，与右边比较分子得 x+1=2，再检查 x=1 是否为排除值。",
+    "follow_up_exercise_suggestion": null
+  }
+}

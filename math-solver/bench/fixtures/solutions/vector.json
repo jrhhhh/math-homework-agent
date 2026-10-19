@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知向量 a=(1,2)，b=(2,-1)，求 a·b 及 a 与 b 的夹角。",
+    "topic": "向量",
+    "subtopics": ["数量积", "向量模", "夹角公式"],
+    "givens": ["a=(1,2)", "b=(2,-1)"],
+    "variables": ["a、b：平面向量", "θ：a 与 b 的夹角"],
+    "constraints": ["θ∈[0,π]"],
+    "goal": "求 a·b 及 θ",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先算数量积，再算两个模，最后用 cosθ=a·b/(|a||b|) 求夹角。",
+    "method": "坐标形式的数量积与夹角公式",
+    "prerequisites": ["数量积的坐标公式", "向量模的公式", "夹角公式"],
+    "steps": ["计算 a·b", "计算 |a|、|b|", "代入夹角公式", "由余弦值确定角"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a·b=1×2+2×(-1)=2-2=0",
+        "justification": "数量积的坐标公式 a·b=x₁x₂+y₁y₂"
+      },
+      {
+        "step": 2,
+        "expression": "|a|=√(1²+2²)=√5，|b|=√(2²+(-1)²)=√5",
+        "justification": "向量模的坐标公式"
+      },
+      {
+        "step": 3,
+        "expression": "cosθ=a·b/(|a||b|)=0/(√5·√5)=0",
+        "justification": "两向量夹角的余弦公式"
+      },
+      {
+        "step": 4,
+        "expression": "θ=π/2",
+        "justification": "θ∈[0,π]，余弦为 0 的角只有 π/2"
+      }
+    ],
+    "answer": "a·b=0，a 与 b 的夹角为 π/2。",
+    "conditions": ["θ∈[0,π]"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "数量积检查",
+        "status": "passed",
+        "details": "1×2+2×(-1)=0，计算正确。"
+      },
+      {
+        "name": "模长检查",
+        "status": "passed",
+        "details": "|a|=√5，|b|=√5，均非零，夹角公式可用。"
+      },
+      {
+        "name": "垂直条件检查",
+        "status": "passed",
+        "details": "a·b=0 等价于 a⊥b；两向量坐标满足 1×2+2×(-1)=0，结论一致。"
+      },
+      {
+        "name": "角度范围检查",
+        "status": "passed",
+        "details": "θ∈[0,π]，cosθ=0 只对应 θ=π/2，没有第二解。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "数量积为 0 直接说明两向量垂直，不必再求模长也能判断夹角。",
+    "difficult_steps": ["正确计算含负坐标的数量积", "由 cosθ=0 在 [0,π] 内确定 θ"],
+    "common_mistakes": ["把 2×(-1) 算成 +2", "忘记夹角范围导致多解", "把模长算成坐标相加"],
+    "prerequisite_explanations": ["数量积的坐标公式", "向量垂直的充要条件"],
+    "alternative_method": "也可由 a·b=0 直接得 a⊥b，从而夹角为 π/2。",
+    "follow_up_exercise_suggestion": null
+  }
+}

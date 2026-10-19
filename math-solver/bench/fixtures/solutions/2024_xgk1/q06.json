@@ -1,0 +1,114 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知函数 f(x)={ -x²-2ax-a, x<0; e^x+ln(x+1), x≥0 } 在 R 上单调递增，求实数 a 的取值范围。",
+    "topic": "函数与导数",
+    "subtopics": [
+      "分段函数",
+      "单调性",
+      "参数范围",
+      "分界点"
+    ],
+    "givens": [
+      "x<0 时 f(x)=-x²-2ax-a",
+      "x≥0 时 f(x)=e^x+ln(x+1)",
+      "f 在 R 上单调递增"
+    ],
+    "variables": [
+      "a：实数参数"
+    ],
+    "constraints": [
+      "分段定义域为 R"
+    ],
+    "goal": "求 a 的取值范围",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "分别保证两段递增，再检查分界点处的左右次序。",
+    "method": "分段函数单调性与端点衔接",
+    "prerequisites": [
+      "导数与单调性",
+      "二次函数对称轴",
+      "分界点处左极限不超过右端函数值"
+    ],
+    "steps": [
+      "求右段导数",
+      "求左段导数并定 a≤0",
+      "检查分界点得 a≥-1",
+      "取交集"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x≥0 时 f'(x)=e^x+1/(x+1)>0",
+        "justification": "指数与对数求导，两项均为正"
+      },
+      {
+        "step": 2,
+        "expression": "x<0 时 f'(x)=-2(x+a)",
+        "justification": "对 -x²-2ax-a 求导"
+      },
+      {
+        "step": 3,
+        "expression": "要在 (-∞,0) 上递增，需 -2(x+a)≥0 对一切 x<0 成立，故 a≤0",
+        "justification": "一次函数在区间上的符号条件"
+      },
+      {
+        "step": 4,
+        "expression": "分界点需 lim(x→0-)f(x)≤f(0)",
+        "justification": "单调递增函数在分界点两侧必须保持次序"
+      },
+      {
+        "step": 5,
+        "expression": "a≤0 时左段递增，左极限为 -a；f(0)=1，故 -a≤1 ⇒ a≥-1",
+        "justification": "左段在 (-∞,0) 上递增，上确界为左极限"
+      },
+      {
+        "step": 6,
+        "expression": "综合得 -1≤a≤0",
+        "justification": "取两个条件的交集"
+      }
+    ],
+    "answer": "B：[-1,0]",
+    "conditions": [
+      "a≤0 时左段在 (-∞,0) 上递增"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "分段导数与单调性检查",
+        "status": "passed",
+        "details": "x≥0 时导数 e^x+1/(x+1)>0；x<0 时导数为 -2(x+a)，在 a≤0 时对一切 x<0 非负。"
+      },
+      {
+        "name": "分界点端点检查",
+        "status": "passed",
+        "details": "左极限为 -a，右端函数值 f(0)=1；需 -a≤1，即 a≥-1，与 a≤0 合并得 [-1,0]。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分段单调不仅要每段递增，还要检查分界点的左右次序。",
+    "difficult_steps": [
+      "左段对称轴位置与 a 的符号",
+      "分界点处比较左极限与 f(0)"
+    ],
+    "common_mistakes": [
+      "只检查两段导数而漏掉分界点",
+      "把左极限误当成 f(0)"
+    ],
+    "prerequisite_explanations": [
+      "二次函数在区间上的单调性",
+      "分段函数在分界点的衔接条件"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解关于 x 的不等式 ax-1>0（a 为参数）。",
+    "topic": "不等式",
+    "subtopics": ["含参不等式", "分类讨论"],
+    "givens": ["不等式 ax-1>0"],
+    "variables": ["x：未知数", "a：参数"],
+    "constraints": ["a 的符号决定不等号方向"],
+    "goal": "按参数 a 的取值写出解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把不等式化为 ax>1，按 a>0、a=0、a<0 分类讨论。",
+    "method": "含参不等式的分类讨论",
+    "prerequisites": ["不等式两边乘除负数时方向改变", "空集的概念"],
+    "steps": ["移项得 ax>1", "讨论 a>0", "讨论 a=0", "讨论 a<0"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "ax>1",
+        "justification": "不等式两边同时加 1"
+      },
+      {
+        "step": 2,
+        "expression": "当 a>0 时，x>1/a",
+        "justification": "两边同除以正数 a，不等号方向不变"
+      },
+      {
+        "step": 3,
+        "expression": "当 a=0 时，0>1，无解",
+        "justification": "0 不可能大于 1"
+      },
+      {
+        "step": 4,
+        "expression": "当 a<0 时，x<1/a",
+        "justification": "两边同除以负数 a，不等号方向改变"
+      },
+      {
+        "step": 5,
+        "expression": "综上：a>0 时解集为 (1/a,+∞)；a=0 时解集为 ∅；a<0 时解集为 (-∞,1/a)",
+        "justification": "合并三种情形"
+      }
+    ],
+    "answer": "a>0 时 x>1/a；a=0 时无解；a<0 时 x<1/a。",
+    "conditions": ["a=0 时不等式无解"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "分类完整性检查",
+        "status": "passed",
+        "details": "a 的取值被 a>0、a=0、a<0 三类完全覆盖，没有遗漏。"
+      },
+      {
+        "name": "特殊值代回",
+        "status": "passed",
+        "details": "取 a=2，解集 x>1/2；x=1 时 2-1>0 成立，x=0 时 -1>0 不成立。取 a=-2，解集 x<-1/2；x=-1 时 2-1>0 成立，x=0 时 -1>0 不成立。"
+      },
+      {
+        "name": "解集端点开闭检查",
+        "status": "passed",
+        "details": "原不等式为严格不等号，x=1/a 不满足 ax-1>0，因此各区间端点均为开端点。"
+      },
+      {
+        "name": "a=0 端点检查",
+        "status": "passed",
+        "details": "a=0 时原不等式为 -1>0，确实无解，不能误写成 x>1/a。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "含参数的不等式不能直接除以 a，必须先讨论 a 的正负与零。",
+    "difficult_steps": ["想到单独讨论 a=0", "a<0 时不等号方向改变"],
+    "common_mistakes": ["直接写 x>1/a，忽略 a 的符号", "漏掉 a=0 的情况", "把 a=0 时写成 x>1/0 或无穷"],
+    "prerequisite_explanations": ["不等式两边同乘除负数要变号", "分类讨论要穷尽且互斥"],
+    "alternative_method": "也可从一次函数 y=ax-1 的图象看：a>0 时图象上升，a=0 时水平，a<0 时下降。",
+    "follow_up_exercise_suggestion": null
+  }
+}

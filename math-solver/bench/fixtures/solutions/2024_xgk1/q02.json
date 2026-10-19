@@ -1,0 +1,100 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "若 z/(z-1)=1+i，求复数 z。",
+    "topic": "复数",
+    "subtopics": [
+      "复数方程",
+      "分母非零",
+      "共轭复数"
+    ],
+    "givens": [
+      "z/(z-1)=1+i",
+      "z 为复数"
+    ],
+    "variables": [
+      "z：复数"
+    ],
+    "constraints": [
+      "z≠1"
+    ],
+    "goal": "求 z",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把分式拆成 1+1/(z-1)，先求 z-1，再加 1。",
+    "method": "复数代数运算",
+    "prerequisites": [
+      "复数除法",
+      "1/i=-i"
+    ],
+    "steps": [
+      "拆分分式",
+      "解出 1/(z-1)",
+      "取倒数并加 1"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "z/(z-1)=(z-1+1)/(z-1)=1+1/(z-1)",
+        "justification": "分子拆项"
+      },
+      {
+        "step": 2,
+        "expression": "1+1/(z-1)=1+i ⇒ 1/(z-1)=i",
+        "justification": "两边减去 1"
+      },
+      {
+        "step": 3,
+        "expression": "z-1=1/i=-i",
+        "justification": "取倒数，利用 1/i=-i"
+      },
+      {
+        "step": 4,
+        "expression": "z=1-i",
+        "justification": "两边加 1"
+      }
+    ],
+    "answer": "C：z=1-i",
+    "conditions": [
+      "z≠1，原式分母不为零"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "代回原式",
+        "status": "passed",
+        "details": "把 z=1-i 代入：z-1=-i，z/(z-1)=(1-i)/(-i)=1+i，与右边一致。"
+      },
+      {
+        "name": "分母与复数运算检查",
+        "status": "passed",
+        "details": "z=1-i≠1，分母非零；1/i=-i 的运算正确。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "先把分式拆成整式加真分式，避免直接交叉相乘。",
+    "difficult_steps": [
+      "复数取倒数时忘记 1/i=-i",
+      "忽略 z≠1"
+    ],
+    "common_mistakes": [
+      "把 1/i 写成 i",
+      "交叉相乘后漏掉分母非零条件"
+    ],
+    "prerequisite_explanations": [
+      "复数的四则运算",
+      "共轭复数与倒数"
+    ],
+    "alternative_method": "也可交叉相乘得 z=(1+i)(z-1)，整理得 iz=1+i，再解 z。",
+    "follow_up_exercise_suggestion": null
+  }
+}

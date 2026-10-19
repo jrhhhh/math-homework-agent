@@ -1,0 +1,81 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解关于 x 的不等式：(x-a)(x-2)>0。",
+    "topic": "不等式",
+    "subtopics": ["含参二次不等式", "分类讨论", "根的大小比较"],
+    "givens": ["不等式 (x-a)(x-2)>0"],
+    "variables": ["x：未知数", "a：参数"],
+    "constraints": ["a 与 2 的大小关系决定解集结构"],
+    "goal": "按参数 a 的取值写出解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "两根为 a 与 2；开口向上，大于零取两根之外。按 a<2、a=2、a>2 比较两根。",
+    "method": "二次不等式与根的分类讨论",
+    "prerequisites": ["二次函数图象", "两根大小比较"],
+    "steps": ["写出两根 a 与 2", "讨论 a<2", "讨论 a=2", "讨论 a>2"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "两根为 x=a 与 x=2",
+        "justification": "令每个因式为零"
+      },
+      {
+        "step": 2,
+        "expression": "当 a<2 时，解集为 (-∞,a)∪(2,+∞)",
+        "justification": "开口向上，大于零取两根之外，且 a 在 2 的左边"
+      },
+      {
+        "step": 3,
+        "expression": "当 a=2 时，原式为 (x-2)²>0，解集为 (-∞,2)∪(2,+∞)",
+        "justification": "平方非负，只排除等于零的 x=2"
+      },
+      {
+        "step": 4,
+        "expression": "当 a>2 时，解集为 (-∞,2)∪(a,+∞)",
+        "justification": "开口向上，大于零取两根之外，且 a 在 2 的右边"
+      },
+      {
+        "step": 5,
+        "expression": "综上：a<2 时为 (-∞,a)∪(2,+∞)；a=2 时为 (-∞,2)∪(2,+∞)；a>2 时为 (-∞,2)∪(a,+∞)",
+        "justification": "合并三种情形"
+      }
+    ],
+    "answer": "a<2：x<a 或 x>2；a=2：x≠2；a>2：x<2 或 x>a。",
+    "conditions": ["两根 a 与 2 的大小关系决定解集"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "根的大小检查",
+        "status": "passed",
+        "details": "a<2 时 a 在左，a>2 时 a 在右；a=2 时两根重合。"
+      },
+      {
+        "name": "特殊值代回",
+        "status": "passed",
+        "details": "a=-1：解集 x<-1 或 x>2；取 x=0 得 (-1)(-2)=2>0，成立。a=3：解集 x<2 或 x>3；取 x=0 得 (-3)(-2)=6>0，成立。"
+      },
+      {
+        "name": "a=2 边界检查",
+        "status": "passed",
+        "details": "a=2 时 (x-2)²>0，x=2 不满足，解集是除 2 以外的全体实数。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "含参二次不等式的关键是先比较两根的大小，再按“大于取两边”写解集。",
+    "difficult_steps": ["把 a 与 2 的大小分成三类", "a=2 时两根重合的处理"],
+    "common_mistakes": ["不比较 a 与 2，直接写 x<a 或 x>2", "漏掉 a=2", "把端点写成闭区间"],
+    "prerequisite_explanations": ["二次函数图象与不等式解集", "分类讨论的完备性"],
+    "alternative_method": "也可画数轴，标出 a 与 2 的位置，再按“两根之外”读出解集。",
+    "follow_up_exercise_suggestion": null
+  }
+}

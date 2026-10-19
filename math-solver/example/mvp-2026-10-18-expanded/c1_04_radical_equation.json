@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：√(2x+1)=x-1。",
+    "topic": "方程与不等式",
+    "subtopics": ["无理方程", "定义域", "增根检验"],
+    "givens": ["方程 √(2x+1)=x-1"],
+    "variables": ["x：未知数"],
+    "constraints": ["根号下非负：2x+1≥0，即 x≥-1/2", "右边为非负的算术平方根，因此 x-1≥0，即 x≥1"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先由根号非负与右边非负得到 x≥1，再平方求解，最后代回排除增根。",
+    "method": "平方后求解并检验",
+    "prerequisites": ["算术平方根非负", "一元二次方程的因式分解"],
+    "steps": ["确定 x≥1", "两边平方", "整理求候选根", "代回原方程排除增根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "2x+1≥0 且 x-1≥0，所以 x≥1",
+        "justification": "根号下非负；算术平方根的值非负，而它等于 x-1"
+      },
+      {
+        "step": 2,
+        "expression": "2x+1=(x-1)²",
+        "justification": "在 x≥1 时两边都非负，平方是等价变形"
+      },
+      {
+        "step": 3,
+        "expression": "x²-4x=0，即 x(x-4)=0",
+        "justification": "展开右边并移项"
+      },
+      {
+        "step": 4,
+        "expression": "x=0 或 x=4",
+        "justification": "零乘积性质"
+      },
+      {
+        "step": 5,
+        "expression": "x=0 不满足 x≥1，舍去；x=4 保留",
+        "justification": "候选根必须在定义域与右边非负条件内"
+      },
+      {
+        "step": 6,
+        "expression": "原方程的解为 x=4",
+        "justification": "代回：√9=3，4-1=3，成立"
+      }
+    ],
+    "answer": "x=4",
+    "conditions": ["x≥1"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域与非负性检查",
+        "status": "passed",
+        "details": "要求 x≥-1/2 且 x≥1，合并为 x≥1；x=0 不满足，已舍去。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "x=4：左边 √9=3，右边 3，成立。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "平方前已限制 x≥1，平方在该范围内等价；仍逐个代回确认，没有保留增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "算术平方根非负，所以右边 x-1 必须非负；这一步能提前排除增根。",
+    "difficult_steps": ["同时考虑根号下非负与右边非负", "平方后仍要代回检验"],
+    "common_mistakes": ["只写 2x+1≥0，漏掉 x-1≥0", "保留 x=0", "把 (x-1)² 展开错"],
+    "prerequisite_explanations": ["算术平方根的值非负", "平方在两边非负时才是等价变形"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

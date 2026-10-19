@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解方程：2/(x-1) + 1 = x/(x+1)。",
+    "topic": "方程与不等式",
+    "subtopics": ["分式方程", "去分母", "增根检验"],
+    "givens": ["方程 2/(x-1)+1=x/(x+1)"],
+    "variables": ["x：未知数"],
+    "constraints": ["分母不为零：x≠1 且 x≠-1"],
+    "goal": "求出满足原方程的所有实数 x",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先确定分母不为零，再去分母化为一元一次方程，最后代回原方程检验。",
+    "method": "去分母法",
+    "prerequisites": ["分式方程的定义域", "等式两边同乘非零式子"],
+    "steps": ["写出 x≠1 且 x≠-1", "两边同乘 (x-1)(x+1)", "整理求解", "代回原方程检验"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x≠1 且 x≠-1",
+        "justification": "分母不能为零"
+      },
+      {
+        "step": 2,
+        "expression": "2(x+1)+(x-1)(x+1)=x(x-1)",
+        "justification": "两边同乘 (x-1)(x+1)；由第 1 步该式不为零"
+      },
+      {
+        "step": 3,
+        "expression": "x²+2x+1=x²-x",
+        "justification": "展开左边：2x+2+x²-1=x²+2x+1；右边为 x²-x"
+      },
+      {
+        "step": 4,
+        "expression": "3x=-1，所以 x=-1/3",
+        "justification": "两边消去 x² 并移项"
+      },
+      {
+        "step": 5,
+        "expression": "x=-1/3 满足 x≠±1",
+        "justification": "候选解在定义域内"
+      },
+      {
+        "step": 6,
+        "expression": "原方程的解为 x=-1/3",
+        "justification": "代回：左边 2/(-4/3)+1=-1/2，右边 (-1/3)/(2/3)=-1/2"
+      }
+    ],
+    "answer": "x=-1/3",
+    "conditions": ["x≠1 且 x≠-1"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域检查",
+        "status": "passed",
+        "details": "x=-1/3 不等于 1 或 -1，分母均不为零。"
+      },
+      {
+        "name": "代回原方程",
+        "status": "passed",
+        "details": "左边 2/(-4/3)+1=-3/2+1=-1/2，右边 (-1/3)/(2/3)=-1/2，成立。"
+      },
+      {
+        "name": "增根检查",
+        "status": "passed",
+        "details": "去分母时乘的是非零式子 (x-1)(x+1)，且解不在排除值中，没有增根。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分式方程先去分母，但必须先记录分母不为零；最后要代回原方程。",
+    "difficult_steps": ["展开 (x-1)(x+1) 并正确合并同类项", "记住最后检查 x≠±1"],
+    "common_mistakes": ["忘记写定义域", "去分母后不检验，保留使分母为零的解", "展开时符号出错"],
+    "prerequisite_explanations": ["等式两边同乘同一个非零式子仍是等价变形", "平方差公式"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

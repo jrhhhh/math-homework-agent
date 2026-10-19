@@ -1,0 +1,135 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 A(0,3)，P(3,3/2) 为椭圆 C: x²/a²+y²/b²=1 (a>b>0) 上两点。(1) 求 C 的离心率；(2) 若过点 P 的直线 l 交 C 于另一点 B，且 △ABP 的面积为 9，求 l 的方程。",
+    "topic": "圆锥曲线",
+    "subtopics": [
+      "椭圆",
+      "离心率",
+      "直线与椭圆",
+      "三角形面积"
+    ],
+    "givens": [
+      "A(0,3) 在椭圆上",
+      "P(3,3/2) 在椭圆上",
+      "S_△ABP=9"
+    ],
+    "variables": [
+      "a、b、c：椭圆参数",
+      "B：直线 l 与椭圆的另一交点"
+    ],
+    "constraints": [
+      "a>b>0",
+      "B≠P"
+    ],
+    "goal": "求离心率与 l 的方程",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先由两点求椭圆参数；再把面积条件转化为 B 到 AP 的距离，联立椭圆求 B，最后写直线。",
+    "method": "椭圆参数 + 面积法 + 联立方程",
+    "prerequisites": [
+      "椭圆标准方程",
+      "点到直线距离",
+      "三角形面积公式"
+    ],
+    "steps": [
+      "求 a²、b²、c²",
+      "求离心率",
+      "写 AP 方程与长度",
+      "由面积求距离",
+      "联立求 B",
+      "写 l"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "A(0,3) 在椭圆上 ⇒ b²=9",
+        "justification": "代入椭圆方程"
+      },
+      {
+        "step": 2,
+        "expression": "P(3,3/2) 在椭圆上 ⇒ 9/a²+1/4=1 ⇒ a²=12",
+        "justification": "代入并解方程"
+      },
+      {
+        "step": 3,
+        "expression": "c²=a²-b²=3，e=c/a=1/2",
+        "justification": "椭圆参数关系"
+      },
+      {
+        "step": 4,
+        "expression": "AP: x+2y-6=0，|AP|=3√5/2",
+        "justification": "两点式与距离公式"
+      },
+      {
+        "step": 5,
+        "expression": "S=9 ⇒ B 到 AP 的距离 d=12/√5 ⇒ |x_B+2y_B-6|=12",
+        "justification": "三角形面积公式"
+      },
+      {
+        "step": 6,
+        "expression": "椭圆上 x+2y≤4√3<18，故 x_B+2y_B=-6",
+        "justification": "椭圆的最大值"
+      },
+      {
+        "step": 7,
+        "expression": "联立得 B(-3,-3/2) 或 B(0,-3)",
+        "justification": "代入椭圆并解二次方程"
+      },
+      {
+        "step": 8,
+        "expression": "l: x-2y=0 或 3x-2y-6=0",
+        "justification": "两点式求直线"
+      }
+    ],
+    "answer": "(1) e=1/2；(2) l: x-2y=0 或 3x-2y-6=0",
+    "conditions": [
+      "a>b>0",
+      "B 为异于 P 的交点"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "椭圆参数与离心率检查",
+        "status": "passed",
+        "details": "b²=9，a²=12，c²=3，e=√3/(2√3)=1/2。"
+      },
+      {
+        "name": "面积与距离条件检查",
+        "status": "passed",
+        "details": "以 AP 为底，B 到 AP 的距离 d=12/√5，得 |x_B+2y_B-6|=12；联立椭圆求交点得两个 B 点。"
+      },
+      {
+        "name": "代回原题检查",
+        "status": "passed",
+        "details": "B(-3,-3/2) 与 B(0,-3) 都在椭圆上；两条直线都过 P，且三角形面积均为 9。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "面积条件转化为“B 到 AP 的距离”，避免直接设斜率带来的繁式计算。",
+    "difficult_steps": [
+      "求 AP 的直线方程与长度",
+      "椭圆上 x+2y 的最大值",
+      "两条直线不能漏"
+    ],
+    "common_mistakes": [
+      "只求出 B(-3,-3/2) 而漏掉 B(0,-3)",
+      "把面积公式的底选错"
+    ],
+    "prerequisite_explanations": [
+      "椭圆的标准方程与参数关系",
+      "点到直线距离与三角形面积"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

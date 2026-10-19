@@ -1,0 +1,86 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "解不等式：(x-1)/(x+2)≥2。",
+    "topic": "函数与不等式",
+    "subtopics": ["分式不等式", "符号表", "定义域"],
+    "givens": ["不等式 (x-1)/(x+2)≥2"],
+    "variables": ["x：未知数"],
+    "constraints": ["分母不为零：x≠-2"],
+    "goal": "求不等式的解集",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把 2 移到左边通分，化为一个分式与零比较，再用符号表求解。",
+    "method": "移项通分与符号表",
+    "prerequisites": ["分式不等式不能直接乘含未知数的分母", "符号表"],
+    "steps": ["写出 x≠-2", "移项并通分", "整理分子", "求临界点并作符号表", "写出解集"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "x≠-2",
+        "justification": "分母不能为零"
+      },
+      {
+        "step": 2,
+        "expression": "(x-1)/(x+2)-2≥0",
+        "justification": "两边同时减去 2"
+      },
+      {
+        "step": 3,
+        "expression": "(x-1-2x-4)/(x+2)≥0",
+        "justification": "通分：2=2(x+2)/(x+2)"
+      },
+      {
+        "step": 4,
+        "expression": "(-x-5)/(x+2)≥0，即 (x+5)/(x+2)≤0",
+        "justification": "合并分子；两边同乘 -1 时不等号方向改变"
+      },
+      {
+        "step": 5,
+        "expression": "临界点为 x=-5 与 x=-2；符号表给出 -5≤x<-2",
+        "justification": "分子 x+5 在 x=-5 处变号，分母 x+2 在 x=-2 处变号；x=-2 不能取"
+      },
+      {
+        "step": 6,
+        "expression": "解集为 [-5,-2)",
+        "justification": "x=-5 使分式为 0，满足 ≥；x=-2 使分母为零，排除"
+      }
+    ],
+    "answer": "[-5,-2)",
+    "conditions": ["x≠-2"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "定义域检查",
+        "status": "passed",
+        "details": "解集中的 x 都满足 x≠-2；端点 -2 已排除。"
+      },
+      {
+        "name": "符号表检查",
+        "status": "passed",
+        "details": "(x+5)/(x+2)≤0：x<-5 时为正，-5<x<-2 时为负，x>-2 时为正，故解集为 [-5,-2)。"
+      },
+      {
+        "name": "代回原不等式",
+        "status": "passed",
+        "details": "x=-5：(-6)/(-3)=2≥2，成立；x=-3：(-4)/(-1)=4≥2，成立；x=0：(-1)/2=-1/2≥2，不成立。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "分式不等式先移项通分，化成“分式与 0 比较”，不要直接乘分母。",
+    "difficult_steps": ["通分后正确合并分子", "乘 -1 时改变不等号方向", "处理端点 -5 与 -2"],
+    "common_mistakes": ["直接两边乘 x+2，忽略其符号", "把解集写成 (-5,-2]", "漏掉 x=-5 可取"],
+    "prerequisite_explanations": ["分式不等式的标准解法", "符号表与临界点"],
+    "alternative_method": "也可把两边都看成函数，画 y=(x-1)/(x+2) 与 y=2 的图象找交点与高低关系。",
+    "follow_up_exercise_suggestion": null
+  }
+}

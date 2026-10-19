@@ -1,0 +1,150 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "设 m 为正整数，数列 a1,...,a_{4m+2} 是公差不为 0 的等差数列。若从中删去两项 a_i 和 a_j (i<j) 后剩余的 4m 项可被平均分为 m 组，且每组的 4 个数都能构成等差数列，则称该数列是 (i,j)-可分数列。(1) 写出所有的 (i,j)，1≤i<j≤6，使 a1,...,a6 是 (i,j)-可分数列；(2) 当 m≥3 时，证明：数列是 (2,13)-可分数列；(3) 从 1,...,4m+2 中一次任取两个数 i 和 j (i<j)，记该数列是 (i,j)-可分数列的概率为 P_m，证明 P_m>1/8。",
+    "topic": "数列与组合",
+    "subtopics": [
+      "等差数列",
+      "新定义",
+      "分组构造",
+      "计数",
+      "概率"
+    ],
+    "givens": [
+      "a_n 是公差 d≠0 的等差数列",
+      "删去两项后分成 m 组，每组 4 项成等差"
+    ],
+    "variables": [
+      "m：正整数",
+      "i、j：删去的下标",
+      "P_m：可分的概率"
+    ],
+    "constraints": [
+      "1≤i<j≤4m+2",
+      "d≠0"
+    ],
+    "goal": "求 m=1 的所有 (i,j)，证明 (2,13) 可分，证明 P_m>1/8",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "先把“四数成等差”转化为“下标成等差”，再分别构造 m=1、m≥3 与计数下界。",
+    "method": "下标化归 + 构造 + 计数",
+    "prerequisites": [
+      "等差数列的线性表示",
+      "四项等差数列的下标特征",
+      "组合计数"
+    ],
+    "steps": [
+      "下标化归",
+      "枚举 m=1",
+      "构造 (2,13)",
+      "构造 A、B 两类可分数对",
+      "计数并比较概率"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "设 a_n=a_1+(n-1)d，d≠0；四数成等差 ⇔ 下标成等差",
+        "justification": "等差数列的线性表示"
+      },
+      {
+        "step": 2,
+        "expression": "(1) m=1，剩 4 项须为 4 项等差；枚举得剩余集合 {1,2,3,4},{2,3,4,5},{3,4,5,6}",
+        "justification": "枚举 1..6 的四项等差子集"
+      },
+      {
+        "step": 3,
+        "expression": "对应删去 (5,6),(1,6),(1,2)",
+        "justification": "取补集"
+      },
+      {
+        "step": 4,
+        "expression": "(2) m=3 时删 2,13，分组 {1,4,7,10},{3,6,9,12},{5,8,11,14}",
+        "justification": "每组下标公差 3"
+      },
+      {
+        "step": 5,
+        "expression": "m>3 时保留前三组，15 起每连续四项一组，共 m-3 组",
+        "justification": "连续四项成公差 1 的等差"
+      },
+      {
+        "step": 6,
+        "expression": "(3) A 类：i=4a+1,j=4b+2 (a≤b)，共 (m+1)(m+2)/2 对",
+        "justification": "三段长度均被 4 整除，按连续四项分组"
+      },
+      {
+        "step": 7,
+        "expression": "B 类：i=4a+2,j=4b+1 (b≥a+2)，共 m(m-1)/2 对",
+        "justification": "中间段平移为 C_k，按引理分组"
+      },
+      {
+        "step": 8,
+        "expression": "C_k 的引理：k=2q 时用公差 2 的两组，k=2q+1 时用公差 2 与公差 3 的分组",
+        "justification": "构造性分组"
+      },
+      {
+        "step": 9,
+        "expression": "两类合计 m²+m+1 对",
+        "justification": "求和"
+      },
+      {
+        "step": 10,
+        "expression": "总取法 C(4m+2,2)=8m²+6m+1",
+        "justification": "组合数"
+      },
+      {
+        "step": 11,
+        "expression": "P_m≥(m²+m+1)/(8m²+6m+1)>1/8",
+        "justification": "8(m²+m+1)-(8m²+6m+1)=2m+7>0"
+      }
+    ],
+    "answer": "(1) (1,2),(1,6),(5,6)；(2) 证明 (2,13)-可分数列；(3) P_m>1/8",
+    "conditions": [
+      "m 为正整数，d≠0"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "下标化归检查",
+        "status": "passed",
+        "details": "a_n 是下标的一次函数且 d≠0，四数成等差当且仅当下标成等差，故可只讨论下标集合。"
+      },
+      {
+        "name": "构造与分组检查",
+        "status": "passed",
+        "details": "(2) 用 {1,4,7,10},{3,6,9,12},{5,8,11,14} 及后续连续四组；(3) A、B 两类分别按连续四项与 C_k 引理分组。"
+      },
+      {
+        "name": "计数与概率检查",
+        "status": "passed",
+        "details": "A 类 (m+1)(m+2)/2 对，B 类 m(m-1)/2 对，合计 m²+m+1 对；总取法 8m²+6m+1，故 P_m>1/8。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把“数成等差”转化为“下标成等差”，把构造问题变成下标集合的分组问题。",
+    "difficult_steps": [
+      "四项等差数列的下标特征",
+      "(2,13) 的具体分组",
+      "A、B 两类的构造与计数"
+    ],
+    "common_mistakes": [
+      "只验证 m=3 而不推广到 m>3",
+      "把可分数对的计数当成所有取法",
+      "忘记总取法数"
+    ],
+    "prerequisite_explanations": [
+      "等差数列的通项",
+      "组合计数与概率"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

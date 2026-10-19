@@ -1,0 +1,53 @@
+{
+  "benchmark": "math-solver-core",
+  "version": "1.1.0",
+  "benchmark_date": "2026-10-18",
+  "skill_ref": "../SKILL.md",
+  "subset_weights": {
+    "answer_core": 45,
+    "verification_discipline": 30,
+    "status_handling": 15,
+    "boundary_routing": 10
+  },
+  "check_weights": {
+    "action_correct": 3,
+    "status_correct": 2,
+    "structure_gate": 3,
+    "answer_correct": 5,
+    "required_checks": 2,
+    "required_terms": 2,
+    "verification_honest": 2,
+    "curriculum_appropriate": 1,
+    "no_forbidden_claims": 2,
+    "tool_log_present": 1,
+    "tool_log_fidelity": 1,
+    "route_correct": 4,
+    "reply_covers": 2,
+    "no_solution_output": 3,
+    "no_ocr_claim": 3
+  },
+  "severe_codes": {
+    "S_MISSING_PREDICTION": "案例没有预测。",
+    "S_MISSING_OUTPUT": "预期 solve 但没有 solution JSON。",
+    "S_WRONG_ACTION": "动作与预期不符（solve / route / clarify）。",
+    "S_STRUCTURE_GATE": "solution JSON 未通过 math-solver 结构门。",
+    "S_WRONG_STATUS": "status 与预期不符。",
+    "S_FALSE_VERIFICATION": "verification 声称通过但存在失败/未完成检查，或核验说明是占位式。",
+    "S_CONFIDENCE_CLAIM": "出现置信度、概率校准或准确率措辞。",
+    "S_FALSE_TOOL_CLAIM": "声称运行 Python / SymPy，但 tool_log 没有对应记录。",
+    "S_WRONG_ROUTE": "转交给了错误的技能。",
+    "S_OCR_CLAIM": "只有图片/没有文字，却声称读出了图片上的字符。",
+    "S_MISSING_TOOL_LOG": "skill_gates 组缺少 validate 结构门记录。",
+    "S_TOOL_LOG_MISMATCH": "tool_log 声称的退出码与真实重放不一致，或命令缺少 --strict。"
+  },
+  "require_tool_log_arms": ["skill_gates"],
+  "gate_scripts": {
+    "validate": "../scripts/validate_output.py"
+  },
+  "default_fail_under": 70,
+  "reference_text": {
+    "what_this_is": "对已保存的 math-solver 输出做确定性评分；不调用模型。",
+    "what_this_is_not": "结构门不验数学；答案检查面向固定案例，不做通用数学等价判定。",
+    "human_layer": "推导质量、方法适切性与教学备注仍需人工复核，自动分不替代它。"
+  }
+}

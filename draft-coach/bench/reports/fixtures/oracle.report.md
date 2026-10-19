@@ -1,7 +1,7 @@
 # Draft Coach 版面习惯基准报告
 
 - 基准版本：`1.0.0`
-- 生成时间：2026-10-17 21:24:01
+- 生成时间：2026-10-18 10:15:04
 - 实验组：`fixture-oracle`
 - 模型 / 产出方：`fixture:oracle`
 - run_id：`fixture-oracle-2026-10-17`

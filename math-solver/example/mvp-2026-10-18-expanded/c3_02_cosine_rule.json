@@ -1,0 +1,71 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "在 △ABC 中，A=π/3，b=2，c=3，求 BC 边长。",
+    "topic": "解三角形",
+    "subtopics": ["余弦定理", "三角形边长"],
+    "givens": ["A=π/3", "b=2", "c=3"],
+    "variables": ["a：BC 边长", "b：AC 边长", "c：AB 边长"],
+    "constraints": ["A 是边 a 所对的角"],
+    "goal": "求 a=BC",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "已知两边及其夹角，直接用余弦定理求第三边。",
+    "method": "余弦定理",
+    "prerequisites": ["余弦定理", "特殊角的余弦值"],
+    "steps": ["写出余弦定理", "代入 b、c、A", "计算 a²", "取正平方根"]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "a²=b²+c²-2bc cos A",
+        "justification": "余弦定理"
+      },
+      {
+        "step": 2,
+        "expression": "a²=2²+3²-2×2×3×cos(π/3)",
+        "justification": "代入 b=2、c=3、A=π/3"
+      },
+      {
+        "step": 3,
+        "expression": "cos(π/3)=1/2，所以 a²=4+9-6=7",
+        "justification": "计算 2×2×3×1/2=6"
+      },
+      {
+        "step": 4,
+        "expression": "a=√7",
+        "justification": "边长为正，取正的平方根"
+      }
+    ],
+    "answer": "BC=√7",
+    "conditions": ["A=π/3", "b=2，c=3"]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "三角形不等式检查",
+        "status": "passed",
+        "details": "2+3=5>√7≈2.65，2+√7>3，3+√7>2，三边能组成三角形。"
+      },
+      {
+        "name": "余弦定理反向核对",
+        "status": "passed",
+        "details": "cos A=(b²+c²-a²)/(2bc)=(4+9-7)/(12)=6/12=1/2，与 A=π/3 一致。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "已知两边及其夹角求第三边，余弦定理是最直接的工具。",
+    "difficult_steps": ["确认角 A 对应的是边 a", "正确计算 2bc cos A"],
+    "common_mistakes": ["把余弦定理写成 a²=b²+c²+2bc cos A", "把 cos(π/3) 记成 √3/2", "忘了取正根"],
+    "prerequisite_explanations": ["余弦定理", "特殊角三角函数值"],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}

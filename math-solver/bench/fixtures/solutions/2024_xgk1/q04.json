@@ -1,0 +1,99 @@
+{
+  "status": "solved",
+  "problem": {
+    "statement": "已知 cos(α+β)=m，tanα tanβ=2，求 cos(α-β)。",
+    "topic": "三角函数",
+    "subtopics": [
+      "两角和与差公式",
+      "正切与正弦余弦关系"
+    ],
+    "givens": [
+      "cos(α+β)=m",
+      "tanα tanβ=2"
+    ],
+    "variables": [
+      "α、β：角"
+    ],
+    "constraints": [
+      "cosα cosβ≠0（由 tanα tanβ=2 保证）"
+    ],
+    "goal": "求 cos(α-β)",
+    "requested_method": null,
+    "ambiguities": [],
+    "assumptions": []
+  },
+  "plan": {
+    "main_idea": "把 tanα tanβ 化成 sinα sinβ 与 cosα cosβ 的关系，再代入两角和差公式。",
+    "method": "三角恒等变换",
+    "prerequisites": [
+      "tan=sin/cos",
+      "两角和与差的余弦公式"
+    ],
+    "steps": [
+      "由正切关系得 sinα sinβ=2cosα cosβ",
+      "代入两角和公式求 cosα cosβ",
+      "代入两角差公式"
+    ]
+  },
+  "solution": {
+    "derivation": [
+      {
+        "step": 1,
+        "expression": "tanα tanβ=2 ⇒ sinα sinβ=2cosα cosβ",
+        "justification": "tan=sin/cos，且 cosα cosβ≠0"
+      },
+      {
+        "step": 2,
+        "expression": "cos(α+β)=cosα cosβ-sinα sinβ=-cosα cosβ=m",
+        "justification": "两角和的余弦公式并代入上式"
+      },
+      {
+        "step": 3,
+        "expression": "cosα cosβ=-m",
+        "justification": "由上式解出"
+      },
+      {
+        "step": 4,
+        "expression": "cos(α-β)=cosα cosβ+sinα sinβ=3cosα cosβ=-3m",
+        "justification": "两角差的余弦公式并代入"
+      }
+    ],
+    "answer": "A：cos(α-β)=-3m",
+    "conditions": [
+      "cosα cosβ≠0（由 tanα tanβ=2 保证）"
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "两角和差展开检查",
+        "status": "passed",
+        "details": "cos(α+β)=cosαcosβ-sinαsinβ，cos(α-β)=cosαcosβ+sinαsinβ，展开式正确。"
+      },
+      {
+        "name": "正切关系代入检查",
+        "status": "passed",
+        "details": "tanαtanβ=2 给出 sinαsinβ=2cosαcosβ，代入后 cos(α+β)=-cosαcosβ=m，故 cos(α-β)=-3m。"
+      }
+    ],
+    "issues": []
+  },
+  "teaching_notes": {
+    "key_insight": "把正切积化成正弦余弦积，再用和差公式整体替换。",
+    "difficult_steps": [
+      "由 tan 积得到 sin 积与 cos 积的关系",
+      "整体代入而不是分别求角"
+    ],
+    "common_mistakes": [
+      "把 tanαtanβ 直接当成 sinαsinβ",
+      "符号处理错误，得到 3m"
+    ],
+    "prerequisite_explanations": [
+      "同角三角函数关系",
+      "两角和与差的余弦公式"
+    ],
+    "alternative_method": null,
+    "follow_up_exercise_suggestion": null
+  }
+}
