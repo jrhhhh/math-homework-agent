@@ -1,8 +1,0 @@
-{
-  "name": "selection",
-  "purpose": "循环内计算 g(a)",
-  "source": "TODO：题目来源、教材/年份/链接；新题还需写独立核验方式",
-  "created_at": "YYYY-MM-DD",
-  "contaminated": false,
-  "notes": "sealed_id / ood / probes 不得写 contaminated: true"
-}
