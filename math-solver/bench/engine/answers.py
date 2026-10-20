@@ -62,6 +62,44 @@ def verification_text(output):
     return "；".join(parts)
 
 
+def _strip_parentheticals(text):
+    """去掉解释性括号：全角括号可嵌套，ASCII 括号反复去最内层。
+
+    只用于 value_set 的答案核心提取，不改变区间检查。
+    """
+    text = _strip_option_annotations(text)
+    previous = None
+    while previous != text:
+        previous = text
+        text = re.sub(r"\([^()]*\)", "", text)
+    return text
+
+
+def answer_core_text(text):
+    """从带解释的 answer 字段里提取真正的答案片段。
+
+    处理四类常见噪声：
+    - 括号里的验证/列举：``n=14（169^2）``；
+    - 中文说明：``，此时/其中/对应/即/分别/因为/所以``；
+    - 单个等式的右端：``f(3)=6``、``n=-675,1,2025``；
+    - 引导语：``概率为 15/38``、``余数为 348``。
+
+    多个等号（如 ``x=1或x=2``）不取右端，保留全部数值。
+    """
+    text = clean(text)
+    text = _strip_parentheticals(text)
+    text = re.split(r"[,，](?:此时|其中|对应|即|分别|因为|所以)", text,
+                    maxsplit=1)[0]
+    text = re.split(r"[;。]", text, maxsplit=1)[0]
+    if text.count("=") == 1:
+        text = text.split("=", 1)[1]
+    for separator in ("为", "是"):
+        if separator in text:
+            text = text.rsplit(separator, 1)[1]
+            break
+    return text
+
+
 def numbers_in(text):
     text = norm_light(text)
     text = text.replace("²", "^2").replace("³", "^3")
@@ -85,17 +123,57 @@ def numbers_in(text):
 
 def check_value_set(spec, output):
     expected = {Fraction(str(value)) for value in spec["values"]}
-    actual = numbers_in(answer_text(output))
+    actual = numbers_in(answer_core_text(answer_text(output)))
     ok = actual == expected
     return ok, f"expected={sorted(map(str, expected))} actual={sorted(map(str, actual))}"
 
 
+def _strip_option_annotations(text):
+    """去掉选项后的全角括号注释，允许注释里嵌套 ASCII 括号。
+
+    ``B（g(-1/2)=0）、C（f(-1)=f(4)）`` → ``B、C``。
+    """
+    out = []
+    depth = 0
+    for char in text:
+        if depth:
+            if char == "（":
+                depth += 1
+            elif char == "）":
+                depth -= 1
+            continue
+        if char == "（":
+            depth = 1
+            continue
+        out.append(char)
+    return "".join(out)
+
+
+def selection_letters(text):
+    """答案整体是选项列表（可带括号注释）时返回字母串，否则返回空串。
+
+    例：``B（g(-1/2)=0）、C（f(-1)=f(4)）`` → ``bc``；
+    ``ABD`` / ``A、B、D`` → ``abd``。括号里的内容不参与选项判断，
+    避免把解释式中的字母当成选项。
+    """
+    normalized = norm_light(text).rstrip("。.;,，")
+    core = _strip_option_annotations(normalized)
+    if not core or not re.fullmatch(r"[a-h](?:[,;/]?[a-h])*", core):
+        return ""
+    return "".join(sorted(set(re.sub(r"[,;/]", "", core))))
+
+
 def check_text_forms(spec, output):
     text = norm_light(answer_text(output))
+    letters = selection_letters(answer_text(output))
     missing = []
     for group in spec["groups"]:
-        if not any(norm_light(option) in text for option in group):
-            missing.append(group)
+        if any(norm_light(option) in text for option in group):
+            continue
+        # 选项字母等价：B（结论）、C（结论） 与 BC 视为同一答案。
+        if letters and any(selection_letters(option) == letters for option in group):
+            continue
+        missing.append(group)
     return not missing, f"missing={missing}" if missing else "all groups matched"
 
 
