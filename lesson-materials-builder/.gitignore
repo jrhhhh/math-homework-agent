@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 运行产物：课件、配图、导出图
+out/
+runs/
+*.pptx
+!assets/base.pptx
+*.log
+
+# 盲评 / 打包产物
+blind/slides/
+blind/decks/
+*.zip
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 仓库根 .gitignore 把 *.pdf 当作 LaTeX 产物挡掉了；语料里的 .pdf 是**输入**，
+# 用来测「读 PDF 教案」这条路径，必须留下。
+!evals/corpus/*.pdf

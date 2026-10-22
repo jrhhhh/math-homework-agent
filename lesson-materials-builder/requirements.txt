@@ -1,0 +1,14 @@
+# 核心依赖
+python-pptx>=1.0
+matplotlib>=3.7
+Pillow>=9.0
+numpy>=1.24
+
+# 可选：读 .pdf 教案（SKILL.md 第 1 步那条命令）
+# pypdf>=3.0
+
+# 可选：字形覆盖检查（没有时 verify 会明说「字形覆盖未检查」，不静默放行）
+# fontTools>=4.0
+
+# 可选：部分三维配图
+# sympy>=1.12

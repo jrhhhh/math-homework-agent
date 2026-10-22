@@ -1,6 +1,8 @@
-# 高中数学作业三 Skill 项目
+# 高中数学作业与教学课件 Skill 项目
 
-一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Solver**（`math-solver`）从零求解高中数学题：解析题意、选择高中范围内的方法、分步推导并独立核验，输出可核验的解答与结构化教学备注；**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
+一个供支持本地 Skill 的智能体使用的高中数学协作项目。**skill：Math Solver**（`math-solver`）从零求解高中数学题：解析题意、选择高中范围内的方法、分步推导并独立核验，输出可核验的解答与结构化教学备注；**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
+
+**skill：Lesson Materials Builder**（`lesson-materials-builder`）是**教师侧**技能：把初高中教案草稿（`.docx` / `.pdf`）转成可放映的课件（`.pptx`）。它按学生的**认知台阶**重新切页，而不是把教案的小节标题搬成幻灯片标题；自检标准是「学生扫一眼某页，能不能说出这页要我干什么」。**它不判学生作业、不求解题目**，与上面三个技能没有调度依赖，可以单独安装。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
@@ -53,6 +55,14 @@
 
 与 `$math-error-diagnosis` 的分界靠输入，不靠问题：**正式解答**走诊断，**草稿**走这里；**已判错的选择/填空题**先走分诊，确认后再走诊断。
 
+教师备课时用 `lesson-materials-builder`：给它教案文件，它按认知台阶重新切页并输出课件。
+
+```text
+请使用 lesson-materials-builder 把这份教案做成课件。（附上 教案.docx）
+```
+
+它产出 `课件.md`（内容源）与 `课件.pptx`（成品）；改内容就改 markdown 重新渲染，不必在 PowerPoint 里返工。安装与依赖见 [lesson-materials-builder/README.md](lesson-materials-builder/README.md)，回归测试跑 `python scripts/bench.py regress`（36 条）。它**只做课件**，不判学生作业、不求解题目。
+
 默认模式是过程检查。可要求“完整纠正”“只给一个提示，别告诉答案”或“仅核对答案”；只有最终答案时不会推断未提供的过程。默认使用高中方法，不擅自扣分，参考答案也需核验。
 
 ## 文件结构
@@ -78,12 +88,19 @@ draft-coach/
   bench/                   当前技能版面习惯基准（24 条正面能力案例 + 确定性评分 + 夹具）
   evals/                   旧版「查错」基准，已冻结（见 evals/FROZEN.md）
   example/                 习惯卡、反例卡、整页分块单与三份 refuse 输出
+lesson-materials-builder/
+  SKILL.md                 教案 → 课件入口、触发描述、六步流程与版式规则
+  references/              `课件.md` 语法、版式规则、配图做法
+  scripts/                 build_pptx（渲染）、verify_pptx（独立复核）、make_figures（出图）、
+                           bench（回归 + 产出层评估）、blind（盲评）、lint_privacy（隐私扫描）
+  assets/base.pptx         默认 16:9 底版
+  evals/                   回归夹具、评估语料与方法论记录（含已知局限）
 docs/                      诊断案例、验证范围与说明
 tests/                     草稿门层报告测试与固定案例计算脚本
-AGENTS.md                  三个技能的调用与反馈规则
+AGENTS.md                  四个技能的调用与反馈规则
 ```
 
-优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-solver`、`$math-error-diagnosis`、`$draft-coach` 调用名保持一致。
+优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-solver`、`$math-error-diagnosis`、`$draft-coach`、`lesson-materials-builder` 调用名保持一致。
 
 ## 复现计算核验
 

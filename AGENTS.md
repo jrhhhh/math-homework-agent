@@ -8,6 +8,8 @@
 - skill：**Math Error Diagnosis**（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
 - skill：**Draft Coach**（`draft-coach/SKILL.md`）：只看学生**草稿**的版面习惯——分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区——输出六维观察 + 1–3 条习惯 + 下一道题可执行的动作。重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；**草稿允许随意，不评工整**。**不判断计算对错、不找错因、不给最小修改。** 不诊断知识漏洞、不贴标签、不给整题重写、不出变式题、不排复习计划。学生发来整张草稿纸、问「大概做了几道题」时，走 `partition` 出口：只按版面分块，给估计数与范围；**块数不等于题目数**，归属需学生确认。
 
+- skill：**Lesson Materials Builder**（`lesson-materials-builder/SKILL.md`）：**教师侧**技能，把初高中教案草稿（`.docx` / `.pdf`）转成可放映的课件（`.pptx`）。核心是按学生的**认知台阶**重新切页，而不是把教案的小节标题搬成幻灯片标题；自检标准是「学生扫一眼某页，能不能说出这页要我干什么」。产出 `课件.md`（内容源）与 `课件.pptx`（成品），配图由 `scripts/make_figures.py` 生成。**不判学生作业、不求解题目、不做手写转写**，与上面三个技能没有调度依赖，可以单独安装。
+
 未包含 presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。本项目**不内置任何手写转写（OCR）技能**：把草稿照片变成文字不归这套技能管，也不许由助手自己看图代劳——原因见 [draft-coach/references/image-intake.md](draft-coach/references/image-intake.md) 第一条。外部 OCR 若由宿主提供，只能当版面/内容的线索，**不作证据**；学生确认之前，它不进入任何结论。
 
 ## 调度
@@ -18,6 +20,8 @@
 4. 用户只要求检查时完成检查即可。用户要求提示时持续一次一个提示，不因自动调度泄露解答。
 5. 只有结论正确、完整过程成立、核验无未解决项、来源为学生，而且用户要求优化时：**当前项目不提供优化技能**，如实说明暂不提供优化卡。不得用 math-solver 重做一遍冒充优化，也不得自行编造优化方向。
 6. 学生改变题目、参数、过程或提交新方法后旧检查失效，重新调用诊断；不能把旧解答的正确性状态转给新解答，也不能把 math-solver 的答案当作学生的过程状态。
+
+7. 输入是**教案 / 教学设计草稿**（`.docx` / `.pdf`），用户要的是课件、幻灯片或备课材料 → 调用 lesson-materials-builder。它**不在求解 / 诊断 / 草稿链里**：产出是给教师放映的课件，不评价学生作业，也不替代任何一道题的求解或检查。
 
 问题有多个小问时按题号绑定各自题目、过程与状态，检查依赖，不用某一小问通过替代整套作业核验。math-solver 求解多小问时同样逐问给状态，不因一问通过就声称整题完成。
 
@@ -51,7 +55,7 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；math-solver 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s math-solver/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留三个技能（math-solver / math-error-diagnosis / draft-coach）的职责边界和各自输出契约；math-solver 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。调度规则不是自动服务：宿主仍需执行实际数学审查。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；math-solver 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s math-solver/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。lesson-materials-builder 的回归测试在技能目录内跑 `python scripts/bench.py regress`（36 条断言，秒级、零模型成本）；改了 `build_pptx.py` / `verify_pptx.py` 的任何判据后必须重跑，**不得靠删检查或放宽夹具让绿**。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留四个技能（math-solver / math-error-diagnosis / draft-coach / lesson-materials-builder）的职责边界和各自输出契约；math-solver 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。调度规则不是自动服务：宿主仍需执行实际数学审查。
 
 `draft-coach/evals/` 是旧版「查错」基准，已冻结（见 `draft-coach/evals/FROZEN.md`），不要在当前技能上运行；当前的版面习惯基准在 `draft-coach/bench/`，评的是已保存输出，不调用模型。
 
