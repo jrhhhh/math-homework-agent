@@ -1,0 +1,7 @@
+{
+  "configured_model": "gpt-6.1-sol",
+  "configured_reasoning_effort": "low",
+  "config_sha256": "4d4f0b2316d4e963f1fad92ac4efa32e325396adfeea1d00065d31516b0c0de0",
+  "server_model_snapshot": "not exposed by CLI events",
+  "pricing": "not available; no monetary estimate fabricated"
+}

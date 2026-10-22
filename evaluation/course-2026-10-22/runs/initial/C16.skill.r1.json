@@ -1,0 +1,16 @@
+{
+  "case_id": "C16",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "check",
+    "problem": "已知事件 A、B 互斥，P(A)=0.2，P(B)=0.3，求 P(A∩B)。",
+    "solution": "因为 A、B 互斥，所以 A、B 独立。\n故 P(A∩B)=0.2×0.3=0.06。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:14.043441+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:19.735581+00:00"
+}

@@ -1,0 +1,55 @@
+{
+  "case_id": "C15",
+  "input": {
+    "mode": "check",
+    "problem": "已知 a>0，证明 a+4/a≥4。",
+    "solution": "因为 a>0，故 (√a-2/√a)²≥0。\n展开得到 a+4/a-4≥0。\n所以 a+4/a≥4，当且仅当 a=2 时等号成立。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "过程成立。因 a>0，所用根式和分式均有意义；展开平方得 a+4/a-4≥0，因此 a+4/a≥4。等号成立当且仅当 √a=2/√a，即 a=2。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "",
+        "evidence": [
+          "a>0 保证 √a 存在且不为零。",
+          "(√a-2/√a)²=a-4+4/a≥0。",
+          "平方为零当且仅当 √a=2/√a；两边乘以 √a，得 a=2，满足题设。"
+        ]
+      }
+    },
+    "B": {
+      "reply": "过程成立。因 a>0，根式及分母均有意义；平方展开为 a+4/a−4≥0，从而得到所证不等式。等号成立当且仅当 √a=2/√a，即 a=2，等号条件也正确。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "无需修改。",
+        "hint": "",
+        "evidence": [
+          "a>0 保证 √a 有意义且不为零，因此所用表达式均有定义。",
+          "(√a−2/√a)²=a−4+4/a≥0，移项即得 a+4/a≥4。",
+          "平方等于零当且仅当 √a=2/√a；两边乘以 √a 得 a=2，且该值满足 a>0。"
+        ]
+      }
+    },
+    "C": {
+      "reply": "证明正确。平方项非负，展开后即可得到所证不等式；等号成立当且仅当 √a=2/√a，即 a=2。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "",
+        "evidence": [
+          "a>0，故 √a 和 2/√a 均有定义，且 (√a-2/√a)²≥0。",
+          "展开平方得 a-4+4/a≥0，因此 a+4/a≥4。",
+          "等号成立当且仅当 √a-2/√a=0；两边乘以 √a>0，得 a=2。"
+        ]
+      }
+    }
+  }
+}

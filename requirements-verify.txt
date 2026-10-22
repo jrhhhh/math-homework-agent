@@ -1,0 +1,2 @@
+# Optional exact arithmetic backend. The web server itself uses stdlib only.
+sympy>=1.12,<2

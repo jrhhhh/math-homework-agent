@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C15\",\n  \"input\": {\n    \"mode\": \"check\",\n    \"problem\": \"已知 a>0，证明 a+4/a≥4。\",\n    \"solution\": \"因为 a>0，故 (√a-2/√a)²≥0。\\n展开得到 a+4/a-4≥0。\\n所以 a+4/a≥4，当且仅当 a=2 时等号成立。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"过程成立。因 a>0，所用根式和分式均有意义；展开平方得 a+4/a-4≥0，因此 a+4/a≥4。等号成立当且仅当 √a=2/√a，即 a=2。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"a>0 保证 √a 存在且不为零。\",\n          \"(√a-2/√a)²=a-4+4/a≥0。\",\n          \"平方为零当且仅当 √a=2/√a；两边乘以 √a，得 a=2，满足题设。\"\n        ]\n      }\n    },\n    \"B\": {\n      \"reply\": \"过程成立。因 a>0，根式及分母均有意义；平方展开为 a+4/a−4≥0，从而得到所证不等式。等号成立当且仅当 √a=2/√a，即 a=2，等号条件也正确。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"无需修改。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"a>0 保证 √a 有意义且不为零，因此所用表达式均有定义。\",\n          \"(√a−2/√a)²=a−4+4/a≥0，移项即得 a+4/a≥4。\",\n          \"平方等于零当且仅当 √a=2/√a；两边乘以 √a 得 a=2，且该值满足 a>0。\"\n        ]\n      }\n    },\n    \"C\": {\n      \"reply\": \"证明正确。平方项非负，展开后即可得到所证不等式；等号成立当且仅当 √a=2/√a，即 a=2。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"a>0，故 √a 和 2/√a 均有定义，且 (√a-2/√a)²≥0。\",\n          \"展开平方得 a-4+4/a≥0，因此 a+4/a≥4。\",\n          \"等号成立当且仅当 √a-2/√a=0；两边乘以 √a>0，得 a=2。\"\n        ]\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"由 a>0，√a>0，相关根式和分式均有定义。(√a−2/√a)²=a−4+4/a≥0，移项得到 a+4/a≥4。等号成立当且仅当 √a−2/√a=0，乘以 √a 得 a=2；代入确实取等。学生证明与等号条件均正确，无首错。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出正确核验了定义域、平方展开及等号条件，判定正确且首错为空符合学生过程；反馈具体说明了每一步成立的依据。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出中的展开、移项和等号推导均正确；无需修改的结论符合实际，并具体解释了定义域与取等条件。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正文与证据共同准确核验了学生证明，未虚构错误；明确给出平方非负、正确展开和取等条件的依据，能帮助学生确认方法及关键检查点。\"\n    }\n  }\n}",
+    "elapsed_seconds": 26.692,
+    "usage": [
+      {
+        "input_tokens": 28311,
+        "cached_input_tokens": 12544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 385,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a16439-5ba1-75d1-95f7-01868334e59e"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"由 a>0，√a>0，相关根式和分式均有定义。(√a−2/√a)²=a−4+4/a≥0，移项得到 a+4/a≥4。等号成立当且仅当 √a−2/√a=0，乘以 √a 得 a=2；代入确实取等。学生证明与等号条件均正确，无首错。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出正确核验了定义域、平方展开及等号条件，判定正确且首错为空符合学生过程；反馈具体说明了每一步成立的依据。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出中的展开、移项和等号推导均正确；无需修改的结论符合实际，并具体解释了定义域与取等条件。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正文与证据共同准确核验了学生证明，未虚构错误；明确给出平方非负、正确展开和取等条件的依据，能帮助学生确认方法及关键检查点。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 28311,
+          "cached_input_tokens": 12544,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 385,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "由 a>0，√a>0，相关根式和分式均有定义。(√a−2/√a)²=a−4+4/a≥0，移项得到 a+4/a≥4。等号成立当且仅当 √a−2/√a=0，乘以 √a 得 a=2；代入确实取等。学生证明与等号条件均正确，无首错。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整输出正确核验了定义域、平方展开及等号条件，判定正确且首错为空符合学生过程；反馈具体说明了每一步成立的依据。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整输出中的展开、移项和等号推导均正确；无需修改的结论符合实际，并具体解释了定义域与取等条件。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正文与证据共同准确核验了学生证明，未虚构错误；明确给出平方非负、正确展开和取等条件的依据，能帮助学生确认方法及关键检查点。"
+      }
+    }
+  }
+}

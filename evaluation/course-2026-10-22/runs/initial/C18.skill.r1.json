@@ -1,0 +1,16 @@
+{
+  "case_id": "C18",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "check",
+    "problem": "已知 a₁=2，且对所有正整数 n，aₙ₊₁-aₙ=3，求 aₙ。",
+    "solution": "由相邻两项差为3，得到 aₙ=3n+2。\n所以 a₁=5。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:36.721460+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:47.843014+00:00"
+}

@@ -1,0 +1,16 @@
+{
+  "case_id": "C23",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "answer_check",
+    "problem": "解实数方程 x²=16。",
+    "solution": "x=4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:20:24.644272+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:20:41.404193+00:00"
+}

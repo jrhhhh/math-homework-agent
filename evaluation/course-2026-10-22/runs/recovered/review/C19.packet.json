@@ -1,0 +1,55 @@
+{
+  "case_id": "C19",
+  "input": {
+    "mode": "hint",
+    "problem": "解实数方程 (x-4)(x+2)=0。",
+    "solution": "两边约去 x+2，得到 x-4=0。\n所以只有 x=4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 1,
+          "quote": "两边约去 x+2",
+          "reason": "约去因子需要该因子非零，原题尚未保证 x+2≠0。"
+        },
+        "minimal_fix": "",
+        "hint": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+        "evidence": []
+      }
+    },
+    "B": {
+      "reply": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 1,
+          "quote": "两边约去 x+2",
+          "reason": "未检查 x+2 是否为零，直接约去可能遗漏解。"
+        },
+        "minimal_fix": "",
+        "hint": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+        "evidence": []
+      }
+    },
+    "C": {
+      "reply": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 1,
+          "quote": "两边约去 x+2",
+          "reason": "约去一个因式需要先确认它不为零。"
+        },
+        "minimal_fix": "",
+        "hint": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+        "evidence": []
+      }
+    }
+  }
+}

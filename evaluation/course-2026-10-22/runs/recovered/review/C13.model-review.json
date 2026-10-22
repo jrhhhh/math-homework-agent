@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C13\",\n  \"input\": {\n    \"mode\": \"check\",\n    \"problem\": \"证明：若实数 a,b 满足 a+b=6，则 ab≤9。\",\n    \"solution\": \"由 (a-b)²≥0，得 (a+b)²≥4ab。\\n代入 a+b=6，得 36≥4ab，所以 ab≤9。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"过程正确。由 (a-b)²=(a+b)²-4ab≥0，得到 (a+b)²≥4ab；代入 a+b=6，再除以正数4，得 ab≤9。等号当且仅当 a=b=3 时成立。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"无需修改。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"对任意实数 a,b，均有 (a-b)²≥0，且 (a-b)²=(a+b)²-4ab。\",\n          \"由 a+b=6 得 36≥4ab；除以正数4，不等号方向不变，故 ab≤9。\",\n          \"等号成立当且仅当 a=b，结合 a+b=6，得 a=b=3。\"\n        ]\n      }\n    },\n    \"B\": {\n      \"reply\": \"过程成立。由 (a-b)²≥0 得 (a+b)²−4ab≥0，代入 a+b=6 即得 ab≤9。各步变形均有效，且不需要假设 a、b 为正数。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"恒等式 (a+b)²−4ab=(a-b)²≥0 对任意实数 a、b 成立。\",\n          \"代入 a+b=6 得 36≥4ab，两边除以正数4，得 ab≤9。\",\n          \"当且仅当 a=b=3 时等号成立。\"\n        ]\n      }\n    },\n    \"C\": {\n      \"reply\": \"证明正确。由 (a-b)²≥0 可得 (a+b)²≥4ab，再代入 a+b=6，得到 ab≤9，推导完整。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"第1行：(a+b)²-4ab=(a-b)²≥0，因此 (a+b)²≥4ab。\",\n          \"第2行：代入 a+b=6 得 36≥4ab，两边同除以正数4，得 ab≤9。\"\n        ]\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"学生证明正确。恒等式 (a+b)²−4ab=(a−b)²≥0 对任意实数 a,b 成立；由 a+b=6 得 36≥4ab，除以正数4即得 ab≤9。等号当且仅当 a=b=3 时成立。学生各步均有效，无首错，也不需要补充 a,b 为正数的条件。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定原证明成立，first_error 为 null；完整输出中的恒等式、除以正数4及等号条件均正确。解释了原证明关键变形，无需修改的反馈恰当。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确核验全部推导且未虚构错误；指出该方法适用于任意实数、不需正数假设，能帮助理解平方非负方法的适用条件。evidence 中等号条件也正确。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定证明完整、无首错，并逐行给出恒等式和除以正数4的依据。全部字段符合 check 模式，反馈具体且与学生过程一致。\"\n    }\n  }\n}",
+    "elapsed_seconds": 62.448,
+    "usage": [
+      {
+        "input_tokens": 24615,
+        "cached_input_tokens": 8448,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 406,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a16419-bd9b-7da3-818c-5e522aa4f9d2"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"学生证明正确。恒等式 (a+b)²−4ab=(a−b)²≥0 对任意实数 a,b 成立；由 a+b=6 得 36≥4ab，除以正数4即得 ab≤9。等号当且仅当 a=b=3 时成立。学生各步均有效，无首错，也不需要补充 a,b 为正数的条件。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定原证明成立，first_error 为 null；完整输出中的恒等式、除以正数4及等号条件均正确。解释了原证明关键变形，无需修改的反馈恰当。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确核验全部推导且未虚构错误；指出该方法适用于任意实数、不需正数假设，能帮助理解平方非负方法的适用条件。evidence 中等号条件也正确。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定证明完整、无首错，并逐行给出恒等式和除以正数4的依据。全部字段符合 check 模式，反馈具体且与学生过程一致。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 24615,
+          "cached_input_tokens": 8448,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 406,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "学生证明正确。恒等式 (a+b)²−4ab=(a−b)²≥0 对任意实数 a,b 成立；由 a+b=6 得 36≥4ab，除以正数4即得 ab≤9。等号当且仅当 a=b=3 时成立。学生各步均有效，无首错，也不需要补充 a,b 为正数的条件。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确判定原证明成立，first_error 为 null；完整输出中的恒等式、除以正数4及等号条件均正确。解释了原证明关键变形，无需修改的反馈恰当。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确核验全部推导且未虚构错误；指出该方法适用于任意实数、不需正数假设，能帮助理解平方非负方法的适用条件。evidence 中等号条件也正确。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确判定证明完整、无首错，并逐行给出恒等式和除以正数4的依据。全部字段符合 check 模式，反馈具体且与学生过程一致。"
+      }
+    }
+  }
+}

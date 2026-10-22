@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C14\",\n  \"input\": {\n    \"mode\": \"check\",\n    \"problem\": \"解不等式 (x+1)(x-4)>0。\",\n    \"solution\": \"令 y=x-3/2，则原式等于 y²-25/4。\\n所以 y<-5/2 或 y>5/2。\\n得到 x<-1 或 x>4。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"解答正确。配方换元、求解平方不等式以及换回 x 的过程均正确，解集为 {x｜x<-1 或 x>4}。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"第1行：由 y=x-3/2，得 x+1=y+5/2、x-4=y-5/2，因此 (x+1)(x-4)=y²-25/4。\",\n          \"第2行：y²-25/4>0 等价于 |y|>5/2，即 y<-5/2 或 y>5/2。\",\n          \"第3行：代入 y=x-3/2，分别得到 x<-1 或 x>4；原不等式为严格不等式，端点不取。\"\n        ]\n      }\n    },\n    \"B\": {\n      \"reply\": \"过程正确。代入 x=y+3/2，得 (x+1)(x-4)=(y+5/2)(y-5/2)=y²-25/4。因此 y<-5/2 或 y>5/2，换回 x 得 x<-1 或 x>4；严格不等式不包含端点。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"换元后两个因式分别为 y+5/2 和 y-5/2，乘积为 y²-25/4。\",\n          \"y²>25/4 等价于 y<-5/2 或 y>5/2。\",\n          \"由 x=y+3/2，得到解集为 (-∞,-1)∪(4,+∞)。\"\n        ]\n      }\n    },\n    \"C\": {\n      \"reply\": \"过程正确。配方后不等式为 y²>25/4，解得 y<-5/2 或 y>5/2；代入 y=x-3/2，得到 x<-1 或 x>4。原不等式为严格不等式，不包含端点。\",\n      \"result\": {\n        \"judgment\": \"correct\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"(x+1)(x-4)=x²-3x-4=(x-3/2)²-25/4，换元正确。\",\n          \"y²>25/4 等价于 y<-5/2 或 y>5/2。\",\n          \"由 x=y+3/2 得 x<-1 或 x>4；x=-1、4 时原式为0，均不取。\"\n        ]\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"原不等式的零点为-1、4，两个因式同号时乘积为正，故解集为(-∞,-1)∪(4,+∞)。核验学生换元：y=x-3/2时，x+1=y+5/2，x-4=y-5/2，乘积为y²-25/4；因此y<-5/2或y>5/2，换回得到x<-1或x>4。学生各步均正确，没有首错，严格不等式不取端点。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确认可学生的换元解法，first_error为null符合无错误的事实；reply及evidence逐步核验换元、平方不等式和还原，并解释端点不取，反馈具体且符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确计算换元后的两个因式、y的范围及最终解集，未误判非常规解法；first_error为null恰当，完整输出均依据学生已有过程，端点说明有助于确认解集。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"配方恒等式、平方不等式及换回x的计算均正确，正确判断无首错；reply和result一致，补充以端点代入检验说明严格不等式的边界，符合check要求且有教学帮助。\"\n    }\n  }\n}",
+    "elapsed_seconds": 27.893,
+    "usage": [
+      {
+        "input_tokens": 28224,
+        "cached_input_tokens": 26240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 461,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a16438-ef31-7ee0-8bbe-b61c8c304de1"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"原不等式的零点为-1、4，两个因式同号时乘积为正，故解集为(-∞,-1)∪(4,+∞)。核验学生换元：y=x-3/2时，x+1=y+5/2，x-4=y-5/2，乘积为y²-25/4；因此y<-5/2或y>5/2，换回得到x<-1或x>4。学生各步均正确，没有首错，严格不等式不取端点。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确认可学生的换元解法，first_error为null符合无错误的事实；reply及evidence逐步核验换元、平方不等式和还原，并解释端点不取，反馈具体且符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确计算换元后的两个因式、y的范围及最终解集，未误判非常规解法；first_error为null恰当，完整输出均依据学生已有过程，端点说明有助于确认解集。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"配方恒等式、平方不等式及换回x的计算均正确，正确判断无首错；reply和result一致，补充以端点代入检验说明严格不等式的边界，符合check要求且有教学帮助。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 28224,
+          "cached_input_tokens": 26240,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 461,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "原不等式的零点为-1、4，两个因式同号时乘积为正，故解集为(-∞,-1)∪(4,+∞)。核验学生换元：y=x-3/2时，x+1=y+5/2，x-4=y-5/2，乘积为y²-25/4；因此y<-5/2或y>5/2，换回得到x<-1或x>4。学生各步均正确，没有首错，严格不等式不取端点。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确认可学生的换元解法，first_error为null符合无错误的事实；reply及evidence逐步核验换元、平方不等式和还原，并解释端点不取，反馈具体且符合check模式。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确计算换元后的两个因式、y的范围及最终解集，未误判非常规解法；first_error为null恰当，完整输出均依据学生已有过程，端点说明有助于确认解集。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "配方恒等式、平方不等式及换回x的计算均正确，正确判断无首错；reply和result一致，补充以端点代入检验说明严格不等式的边界，符合check要求且有教学帮助。"
+      }
+    }
+  }
+}

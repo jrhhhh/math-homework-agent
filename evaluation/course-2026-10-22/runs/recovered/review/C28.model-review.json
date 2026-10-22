@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C28\",\n  \"input\": {\n    \"mode\": \"draft\",\n    \"problem\": \"\",\n    \"solution\": \"\",\n    \"draft\": \"只有纸张中间的一小块内容：一行算式，下面一个结果框。照片其余位置被裁掉，看不到边距、题号或划改。\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"目前只能看到纸张中间的一行算式和下方结果框，无法评价整张草稿的分区、边距或划改情况。结果框提供了明确的结果落点。下一道题只做一件事：在结果框旁留一行检验区。\",\n      \"result\": {\n        \"scope\": \"仅依据文字描述评价局部版面：可见一行算式及其下方结果框；未见原图、具体字符和原题，其余纸面被裁掉，不判断计算对错，也不推断整张纸的书写习惯。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"不适用\",\n            \"observation\": \"因照片仅保留中间局部，无法评价题号、分区与边距。\",\n            \"evidence\": \"描述明确说其余位置被裁掉，看不到边距或题号。\",\n            \"risk\": \"若把裁切后的局部当作整张纸，可能误判分区与边距安排。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"因未提供算式字符及前后步骤，无法评价步骤分行与密度是否合适。\",\n            \"evidence\": \"可见内容仅描述为一行算式，未呈现具体运算步骤。\",\n            \"risk\": \"若这一行包含需要追溯的多个变形，可能难以逐步复核。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"不适用\",\n            \"observation\": \"因裁切范围内没有可辨认的划改信息，无法评价划改与自纠方式。\",\n            \"evidence\": \"描述说明看不到划改，裁切区域之外的情况未知。\",\n            \"risk\": \"若划改位于照片之外，可能遗漏已有的自纠痕迹。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"因缺少原题及完整草稿，无法判断是否需要区分多条路径。\",\n            \"evidence\": \"局部只呈现一行算式和结果框，没有提供路径标记信息。\",\n            \"risk\": \"若其他路径位于裁切区域之外，可能无法追溯结果来自哪条路径。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"不适用\",\n            \"observation\": \"因缺少原题且未提供图形信息，无法判断图形及标注是否适用。\",\n            \"evidence\": \"描述仅涉及算式与结果框，没有呈现图形或标注。\",\n            \"risk\": \"若原题需要结合图形复核，可能因图形未入镜而缺少对应依据。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"局部已有明确的结果落点，但无法确认是否另有检验区。\",\n            \"evidence\": \"一行算式下方有一个结果框，其他纸面未呈现。\",\n            \"risk\": \"若检验内容没有固定落点，可能在回看时难以找到核验依据。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"保留明确的结果落点\",\n            \"impact\": \"结果框有助于回看时快速定位最终记录，但局部照片不足以确认检验记录的位置。\",\n            \"training\": \"下一道题在结果框旁留一行，并标上“检验”。\"\n          }\n        ],\n        \"next_step\": \"下一道题在结果框旁留一行并标上“检验”。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"image_description\"\n      }\n    },\n    \"B\": {\n      \"reply\": \"结果框让这小块草稿的结果位置比较明确，这是可保留的习惯。其余区域被裁掉，不能据此判断整张纸的分区、划改或检验习惯，也不能认定这些区域不存在。下一道题只做一件事：拍照时保留整张草稿纸。本次仅依据你的文字描述观察版面，不判断计算对错；脚本未运行，未验证。\",\n      \"result\": {\n        \"scope\": \"仅依据学生文字描述，观察纸张中间的一行算式及其下方结果框；未查看照片、未读取手写字符、未判断计算对错。未提供原题，裁切区域的边距、题号、划改、多路径、图形及检验区均无法确认。结构门与越界审计脚本未运行，未验证。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"不适用\",\n            \"observation\": \"仅描述了中间的小块内容，无法判断整页分区与边距。\",\n            \"evidence\": \"描述明确说明其余位置被裁掉，看不到边距或题号。\",\n            \"risk\": \"若依据这块局部判断整页分区，可能把裁切造成的信息缺失当成书写习惯。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"只知道有一行算式，缺少步骤布局信息，无法判断分行与密度是否合适。\",\n            \"evidence\": \"可见区域被描述为一行算式及下方结果框，未说明行内步骤数量。\",\n            \"risk\": \"若一行中实际包含多个需要回看的步骤，可能难以逐步核对。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"不适用\",\n            \"observation\": \"裁切后的描述无法提供划改及补写情况，不能判断自纠习惯。\",\n            \"evidence\": \"学生说明看不到划改，且照片其余位置被裁掉。\",\n            \"risk\": \"若划改位于裁切区域，可能遗漏已经回看并补写的痕迹。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"没有提供多条路径及其标记的信息，无法判断路径区分习惯。\",\n            \"evidence\": \"描述仅涉及中间一行算式与下方结果框，没有其他区域信息。\",\n            \"risk\": \"若其他尝试位于裁切区域，可能无法确认它们与当前内容的关系。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"不适用\",\n            \"observation\": \"未提供原题或图形描述，无法判断是否需要图形及其标注情况。\",\n            \"evidence\": \"局部描述只提到算式和结果框，没有图形或标注的位置说明。\",\n            \"risk\": \"若相关图形位于裁切区域，可能无法观察图与推导之间的对应关系。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"下方结果框使结果位置明确，但留白与检验区的信息不足。\",\n            \"evidence\": \"学生明确描述一行算式下面有一个结果框，其余位置被裁掉。\",\n            \"risk\": \"若检验记录位于裁切区域，可能无法从这张局部照片追溯核对过程。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"保留整页版面记录\",\n            \"impact\": \"局部裁切可能使分区、划改及检验痕迹无法被观察。\",\n            \"training\": \"下一道题拍照时，让整张草稿纸的四条纸边都进入画面。\"\n          }\n        ],\n        \"next_step\": \"下一道题拍照时，让整张草稿纸的四条纸边都进入画面。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"image_description\"\n      }\n    },\n    \"C\": {\n      \"reply\": \"结果单独画框，是便于回看定位的积极信号。当前描述只覆盖纸张中间的一小块，无法判断整页分区、边距、划改或检验区，也不能据此认为这些区域不存在。下一道题只做一件事：在结果框右侧留出两行空白供核对。本次只依据你的文字描述观察版面，不判断计算对错；脚本未运行，结果未验证。\",\n      \"result\": {\n        \"scope\": \"仅依据学生文字描述分析纸张中间可见小块：一行算式及下方结果框；未查看照片、未读取手写字符，不判断计算对错。其余纸面被裁掉，边距、题号、划改、多路径、图形及检验区均无法确认；未提供原题。结构门与越界审计脚本均未运行，未验证。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"不适用\",\n            \"observation\": \"可见区域过小，无法判断整页分区与边距。\",\n            \"evidence\": \"描述明确说明只有纸张中间一小块，其余位置被裁掉。\",\n            \"risk\": \"若题目边界位于裁切区域之外，可能无法从当前小块确认内容归属。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"只知道有一行算式，缺少行内密度和步骤布局描述，无法判断是否拥挤。\",\n            \"evidence\": \"可见部分被描述为一行算式，下方另有结果框。\",\n            \"risk\": \"若该行包含多次需要回看的变换，可能难以逐段定位核对。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"不适用\",\n            \"observation\": \"描述说明看不到划改，无法判断划改与补写习惯。\",\n            \"evidence\": \"照片其余位置被裁掉，文字描述明确说看不到划改。\",\n            \"risk\": \"若划改与补写位于裁切区域之外，可能遗漏已有的自纠痕迹。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"未提供其他尝试区域或路径标记的信息，无法判断多路径区分情况。\",\n            \"evidence\": \"描述仅包含中间一行算式和下方结果框，未涉及路径标记。\",\n            \"risk\": \"若其他尝试位于裁切区域之外，可能无法确认各条路径之间的关系。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"不适用\",\n            \"observation\": \"未提供图形或原题信息，无法判断图形使用与标注情况。\",\n            \"evidence\": \"当前小块只描述了算式行和结果框，其他纸面不可见。\",\n            \"risk\": \"若相关图形位于裁切区域之外，可能无法核对图形与推导区域的对应关系。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"结果在算式下方单独画框，便于回看定位，但检验区是否存在无法确认。\",\n            \"evidence\": \"学生描述一行算式下面有一个结果框。\",\n            \"risk\": \"若结果框周围没有可用留白，可能不便就近补充核对记录。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"保留结果框旁的核对留白\",\n            \"impact\": \"结果框已有清楚的定位作用，旁边留白可方便补充核对记录。\",\n            \"training\": \"下一道题在结果框右侧留出两行空白供核对。\"\n          }\n        ],\n        \"next_step\": \"下一道题在结果框右侧留出两行空白供核对。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"text_reconstruction\"\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"未提供原题、算式字符或学生推理，不能核验计算正确性或定位首错。版面证据仅支持：局部有一行算式，其下有结果框，结果位置较明确；其余部分因裁切不可见，不能据此判断整页分区、边距、划改、检验区或长期书写习惯。建议增加核对留白可以作为可选训练，不能当作已经发现的缺陷。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出均限于局部版面，明确承认缺少字符、原题与整页信息，没有推断计算或长期能力。结果框便于定位有直接依据；留一行检验区是具体可执行的建议，未断言原草稿没有检验区。\"\n    },\n    \"B\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"明确区分裁切不可见与实际不存在，没有编造计算过程或书写缺陷。让四条纸边进入画面的建议直接针对本次证据不足，有助于下一次获得可评价的完整版面；完整输出未越出草稿评价范围。\"\n    },\n    \"C\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": false,\n      \"teaching_useful\": true,\n      \"reason\": \"正文与各维度评价均尊重裁切造成的信息边界，没有推断计算或长期能力；结果框右侧留两行供核对的建议具体可执行。但完整输出中的draft_source标为text_reconstruction，与输入实际提供的照片版面文字描述不符，应标为image_description。\"\n    }\n  }\n}",
+    "elapsed_seconds": 33.443,
+    "usage": [
+      {
+        "input_tokens": 30278,
+        "cached_input_tokens": 26240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 553,
+        "reasoning_output_tokens": 77
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643e-44e9-75d1-bdc1-0ba6a898b1d9"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"未提供原题、算式字符或学生推理，不能核验计算正确性或定位首错。版面证据仅支持：局部有一行算式，其下有结果框，结果位置较明确；其余部分因裁切不可见，不能据此判断整页分区、边距、划改、检验区或长期书写习惯。建议增加核对留白可以作为可选训练，不能当作已经发现的缺陷。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出均限于局部版面，明确承认缺少字符、原题与整页信息，没有推断计算或长期能力。结果框便于定位有直接依据；留一行检验区是具体可执行的建议，未断言原草稿没有检验区。\"\n    },\n    \"B\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"明确区分裁切不可见与实际不存在，没有编造计算过程或书写缺陷。让四条纸边进入画面的建议直接针对本次证据不足，有助于下一次获得可评价的完整版面；完整输出未越出草稿评价范围。\"\n    },\n    \"C\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": false,\n      \"teaching_useful\": true,\n      \"reason\": \"正文与各维度评价均尊重裁切造成的信息边界，没有推断计算或长期能力；结果框右侧留两行供核对的建议具体可执行。但完整输出中的draft_source标为text_reconstruction，与输入实际提供的照片版面文字描述不符，应标为image_description。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 30278,
+          "cached_input_tokens": 26240,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 553,
+          "reasoning_output_tokens": 77
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "未提供原题、算式字符或学生推理，不能核验计算正确性或定位首错。版面证据仅支持：局部有一行算式，其下有结果框，结果位置较明确；其余部分因裁切不可见，不能据此判断整页分区、边距、划改、检验区或长期书写习惯。建议增加核对留白可以作为可选训练，不能当作已经发现的缺陷。",
+    "ratings": {
+      "A": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整输出均限于局部版面，明确承认缺少字符、原题与整页信息，没有推断计算或长期能力。结果框便于定位有直接依据；留一行检验区是具体可执行的建议，未断言原草稿没有检验区。"
+      },
+      "B": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "明确区分裁切不可见与实际不存在，没有编造计算过程或书写缺陷。让四条纸边进入画面的建议直接针对本次证据不足，有助于下一次获得可评价的完整版面；完整输出未越出草稿评价范围。"
+      },
+      "C": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": false,
+        "teaching_useful": true,
+        "reason": "正文与各维度评价均尊重裁切造成的信息边界，没有推断计算或长期能力；结果框右侧留两行供核对的建议具体可执行。但完整输出中的draft_source标为text_reconstruction，与输入实际提供的照片版面文字描述不符，应标为image_description。"
+      }
+    }
+  }
+}

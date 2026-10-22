@@ -1,0 +1,50 @@
+{
+  "case_id": "C24",
+  "input": {
+    "mode": "answer_check",
+    "problem": "已知 a₁=4，aₙ₊₁=aₙ+2，求 a₅。",
+    "solution": "a₅=12。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "答案正确。由递推关系可知每次增加2，从第1项到第5项共增加4次，所以a₅=4+4×2=12。仅提供了答案，无法检查具体解题过程。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "答案无需修改。",
+        "hint": "",
+        "evidence": [
+          "a₁=4，且每相邻两项增加2，因此a₅=a₁+4×2=12，与所给答案一致。"
+        ]
+      }
+    },
+    "B": {
+      "reply": "答案正确。由递推关系可知每项比前一项增加2，因此a₅=4+4×2=12。仅提供了答案，无法检查具体解题过程。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "答案无需修改。",
+        "hint": "",
+        "evidence": [
+          "从第1项到第5项共增加4次，每次增加2，所以a₅=a₁+4×2=4+8=12。"
+        ]
+      }
+    },
+    "C": {
+      "reply": "答案正确，a₅=4+(5−1)×2=12。你只提供了答案，未提供解题过程。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "",
+        "evidence": [
+          "由 aₙ₊₁=aₙ+2 可知，每增加一项，数值增加2。",
+          "从第1项到第5项共增加4次，因此 a₅=4+4×2=12，与所给答案一致。"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "case_id": "C02",
+  "input": {
+    "mode": "solve",
+    "problem": "求函数 f(x)=ln(7-2x)+√(x+3) 的定义域。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "对数的真数必须大于0，平方根的被开方数必须大于或等于0，因此需同时满足：7-2x>0，x+3≥0。解得x<7/2且x≥-3，所以定义域为[-3,7/2)。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数 f(x)=ln(7-2x)+√(x+3) 的定义域。",
+          "topic": "函数的定义域",
+          "subtopics": [
+            "对数的真数条件",
+            "二次根式的被开方数条件",
+            "区间交集"
+          ],
+          "givens": [
+            "f(x)=ln(7-2x)+√(x+3)"
+          ],
+          "variables": [
+            "x：实数自变量"
+          ],
+          "constraints": [
+            "7-2x>0",
+            "x+3≥0"
+          ],
+          "goal": "求使函数表达式有意义的全部实数x",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "分别确定两项有意义的条件，再取交集。",
+          "method": "解一元一次不等式组",
+          "prerequisites": [
+            "对数真数大于0",
+            "实数平方根的被开方数非负"
+          ],
+          "steps": [
+            "列出两项的定义条件",
+            "解不等式组",
+            "核对端点是否包含"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "7-2x>0，即x<7/2。",
+              "justification": "自然对数的真数必须为正；将-2x>-7两边除以负数-2，不等号反向。"
+            },
+            {
+              "step": 2,
+              "expression": "x+3≥0，即x≥-3。",
+              "justification": "实数范围内，二次根式的被开方数必须非负。"
+            },
+            {
+              "step": 3,
+              "expression": "x∈[-3,+∞)∩(-∞,7/2)=[-3,7/2)。",
+              "justification": "函数的两项必须同时有意义，因此取两个取值范围的交集。"
+            }
+          ],
+          "answer": "定义域为[-3,7/2)。",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "检查区间内取值的充分性",
+              "status": "passed",
+              "details": "任意x∈[-3,7/2)，均有x+3≥0且7-2x>0，因此两项都有意义。"
+            },
+            {
+              "name": "检查端点与区间外取值",
+              "status": "passed",
+              "details": "x=-3时真数为13、被开方数为0，可以取到；x=7/2时真数为0，不能取到。x<-3时被开方数为负，x>7/2时真数为负，均不符合条件。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "多个表达式相加时，定义域是各项允许取值范围的交集。",
+          "difficult_steps": [
+            "区分对数条件中的严格大于与根式条件中的大于或等于"
+          ],
+          "common_mistakes": [
+            "将对数真数条件误写为7-2x≥0",
+            "取并集而非交集"
+          ],
+          "prerequisite_explanations": [],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "要使函数有意义，需同时满足：\n① 对数的真数大于0：7-2x>0，解得 x<7/2；\n② 二次根式的被开方数非负：x+3≥0，解得 x≥-3。\n取交集，定义域为 [-3,7/2)。\n核验：x=-3时，真数为13、被开方数为0，可以取到；x=7/2时，真数为0，不能取到。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数 f(x)=ln(7-2x)+√(x+3) 的定义域。",
+          "topic": "函数的定义域",
+          "subtopics": [
+            "对数的真数条件",
+            "二次根式的被开方数条件",
+            "区间交集"
+          ],
+          "givens": [
+            "f(x)=ln(7-2x)+√(x+3)"
+          ],
+          "variables": [
+            "x：函数的自变量"
+          ],
+          "constraints": [
+            "7-2x>0",
+            "x+3≥0"
+          ],
+          "goal": "求使函数表达式在实数范围内有意义的全部x的集合。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "分别求两项有意义的条件，再取交集。",
+          "method": "解一元一次不等式组",
+          "prerequisites": [
+            "对数的真数必须大于0",
+            "二次根式的被开方数必须非负"
+          ],
+          "steps": [
+            "列出对数项与根式项的限制条件",
+            "解不等式并取交集",
+            "检查区间端点及区间外的取值"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "7-2x>0，即x<7/2。",
+              "justification": "自然对数的真数必须大于0；移项后除以负数-2，不等号反向。"
+            },
+            {
+              "step": 2,
+              "expression": "x+3≥0，即x≥-3。",
+              "justification": "实数范围内，二次根式的被开方数必须非负。"
+            },
+            {
+              "step": 3,
+              "expression": "x∈[-3,+∞)∩(-∞,7/2)=[-3,7/2)。",
+              "justification": "两项必须同时有意义，因此取两个取值范围的交集。"
+            }
+          ],
+          "answer": "定义域为[-3,7/2)。",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "检查区间内取值的充分性",
+              "status": "passed",
+              "details": "任意x∈[-3,7/2)，均有x+3≥0且7-2x>0，两项均有意义。"
+            },
+            {
+              "name": "检查定义域端点",
+              "status": "passed",
+              "details": "x=-3时，7-2x=13>0且x+3=0，允许取到；x=7/2时，对数真数为0，不允许取到。"
+            },
+            {
+              "name": "检查区间外取值是否遗漏",
+              "status": "passed",
+              "details": "x<-3时，被开方数为负；x≥7/2时，对数真数非正。因此区间外不存在可取的实数。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "和式的定义域要求每一项同时有意义。",
+          "difficult_steps": [
+            "区分对数真数的严格正条件与根式被开方数的非负条件"
+          ],
+          "common_mistakes": [
+            "把对数的真数条件写成大于等于0",
+            "把两个范围取并集",
+            "除以负数时忘记改变不等号方向"
+          ],
+          "prerequisite_explanations": [
+            "闭端点表示可以取到，开端点表示不能取到。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "对数的真数必须大于0，根号内的数必须大于或等于0，所以需同时满足7-2x>0和x+3≥0，解得-3≤x<7/2。因此定义域为[-3,7/2)。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求函数f(x)=ln(7-2x)+√(x+3)的定义域。",
+          "topic": "函数的定义域",
+          "subtopics": [
+            "对数的真数条件",
+            "二次根式的被开方数条件",
+            "不等式组"
+          ],
+          "givens": [
+            "f(x)=ln(7-2x)+√(x+3)"
+          ],
+          "variables": [
+            "x：函数的自变量"
+          ],
+          "constraints": [
+            "在实数范围内讨论"
+          ],
+          "goal": "确定使函数表达式有意义的所有实数x的集合",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "两项同时有意义时，函数才有意义。",
+          "method": "列出并求解定义域条件的不等式组",
+          "prerequisites": [
+            "自然对数的真数必须为正",
+            "实数范围内平方根的被开方数必须非负"
+          ],
+          "steps": [
+            "分别列出对数项与根式项的限制条件",
+            "求两条件的交集",
+            "检查区间端点"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "7-2x>0，即x<7/2。",
+              "justification": "自然对数的真数必须大于0；移项后除以负数-2，不等号反向。"
+            },
+            {
+              "step": 2,
+              "expression": "x+3≥0，即x≥-3。",
+              "justification": "实数范围内平方根的被开方数必须大于或等于0，两边减去3。"
+            },
+            {
+              "step": 3,
+              "expression": "x∈(-∞,7/2)∩[-3,+∞)=[-3,7/2)。",
+              "justification": "函数是两项之和，两项必须同时有意义，因此取两个取值集合的交集。"
+            }
+          ],
+          "answer": "定义域为[-3,7/2)。",
+          "conditions": [
+            "在实数范围内"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "端点代入检查",
+              "status": "passed",
+              "details": "x=-3时，真数为13，被开方数为0，两项均有意义，故包含左端点；x=7/2时，真数为0，对数无意义，故不包含右端点。"
+            },
+            {
+              "name": "区间内外检查",
+              "status": "passed",
+              "details": "当-3≤x<7/2时，x+3≥0且7-2x>0，两项均有意义；当x<-3时，被开方数为负；当x≥7/2时，对数真数非正。因此没有遗漏或多取。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "把每个组成部分的限制条件同时满足，取交集。",
+          "difficult_steps": [
+            "区分对数真数严格大于0与被开方数大于或等于0",
+            "正确确定区间端点的取舍"
+          ],
+          "common_mistakes": [
+            "将对数真数条件误写为7-2x≥0",
+            "将根式条件误写为x+3>0",
+            "把两个条件取并集"
+          ],
+          "prerequisite_explanations": [
+            "ln(0)没有意义，但√0=0有意义。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

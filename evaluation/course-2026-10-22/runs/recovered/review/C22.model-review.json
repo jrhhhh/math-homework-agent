@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C22\",\n  \"input\": {\n    \"mode\": \"hint\",\n    \"problem\": \"数列 aₙ=1/[n(n+1)]，求前 n 项和。\",\n    \"solution\": \"aₙ=1/n-1/(n+1)。\\n所以前 n 项和为 1-1/n。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"把前 n 项展开后，检查最后一项中被减去的分数是否写对。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"把前 n 项展开后，检查最后一项中被减去的分数是否写对。\",\n        \"evidence\": []\n      }\n    },\n    \"B\": {\n      \"reply\": \"把裂项后的各项依次写出，注意第 n 项的负项在相消后是否还保留。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 2,\n          \"quote\": \"所以前 n 项和为 1-1/n。\",\n          \"reason\": \"裂项相消时末项的下标处理有误。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"把裂项后的各项依次写出，注意第 n 项的负项在相消后是否还保留。\",\n        \"evidence\": []\n      }\n    },\n    \"C\": {\n      \"reply\": \"把裂项后的求和式写到第 n 项，看看最后留下的负项分母是多少。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 2,\n          \"quote\": \"所以前 n 项和为 1-1/n。\",\n          \"reason\": \"裂项相消时，末尾负项的下标处理有误。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"把裂项后的求和式写到第 n 项，看看最后留下的负项分母是多少。\",\n        \"evidence\": []\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"裂项恒等式1/[n(n+1)]=1/n-1/(n+1)正确。前n项相加得Sₙ=(1-1/2)+(1/2-1/3)+…+(1/n-1/(n+1))=1-1/(n+1)。学生首错在第2步：相消后保留的末尾负项分母应为n+1，而非n；取n=1也可验证学生结果错误。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定学生答案错误，提示检查最后一项被减去的分数，针对实际错误并提供可执行的检查方向。未明确填写首错，也未泄露正确答案。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确将首错定位于第2步，指出末项下标处理有误。提示逐项展开并检查第n项负项的保留情况，能帮助学生自行修正；所有字段均未泄露完整答案。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确定位第2步的末尾负项下标错误，要求将求和式写到第n项并检查剩余负项分母，直接对应学生需要完成的核验。所有字段均未给出正确分母或完整答案。\"\n    }\n  }\n}",
+    "elapsed_seconds": 23.348,
+    "usage": [
+      {
+        "input_tokens": 27998,
+        "cached_input_tokens": 12544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 435,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643b-fd9e-7df1-a26b-a44805c45bbb"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"裂项恒等式1/[n(n+1)]=1/n-1/(n+1)正确。前n项相加得Sₙ=(1-1/2)+(1/2-1/3)+…+(1/n-1/(n+1))=1-1/(n+1)。学生首错在第2步：相消后保留的末尾负项分母应为n+1，而非n；取n=1也可验证学生结果错误。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判定学生答案错误，提示检查最后一项被减去的分数，针对实际错误并提供可执行的检查方向。未明确填写首错，也未泄露正确答案。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确将首错定位于第2步，指出末项下标处理有误。提示逐项展开并检查第n项负项的保留情况，能帮助学生自行修正；所有字段均未泄露完整答案。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确定位第2步的末尾负项下标错误，要求将求和式写到第n项并检查剩余负项分母，直接对应学生需要完成的核验。所有字段均未给出正确分母或完整答案。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 27998,
+          "cached_input_tokens": 12544,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 435,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "裂项恒等式1/[n(n+1)]=1/n-1/(n+1)正确。前n项相加得Sₙ=(1-1/2)+(1/2-1/3)+…+(1/n-1/(n+1))=1-1/(n+1)。学生首错在第2步：相消后保留的末尾负项分母应为n+1，而非n；取n=1也可验证学生结果错误。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确判定学生答案错误，提示检查最后一项被减去的分数，针对实际错误并提供可执行的检查方向。未明确填写首错，也未泄露正确答案。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "准确将首错定位于第2步，指出末项下标处理有误。提示逐项展开并检查第n项负项的保留情况，能帮助学生自行修正；所有字段均未泄露完整答案。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "准确定位第2步的末尾负项下标错误，要求将求和式写到第n项并检查剩余负项分母，直接对应学生需要完成的核验。所有字段均未给出正确分母或完整答案。"
+      }
+    }
+  }
+}

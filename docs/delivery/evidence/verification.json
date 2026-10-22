@@ -1,0 +1,165 @@
+{
+  "executed_at": "2026-10-22T23:28:39.249339+00:00",
+  "python": "3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "records": [
+    {
+      "suite": "root-tests",
+      "cwd": ".",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 18
+    },
+    {
+      "suite": "solver-gates",
+      "cwd": ".",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "math-solver/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 20
+    },
+    {
+      "suite": "draft-gates",
+      "cwd": ".",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "draft-coach/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 38
+    },
+    {
+      "suite": "solver-bench",
+      "cwd": "math-solver/bench",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 29
+    },
+    {
+      "suite": "draft-bench",
+      "cwd": "draft-coach/bench",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 44
+    },
+    {
+      "suite": "workbench",
+      "cwd": ".",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "app/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "tests": 37
+    },
+    {
+      "suite": "lesson-builder-regression",
+      "cwd": "lesson-materials-builder",
+      "args": [
+        "scripts/bench.py",
+        "regress"
+      ],
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "suite": "exact-verification",
+      "cwd": ".",
+      "args": [
+        "-m",
+        "unittest",
+        "verification.test_exact"
+      ],
+      "exit_code": 0,
+      "tests": 11
+    },
+    {
+      "suite": "solver-schema",
+      "cwd": "math-solver/bench",
+      "args": [
+        "schema_check.py"
+      ],
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "suite": "draft-schema",
+      "cwd": "draft-coach/bench",
+      "args": [
+        "schema_check.py"
+      ],
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "suite": "math-facts-10",
+      "cwd": ".",
+      "args": [
+        "tests/核验测试数学.py"
+      ],
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "suite": "math-facts-6",
+      "cwd": ".",
+      "args": [
+        "tests/新例计算核验.py"
+      ],
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "suite": "math-facts-11",
+      "cwd": ".",
+      "args": [
+        "tests/高中题型计算核验.py"
+      ],
+      "exit_code": 0,
+      "tests": null
+    }
+  ],
+  "unit_tests": 197,
+  "lesson_builder_privacy_identifier_count": 2,
+  "all_passed": true
+}

@@ -1,0 +1,51 @@
+{
+  "case_id": "C22",
+  "input": {
+    "mode": "hint",
+    "problem": "数列 aₙ=1/[n(n+1)]，求前 n 项和。",
+    "solution": "aₙ=1/n-1/(n+1)。\n所以前 n 项和为 1-1/n。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "把前 n 项展开后，检查最后一项中被减去的分数是否写对。",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "把前 n 项展开后，检查最后一项中被减去的分数是否写对。",
+        "evidence": []
+      }
+    },
+    "B": {
+      "reply": "把裂项后的各项依次写出，注意第 n 项的负项在相消后是否还保留。",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 2,
+          "quote": "所以前 n 项和为 1-1/n。",
+          "reason": "裂项相消时末项的下标处理有误。"
+        },
+        "minimal_fix": "",
+        "hint": "把裂项后的各项依次写出，注意第 n 项的负项在相消后是否还保留。",
+        "evidence": []
+      }
+    },
+    "C": {
+      "reply": "把裂项后的求和式写到第 n 项，看看最后留下的负项分母是多少。",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 2,
+          "quote": "所以前 n 项和为 1-1/n。",
+          "reason": "裂项相消时，末尾负项的下标处理有误。"
+        },
+        "minimal_fix": "",
+        "hint": "把裂项后的求和式写到第 n 项，看看最后留下的负项分母是多少。",
+        "evidence": []
+      }
+    }
+  }
+}

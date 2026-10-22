@@ -1,0 +1,338 @@
+{
+  "case_id": "C05",
+  "input": {
+    "mode": "solve",
+    "problem": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "由二倍角公式，sin(2x)=2sin x cos x，所以原方程等价于\ncos x(2sin x−1)=0。\n因此 cos x=0 或 sin x=1/2。\n在 0≤x<2π 内，前者得 x=π/2、3π/2，后者得 x=π/6、5π/6。\n故解集为 {π/6，π/2，5π/6，3π/2}。四个值代回原方程均成立。注意不能直接约去 cos x，否则会漏解。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+          "topic": "三角方程",
+          "subtopics": [
+            "正弦二倍角公式",
+            "因式分解",
+            "特殊角的三角函数值"
+          ],
+          "givens": [
+            "sin(2x)=cos(x)"
+          ],
+          "variables": [
+            "x：待求的实数角，采用弧度制"
+          ],
+          "constraints": [
+            "0≤x<2π"
+          ],
+          "goal": "求原方程在指定区间内的全部解。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "用二倍角公式将方程化为两个因式乘积为零，分别求解。",
+          "method": "二倍角公式与因式分解",
+          "prerequisites": [
+            "sin(2x)=2sin x cos x",
+            "两个实数的乘积为零，则至少一个因数为零",
+            "特殊角的三角函数值"
+          ],
+          "steps": [
+            "展开 sin(2x)，移项并提取 cos x。",
+            "分别求解 cos x=0 与 sin x=1/2。",
+            "筛选指定区间内的解，并代回核验。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "2sin x cos x=cos x。",
+              "justification": "将二倍角公式 sin(2x)=2sin x cos x 代入原方程。"
+            },
+            {
+              "step": 2,
+              "expression": "cos x(2sin x−1)=0。",
+              "justification": "两边同时减去 cos x，再提取公因式 cos x；这些变形均等价。"
+            },
+            {
+              "step": 3,
+              "expression": "cos x=0 或 sin x=1/2。",
+              "justification": "实数乘积等于零，当且仅当至少一个因数为零。"
+            },
+            {
+              "step": 4,
+              "expression": "当 cos x=0 时，在 0≤x<2π 内有 x=π/2 或 x=3π/2。",
+              "justification": "单位圆上横坐标为零的点位于纵轴，其对应的区间内角为 π/2、3π/2。"
+            },
+            {
+              "step": 5,
+              "expression": "当 sin x=1/2 时，在 0≤x<2π 内有 x=π/6 或 x=5π/6。",
+              "justification": "正弦为正时角在第一、第二象限，参考角为 π/6。"
+            }
+          ],
+          "answer": "解集为 {π/6，π/2，5π/6，3π/2}。",
+          "conditions": [
+            "0≤x<2π"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原三角方程",
+              "status": "passed",
+              "details": "x=π/6 时，两边均为 √3/2；x=5π/6 时，两边均为 −√3/2；x=π/2、3π/2 时，两边均为 0。"
+            },
+            {
+              "name": "检查区间与端点",
+              "status": "passed",
+              "details": "四个解均位于 [0,2π)；x=0 时左边为 0、右边为 1，不是解；2π 不属于指定区间。"
+            },
+            {
+              "name": "检查分类完整性与漏解",
+              "status": "passed",
+              "details": "二倍角展开、移项和因式分解均为等价变形；零乘积的两种情况已全部求解，未除以可能为零的 cos x，因此未漏掉 cos x=0 的解。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "移项提取 cos x，保留 cos x=0 这一支。",
+          "difficult_steps": [
+            "在指定区间内找全 sin x=1/2 对应的两个角。"
+          ],
+          "common_mistakes": [
+            "直接约去 cos x，漏掉 π/2 和 3π/2。",
+            "只写出 sin x=1/2 的第一象限解，漏掉 5π/6。"
+          ],
+          "prerequisite_explanations": [
+            "用单位圆确定正弦值为 1/2 的两个角。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "利用二倍角公式，原方程化为 2sin(x)cos(x)=cos(x)，即 cos(x)(2sin(x)−1)=0。因此 cos(x)=0 或 sin(x)=1/2。在 0≤x<2π 内，解为 x=π/6、π/2、5π/6、3π/2。注意不能直接约去 cos(x)，否则会漏解。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+          "topic": "三角方程",
+          "subtopics": [
+            "正弦二倍角公式",
+            "因式分解",
+            "区间内的三角方程求解"
+          ],
+          "givens": [
+            "sin(2x)=cos(x)"
+          ],
+          "variables": [
+            "x：以弧度为单位的实数"
+          ],
+          "constraints": [
+            "0≤x<2π"
+          ],
+          "goal": "求指定区间内方程的全部解。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用二倍角公式将方程化为乘积为零，分类求解。",
+          "method": "二倍角公式与因式分解法",
+          "prerequisites": [
+            "sin(2x)=2sin(x)cos(x)",
+            "两因式乘积为零时至少一个因式为零",
+            "特殊角的三角函数值"
+          ],
+          "steps": [
+            "展开 sin(2x)，移项并提取公因式。",
+            "分别求解 cos(x)=0 和 sin(x)=1/2。",
+            "筛选区间内的解并代回原方程。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "sin(2x)=cos(x) ⇔ 2sin(x)cos(x)−cos(x)=0",
+              "justification": "使用正弦二倍角公式 sin(2x)=2sin(x)cos(x)，再将右端移至左端。"
+            },
+            {
+              "step": 2,
+              "expression": "cos(x)(2sin(x)−1)=0 ⇔ cos(x)=0 或 sin(x)=1/2",
+              "justification": "提取公因式 cos(x)，并使用实数乘积为零的性质；此过程无需除以可能为零的 cos(x)。"
+            },
+            {
+              "step": 3,
+              "expression": "cos(x)=0，0≤x<2π ⇒ x=π/2 或 x=3π/2",
+              "justification": "在一个周期内，单位圆上横坐标为零的两个角分别为 π/2 和 3π/2。"
+            },
+            {
+              "step": 4,
+              "expression": "sin(x)=1/2，0≤x<2π ⇒ x=π/6 或 x=5π/6",
+              "justification": "参考角为 π/6，且正弦为正的角位于第一、第二象限。"
+            },
+            {
+              "step": 5,
+              "expression": "x∈{π/6，π/2，5π/6，3π/2}",
+              "justification": "合并两个分支的解；四个值均属于指定区间，且两个分支已覆盖乘积为零的全部情形。"
+            }
+          ],
+          "answer": "x=π/6、π/2、5π/6 或 3π/2。",
+          "conditions": [
+            "0≤x<2π"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=π/6 时，两端均为 √3/2；x=π/2 时，两端均为 0；x=5π/6 时，两端均为 −√3/2；x=3π/2 时，两端均为 0。"
+            },
+            {
+              "name": "区间与解的完整性检查",
+              "status": "passed",
+              "details": "四个解均在 [0,2π) 内。原方程经恒等变形等价于 cos(x)(2sin(x)−1)=0，两个因式为零的情形均已穷尽；端点 x=0 不满足原方程，2π 不属于指定区间。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "展开二倍角后保留 cos(x) 为零的分支，用因式分解避免漏解。",
+          "difficult_steps": [
+            "将乘积为零拆分为两个方程。",
+            "根据象限找全指定区间内的特殊角。"
+          ],
+          "common_mistakes": [
+            "直接约去 cos(x)，漏掉 π/2 和 3π/2。",
+            "求 sin(x)=1/2 时只写 π/6，漏掉第二象限的 5π/6。"
+          ],
+          "prerequisite_explanations": [
+            "除以一个含未知数的式子前，必须考虑该式子为零的情况。",
+            "单位圆上，点的横坐标为余弦值，纵坐标为正弦值。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "由二倍角公式，sin(2x)=2sin x cos x，原方程等价于\ncos x(2sin x−1)=0。\n所以 cos x=0 或 sin x=1/2。\n在 0≤x<2π 内，前者得 x=π/2、3π/2，后者得 x=π/6、5π/6。\n因此解集为 {π/6，π/2，5π/6，3π/2}。这四个值代回原方程均成立。注意不能直接除以 cos x，否则会漏解。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+          "topic": "三角方程",
+          "subtopics": [
+            "正弦二倍角公式",
+            "因式分解",
+            "特殊角的三角函数值"
+          ],
+          "givens": [
+            "sin(2x)=cos(x)"
+          ],
+          "variables": [
+            "x：待求的角，采用弧度制"
+          ],
+          "constraints": [
+            "0≤x<2π"
+          ],
+          "goal": "求解方程，列出指定区间内的全部解。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用二倍角公式将方程化为两个因式的乘积为零。",
+          "method": "二倍角公式与因式分解",
+          "prerequisites": [
+            "sin(2x)=2sin x cos x",
+            "两因式乘积为零时至少一个因式为零",
+            "单位圆上的特殊角"
+          ],
+          "steps": [
+            "使用二倍角公式并移项提取公因式。",
+            "分别求解 cos x=0 与 sin x=1/2。",
+            "按指定区间筛选，并代回原方程核验。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "2sin x cos x=cos x。",
+              "justification": "使用正弦二倍角公式 sin(2x)=2sin x cos x。"
+            },
+            {
+              "step": 2,
+              "expression": "cos x(2sin x−1)=0。",
+              "justification": "两边减去 cos x，再提取公因式 cos x；变形等价，不需要除以可能为零的因式。"
+            },
+            {
+              "step": 3,
+              "expression": "cos x=0 或 sin x=1/2。",
+              "justification": "实数的两个因式乘积等于零，当且仅当至少一个因式等于零。"
+            },
+            {
+              "step": 4,
+              "expression": "在 0≤x<2π 内，cos x=0 的解为 x=π/2、3π/2；sin x=1/2 的解为 x=π/6、5π/6。",
+              "justification": "由单位圆，余弦为零对应纵轴上的两点；正弦为 1/2 对应第一、第二象限内参考角为 π/6 的两点。"
+            },
+            {
+              "step": 5,
+              "expression": "解集为 {π/6，π/2，5π/6，3π/2}。",
+              "justification": "合并两类解，四个值互不相同且均属于指定区间。"
+            }
+          ],
+          "answer": "解集为 {π/6，π/2，5π/6，3π/2}。",
+          "conditions": [
+            "0≤x<2π"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原三角方程",
+              "status": "passed",
+              "details": "x=π/6 时，两边均为 √3/2；x=π/2 时，两边均为 0；x=5π/6 时，两边均为 −√3/2；x=3π/2 时，两边均为 0。"
+            },
+            {
+              "name": "检查区间端点与解的完整性",
+              "status": "passed",
+              "details": "四个解均满足 0≤x<2π。x=0 时左边为 0、右边为 1，不是解；2π 不在区间内。因式分解前后等价，两个零因式分支均已列全，未因除以 cos x 而漏解。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "把 cos x 作为公因式提出，保留 cos x=0 这一分支。",
+          "difficult_steps": [
+            "在指定区间内找全 sin x=1/2 的两个角。"
+          ],
+          "common_mistakes": [
+            "直接除以 cos x，漏掉 π/2 和 3π/2。",
+            "只取 sin x=1/2 的第一象限解，漏掉 5π/6。"
+          ],
+          "prerequisite_explanations": [
+            "正弦在第一、第二象限为正，相同正弦值对应的两个角互为补角。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

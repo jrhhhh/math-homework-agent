@@ -1,0 +1,47 @@
+{
+  "case_id": "C20",
+  "input": {
+    "mode": "hint",
+    "problem": "解实数不等式 -3x>12。",
+    "solution": "两边除以 -3，得 x>-4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "不等式两边同除以负数时，不等号方向要怎样变化？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 1,
+          "quote": "两边除以 -3，得 x>-4。",
+          "reason": "同除以负数时应改变不等号方向。"
+        },
+        "minimal_fix": "",
+        "hint": "不等式两边同除以负数时，不等号方向要怎样变化？",
+        "evidence": []
+      }
+    },
+    "B": {
+      "reply": "不等式两边同除以负数时，不等号的方向应该怎样变化？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "不等式两边同除以负数时，不等号的方向应该怎样变化？",
+        "evidence": []
+      }
+    },
+    "C": {
+      "reply": "两边同除以一个负数时，不等号的方向应怎样变化？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "两边同除以一个负数时，不等号的方向应怎样变化？",
+        "evidence": []
+      }
+    }
+  }
+}

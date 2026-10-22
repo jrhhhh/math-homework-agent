@@ -1,0 +1,331 @@
+{
+  "case_id": "C03",
+  "input": {
+    "mode": "solve",
+    "problem": "解不等式 (x-3)/(x+2)≥0。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "先确定定义域：x≠-2。\n分子、分母的符号在 x=3、x=-2 处分界：\n① x<-2 时，两者均为负，商为正；\n② -2<x<3 时，分子为负、分母为正，商为负；\n③ x≥3 时，分子非负、分母为正，商非负。\n其中 x=3 时原式等于0，可以取到；x=-2 时分母为0，必须排除。\n所以解集为 (-∞,-2)∪[3,+∞)。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解不等式 (x-3)/(x+2)≥0。",
+          "topic": "分式不等式",
+          "subtopics": [
+            "定义域",
+            "符号分类讨论",
+            "区间端点"
+          ],
+          "givens": [
+            "(x-3)/(x+2)≥0"
+          ],
+          "variables": [
+            "x：实数未知数"
+          ],
+          "constraints": [
+            "x≠-2"
+          ],
+          "goal": "求不等式的全部实数解",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "根据分子、分母的符号确定商何时非负。",
+          "method": "零点分区间讨论法",
+          "prerequisites": [
+            "同号两数相除为正，异号两数相除为负",
+            "分母不能为0"
+          ],
+          "steps": [
+            "确定定义域及分界点",
+            "逐区间判断符号",
+            "检查端点并写出解集"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x+2≠0，即 x≠-2；分子为0时 x=3。",
+              "justification": "分式有意义要求分母非零；分子、分母的零点是符号讨论的分界点。"
+            },
+            {
+              "step": 2,
+              "expression": "x<-2 时，x-3<0 且 x+2<0，故 (x-3)/(x+2)>0。",
+              "justification": "两个负数相除，商为正。"
+            },
+            {
+              "step": 3,
+              "expression": "-2<x<3 时，x-3<0 且 x+2>0，故 (x-3)/(x+2)<0。",
+              "justification": "异号两数相除，商为负，不满足原不等式。"
+            },
+            {
+              "step": 4,
+              "expression": "x≥3 时，x-3≥0 且 x+2>0，故 (x-3)/(x+2)≥0。",
+              "justification": "非负数除以正数，商非负；x=3 时商为0。"
+            },
+            {
+              "step": 5,
+              "expression": "解集为 (-∞,-2)∪[3,+∞)。",
+              "justification": "合并满足条件的区间，排除分母零点-2，保留分子零点3。"
+            }
+          ],
+          "answer": "(-∞,-2)∪[3,+∞)",
+          "conditions": [
+            "x为实数且x≠-2"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "等价转化核验",
+              "status": "passed",
+              "details": "在x≠-2时，(x+2)²>0，两边同乘该式得到等价不等式(x-3)(x+2)≥0。两因式同号或乘积为0得到x≤-2或x≥3，再排除-2，与所得解集一致。"
+            },
+            {
+              "name": "检查定义域与端点",
+              "status": "passed",
+              "details": "x=-2时原式无意义，不能取；x=3时原式为0，满足≥0，能够取到。"
+            },
+            {
+              "name": "检查分类是否穷尽",
+              "status": "passed",
+              "details": "x<-2、-2<x<3、x≥3覆盖定义域中的全部实数，各区间的符号结论明确。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "先排除分母零点，再利用分子、分母的零点划分区间判断符号。",
+          "difficult_steps": [
+            "区分分母零点-2与分子零点3的端点取舍"
+          ],
+          "common_mistakes": [
+            "未判断x+2的符号就直接同乘，导致漏解或不等号方向错误",
+            "把-2包含在解集中",
+            "遗漏使原式等于0的x=3"
+          ],
+          "prerequisite_explanations": [
+            "分母为0时分式无意义；分子为0且分母非零时分式等于0"
+          ],
+          "alternative_method": "在定义域内同乘恒正的(x+2)²，将原式等价转化为(x-3)(x+2)≥0。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "先确定定义域：x≠-2。\n分式非负，需分子、分母同号，或分子为0。\n① 都为正：x>3且x>-2，得x>3；\n② 都为负：x<3且x<-2，得x<-2；\n③ 分子为0：x=3，此时分母为5，可以取到。\n所以解集为(-∞,-2)∪[3,+∞)。注意：-2使分母为0，必须排除；3使分式为0，应当包含。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解不等式 (x-3)/(x+2)≥0。",
+          "topic": "分式不等式",
+          "subtopics": [
+            "定义域",
+            "同号判定",
+            "端点取舍"
+          ],
+          "givens": [
+            "(x-3)/(x+2)≥0"
+          ],
+          "variables": [
+            "x为实数未知数"
+          ],
+          "constraints": [
+            "x≠-2"
+          ],
+          "goal": "求解不等式，给出实数解集。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用分式非负时分子、分母同号或分子为零进行分类。",
+          "method": "符号分类法",
+          "prerequisites": [
+            "分母不能为零",
+            "同号两数的商为正"
+          ],
+          "steps": [
+            "确定定义域",
+            "讨论分子、分母同号的情况",
+            "检查零点并合并解集"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x+2≠0，即x≠-2。",
+              "justification": "原分式有意义要求分母不为零。"
+            },
+            {
+              "step": 2,
+              "expression": "当x-3>0且x+2>0时，x>3。",
+              "justification": "分子、分母均为正时商为正；联立x>3与x>-2取交集。"
+            },
+            {
+              "step": 3,
+              "expression": "当x-3<0且x+2<0时，x<-2。",
+              "justification": "分子、分母均为负时商为正；联立x<3与x<-2取交集。"
+            },
+            {
+              "step": 4,
+              "expression": "当x=3时，(x-3)/(x+2)=0；解集为(-∞,-2)∪[3,+∞)。",
+              "justification": "分子为零且分母不为零时商为零，满足非严格不等式；合并所有符合条件的情况。"
+            }
+          ],
+          "answer": "(-∞,-2)∪[3,+∞)",
+          "conditions": [
+            "x为实数，且x≠-2"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "等价转化核验解集",
+              "status": "passed",
+              "details": "在x≠-2时，(x+2)²>0。原不等式两边同乘(x+2)²，等价于(x-3)(x+2)≥0，得x≤-2或x≥3；排除x=-2后，与所得解集一致。"
+            },
+            {
+              "name": "检查分母零点与等号端点",
+              "status": "passed",
+              "details": "x=-2时原式无意义，不能包含；x=3时原式等于0，应当包含。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "将商的非负条件转化为分子、分母的符号条件，并单独检查分子为零的情况。",
+          "difficult_steps": [
+            "区分分母零点-2与分子零点3的取舍"
+          ],
+          "common_mistakes": [
+            "直接乘以符号未定的x+2而不讨论不等号方向",
+            "包含x=-2",
+            "遗漏x=3"
+          ],
+          "prerequisite_explanations": [
+            "分母为零时分式无意义；分子为零且分母非零时分式等于零。"
+          ],
+          "alternative_method": "在定义域内同乘正数(x+2)²，转化为一元二次不等式。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "先确定定义域：x≠-2。分子在x=3时为0，分母在x=-2时为0。以-2、3分段：当x<-2时，分子、分母都为负，分式为正；当-2<x<3时，分子为负、分母为正，分式为负；当x>3时，两者都为正。x=3使分式等于0，可以取到；x=-2使分母为0，必须排除。因此解集为(-∞,-2)∪[3,+∞)。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解不等式 (x-3)/(x+2)≥0。",
+          "topic": "分式不等式",
+          "subtopics": [
+            "定义域",
+            "分段判断符号",
+            "端点取舍"
+          ],
+          "givens": [
+            "(x-3)/(x+2)≥0"
+          ],
+          "variables": [
+            "x：实数未知数"
+          ],
+          "constraints": [
+            "x≠-2"
+          ],
+          "goal": "求不等式的实数解集。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "以分子和分母的零点划分区间，判断各区间内分式的符号。",
+          "method": "分区间讨论符号",
+          "prerequisites": [
+            "分母不能为0",
+            "同号相除为正，异号相除为负"
+          ],
+          "steps": [
+            "确定定义域和关键点。",
+            "判断三个区间内分式的符号。",
+            "检查端点并写出解集。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x+2≠0，即x≠-2；x-3=0时，x=3。",
+              "justification": "分母不能为0；分子为0且分母不为0时，分式等于0。"
+            },
+            {
+              "step": 2,
+              "expression": "x<-2时，x-3<0，x+2<0，所以(x-3)/(x+2)>0。",
+              "justification": "分子与分母同为负数，相除为正。"
+            },
+            {
+              "step": 3,
+              "expression": "-2<x<3时，x-3<0，x+2>0，所以(x-3)/(x+2)<0。",
+              "justification": "分子与分母异号，相除为负。"
+            },
+            {
+              "step": 4,
+              "expression": "x>3时，x-3>0，x+2>0，所以(x-3)/(x+2)>0。",
+              "justification": "分子与分母同为正数，相除为正。"
+            },
+            {
+              "step": 5,
+              "expression": "x=3时，(x-3)/(x+2)=0；解集为(-∞,-2)∪[3,+∞)。",
+              "justification": "不等号包含等号，因此保留x=3；x=-2不在定义域内，必须排除。结合各区间的符号得到解集。"
+            }
+          ],
+          "answer": "(-∞,-2)∪[3,+∞)",
+          "conditions": [
+            "在实数范围内求解，且x≠-2。"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "乘以正数进行等价核验",
+              "status": "passed",
+              "details": "在x≠-2时，(x+2)²>0，两边同乘它，原不等式等价于(x-3)(x+2)≥0。两因子同为非负数得到x≥3；同为非正数得到x≤-2。再排除x=-2，得到x<-2或x≥3，与所得解集一致。"
+            },
+            {
+              "name": "端点代回",
+              "status": "passed",
+              "details": "x=3时原分式为0/5=0，满足不等式；x=-2时分母为0，原分式无意义。因此3取闭端点，-2取开端点。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "先排除分母的零点，再用分子、分母的零点划分符号区间。",
+          "difficult_steps": [
+            "区分分子零点与分母零点的端点取舍。"
+          ],
+          "common_mistakes": [
+            "直接乘以x+2却不讨论其正负。",
+            "把x=-2包含在解集中。",
+            "漏掉使分式等于0的x=3。"
+          ],
+          "prerequisite_explanations": [
+            "不等式两边同乘负数时，不等号方向必须改变；同乘正数时方向不变。"
+          ],
+          "alternative_method": "在定义域内，两边同乘恒正的(x+2)²，转化为(x-3)(x+2)≥0，再求解。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "C01": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C02": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C03": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C04": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C05": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C06": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C07": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C08": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C09": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C10": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C11": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C12": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C13": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C14": {
+    "A": "baseline",
+    "B": "skill_gates",
+    "C": "skill"
+  },
+  "C15": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C16": {
+    "A": "baseline",
+    "B": "skill_gates",
+    "C": "skill"
+  },
+  "C17": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C18": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C19": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C20": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C21": {
+    "A": "baseline",
+    "B": "skill_gates",
+    "C": "skill"
+  },
+  "C22": {
+    "A": "baseline",
+    "B": "skill_gates",
+    "C": "skill"
+  },
+  "C23": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C24": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C25": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C26": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C27": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C28": {
+    "A": "baseline",
+    "B": "skill_gates",
+    "C": "skill"
+  },
+  "C29": {
+    "A": "skill_gates",
+    "B": "baseline",
+    "C": "skill"
+  },
+  "C30": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  }
+}

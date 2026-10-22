@@ -1,0 +1,330 @@
+{
+  "case_id": "C01",
+  "input": {
+    "mode": "solve",
+    "problem": "解实数方程 √(3x+4)=x。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "根号表示非负数，所以 x≥0。两边平方得 3x+4=x²，即 (x−4)(x+1)=0，得到 x=4 或 x=−1。由于 x≥0，舍去 −1；代入 x=4，左边 √16=4，等于右边。因此原方程的解为 x=4。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解实数方程 √(3x+4)=x。",
+          "topic": "根式方程",
+          "subtopics": [
+            "算术平方根",
+            "平方消根",
+            "增根检验"
+          ],
+          "givens": [
+            "√(3x+4)=x"
+          ],
+          "variables": [
+            "x：实数未知数"
+          ],
+          "constraints": [
+            "x∈ℝ",
+            "3x+4≥0",
+            "由原方程可知 x≥0"
+          ],
+          "goal": "求原方程的所有实数解",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用平方根的非负性限制未知数，再平方消根并检验候选解。",
+          "method": "平方转化为一元二次方程",
+          "prerequisites": [
+            "算术平方根非负",
+            "因式分解",
+            "根式方程验根"
+          ],
+          "steps": [
+            "确定 x 的必要取值范围",
+            "平方并解一元二次方程",
+            "筛选候选解并代回原方程"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "3x+4≥0，且 x=√(3x+4)≥0。",
+              "justification": "实数范围内根式有意义要求被开方数非负；算术平方根的值非负，因此原方程的解必须满足 x≥0。"
+            },
+            {
+              "step": 2,
+              "expression": "3x+4=x²，即 x²−3x−4=0。",
+              "justification": "原方程两边平方，再将各项移至同一边。"
+            },
+            {
+              "step": 3,
+              "expression": "(x−4)(x+1)=0，所以 x=4 或 x=−1。",
+              "justification": "将二次三项式因式分解，利用两因式乘积为零则至少一个因式为零。"
+            },
+            {
+              "step": 4,
+              "expression": "x=−1 不满足 x≥0；x=4 时，√(3×4+4)=√16=4。",
+              "justification": "先利用必要条件排除 −1，再将 4 代回原方程确认成立。"
+            }
+          ],
+          "answer": "x=4，解集为 {4}。",
+          "conditions": [
+            "在实数范围内求解"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回原方程",
+              "status": "passed",
+              "details": "x=4 时，左边 √(3×4+4)=4，右边为 4，两边相等。"
+            },
+            {
+              "name": "检查增根",
+              "status": "passed",
+              "details": "x=−1 时，左边 √(3×(−1)+4)=1，右边为 −1，两边不等，因此 −1 是平方后产生的增根。"
+            },
+            {
+              "name": "解的完整性",
+              "status": "passed",
+              "details": "原方程的每个实数解平方后都满足 (x−4)(x+1)=0，因此只能是 4 或 −1；逐一检验后仅 4 成立，没有遗漏。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "√(3x+4)=x 不仅要求根式有意义，还要求右边 x 非负。",
+          "difficult_steps": [
+            "区分根式有意义的条件与方程成立的必要条件",
+            "理解平方后为什么需要验根"
+          ],
+          "common_mistakes": [
+            "把平方后的两个根都当作原方程的解",
+            "只检查被开方数非负，忽略平方根的值非负"
+          ],
+          "prerequisite_explanations": [
+            "算术平方根总是非负数。",
+            "平方可能使原本不相等的两个数变得相等，例如 1 与 −1，因此平方所得的候选解需要检验。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "由 √(3x+4)=x，知 x≥0。两边平方，得 3x+4=x²，即 (x−4)(x+1)=0，所以候选解为 x=4 或 x=−1。\n代回原方程：x=4 时，√16=4，成立；x=−1 时，√1=1≠−1，不成立。\n因此原方程的实数解为 x=4。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解实数方程 √(3x+4)=x。",
+          "topic": "根式方程",
+          "subtopics": [
+            "算术平方根",
+            "平方变形与增根"
+          ],
+          "givens": [
+            "√(3x+4)=x"
+          ],
+          "variables": [
+            "x 为实数未知数"
+          ],
+          "constraints": [
+            "3x+4≥0",
+            "原方程成立时 x≥0"
+          ],
+          "goal": "求原方程的全部实数解",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用算术平方根的非负性限制未知数，再平方求候选解并代回检验。",
+          "method": "平方转化为一元二次方程",
+          "prerequisites": [
+            "算术平方根非负",
+            "因式分解法解一元二次方程"
+          ],
+          "steps": [
+            "确定非负条件",
+            "平方并求候选解",
+            "代回原方程排除增根"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "3x+4≥0，且 x≥0。",
+              "justification": "根号内必须非负；算术平方根非负，因此与其相等的 x 也必须非负。"
+            },
+            {
+              "step": 2,
+              "expression": "3x+4=x²，即 (x−4)(x+1)=0。",
+              "justification": "原方程两边平方，再移项并因式分解；平方所得的候选解仍需检验。"
+            },
+            {
+              "step": 3,
+              "expression": "x=4 或 x=−1；其中 x=−1 不符合 x≥0。",
+              "justification": "由两因式之积为零求出候选解，并检查非负条件。"
+            },
+            {
+              "step": 4,
+              "expression": "x=4 时，√(3×4+4)=√16=4，因此原方程的实数解为 x=4。",
+              "justification": "代回原方程成立，且任何原方程的解都必须属于已求出的候选解。"
+            }
+          ],
+          "answer": "x=4",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "检查定义域与非负条件",
+              "status": "passed",
+              "details": "x=4 满足 3x+4≥0 和 x≥0；x=−1 虽使根式有意义，但不满足右端非负这一必要条件。"
+            },
+            {
+              "name": "代回原方程检查平方增根",
+              "status": "passed",
+              "details": "x=4 时左右两边均为4；x=−1 时左边为1、右边为−1，故−1是增根。"
+            },
+            {
+              "name": "检查解的完整性",
+              "status": "passed",
+              "details": "原方程成立必有 x²−3x−4=0，而该二次方程仅有4和−1两个根；逐一检验后仅4成立，无遗漏。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "算术平方根非负，平方求得的根必须符合原方程。",
+          "difficult_steps": [
+            "理解平方后得到的候选解可能包含增根"
+          ],
+          "common_mistakes": [
+            "把 x=−1 也作为原方程的解",
+            "只检查根号内非负，忽略右端 x 必须非负"
+          ],
+          "prerequisite_explanations": [
+            "√a 表示 a 的非负平方根"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "由算术平方根非负，得 x≥0。两边平方，得 3x+4=x²，即 (x−4)(x+1)=0，所以候选解为 x=4 或 x=−1。由于 x≥0，排除 x=−1。代回原方程：√(3×4+4)=√16=4，成立。因此原方程的解为 x=4。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "解实数方程 √(3x+4)=x。",
+          "topic": "无理方程",
+          "subtopics": [
+            "算术平方根",
+            "平方变形",
+            "增根检验"
+          ],
+          "givens": [
+            "√(3x+4)=x"
+          ],
+          "variables": [
+            "x：实数未知数"
+          ],
+          "constraints": [
+            "3x+4≥0",
+            "由原方程可知 x≥0"
+          ],
+          "goal": "求原方程的全部实数解",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "先确定符号限制，再平方转化为一元二次方程，最后代回检验。",
+          "method": "平方与因式分解",
+          "prerequisites": [
+            "算术平方根非负",
+            "一元二次方程的因式分解"
+          ],
+          "steps": [
+            "确定 x≥0",
+            "平方并求候选解",
+            "排除不合条件的值并代回核验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "3x+4≥0，且 x=√(3x+4)≥0。",
+              "justification": "实数平方根要求被开方数非负，算术平方根的值也非负。"
+            },
+            {
+              "step": 2,
+              "expression": "x²=3x+4，即 x²−3x−4=(x−4)(x+1)=0。",
+              "justification": "将原方程两边平方，再移项并因式分解；所得候选值仍需检查原方程。"
+            },
+            {
+              "step": 3,
+              "expression": "候选解为 x=4 或 x=−1；结合 x≥0，仅保留 x=4。",
+              "justification": "两个因式的乘积为零时至少一个因式为零；x=−1 不满足原方程要求的非负条件。"
+            },
+            {
+              "step": 4,
+              "expression": "当 x=4 时，√(3x+4)=√16=4=x。",
+              "justification": "代回原方程成立，故 x=4 确为原方程的解。"
+            }
+          ],
+          "answer": "原方程的实数解集为 {4}。",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "检查定义域与符号限制",
+              "status": "passed",
+              "details": "x=4 时被开方数为16≥0，且右端4≥0，满足全部限制。"
+            },
+            {
+              "name": "代回原方程并检查平方增根",
+              "status": "passed",
+              "details": "x=4 时两边均为4；x=−1 时左边为√1=1，右边为−1，不成立，因此−1是平方产生的增根。"
+            },
+            {
+              "name": "检查解的完整性",
+              "status": "passed",
+              "details": "原方程的任意实数解必满足(x−4)(x+1)=0，因此只能是4或−1；逐一检验后仅4成立，无遗漏。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "根号表示算术平方根，因此右端 x 必须非负。",
+          "difficult_steps": [
+            "区分平方后方程的候选解与原方程的解"
+          ],
+          "common_mistakes": [
+            "平方后直接把−1也列为原方程的解",
+            "只检查被开方数非负，忽略右端必须非负"
+          ],
+          "prerequisite_explanations": [
+            "平方可能丢失两边的符号信息，因此候选解需要代回原方程检验。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

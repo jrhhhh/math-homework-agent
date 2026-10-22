@@ -1,0 +1,16 @@
+{
+  "case_id": "C28",
+  "arm": "baseline",
+  "repeat": 1,
+  "input": {
+    "mode": "draft",
+    "problem": "",
+    "solution": "",
+    "draft": "只有纸张中间的一小块内容：一行算式，下面一个结果框。照片其余位置被裁掉，看不到边距、题号或划改。",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:21:22.627308+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:21:37.162750+00:00"
+}

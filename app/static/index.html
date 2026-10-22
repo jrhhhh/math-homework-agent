@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>数学作业智能体 · 练习工作台</title><link rel="stylesheet" href="/vendor/katex/katex.min.css"><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><a class="brand" href="/" aria-label="数学作业智能体首页"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5Z"/><path d="M20 13v23M10 15h5M10 21h5M26 17l3 3 6-7"/></svg><span>数学作业智能体<small>MATH HOMEWORK AGENT</small></span></a><span id="header-note" class="header-note">高中数学 · 过程反馈</span><span id="connection" role="status">正在连接</span></header>
+<div class="layout">
+<aside><nav class="workspace-switcher" aria-label="工作台切换"><button id="show-practice" class="active" aria-selected="true">学生练习</button><button id="show-teacher" aria-selected="false">教师备课</button></nav><div id="practice-sidebar"><div class="aside-heading">我的练习 <button id="new-session" class="icon-button" aria-label="新建练习">＋</button></div><nav id="sessions" aria-label="练习历史"></nav><div class="aside-bottom"><span class="small-label">学，而后知不足</span><p>保留每一次尝试，<br>看见解题的进步。</p><small>课程项目 · 本地工作台</small></div></div><div id="teacher-sidebar" hidden><div class="aside-heading">近期备课</div><nav id="lesson-history" aria-label="备课记录"></nav><div class="aside-bottom"><span class="small-label">从目标到课堂</span><p>让每一页课件，<br>对应一个思维动作。</p><small>教案转课件 · 本地生成</small></div></div></aside>
+<main>
+<section id="practice-view" class="app-view">
+<div class="page-heading"><div><div class="eyebrow">YOUR NEXT STEP IN MATHEMATICS</div><h1>把思路写下来，<em>再向前一步。</em></h1><p>从一个有依据的提示开始，逐步完善自己的解答。</p></div><div class="folio">01<span>练习工作台</span></div></div>
+<div class="workspace">
+<section class="editor panel" aria-labelledby="input-heading"><div class="section-title"><span class="section-number">01</span><h2 id="input-heading">这一次，练什么？</h2><button id="example" class="text-button">载入示例 ↗</button></div>
+<form id="submission-form">
+<div class="field-row"><div><label for="mode">我需要</label><select id="mode"><option value="check">检查我的过程</option><option value="hint">只给一个提示</option><option value="full_correction">完整纠正</option><option value="answer_check">仅核对答案</option><option value="refine">优化已核验的解法</option><option value="solve">完整求解</option><option value="draft">看看草稿习惯</option><option value="partition">草稿版面分块</option></select></div><div><label for="grade">学段</label><select id="grade"><option>高中</option><option>初中</option><option>小学</option><option>大学</option></select></div></div>
+<label for="problem">原题 <span>保留完整条件与范围</span></label><textarea id="problem" rows="4" placeholder="例如：在 0≤x&lt;2π 内解 sin(2x)=sin(x)。" maxlength="20000"></textarea>
+<div id="solution-field"><label for="solution">我的解题过程 <span>建议每一步另起一行</span></label><textarea id="solution" rows="7" placeholder="写下你实际做过的步骤，暂时不会的地方也可以留着。" maxlength="20000"></textarea></div>
+<div id="draft-field" hidden><label for="draft">草稿布局描述 <span>分区、分行、划改与留白</span></label><textarea id="draft" rows="7" placeholder="例如：纸面分成左右两栏；左上角有题号，中间三次划改，底部没有留白。" maxlength="20000"></textarea></div>
+<label for="request">补充要求 <span>可选</span></label><input id="request" placeholder="例如：沿用我的方法，暂时不要给答案。" maxlength="20000">
+<label class="verification-option"><input id="verify-equation" type="checkbox">用计算工具代回检验候选值 <small>适用于等式，不证明解集完备</small></label>
+<div class="form-footer"><span id="revision-note">你的原过程会随每次提交保留。</span><button id="submit" class="primary" type="submit">开始检查 <span>→</span></button></div>
+</form><div id="form-status" role="status" aria-live="polite"></div></section>
+<section class="feedback panel" aria-labelledby="feedback-heading"><div class="section-title"><span class="section-number">02</span><h2 id="feedback-heading">反馈与下一步</h2><span id="state-badge" class="badge">等待提交</span></div><div id="result" aria-live="polite"><div class="empty-state"><div class="math-mark">f′(x)</div><h3>先写出你的尝试</h3><p>这里会展示检查依据、首错位置，<br>或一个帮助你继续思考的提示。</p><div class="empty-rule"></div><small>过程比一个答案更值得被看见</small></div></div></section>
+</div>
+<section class="history-section"><div class="section-title"><span class="section-number">03</span><h2>我的修订记录</h2><button id="export" class="text-button" disabled>导出练习 ↓</button></div><div id="history" class="history-empty">完成第一次提交后，在这里对照每次修改。</div></section>
+<footer>数学作业智能体 · 练习工作台 <span>反馈供学习参考，复杂推导请结合教材与教师意见。</span></footer>
+</section>
+<section id="teacher-view" class="app-view" hidden>
+<div class="page-heading"><div><div class="eyebrow">TEACHER PREPARATION STUDIO</div><h1>把教案变成课堂，<em>让思维看得见。</em></h1><p>按学生的认知台阶切分课件；每一页都对应一个清楚的学习动作。</p></div><div class="folio">02<span>教师备课</span></div></div>
+<div class="teacher-steps" aria-label="备课流程"><div class="teacher-step active"><span>01</span><strong>整理教案</strong><small>补齐课时与教材信息</small></div><div class="teacher-step"><span>02</span><strong>确认大纲</strong><small>按认知台阶逐页审阅</small></div><div class="teacher-step"><span>03</span><strong>编辑与检查</strong><small>渲染并下载课件</small></div></div>
+<div class="teacher-layout">
+<section class="panel teacher-editor" aria-labelledby="lesson-input-heading"><div class="section-title"><span class="section-number">01</span><h2 id="lesson-input-heading">这节课教什么？</h2></div>
+<form id="lesson-form">
+<label for="lesson-topic">课题</label><input id="lesson-topic" required maxlength="200" placeholder="例如：导数的概念及其意义">
+<div class="field-row teacher-fields"><div><label for="lesson-grade">年级</label><input id="lesson-grade" required maxlength="30" placeholder="例如：高中数学选必二"></div><div><label for="lesson-duration">课时</label><select id="lesson-duration"><option value="40分钟">40 分钟</option><option value="45分钟" selected>45 分钟</option><option value="其他">其他（写在补充说明）</option></select></div></div>
+<label for="lesson-textbook">教材版本 <span>用来对齐术语与符号</span></label><input id="lesson-textbook" required maxlength="200" placeholder="例如：人教 A 版选择性必修二">
+<label>课件用途</label><div class="radio-row"><label><input type="radio" name="deck-type" value="daily" checked> 日常教学</label><label><input type="radio" name="deck-type" value="contest"> 教学比赛</label></div>
+<label for="lesson-file">上传教案 <span>可选 · docx / pdf / md / txt · 不超过 5 MB</span></label><input id="lesson-file" type="file" accept=".docx,.pdf,.md,.txt">
+<label for="lesson-draft">教案内容 <span>必填，可粘贴正文或补充文件内容</span></label><textarea id="lesson-draft" rows="9" maxlength="80000" placeholder="粘贴教学目标、重难点、教学过程、师生活动、板书设计和作业等。扫描版 PDF 请粘贴经确认的文字。"></textarea>
+<div class="form-footer"><span>先出大纲；你确认后才生成课件源码。</span><button id="lesson-outline-button" class="primary" type="submit">生成课件大纲 <span>→</span></button></div>
+</form><div id="lesson-status" role="status" aria-live="polite"></div></section>
+<section class="panel teacher-output" aria-labelledby="lesson-output-heading"><div class="section-title"><span class="section-number">02</span><h2 id="lesson-output-heading">课件制作与检查</h2><span id="lesson-badge" class="badge">等待教案</span></div>
+<div id="lesson-empty" class="empty-state teacher-empty"><div class="math-mark">∑ → ▢</div><h3>先从教案开始</h3><p>系统会先整理逐页大纲。<br>确认后才生成源码与 PowerPoint。</p><div class="empty-rule"></div><small>版式检查不代替数学内容审查</small></div>
+<div id="lesson-outline-stage" hidden><div id="lesson-missing" class="lesson-missing" hidden></div><label for="lesson-outline">逐页大纲 <span>可直接编辑，确认后进入下一步</span></label><textarea id="lesson-outline" rows="13"></textarea><label for="lesson-clarifications">补充说明 <span>若上方列有缺项，请回答后再继续</span></label><textarea id="lesson-clarifications" rows="3" placeholder="补充学情、教学过程或说明某项为何不适用；没有缺项可留空。"></textarea><div class="form-footer"><span>确认前请检查教材信息与例题来源。</span><button id="lesson-source-button" class="primary" type="button">确认大纲 <span>→</span></button></div></div>
+<div id="lesson-source-stage" hidden><div class="source-note">这是可编辑的课件源码。检查例题、公式和页序后再渲染；模型不会替你确认数学正确性。</div><label for="lesson-source">课件 Markdown <span>修改后可重复渲染</span></label><textarea id="lesson-source" rows="22"></textarea><div class="form-footer"><span>独立检查结构与几何；播放效果请在授课软件中查看。</span><button id="lesson-render-button" class="primary" type="button">渲染并检查 <span>→</span></button></div></div>
+<div id="lesson-result" aria-live="polite"></div></section>
+</div>
+<footer>数学作业智能体 · 教师备课 <span>本地生成教案源码与课件；请教师审阅数学内容并在实际放映软件中复核。</span></footer>
+</section>
+</main></div><script src="/vendor/katex/katex.min.js"></script><script src="/vendor/katex/auto-render.min.js"></script><script src="/app.js"></script></body></html>

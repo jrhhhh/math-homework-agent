@@ -1,0 +1,16 @@
+{
+  "case_id": "C25",
+  "arm": "skill_gates",
+  "repeat": 1,
+  "input": {
+    "mode": "draft",
+    "problem": "",
+    "solution": "",
+    "draft": "左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:21:02.717982+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:21:09.019023+00:00"
+}

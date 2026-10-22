@@ -1,0 +1,184 @@
+{
+  "initial_run": "../initial",
+  "source_snapshot": "../initial/frozen_source",
+  "description": "Serial recovery of model invocation failures; successful initial records reused verbatim; not independent repeats.",
+  "created_at": "2026-10-22T14:30:54.365172+00:00",
+  "files": {
+    "C01.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "5bf80a31d1b9aea990548571430ae83c92a66306205d93f55ea1cf8b6eb190fc"
+    },
+    "C01.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "b13ced373211d3c172f33a0a87365bdbaabe429518d1fb8358ce043e207d6d00"
+    },
+    "C01.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "eff9b951fe07fe70859218334dbf44248513a494cea2bcadea20a45f03f79eaf"
+    },
+    "C02.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "cfe84b6aa9fe0d09a122920589c862fb980d035bc7f54d8f3045ff1e7e437941"
+    },
+    "C02.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "263f677ec50cb1186617520ccc4f3a0cba1ffb3275f58c5839c1bb95f541d2eb"
+    },
+    "C02.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "f7bd1bff03660b1de9feb309994c879fe177446c35b66dfbf9b7942c93846138"
+    },
+    "C03.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "59769bc872205a8ce0ed612863bc801858cfedecd6fd0fd95755dbdb9fc88fc5"
+    },
+    "C03.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "f3e5619f180765117055317ea3909953725cd65911e0d519d271f4bf8ebe2a8d"
+    },
+    "C03.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "8178bfe1da48f4d8319f09a92e50e9a77d072f539a30d5751529da525bc0c0d8"
+    },
+    "C04.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "f0af52ceb4058bef4d46eedc70198ecb1a1b3577609cfc415d58425a429fa6e7"
+    },
+    "C04.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "43f9ed528d8e1aec9e32ba5e2bbc9ca25374643b055c3f60a6e6ca90d8c633ca"
+    },
+    "C04.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "52b7593610c507160e6ce5db21bafb46b1a2823fe45fb0934cf5261988cac187"
+    },
+    "C05.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "b69536e78ab053b2fd1a8af6b91b5ba48000a3842bcabb7b11257a290bee451c"
+    },
+    "C05.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "63114affb61531f859c12f9f200e764d9763d05584e0f0ef1ae0fe5928b5e656"
+    },
+    "C05.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "ea7ac394f654381cba16086fadd29027e9b4806ddc21fba7e684f70f4e7ba216"
+    },
+    "C06.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "f739b517881881c02fb869d7f65ba1155a94d0a07d636e54ec16f052717ec27c"
+    },
+    "C06.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "ee8f5a45d06d664ee1199f7f67cfedc6419c5df634868de497665ba48797f568"
+    },
+    "C06.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "c689aaee447707b2bb09a78ebab86af5e64874f64fba09b5b3f6122a155097e8"
+    },
+    "C07.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "ced5bfda364b6b10cae4cd0ee6f48afe21c3765482cdd11e0a1113a719d8e3d7"
+    },
+    "C07.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "3f1f8a6fc18ff9f7dfdb6b490974f4c57c991b5d26d9069e7e2c3ab008b42a05"
+    },
+    "C07.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "510033651a97a1ab0e08b4f4127af06954e61dad3d3c4bc9f16cdd2d5c58b766"
+    },
+    "C08.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "53e0ed7ee0388aa08ef401ee0ca39f17ce60234007326104c9683c68cc87b819"
+    },
+    "C08.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "e260a0236d464d0be241865da1cb4cd96c05520d6569f8c10a544e16546f58f0"
+    },
+    "C08.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "e58c14a632ea0b306e9c78ed776f02318b988638c95ee9b83c070a6b9e053931"
+    },
+    "C09.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "5d863e752d2d35a4f086d99f16f158f274a5d4cb173c07546ea7502231497ece"
+    },
+    "C09.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "a8290107c96c94fc3faaceee825880fae8556db1c21631e079bb55f6d0fe7f73"
+    },
+    "C09.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "b3ad39c850f6d869c3bb1a8bd3c64911d91d335d06133edeeb052916441e9537"
+    },
+    "C10.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "5b5ff9bec10fd6b93f5ec1ffac6eaa4af510b0c84a708e74fb81b245cdd10e71"
+    },
+    "C10.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "096825611c2a62b5b3d9b362ec5524342ae9b6a10505979c1eb64201567f72d4"
+    },
+    "C10.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "3d5e2aa2829d72b7e5a0b09ff4a24eb1fbf8d32ce217a26af3700079efa6d63b"
+    },
+    "C11.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "7a753ad8fc220244f518633f0219d5e6b29349c2a76dac54770de638abe5e152"
+    },
+    "C11.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "df7e7cb3c2c28c211e87a542b107c549eb30fb83fb4a4c5b585642eb675dabc3"
+    },
+    "C11.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "98c3a3832756bcea57c3c269da578f7e7f32aad760d1ebbba16ba6cb213e1760"
+    },
+    "C12.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "0b6375c249cfc0ecf6047f0878157cccca49436589c58b73a7776019aa4edc03"
+    },
+    "C12.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "8f8c8077262fa83f4697915271c50a78b94a3e067b94464dd0652b45a93706b2"
+    },
+    "C12.skill_gates.r1.json": {
+      "source": "initial-success",
+      "sha256": "5f318cebfe3cfa732e7550674fe6b079a4c736d0e451c4e84923c555c56353b4"
+    },
+    "C13.baseline.r1.json": {
+      "source": "initial-success",
+      "sha256": "dfd4e32fadc5a1fb3056b3c43d9fdc64b039d8f52314dd8270223b5e881fd84e"
+    },
+    "C13.skill.r1.json": {
+      "source": "initial-success",
+      "sha256": "7a48e45644eec4ae1ee7f4fa126487f52dcfc4a7241147b72407ed1f18ca5b90"
+    },
+    "C29.baseline.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C29.baseline.r1.json"
+    },
+    "C29.skill.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C29.skill.r1.json"
+    },
+    "C29.skill_gates.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C29.skill_gates.r1.json"
+    },
+    "C30.baseline.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C30.baseline.r1.json"
+    },
+    "C30.skill.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C30.skill.r1.json"
+    },
+    "C30.skill_gates.r1.json": {
+      "source": "recovered",
+      "initial_failure": "runs/initial/C30.skill_gates.r1.json"
+    }
+  }
+}

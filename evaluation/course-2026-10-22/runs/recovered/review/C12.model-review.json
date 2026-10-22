@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C12\",\n  \"input\": {\n    \"mode\": \"check\",\n    \"problem\": \"解实数方程 √(x+6)=x。\",\n    \"solution\": \"平方得到 x+6=x²。\\n因式分解得 x=3 或 x=-2。\\n两个根都满足原方程。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"首错在第3行：x=-2不满足原方程，因为代入后左边为√4=2，右边为-2。前两行求候选根成立；补充验根，舍去-2，保留x=3。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 3,\n          \"quote\": \"两个根都满足原方程。\",\n          \"reason\": \"x=-2代入原方程得到2=-2，不成立。平方所得候选根需要验根。\"\n        },\n        \"minimal_fix\": \"将第3行改为：代入原方程，x=3时√9=3，成立；x=-2时√4≠-2，舍去。因此原方程的解为x=3。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"平方得到x²=x+6，再由(x-3)(x+2)=0得到候选根3和-2，前两行成立。\",\n          \"原方程左边非负，因此任何解都必须满足x≥0，候选根-2不符合。\",\n          \"x=3代入原方程，左边√(3+6)=3，等于右边。\"\n        ]\n      }\n    },\n    \"B\": {\n      \"reply\": \"前两步正确，首错在第3行。平方可能产生增根，需要代回原方程检验：x=3时，√9=3，成立；x=-2时，√4=2≠-2，不成立。因此原方程的解为x=3。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 3,\n          \"quote\": \"两个根都满足原方程。\",\n          \"reason\": \"当x=-2时，左边√(x+6)=2，右边为-2，两边不相等，所以x=-2是平方产生的增根。\"\n        },\n        \"minimal_fix\": \"将第3行改为：代回检验，x=3满足原方程，x=-2不满足原方程，故原方程的解为x=3。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"算术平方根非负，因此原方程要求x≥0。\",\n          \"x=3时，√(3+6)=3，满足原方程。\",\n          \"x=-2时，√(-2+6)=2≠-2，不满足原方程。\"\n        ]\n      }\n    },\n    \"C\": {\n      \"reply\": \"首错在第3行：x=-2不满足原方程。前两行可用于求候选根；代回得，x=3时两边均为3，x=-2时左边为2、右边为-2。因此应舍去-2，原方程的解为x=3。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 3,\n          \"quote\": \"两个根都满足原方程。\",\n          \"reason\": \"代入x=-2，√(x+6)=2≠-2，因此该候选根不满足原方程。\"\n        },\n        \"minimal_fix\": \"将第3行改为：代回原方程，x=3成立，x=-2不成立，故原方程的解为x=3。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"平方得到x+6=x²，可用于求候选根，但平方后的根需要检验。\",\n          \"x²-x-6=(x-3)(x+2)，候选根为3和-2。\",\n          \"x=3时，√9=3；x=-2时，√4=2≠-2。\"\n        ]\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"原方程左边为算术平方根，故解必须满足x≥0。平方得到x²-x-6=0，即(x-3)(x+2)=0，候选根为3和-2。代回原方程，x=3时两边均为3；x=-2时左边为2、右边为-2，不成立。因此解为x=3。学生前两步正确，首错在第3行“两个根都满足原方程”。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答中的判断、首错定位、验根计算及最小修改均正确；依据学生实际步骤指出负根不成立，并具体说明如何验根和修正，符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答正确确认前两步，定位第3行为首错，并准确说明平方可能产生增根；两个候选根的检验与最终解均正确，修改建议具体且符合check模式。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答正确区分候选根与原方程的解，准确定位第3行错误；因式分解、代回检验和修正结论均正确，反馈直接帮助学生补上验根步骤，符合check模式。\"\n    }\n  }\n}",
+    "elapsed_seconds": 81.197,
+    "usage": [
+      {
+        "input_tokens": 24928,
+        "cached_input_tokens": 22656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 427,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a16418-800c-7683-a72e-6161ecebab6b"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"原方程左边为算术平方根，故解必须满足x≥0。平方得到x²-x-6=0，即(x-3)(x+2)=0，候选根为3和-2。代回原方程，x=3时两边均为3；x=-2时左边为2、右边为-2，不成立。因此解为x=3。学生前两步正确，首错在第3行“两个根都满足原方程”。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答中的判断、首错定位、验根计算及最小修改均正确；依据学生实际步骤指出负根不成立，并具体说明如何验根和修正，符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答正确确认前两步，定位第3行为首错，并准确说明平方可能产生增根；两个候选根的检验与最终解均正确，修改建议具体且符合check模式。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整回答正确区分候选根与原方程的解，准确定位第3行错误；因式分解、代回检验和修正结论均正确，反馈直接帮助学生补上验根步骤，符合check模式。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 24928,
+          "cached_input_tokens": 22656,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 427,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "原方程左边为算术平方根，故解必须满足x≥0。平方得到x²-x-6=0，即(x-3)(x+2)=0，候选根为3和-2。代回原方程，x=3时两边均为3；x=-2时左边为2、右边为-2，不成立。因此解为x=3。学生前两步正确，首错在第3行“两个根都满足原方程”。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整回答中的判断、首错定位、验根计算及最小修改均正确；依据学生实际步骤指出负根不成立，并具体说明如何验根和修正，符合check模式。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整回答正确确认前两步，定位第3行为首错，并准确说明平方可能产生增根；两个候选根的检验与最终解均正确，修改建议具体且符合check模式。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整回答正确区分候选根与原方程的解，准确定位第3行错误；因式分解、代回检验和修正结论均正确，反馈直接帮助学生补上验根步骤，符合check模式。"
+      }
+    }
+  }
+}

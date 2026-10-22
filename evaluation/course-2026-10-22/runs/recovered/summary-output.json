@@ -1,0 +1,386 @@
+{
+  "arms": {
+    "baseline": {
+      "completed": 30,
+      "errors": 0,
+      "gate_passed": 28,
+      "first_attempt_passed": 28,
+      "repaired": 0,
+      "calls": 30,
+      "elapsed_seconds": 811.268,
+      "input_tokens": 847495,
+      "output_tokens": 16944,
+      "model_review": {
+        "math_correct": {
+          "passed": 24,
+          "n": 24,
+          "wilson95": [
+            0.862,
+            1.0
+          ]
+        },
+        "first_error_correct": {
+          "passed": 11,
+          "n": 11,
+          "wilson95": [
+            0.7412,
+            1.0
+          ]
+        },
+        "mode_obeyed": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        },
+        "grounded": {
+          "passed": 29,
+          "n": 30,
+          "wilson95": [
+            0.8333,
+            0.9941
+          ]
+        },
+        "teaching_useful": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        }
+      },
+      "human_review": {
+        "math_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "first_error_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "mode_obeyed": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "grounded": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "teaching_useful": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        }
+      }
+    },
+    "skill": {
+      "completed": 30,
+      "errors": 0,
+      "gate_passed": 29,
+      "first_attempt_passed": 29,
+      "repaired": 0,
+      "calls": 30,
+      "elapsed_seconds": 870.077,
+      "input_tokens": 1008997,
+      "output_tokens": 17432,
+      "model_review": {
+        "math_correct": {
+          "passed": 24,
+          "n": 24,
+          "wilson95": [
+            0.862,
+            1.0
+          ]
+        },
+        "first_error_correct": {
+          "passed": 11,
+          "n": 11,
+          "wilson95": [
+            0.7412,
+            1.0
+          ]
+        },
+        "mode_obeyed": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        },
+        "grounded": {
+          "passed": 29,
+          "n": 30,
+          "wilson95": [
+            0.8333,
+            0.9941
+          ]
+        },
+        "teaching_useful": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        }
+      },
+      "human_review": {
+        "math_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "first_error_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "mode_obeyed": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "grounded": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "teaching_useful": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        }
+      }
+    },
+    "skill_gates": {
+      "completed": 30,
+      "errors": 0,
+      "gate_passed": 29,
+      "first_attempt_passed": 29,
+      "repaired": 0,
+      "calls": 32,
+      "elapsed_seconds": 904.335,
+      "input_tokens": 1085581,
+      "output_tokens": 19455,
+      "model_review": {
+        "math_correct": {
+          "passed": 24,
+          "n": 24,
+          "wilson95": [
+            0.862,
+            1.0
+          ]
+        },
+        "first_error_correct": {
+          "passed": 11,
+          "n": 11,
+          "wilson95": [
+            0.7412,
+            1.0
+          ]
+        },
+        "mode_obeyed": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        },
+        "grounded": {
+          "passed": 29,
+          "n": 30,
+          "wilson95": [
+            0.8333,
+            0.9941
+          ]
+        },
+        "teaching_useful": {
+          "passed": 30,
+          "n": 30,
+          "wilson95": [
+            0.8865,
+            1.0
+          ]
+        }
+      },
+      "human_review": {
+        "math_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "first_error_correct": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "mode_obeyed": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "grounded": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        },
+        "teaching_useful": {
+          "passed": 0,
+          "n": 0,
+          "wilson95": null
+        }
+      }
+    }
+  },
+  "failures": [
+    {
+      "file": "C25.baseline.r1.json",
+      "gates": [
+        {
+          "gate": "scripts/validate_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/validate_output.py",
+            "validate",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-ivunycif/card.json"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"action\": \"validate\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-ivunycif/card.json\"\n  },\n  \"method\": \"字段完整性 + 恰好六个维度 + 评分取值（含不适用） + 1–3 条习惯 + 学段与来源合法性\",\n  \"errors\": [],\n  \"warnings\": [],\n  \"passed\": true,\n  \"capability_note\": \"结构门只查卡片长得对不对：**它不判断任何数学内容，也不判断版面观察是否成立。** 本技能只看版面习惯，不判对错。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        },
+        {
+          "gate": "scripts/audit_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/audit_output.py",
+            "audit",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-ivunycif/card.json",
+            "--draft",
+            "左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。",
+            "--strict"
+          ],
+          "exit_code": 1,
+          "stdout": "{\n  \"action\": \"audit\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-ivunycif/card.json\",\n    \"draft\": \"左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。\",\n    \"strict\": true\n  },\n  \"method\": \"规则扫描：诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答 / 评分扣分（被否定的措辞豁免，如「这一项我没有打分」），外加风险句限定词、学段用词一致性、整张纸多题提示\",\n  \"errors\": [],\n  \"warnings\": [\n    {\n      \"code\": \"W_MULTI_PROBLEM_DRAFT\",\n      \"field\": \"*\",\n      \"markers\": [\n        \"第1题\",\n        \"第2题\"\n      ],\n      \"detail\": \"草稿里出现了多个题号标记，可能不止一道题。分析单位是一道题：先分块、让学生确认归属，再把其中一块作为 --draft 逐题过门，别把整张纸当一份草稿打分\"\n    }\n  ],\n  \"passed\": false,\n  \"capability_note\": \"规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；已成立解法的优化当前项目暂不提供。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        }
+      ]
+    },
+    {
+      "file": "C25.skill.r1.json",
+      "gates": [
+        {
+          "gate": "scripts/validate_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/validate_output.py",
+            "validate",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-kq555k3j/card.json"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"action\": \"validate\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-kq555k3j/card.json\"\n  },\n  \"method\": \"字段完整性 + 恰好六个维度 + 评分取值（含不适用） + 1–3 条习惯 + 学段与来源合法性\",\n  \"errors\": [],\n  \"warnings\": [],\n  \"passed\": true,\n  \"capability_note\": \"结构门只查卡片长得对不对：**它不判断任何数学内容，也不判断版面观察是否成立。** 本技能只看版面习惯，不判对错。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        },
+        {
+          "gate": "scripts/audit_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/audit_output.py",
+            "audit",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-kq555k3j/card.json",
+            "--draft",
+            "左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。",
+            "--strict"
+          ],
+          "exit_code": 1,
+          "stdout": "{\n  \"action\": \"audit\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-kq555k3j/card.json\",\n    \"draft\": \"左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。\",\n    \"strict\": true\n  },\n  \"method\": \"规则扫描：诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答 / 评分扣分（被否定的措辞豁免，如「这一项我没有打分」），外加风险句限定词、学段用词一致性、整张纸多题提示\",\n  \"errors\": [],\n  \"warnings\": [\n    {\n      \"code\": \"W_MULTI_PROBLEM_DRAFT\",\n      \"field\": \"*\",\n      \"markers\": [\n        \"第1题\",\n        \"第2题\"\n      ],\n      \"detail\": \"草稿里出现了多个题号标记，可能不止一道题。分析单位是一道题：先分块、让学生确认归属，再把其中一块作为 --draft 逐题过门，别把整张纸当一份草稿打分\"\n    }\n  ],\n  \"passed\": false,\n  \"capability_note\": \"规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；已成立解法的优化当前项目暂不提供。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        }
+      ]
+    },
+    {
+      "file": "C25.skill_gates.r1.json",
+      "gates": [
+        {
+          "gate": "scripts/validate_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/validate_output.py",
+            "validate",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-0pc2gt1w/card.json"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"action\": \"validate\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-0pc2gt1w/card.json\"\n  },\n  \"method\": \"字段完整性 + 恰好六个维度 + 评分取值（含不适用） + 1–3 条习惯 + 学段与来源合法性\",\n  \"errors\": [],\n  \"warnings\": [],\n  \"passed\": true,\n  \"capability_note\": \"结构门只查卡片长得对不对：**它不判断任何数学内容，也不判断版面观察是否成立。** 本技能只看版面习惯，不判对错。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        },
+        {
+          "gate": "scripts/audit_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/audit_output.py",
+            "audit",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-0pc2gt1w/card.json",
+            "--draft",
+            "左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。",
+            "--strict"
+          ],
+          "exit_code": 1,
+          "stdout": "{\n  \"action\": \"audit\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-0pc2gt1w/card.json\",\n    \"draft\": \"左栏顶部标了第1题，下面每步单独一行；右栏顶部标了第2题，两栏之间画了竖线。第2题末尾四行挤在一起，底部没有留白。\",\n    \"strict\": true\n  },\n  \"method\": \"规则扫描：诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答 / 评分扣分（被否定的措辞豁免，如「这一项我没有打分」），外加风险句限定词、学段用词一致性、整张纸多题提示\",\n  \"errors\": [],\n  \"warnings\": [\n    {\n      \"code\": \"W_MULTI_PROBLEM_DRAFT\",\n      \"field\": \"*\",\n      \"markers\": [\n        \"第1题\",\n        \"第2题\"\n      ],\n      \"detail\": \"草稿里出现了多个题号标记，可能不止一道题。分析单位是一道题：先分块、让学生确认归属，再把其中一块作为 --draft 逐题过门，别把整张纸当一份草稿打分\"\n    }\n  ],\n  \"passed\": false,\n  \"capability_note\": \"规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；已成立解法的优化当前项目暂不提供。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        }
+      ]
+    },
+    {
+      "file": "C28.baseline.r1.json",
+      "gates": [
+        {
+          "gate": "scripts/validate_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/validate_output.py",
+            "validate",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-87g9h0ym/card.json"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"action\": \"validate\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-87g9h0ym/card.json\"\n  },\n  \"method\": \"字段完整性 + 恰好六个维度 + 评分取值（含不适用） + 1–3 条习惯 + 学段与来源合法性\",\n  \"errors\": [],\n  \"warnings\": [],\n  \"passed\": true,\n  \"capability_note\": \"结构门只查卡片长得对不对：**它不判断任何数学内容，也不判断版面观察是否成立。** 本技能只看版面习惯，不判对错。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        },
+        {
+          "gate": "scripts/audit_output.py",
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "scripts/audit_output.py",
+            "audit",
+            "--card",
+            "/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-87g9h0ym/card.json",
+            "--draft",
+            "只有纸张中间的一小块内容：一行算式，下面一个结果框。照片其余位置被裁掉，看不到边距、题号或划改。",
+            "--strict"
+          ],
+          "exit_code": 1,
+          "stdout": "{\n  \"action\": \"audit\",\n  \"input\": {\n    \"card\": \"/var/folders/vm/42894lhd149f8xlvwlgnr6fw0000gn/T/math-gate-87g9h0ym/card.json\",\n    \"draft\": \"只有纸张中间的一小块内容：一行算式，下面一个结果框。照片其余位置被裁掉，看不到边距、题号或划改。\",\n    \"strict\": true\n  },\n  \"method\": \"规则扫描：诊断知识漏洞 / 贴标签 / 排题量计划 / 出变式题 / 给完整解答 / 评分扣分（被否定的措辞豁免，如「这一项我没有打分」），外加风险句限定词、学段用词一致性、整张纸多题提示\",\n  \"errors\": [\n    {\n      \"code\": \"A_SCORE\",\n      \"field\": \"dimensions.organization.risk\",\n      \"text\": \"若把裁切后的局部当作整张纸，可能误判分区与边距安排。\",\n      \"matched\": \"判分\",\n      \"detail\": \"越过本 skill 边界：评分 / 扣分\"\n    }\n  ],\n  \"warnings\": [],\n  \"passed\": false,\n  \"capability_note\": \"规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；已成立解法的优化当前项目暂不提供。\"\n}\n",
+          "scope": "结构与固定措辞；不证明数学或版面观察真实性"
+        }
+      ]
+    }
+  ],
+  "human_review_available": false,
+  "human_review_status": "deferred_by_user_2026-10-22",
+  "scope": "Saved single-run course cases; model-assisted review is same-model separate-context, not human or formal verification. Gate pass is not mathematical accuracy.",
+  "cost": "Token usage recorded; no verified monetary billing data available."
+}

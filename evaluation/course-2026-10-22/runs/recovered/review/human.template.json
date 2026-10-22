@@ -1,0 +1,1811 @@
+{
+  "reviewer_name": null,
+  "reviewer_role": null,
+  "reviewed_at": null,
+  "source": "human",
+  "instructions": "先独立检查原题与学生过程，再逐条评估A/B/C。只填你实际阅读的条目；不适用填null，布尔值必须有理由。不要查看mapping.json。",
+  "cases": [
+    {
+      "packet": {
+        "case_id": "C01",
+        "input": {
+          "mode": "solve",
+          "problem": "解实数方程 √(3x+4)=x。",
+          "solution": "",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "根号表示非负数，所以 x≥0。两边平方得 3x+4=x²，即 (x−4)(x+1)=0，得到 x=4 或 x=−1。由于 x≥0，舍去 −1；代入 x=4，左边 √16=4，等于右边。因此原方程的解为 x=4。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "解实数方程 √(3x+4)=x。",
+                "topic": "根式方程",
+                "subtopics": [
+                  "算术平方根",
+                  "平方消根",
+                  "增根检验"
+                ],
+                "givens": [
+                  "√(3x+4)=x"
+                ],
+                "variables": [
+                  "x：实数未知数"
+                ],
+                "constraints": [
+                  "x∈ℝ",
+                  "3x+4≥0",
+                  "由原方程可知 x≥0"
+                ],
+                "goal": "求原方程的所有实数解",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "利用平方根的非负性限制未知数，再平方消根并检验候选解。",
+                "method": "平方转化为一元二次方程",
+                "prerequisites": [
+                  "算术平方根非负",
+                  "因式分解",
+                  "根式方程验根"
+                ],
+                "steps": [
+                  "确定 x 的必要取值范围",
+                  "平方并解一元二次方程",
+                  "筛选候选解并代回原方程"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "3x+4≥0，且 x=√(3x+4)≥0。",
+                    "justification": "实数范围内根式有意义要求被开方数非负；算术平方根的值非负，因此原方程的解必须满足 x≥0。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "3x+4=x²，即 x²−3x−4=0。",
+                    "justification": "原方程两边平方，再将各项移至同一边。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "(x−4)(x+1)=0，所以 x=4 或 x=−1。",
+                    "justification": "将二次三项式因式分解，利用两因式乘积为零则至少一个因式为零。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "x=−1 不满足 x≥0；x=4 时，√(3×4+4)=√16=4。",
+                    "justification": "先利用必要条件排除 −1，再将 4 代回原方程确认成立。"
+                  }
+                ],
+                "answer": "x=4，解集为 {4}。",
+                "conditions": [
+                  "在实数范围内求解"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "代回原方程",
+                    "status": "passed",
+                    "details": "x=4 时，左边 √(3×4+4)=4，右边为 4，两边相等。"
+                  },
+                  {
+                    "name": "检查增根",
+                    "status": "passed",
+                    "details": "x=−1 时，左边 √(3×(−1)+4)=1，右边为 −1，两边不等，因此 −1 是平方后产生的增根。"
+                  },
+                  {
+                    "name": "解的完整性",
+                    "status": "passed",
+                    "details": "原方程的每个实数解平方后都满足 (x−4)(x+1)=0，因此只能是 4 或 −1；逐一检验后仅 4 成立，没有遗漏。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "√(3x+4)=x 不仅要求根式有意义，还要求右边 x 非负。",
+                "difficult_steps": [
+                  "区分根式有意义的条件与方程成立的必要条件",
+                  "理解平方后为什么需要验根"
+                ],
+                "common_mistakes": [
+                  "把平方后的两个根都当作原方程的解",
+                  "只检查被开方数非负，忽略平方根的值非负"
+                ],
+                "prerequisite_explanations": [
+                  "算术平方根总是非负数。",
+                  "平方可能使原本不相等的两个数变得相等，例如 1 与 −1，因此平方所得的候选解需要检验。"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "B": {
+            "reply": "由 √(3x+4)=x，知 x≥0。两边平方，得 3x+4=x²，即 (x−4)(x+1)=0，所以候选解为 x=4 或 x=−1。\n代回原方程：x=4 时，√16=4，成立；x=−1 时，√1=1≠−1，不成立。\n因此原方程的实数解为 x=4。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "解实数方程 √(3x+4)=x。",
+                "topic": "根式方程",
+                "subtopics": [
+                  "算术平方根",
+                  "平方变形与增根"
+                ],
+                "givens": [
+                  "√(3x+4)=x"
+                ],
+                "variables": [
+                  "x 为实数未知数"
+                ],
+                "constraints": [
+                  "3x+4≥0",
+                  "原方程成立时 x≥0"
+                ],
+                "goal": "求原方程的全部实数解",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "利用算术平方根的非负性限制未知数，再平方求候选解并代回检验。",
+                "method": "平方转化为一元二次方程",
+                "prerequisites": [
+                  "算术平方根非负",
+                  "因式分解法解一元二次方程"
+                ],
+                "steps": [
+                  "确定非负条件",
+                  "平方并求候选解",
+                  "代回原方程排除增根"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "3x+4≥0，且 x≥0。",
+                    "justification": "根号内必须非负；算术平方根非负，因此与其相等的 x 也必须非负。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "3x+4=x²，即 (x−4)(x+1)=0。",
+                    "justification": "原方程两边平方，再移项并因式分解；平方所得的候选解仍需检验。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "x=4 或 x=−1；其中 x=−1 不符合 x≥0。",
+                    "justification": "由两因式之积为零求出候选解，并检查非负条件。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "x=4 时，√(3×4+4)=√16=4，因此原方程的实数解为 x=4。",
+                    "justification": "代回原方程成立，且任何原方程的解都必须属于已求出的候选解。"
+                  }
+                ],
+                "answer": "x=4",
+                "conditions": []
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "检查定义域与非负条件",
+                    "status": "passed",
+                    "details": "x=4 满足 3x+4≥0 和 x≥0；x=−1 虽使根式有意义，但不满足右端非负这一必要条件。"
+                  },
+                  {
+                    "name": "代回原方程检查平方增根",
+                    "status": "passed",
+                    "details": "x=4 时左右两边均为4；x=−1 时左边为1、右边为−1，故−1是增根。"
+                  },
+                  {
+                    "name": "检查解的完整性",
+                    "status": "passed",
+                    "details": "原方程成立必有 x²−3x−4=0，而该二次方程仅有4和−1两个根；逐一检验后仅4成立，无遗漏。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "算术平方根非负，平方求得的根必须符合原方程。",
+                "difficult_steps": [
+                  "理解平方后得到的候选解可能包含增根"
+                ],
+                "common_mistakes": [
+                  "把 x=−1 也作为原方程的解",
+                  "只检查根号内非负，忽略右端 x 必须非负"
+                ],
+                "prerequisite_explanations": [
+                  "√a 表示 a 的非负平方根"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "C": {
+            "reply": "由算术平方根非负，得 x≥0。两边平方，得 3x+4=x²，即 (x−4)(x+1)=0，所以候选解为 x=4 或 x=−1。由于 x≥0，排除 x=−1。代回原方程：√(3×4+4)=√16=4，成立。因此原方程的解为 x=4。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "解实数方程 √(3x+4)=x。",
+                "topic": "无理方程",
+                "subtopics": [
+                  "算术平方根",
+                  "平方变形",
+                  "增根检验"
+                ],
+                "givens": [
+                  "√(3x+4)=x"
+                ],
+                "variables": [
+                  "x：实数未知数"
+                ],
+                "constraints": [
+                  "3x+4≥0",
+                  "由原方程可知 x≥0"
+                ],
+                "goal": "求原方程的全部实数解",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "先确定符号限制，再平方转化为一元二次方程，最后代回检验。",
+                "method": "平方与因式分解",
+                "prerequisites": [
+                  "算术平方根非负",
+                  "一元二次方程的因式分解"
+                ],
+                "steps": [
+                  "确定 x≥0",
+                  "平方并求候选解",
+                  "排除不合条件的值并代回核验"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "3x+4≥0，且 x=√(3x+4)≥0。",
+                    "justification": "实数平方根要求被开方数非负，算术平方根的值也非负。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "x²=3x+4，即 x²−3x−4=(x−4)(x+1)=0。",
+                    "justification": "将原方程两边平方，再移项并因式分解；所得候选值仍需检查原方程。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "候选解为 x=4 或 x=−1；结合 x≥0，仅保留 x=4。",
+                    "justification": "两个因式的乘积为零时至少一个因式为零；x=−1 不满足原方程要求的非负条件。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "当 x=4 时，√(3x+4)=√16=4=x。",
+                    "justification": "代回原方程成立，故 x=4 确为原方程的解。"
+                  }
+                ],
+                "answer": "原方程的实数解集为 {4}。",
+                "conditions": []
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "检查定义域与符号限制",
+                    "status": "passed",
+                    "details": "x=4 时被开方数为16≥0，且右端4≥0，满足全部限制。"
+                  },
+                  {
+                    "name": "代回原方程并检查平方增根",
+                    "status": "passed",
+                    "details": "x=4 时两边均为4；x=−1 时左边为√1=1，右边为−1，不成立，因此−1是平方产生的增根。"
+                  },
+                  {
+                    "name": "检查解的完整性",
+                    "status": "passed",
+                    "details": "原方程的任意实数解必满足(x−4)(x+1)=0，因此只能是4或−1；逐一检验后仅4成立，无遗漏。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "根号表示算术平方根，因此右端 x 必须非负。",
+                "difficult_steps": [
+                  "区分平方后方程的候选解与原方程的解"
+                ],
+                "common_mistakes": [
+                  "平方后直接把−1也列为原方程的解",
+                  "只检查被开方数非负，忽略右端必须非负"
+                ],
+                "prerequisite_explanations": [
+                  "平方可能丢失两边的符号信息，因此候选解需要代回原方程检验。"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C05",
+        "input": {
+          "mode": "solve",
+          "problem": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+          "solution": "",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "由二倍角公式，sin(2x)=2sin x cos x，所以原方程等价于\ncos x(2sin x−1)=0。\n因此 cos x=0 或 sin x=1/2。\n在 0≤x<2π 内，前者得 x=π/2、3π/2，后者得 x=π/6、5π/6。\n故解集为 {π/6，π/2，5π/6，3π/2}。四个值代回原方程均成立。注意不能直接约去 cos x，否则会漏解。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+                "topic": "三角方程",
+                "subtopics": [
+                  "正弦二倍角公式",
+                  "因式分解",
+                  "特殊角的三角函数值"
+                ],
+                "givens": [
+                  "sin(2x)=cos(x)"
+                ],
+                "variables": [
+                  "x：待求的实数角，采用弧度制"
+                ],
+                "constraints": [
+                  "0≤x<2π"
+                ],
+                "goal": "求原方程在指定区间内的全部解。",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "用二倍角公式将方程化为两个因式乘积为零，分别求解。",
+                "method": "二倍角公式与因式分解",
+                "prerequisites": [
+                  "sin(2x)=2sin x cos x",
+                  "两个实数的乘积为零，则至少一个因数为零",
+                  "特殊角的三角函数值"
+                ],
+                "steps": [
+                  "展开 sin(2x)，移项并提取 cos x。",
+                  "分别求解 cos x=0 与 sin x=1/2。",
+                  "筛选指定区间内的解，并代回核验。"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "2sin x cos x=cos x。",
+                    "justification": "将二倍角公式 sin(2x)=2sin x cos x 代入原方程。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "cos x(2sin x−1)=0。",
+                    "justification": "两边同时减去 cos x，再提取公因式 cos x；这些变形均等价。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "cos x=0 或 sin x=1/2。",
+                    "justification": "实数乘积等于零，当且仅当至少一个因数为零。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "当 cos x=0 时，在 0≤x<2π 内有 x=π/2 或 x=3π/2。",
+                    "justification": "单位圆上横坐标为零的点位于纵轴，其对应的区间内角为 π/2、3π/2。"
+                  },
+                  {
+                    "step": 5,
+                    "expression": "当 sin x=1/2 时，在 0≤x<2π 内有 x=π/6 或 x=5π/6。",
+                    "justification": "正弦为正时角在第一、第二象限，参考角为 π/6。"
+                  }
+                ],
+                "answer": "解集为 {π/6，π/2，5π/6，3π/2}。",
+                "conditions": [
+                  "0≤x<2π"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "代回原三角方程",
+                    "status": "passed",
+                    "details": "x=π/6 时，两边均为 √3/2；x=5π/6 时，两边均为 −√3/2；x=π/2、3π/2 时，两边均为 0。"
+                  },
+                  {
+                    "name": "检查区间与端点",
+                    "status": "passed",
+                    "details": "四个解均位于 [0,2π)；x=0 时左边为 0、右边为 1，不是解；2π 不属于指定区间。"
+                  },
+                  {
+                    "name": "检查分类完整性与漏解",
+                    "status": "passed",
+                    "details": "二倍角展开、移项和因式分解均为等价变形；零乘积的两种情况已全部求解，未除以可能为零的 cos x，因此未漏掉 cos x=0 的解。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "移项提取 cos x，保留 cos x=0 这一支。",
+                "difficult_steps": [
+                  "在指定区间内找全 sin x=1/2 对应的两个角。"
+                ],
+                "common_mistakes": [
+                  "直接约去 cos x，漏掉 π/2 和 3π/2。",
+                  "只写出 sin x=1/2 的第一象限解，漏掉 5π/6。"
+                ],
+                "prerequisite_explanations": [
+                  "用单位圆确定正弦值为 1/2 的两个角。"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "B": {
+            "reply": "利用二倍角公式，原方程化为 2sin(x)cos(x)=cos(x)，即 cos(x)(2sin(x)−1)=0。因此 cos(x)=0 或 sin(x)=1/2。在 0≤x<2π 内，解为 x=π/6、π/2、5π/6、3π/2。注意不能直接约去 cos(x)，否则会漏解。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+                "topic": "三角方程",
+                "subtopics": [
+                  "正弦二倍角公式",
+                  "因式分解",
+                  "区间内的三角方程求解"
+                ],
+                "givens": [
+                  "sin(2x)=cos(x)"
+                ],
+                "variables": [
+                  "x：以弧度为单位的实数"
+                ],
+                "constraints": [
+                  "0≤x<2π"
+                ],
+                "goal": "求指定区间内方程的全部解。",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "利用二倍角公式将方程化为乘积为零，分类求解。",
+                "method": "二倍角公式与因式分解法",
+                "prerequisites": [
+                  "sin(2x)=2sin(x)cos(x)",
+                  "两因式乘积为零时至少一个因式为零",
+                  "特殊角的三角函数值"
+                ],
+                "steps": [
+                  "展开 sin(2x)，移项并提取公因式。",
+                  "分别求解 cos(x)=0 和 sin(x)=1/2。",
+                  "筛选区间内的解并代回原方程。"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "sin(2x)=cos(x) ⇔ 2sin(x)cos(x)−cos(x)=0",
+                    "justification": "使用正弦二倍角公式 sin(2x)=2sin(x)cos(x)，再将右端移至左端。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "cos(x)(2sin(x)−1)=0 ⇔ cos(x)=0 或 sin(x)=1/2",
+                    "justification": "提取公因式 cos(x)，并使用实数乘积为零的性质；此过程无需除以可能为零的 cos(x)。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "cos(x)=0，0≤x<2π ⇒ x=π/2 或 x=3π/2",
+                    "justification": "在一个周期内，单位圆上横坐标为零的两个角分别为 π/2 和 3π/2。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "sin(x)=1/2，0≤x<2π ⇒ x=π/6 或 x=5π/6",
+                    "justification": "参考角为 π/6，且正弦为正的角位于第一、第二象限。"
+                  },
+                  {
+                    "step": 5,
+                    "expression": "x∈{π/6，π/2，5π/6，3π/2}",
+                    "justification": "合并两个分支的解；四个值均属于指定区间，且两个分支已覆盖乘积为零的全部情形。"
+                  }
+                ],
+                "answer": "x=π/6、π/2、5π/6 或 3π/2。",
+                "conditions": [
+                  "0≤x<2π"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "代回原方程",
+                    "status": "passed",
+                    "details": "x=π/6 时，两端均为 √3/2；x=π/2 时，两端均为 0；x=5π/6 时，两端均为 −√3/2；x=3π/2 时，两端均为 0。"
+                  },
+                  {
+                    "name": "区间与解的完整性检查",
+                    "status": "passed",
+                    "details": "四个解均在 [0,2π) 内。原方程经恒等变形等价于 cos(x)(2sin(x)−1)=0，两个因式为零的情形均已穷尽；端点 x=0 不满足原方程，2π 不属于指定区间。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "展开二倍角后保留 cos(x) 为零的分支，用因式分解避免漏解。",
+                "difficult_steps": [
+                  "将乘积为零拆分为两个方程。",
+                  "根据象限找全指定区间内的特殊角。"
+                ],
+                "common_mistakes": [
+                  "直接约去 cos(x)，漏掉 π/2 和 3π/2。",
+                  "求 sin(x)=1/2 时只写 π/6，漏掉第二象限的 5π/6。"
+                ],
+                "prerequisite_explanations": [
+                  "除以一个含未知数的式子前，必须考虑该式子为零的情况。",
+                  "单位圆上，点的横坐标为余弦值，纵坐标为正弦值。"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "C": {
+            "reply": "由二倍角公式，sin(2x)=2sin x cos x，原方程等价于\ncos x(2sin x−1)=0。\n所以 cos x=0 或 sin x=1/2。\n在 0≤x<2π 内，前者得 x=π/2、3π/2，后者得 x=π/6、5π/6。\n因此解集为 {π/6，π/2，5π/6，3π/2}。这四个值代回原方程均成立。注意不能直接除以 cos x，否则会漏解。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "在 0≤x<2π 内解 sin(2x)=cos(x)。",
+                "topic": "三角方程",
+                "subtopics": [
+                  "正弦二倍角公式",
+                  "因式分解",
+                  "特殊角的三角函数值"
+                ],
+                "givens": [
+                  "sin(2x)=cos(x)"
+                ],
+                "variables": [
+                  "x：待求的角，采用弧度制"
+                ],
+                "constraints": [
+                  "0≤x<2π"
+                ],
+                "goal": "求解方程，列出指定区间内的全部解。",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "利用二倍角公式将方程化为两个因式的乘积为零。",
+                "method": "二倍角公式与因式分解",
+                "prerequisites": [
+                  "sin(2x)=2sin x cos x",
+                  "两因式乘积为零时至少一个因式为零",
+                  "单位圆上的特殊角"
+                ],
+                "steps": [
+                  "使用二倍角公式并移项提取公因式。",
+                  "分别求解 cos x=0 与 sin x=1/2。",
+                  "按指定区间筛选，并代回原方程核验。"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "2sin x cos x=cos x。",
+                    "justification": "使用正弦二倍角公式 sin(2x)=2sin x cos x。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "cos x(2sin x−1)=0。",
+                    "justification": "两边减去 cos x，再提取公因式 cos x；变形等价，不需要除以可能为零的因式。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "cos x=0 或 sin x=1/2。",
+                    "justification": "实数的两个因式乘积等于零，当且仅当至少一个因式等于零。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "在 0≤x<2π 内，cos x=0 的解为 x=π/2、3π/2；sin x=1/2 的解为 x=π/6、5π/6。",
+                    "justification": "由单位圆，余弦为零对应纵轴上的两点；正弦为 1/2 对应第一、第二象限内参考角为 π/6 的两点。"
+                  },
+                  {
+                    "step": 5,
+                    "expression": "解集为 {π/6，π/2，5π/6，3π/2}。",
+                    "justification": "合并两类解，四个值互不相同且均属于指定区间。"
+                  }
+                ],
+                "answer": "解集为 {π/6，π/2，5π/6，3π/2}。",
+                "conditions": [
+                  "0≤x<2π"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "代回原三角方程",
+                    "status": "passed",
+                    "details": "x=π/6 时，两边均为 √3/2；x=π/2 时，两边均为 0；x=5π/6 时，两边均为 −√3/2；x=3π/2 时，两边均为 0。"
+                  },
+                  {
+                    "name": "检查区间端点与解的完整性",
+                    "status": "passed",
+                    "details": "四个解均满足 0≤x<2π。x=0 时左边为 0、右边为 1，不是解；2π 不在区间内。因式分解前后等价，两个零因式分支均已列全，未因除以 cos x 而漏解。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "把 cos x 作为公因式提出，保留 cos x=0 这一分支。",
+                "difficult_steps": [
+                  "在指定区间内找全 sin x=1/2 的两个角。"
+                ],
+                "common_mistakes": [
+                  "直接除以 cos x，漏掉 π/2 和 3π/2。",
+                  "只取 sin x=1/2 的第一象限解，漏掉 5π/6。"
+                ],
+                "prerequisite_explanations": [
+                  "正弦在第一、第二象限为正，相同正弦值对应的两个角互为补角。"
+                ],
+                "alternative_method": null,
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C07",
+        "input": {
+          "mode": "solve",
+          "problem": "袋中有3个红球和2个蓝球，无放回随机取2个，已知至少取到1个红球，求两球均红的条件概率。",
+          "solution": "",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "设 A 为“至少取到1个红球”，B 为“两球均红”。把5个球视为可区分的个体，无放回随机取2个，共有 C(5,2)=10 种等可能的组合。其中两球均蓝有 C(2,2)=1 种，所以 A 包含9种组合；两球均红有 C(3,2)=3种，且 B⊆A。因此 P(B|A)=3/9=1/3。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "袋中有3个红球和2个蓝球，无放回随机取2个，已知至少取到1个红球，求两球均红的条件概率。",
+                "topic": "条件概率",
+                "subtopics": [
+                  "古典概型",
+                  "组合计数",
+                  "对立事件"
+                ],
+                "givens": [
+                  "袋中有3个红球和2个蓝球",
+                  "无放回随机取2个",
+                  "已知至少取到1个红球"
+                ],
+                "variables": [
+                  "A：至少取到1个红球",
+                  "B：两球均红"
+                ],
+                "constraints": [
+                  "无放回抽取",
+                  "在事件A发生的条件下计算概率"
+                ],
+                "goal": "求条件概率P(B|A)",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "在至少取到1个红球的组合中，计算两球均红所占的比例。",
+                "method": "组合计数与条件概率公式",
+                "prerequisites": [
+                  "组合数",
+                  "条件概率公式"
+                ],
+                "steps": [
+                  "定义事件A、B",
+                  "计算A和B的组合数",
+                  "利用B包含于A求条件概率"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "全部组合数为C(5,2)=10。",
+                    "justification": "把5个球分别编号，随机取2个所得的无序组合等可能。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "P(A)=[C(5,2)-C(2,2)]/C(5,2)=9/10。",
+                    "justification": "“至少1个红球”的对立事件是“两球均蓝”，后者只有1种组合。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "P(B)=C(3,2)/C(5,2)=3/10，且A∩B=B。",
+                    "justification": "从3个红球中选2个有3种组合；两球均红必然满足至少1个红球。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "P(B|A)=P(A∩B)/P(A)=(3/10)/(9/10)=1/3。",
+                    "justification": "P(A)>0，使用条件概率公式。"
+                  }
+                ],
+                "answer": "两球均红的条件概率为1/3。",
+                "conditions": [
+                  "已知至少取到1个红球"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "检查条件样本空间计数不重不漏",
+                    "status": "passed",
+                    "details": "至少1个红球可分为两红和一红一蓝，分别有C(3,2)=3种、3×2=6种，共9种，与排除两蓝得到的计数一致。"
+                  },
+                  {
+                    "name": "用有序抽取概率独立核验",
+                    "status": "passed",
+                    "details": "两红的概率为(3/5)×(2/4)=3/10；至少1红的概率为1-(2/5)×(1/4)=9/10。两者之比为1/3。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "已知条件将样本空间缩小为至少包含1个红球的9种等可能组合。",
+                "difficult_steps": [
+                  "识别两球均红包含于至少1个红球",
+                  "确定条件概率的分母"
+                ],
+                "common_mistakes": [
+                  "直接把无条件概率3/10作为答案",
+                  "把至少1个红球误解为恰好1个红球",
+                  "把两红、一红一蓝、两蓝看成等可能事件"
+                ],
+                "prerequisite_explanations": [
+                  "条件概率是在已知事件发生后的样本空间内计算概率"
+                ],
+                "alternative_method": "按先后顺序计算两红与至少1红的概率，再使用条件概率公式。",
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "B": {
+            "reply": "设 A 为“至少取到1个红球”，B 为“两球均红”。5个球中任取2个，共有 C(5,2)=10 种等可能取法；其中两球均蓝有 C(2,2)=1 种，所以 A 包含9种取法。两球均红有 C(3,2)=3 种，且 B 包含于 A，因此条件概率 P(B|A)=3/9=1/3。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "袋中有3个红球和2个蓝球，无放回随机取2个，已知至少取到1个红球，求两球均红的条件概率。",
+                "topic": "条件概率",
+                "subtopics": [
+                  "古典概型",
+                  "组合计数",
+                  "对立事件"
+                ],
+                "givens": [
+                  "袋中有3个红球和2个蓝球",
+                  "无放回随机取2个",
+                  "已知至少取到1个红球"
+                ],
+                "variables": [
+                  "A：至少取到1个红球的事件",
+                  "B：两球均红的事件"
+                ],
+                "constraints": [
+                  "取球不放回",
+                  "在事件A发生的条件下求概率"
+                ],
+                "goal": "求两球均红的条件概率P(B|A)",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "在至少有1个红球的取法中，计算两球均红的取法所占比例。",
+                "method": "组合计数与条件概率公式",
+                "prerequisites": [
+                  "组合数",
+                  "古典概型",
+                  "条件概率公式"
+                ],
+                "steps": [
+                  "计算任取2个球的总取法数",
+                  "排除两球均蓝，得到条件事件的取法数",
+                  "计算两球均红的取法数并求比值"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "任取2个球共有C(5,2)=10种等可能取法。",
+                    "justification": "将5个球视为可区分的个体，无放回随机取2个时，各个二元组合等可能。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "P(A)=1-C(2,2)/C(5,2)=9/10。",
+                    "justification": "“至少取到1个红球”的对立事件是“两球均蓝”，后者只有1种取法。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "P(B)=C(3,2)/C(5,2)=3/10，且A∩B=B。",
+                    "justification": "两球均红需要从3个红球中选2个；两球均红必然满足至少有1个红球。"
+                  },
+                  {
+                    "step": 4,
+                    "expression": "P(B|A)=P(A∩B)/P(A)=(3/10)/(9/10)=1/3。",
+                    "justification": "P(A)>0，应用条件概率公式。"
+                  }
+                ],
+                "answer": "两球均红的条件概率为1/3。",
+                "conditions": [
+                  "已知至少取到1个红球"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "用有序取球核验条件概率",
+                    "status": "passed",
+                    "details": "按先后顺序计数，共5×4=20种等可能结果；两球均蓝有2×1=2种，因此条件事件有18种。两球均红有3×2=6种，条件概率为6/18=1/3，与组合计数一致。"
+                  },
+                  {
+                    "name": "检查条件事件及分类是否穷尽",
+                    "status": "passed",
+                    "details": "至少1红包含两红和一红一蓝两类，取法数分别为C(3,2)=3和3×2=6，共9种；不包含两蓝，也没有重复计数。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "已知条件会缩小样本空间，应在满足至少1红的9种等可能取法中计算比例。",
+                "difficult_steps": [
+                  "把“至少1红”的对立事件识别为“两球均蓝”"
+                ],
+                "common_mistakes": [
+                  "把无条件概率3/10当作答案",
+                  "把“两红”和“一红一蓝”这两种颜色类型误认为等可能"
+                ],
+                "prerequisite_explanations": [
+                  "条件概率是在条件事件发生的范围内重新计算概率"
+                ],
+                "alternative_method": "按取球先后顺序计数，得到6/18=1/3。",
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          },
+          "C": {
+            "reply": "设 A 为“至少取到1个红球”，B 为“两球均红”。5个球中取2个共有 C(5,2)=10 种等可能取法；其中两球均蓝有1种，所以 A 有9种取法。两球均红有 C(3,2)=3 种取法，且都满足 A。因此所求条件概率为 P(B|A)=3/9=1/3。",
+            "result": {
+              "status": "solved",
+              "problem": {
+                "statement": "袋中有3个红球和2个蓝球，无放回随机取2个，已知至少取到1个红球，求两球均红的条件概率。",
+                "topic": "条件概率",
+                "subtopics": [
+                  "古典概型",
+                  "组合计数",
+                  "对立事件"
+                ],
+                "givens": [
+                  "袋中有3个红球和2个蓝球",
+                  "无放回随机取2个球",
+                  "已知至少取到1个红球"
+                ],
+                "variables": [
+                  "A：至少取到1个红球的事件",
+                  "B：两球均红的事件"
+                ],
+                "constraints": [
+                  "无放回抽取",
+                  "各组具体的两球组合等可能"
+                ],
+                "goal": "求 P(B|A)",
+                "requested_method": null,
+                "ambiguities": [],
+                "assumptions": []
+              },
+              "plan": {
+                "main_idea": "将样本范围限制在至少含1个红球的取法中，再计算两球均红所占的比例。",
+                "method": "组合计数与条件概率公式",
+                "prerequisites": [
+                  "组合数",
+                  "条件概率公式",
+                  "对立事件概率"
+                ],
+                "steps": [
+                  "定义条件事件与目标事件",
+                  "计算至少取到1个红球的概率",
+                  "计算两球均红的概率并求条件概率"
+                ]
+              },
+              "solution": {
+                "derivation": [
+                  {
+                    "step": 1,
+                    "expression": "P(A)=1-C(2,2)/C(5,2)=1-1/10=9/10。",
+                    "justification": "无放回取2球共有C(5,2)=10种等可能组合；“至少1红”的对立事件是“两球均蓝”，对应C(2,2)=1种组合。"
+                  },
+                  {
+                    "step": 2,
+                    "expression": "B⊆A，P(B∩A)=P(B)=C(3,2)/C(5,2)=3/10。",
+                    "justification": "两球均红必然满足至少1红；从3个红球中取2个有C(3,2)=3种组合。"
+                  },
+                  {
+                    "step": 3,
+                    "expression": "P(B|A)=P(B∩A)/P(A)=(3/10)/(9/10)=1/3。",
+                    "justification": "由于P(A)>0，应用条件概率公式。"
+                  }
+                ],
+                "answer": "两球均红的条件概率为1/3。",
+                "conditions": [
+                  "已知至少取到1个红球",
+                  "无放回随机取2个球"
+                ]
+              },
+              "verification": {
+                "status": "passed",
+                "checks": [
+                  {
+                    "name": "按抽取顺序独立核验",
+                    "status": "passed",
+                    "details": "两次均红的概率为(3/5)×(2/4)=3/10；一红一蓝的概率为(3/5)×(2/4)+(2/5)×(3/4)=3/5。条件事件由这两类互斥情况组成，故条件概率为(3/10)/(3/10+3/5)=1/3，与组合计数结果一致。"
+                  }
+                ],
+                "issues": []
+              },
+              "teaching_notes": {
+                "key_insight": "“已知至少1红”改变了计算概率的样本范围，应排除两球均蓝的取法。",
+                "difficult_steps": [
+                  "理解两球均红包含在至少1红事件中",
+                  "正确计算条件事件的取法数"
+                ],
+                "common_mistakes": [
+                  "直接用3/10作为答案，忽略已知条件",
+                  "把至少1红误解成恰好1红",
+                  "将红红、红蓝、蓝蓝三类颜色结果当成等可能事件"
+                ],
+                "prerequisite_explanations": [
+                  "条件概率P(B|A)表示在A发生的条件下B发生的概率，公式为P(B∩A)/P(A)。"
+                ],
+                "alternative_method": "按先后顺序计算红红、红蓝、蓝红的概率，再用红红概率除以三者概率之和。",
+                "follow_up_exercise_suggestion": null
+              }
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C11",
+        "input": {
+          "mode": "check",
+          "problem": "在实数范围内解 x(x-5)=0。",
+          "solution": "两边除以 x，得到 x-5=0。\n所以唯一的解为 x=5。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "首错在第1行：未确认 x≠0 就两边除以 x，会漏掉 x=0。应由 x(x-5)=0 得 x=0 或 x-5=0，所以原方程的解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 要求 x≠0，而原方程允许 x=0，直接相除会漏解。"
+              },
+              "minimal_fix": "将第1行改为：由两因式乘积为0，得 x=0 或 x-5=0。因此解为 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "代入 x=0：0×(0-5)=0，满足原方程。",
+                "代入 x=5：5×(5-5)=0，满足原方程。",
+                "实数中两因式乘积为0，当且仅当至少一个因式为0，因此这两个解已穷尽。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "第1步除以 x 时，没有先确认 x≠0，因此漏掉了 x=0。由两数乘积为0可知，x=0 或 x-5=0，所以解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 需要 x≠0，但原方程允许 x=0，直接相除会漏解。"
+              },
+              "minimal_fix": "改为：由 x(x-5)=0，得 x=0 或 x-5=0，所以 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "当 x=0 时，x(x-5)=0，故 x=0 是原方程的解。",
+                "当 x=5 时，x(x-5)=0，故 x=5 是原方程的解。",
+                "实数中两数乘积为0，当且仅当至少一个因数为0，因此没有其他解。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "结论错误。第1步直接除以 x，未讨论 x=0，导致漏解。最小修改：先判断 x=0 满足原方程；当 x≠0 时，两边除以 x，得 x=5。因此原方程的解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 要求 x≠0，但题设未保证这一点；x=0 满足原方程，直接相除会漏掉该解。"
+              },
+              "minimal_fix": "补充分支：x=0 时原方程成立；x≠0 时可除以 x，得到 x=5。将最终结论改为 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "代入 x=0：0×(0-5)=0，因此“唯一的解为 x=5”不成立。",
+                "由两实数乘积为0可知，x=0 或 x-5=0，故全部实数解为 x=0 或 x=5。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C12",
+        "input": {
+          "mode": "check",
+          "problem": "解实数方程 √(x+6)=x。",
+          "solution": "平方得到 x+6=x²。\n因式分解得 x=3 或 x=-2。\n两个根都满足原方程。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "首错在第3行：x=-2不满足原方程，因为代入后左边为√4=2，右边为-2。前两行求候选根成立；补充验根，舍去-2，保留x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "x=-2代入原方程得到2=-2，不成立。平方所得候选根需要验根。"
+              },
+              "minimal_fix": "将第3行改为：代入原方程，x=3时√9=3，成立；x=-2时√4≠-2，舍去。因此原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "平方得到x²=x+6，再由(x-3)(x+2)=0得到候选根3和-2，前两行成立。",
+                "原方程左边非负，因此任何解都必须满足x≥0，候选根-2不符合。",
+                "x=3代入原方程，左边√(3+6)=3，等于右边。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "前两步正确，首错在第3行。平方可能产生增根，需要代回原方程检验：x=3时，√9=3，成立；x=-2时，√4=2≠-2，不成立。因此原方程的解为x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "当x=-2时，左边√(x+6)=2，右边为-2，两边不相等，所以x=-2是平方产生的增根。"
+              },
+              "minimal_fix": "将第3行改为：代回检验，x=3满足原方程，x=-2不满足原方程，故原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "算术平方根非负，因此原方程要求x≥0。",
+                "x=3时，√(3+6)=3，满足原方程。",
+                "x=-2时，√(-2+6)=2≠-2，不满足原方程。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "首错在第3行：x=-2不满足原方程。前两行可用于求候选根；代回得，x=3时两边均为3，x=-2时左边为2、右边为-2。因此应舍去-2，原方程的解为x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "代入x=-2，√(x+6)=2≠-2，因此该候选根不满足原方程。"
+              },
+              "minimal_fix": "将第3行改为：代回原方程，x=3成立，x=-2不成立，故原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "平方得到x+6=x²，可用于求候选根，但平方后的根需要检验。",
+                "x²-x-6=(x-3)(x+2)，候选根为3和-2。",
+                "x=3时，√9=3；x=-2时，√4=2≠-2。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C13",
+        "input": {
+          "mode": "check",
+          "problem": "证明：若实数 a,b 满足 a+b=6，则 ab≤9。",
+          "solution": "由 (a-b)²≥0，得 (a+b)²≥4ab。\n代入 a+b=6，得 36≥4ab，所以 ab≤9。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "过程正确。由 (a-b)²=(a+b)²-4ab≥0，得到 (a+b)²≥4ab；代入 a+b=6，再除以正数4，得 ab≤9。等号当且仅当 a=b=3 时成立。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "无需修改。",
+              "hint": "",
+              "evidence": [
+                "对任意实数 a,b，均有 (a-b)²≥0，且 (a-b)²=(a+b)²-4ab。",
+                "由 a+b=6 得 36≥4ab；除以正数4，不等号方向不变，故 ab≤9。",
+                "等号成立当且仅当 a=b，结合 a+b=6，得 a=b=3。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "过程成立。由 (a-b)²≥0 得 (a+b)²−4ab≥0，代入 a+b=6 即得 ab≤9。各步变形均有效，且不需要假设 a、b 为正数。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "",
+              "hint": "",
+              "evidence": [
+                "恒等式 (a+b)²−4ab=(a-b)²≥0 对任意实数 a、b 成立。",
+                "代入 a+b=6 得 36≥4ab，两边除以正数4，得 ab≤9。",
+                "当且仅当 a=b=3 时等号成立。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "证明正确。由 (a-b)²≥0 可得 (a+b)²≥4ab，再代入 a+b=6，得到 ab≤9，推导完整。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "",
+              "hint": "",
+              "evidence": [
+                "第1行：(a+b)²-4ab=(a-b)²≥0，因此 (a+b)²≥4ab。",
+                "第2行：代入 a+b=6 得 36≥4ab，两边同除以正数4，得 ab≤9。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C17",
+        "input": {
+          "mode": "check",
+          "problem": "解实数方程 |x-2|=3。",
+          "solution": "当 x≥2 时，x-2=3，得 x=5。\n当 x<2 时，2-x=3，得 x=-1。\n因此解集为 {-1,5}。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "过程成立。按 x≥2 与 x<2 分类完整，两种情况下分别得到 x=5 与 x=-1，且均满足各自条件，解集为 {-1,5}。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "无需修改。",
+              "hint": "",
+              "evidence": [
+                "当 x≥2 时，|x-2|=x-2，解得 x=5，满足 x≥2。",
+                "当 x<2 时，|x-2|=2-x，解得 x=-1，满足 x<2。",
+                "两种情况覆盖全部实数；代回得 |5-2|=3、|-1-2|=3。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "过程正确。按 x≥2 与 x<2 分类覆盖了所有实数，两种情况下分别得到 x=5、x=-1，且均满足对应条件。代回原方程也都成立，因此解集为 {-1,5}。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "无需修改。",
+              "hint": "",
+              "evidence": [
+                "当 x≥2 时，|x-2|=x-2，解得 x=5，满足 x≥2。",
+                "当 x<2 时，|x-2|=2-x，解得 x=-1，满足 x<2。",
+                "代回检验：|5-2|=3，|-1-2|=3；分类穷尽，未遗漏解。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "解答正确。按 x≥2 与 x<2 分类完整，所得 x=5 和 x=-1 均满足各自条件及原方程，解集为 {-1,5}。",
+            "result": {
+              "judgment": "correct",
+              "first_error": null,
+              "minimal_fix": "",
+              "hint": "",
+              "evidence": [
+                "第1行：x≥2 时，|x-2|=x-2，解得 x=5，符合 x≥2。",
+                "第2行：x<2 时，|x-2|=2-x，解得 x=-1，符合 x<2。",
+                "两种情况覆盖全部实数；代入可得 |5-2|=3、|-1-2|=3，因此第3行解集正确。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C19",
+        "input": {
+          "mode": "hint",
+          "problem": "解实数方程 (x-4)(x+2)=0。",
+          "solution": "两边约去 x+2，得到 x-4=0。\n所以只有 x=4。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "约去因子需要该因子非零，原题尚未保证 x+2≠0。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+              "evidence": []
+            }
+          },
+          "B": {
+            "reply": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "未检查 x+2 是否为零，直接约去可能遗漏解。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+              "evidence": []
+            }
+          },
+          "C": {
+            "reply": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "约去一个因式需要先确认它不为零。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+              "evidence": []
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C23",
+        "input": {
+          "mode": "answer_check",
+          "problem": "解实数方程 x²=16。",
+          "solution": "x=4。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "答案不完整。因为 4²=16，(-4)²=16，所以实数解为 x=±4。",
+            "result": {
+              "judgment": "answer_only",
+              "first_error": null,
+              "minimal_fix": "将答案补全为 x=±4。",
+              "hint": "",
+              "evidence": [
+                "原文只有最终答案，不能据此推断解题过程。",
+                "4²=16，(-4)²=16。",
+                "x²-16=(x-4)(x+4)=0，所以 x=4 或 x=-4。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "答案不完整：x=4和x=-4都满足x²=16，解集为{-4,4}。你只提供了答案，无法定位具体过程中的错误。",
+            "result": {
+              "judgment": "answer_only",
+              "first_error": null,
+              "minimal_fix": "补上x=-4，完整答案为x=±4。",
+              "hint": "",
+              "evidence": [
+                "x²=16等价于(x-4)(x+4)=0，因此x=4或x=-4。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "答案不完整，还漏了 x=-4。因为 x²=16 等价于 x=±4，所以解为 x=4 或 x=-4。你只提供了答案，无法定位具体过程错误。",
+            "result": {
+              "judgment": "answer_only",
+              "first_error": null,
+              "minimal_fix": "补上 x=-4，完整解为 x=±4。",
+              "hint": "",
+              "evidence": [
+                "4²=16，(-4)²=16，两者都满足原方程。",
+                "x²-16=(x-4)(x+4)=0，因此 x=4 或 x=-4。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C26",
+        "input": {
+          "mode": "draft",
+          "problem": "",
+          "solution": "",
+          "draft": "纸的左上角是一个三角形草图，三个顶点有字母标记；图右边有两条算式，行距清楚；左下角旧值被一条线划掉，新值写在旁边并圈起来。",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "这次只看草稿版面，不判断计算对错。顶点字母、清楚的算式行距，以及划掉旧值并圈出新值，都让记录更容易追踪。下一道题只做一件事：在划改处用短箭头把旧值连到新值。",
+            "result": {
+              "scope": "仅依据文字描述查看三角形草图、两条算式及划改位置；未看到原图、原题和算式内容，不判断计算对错，也不推断整张纸的布局。",
+              "dimensions": {
+                "organization": {
+                  "score": "高",
+                  "observation": "所述图形、算式和划改分别位于不同位置，区域容易区分。",
+                  "evidence": "三角形在纸的左上角，两条算式在图右边，划改在左下角。",
+                  "risk": "若左下角的新值需要用于右侧算式却缺少联系标记，可能不易追踪其用途。"
+                },
+                "skipping": {
+                  "score": "中",
+                  "observation": "两条算式行距清楚，但缺少具体内容，无法观察高风险步骤是否单独落行。",
+                  "evidence": "描述明确提到图右边有两条算式，且行距清楚。",
+                  "risk": "若同一行包含多个需要核对的变形，可能难以逐步复核。"
+                },
+                "correction_pattern": {
+                  "score": "高",
+                  "observation": "旧值明确划去，新值紧邻并圈出，替换关系较清楚。",
+                  "evidence": "左下角旧值被一条线划掉，新值写在旁边并圈起来。",
+                  "risk": "若后续出现多处圈出的数值而没有对应标记，可能难以辨认各自替换的位置。",
+                  "positive": "保留划改痕迹并突出新值，是主动修订且便于回看的积极信号。"
+                },
+                "trial_and_error": {
+                  "score": "不适用",
+                  "observation": "描述未提供分类讨论、多解或多方法的记录，因此无法评价多路径标记。",
+                  "evidence": "材料只描述一个三角形、两条算式和一处数值替换。",
+                  "risk": "若后续增加另一条思路却未标号，可能与现有算式混在一起。"
+                },
+                "graphic_use": {
+                  "score": "高",
+                  "observation": "三角形的三个顶点均有字母，便于对应图形位置。",
+                  "evidence": "纸的左上角有三角形草图，三个顶点都有字母标记。",
+                  "risk": "若后续增加交点或辅助线却未补充标记，可能难以对应相关文字。"
+                },
+                "draft_to_solution": {
+                  "score": "不适用",
+                  "observation": "描述未说明检验区、答句或留白，且缺少原题，因此无法评价其安排。",
+                  "evidence": "现有描述涉及图形、算式和划改，未提及检验区或结论位置。",
+                  "risk": "若后续检验记录与推导混写，可能不易区分检验依据和最终采用的结果。"
+                }
+              },
+              "top_3_habits": [
+                {
+                  "habit": "给替换值补充对应箭头",
+                  "impact": "若新值与使用位置缺少联系，可能增加回看时寻找对应关系的时间。",
+                  "training": "下一道题出现划改时，用一条短箭头把划去的旧值连到旁边的新值。"
+                }
+              ],
+              "next_step": "下一道题在划改处用一条短箭头把旧值连到新值。",
+              "grade_level": "高中",
+              "draft_source": "image_description"
+            }
+          },
+          "B": {
+            "reply": "你的草稿有几个便于回看的地方：三角形顶点有标记，图与算式位置分开，两条算式行距清楚；旧值划掉后，旁边补写并圈出新值，也便于区分修改前后。现有描述没有说明多路径标记、边距或检验区，暂不评价这些方面。下一道题只做一件事：在结果旁留一个小框作为检验区。本次仅依据你的文字描述观察版面，未查看图片、未读手写字符，不判断计算对错；未提供原题。两道脚本门均未运行，结果未验证。",
+            "result": {
+              "scope": "仅依据学生提供的草稿文字描述分析版面，未查看图片、未读手写字符；未提供原题，不判断计算对错，不推断未描述的边距、多路径或检验区。结构门与越界审计均未运行，结果未验证。",
+              "dimensions": {
+                "organization": {
+                  "score": "高",
+                  "observation": "已描述的图形、算式与划改区位置分开，便于定位；边距情况未说明。",
+                  "evidence": "三角形位于左上角，两条算式在图右边，划改位于左下角。",
+                  "risk": "若后续补写跨入其他区域，可能使图形与对应步骤的关系不易辨认。"
+                },
+                "skipping": {
+                  "score": "高",
+                  "observation": "已描述的两条算式行距清楚，但无法据此判断每行内部的步骤密度。",
+                  "evidence": "学生明确描述图右边有两条算式，且行距清楚。",
+                  "risk": "若后续把多次变形补挤在同一行，可能增加逐步回看的困难。"
+                },
+                "correction_pattern": {
+                  "score": "高",
+                  "observation": "旧值与补写的新值有明确区分，修改痕迹可追溯。",
+                  "evidence": "左下角旧值被一条线划掉，新值写在旁边并圈起来。",
+                  "risk": "若后续引用没有对应到圈出的新值，可能使读者难以确定采用的是哪一处记录。",
+                  "positive": "划掉旧值后在旁边补写并圈出新值，是主动修订且保留修改痕迹的积极信号，不代表已核验数值。"
+                },
+                "trial_and_error": {
+                  "score": "不适用",
+                  "observation": "描述未提及多种方法或分类分支，无法判断是否需要多路径标记。",
+                  "evidence": "提供的描述仅涉及一幅草图、两条算式及一处划改，未说明分支位置。",
+                  "risk": "若后续出现多条尝试而未加标号，可能难以区分各条路径的起止。"
+                },
+                "graphic_use": {
+                  "score": "高",
+                  "observation": "三角形草图的三个顶点均有标记，便于对应图形位置。",
+                  "evidence": "左上角为三角形草图，学生明确说明三个顶点有字母标记。",
+                  "risk": "若后续添加辅助线或交点却没有相应标记，可能使图与算式的对应关系不清楚。"
+                },
+                "draft_to_solution": {
+                  "score": "不适用",
+                  "observation": "描述未说明结果落点或是否留有检验区，无法评价留白与检验区的使用。",
+                  "evidence": "左下角只描述了圈出的新值，未描述结果区、检验框或周围留白。",
+                  "risk": "若后续检验记录与推导混写，可能不易区分结论和检验依据。"
+                }
+              },
+              "top_3_habits": [
+                {
+                  "habit": "给检验记录固定位置",
+                  "impact": "固定位置便于回看时区分推导与检验；目前尚不清楚是否已有此安排。",
+                  "training": "下一道题在结果旁留一个小框，专门放检验记录。"
+                }
+              ],
+              "next_step": "下一道题在结果旁留一个小框作为检验区。",
+              "grade_level": "高中",
+              "draft_source": "text_reconstruction"
+            }
+          },
+          "C": {
+            "reply": "你描述的草稿有三个积极信号：三角形顶点有标记，两条算式行距清楚，旧值划掉后在旁边圈出新值，便于区分修改前后。分区与边距、多路径标记、检验区的信息还不足，暂不判断。下一道题只做一件事：在结果旁留一个小空框，专门记录检验。\n范围：仅依据你提供的文字描述观察版面，未查看原图、未读取手写字符；没有原题，不判断计算对错。未运行结构门和越界审计，结果未验证。",
+            "result": {
+              "scope": "仅依据学生提供的草稿文字描述观察版面，未查看原图、未读取手写字符；未提供原题，不判断计算对错。未运行结构门和越界审计，结果未验证。",
+              "dimensions": {
+                "organization": {
+                  "score": "不适用",
+                  "observation": "描述提供了图、算式与划改的位置，但未说明题目归属、分隔及边距，无法判断整体分区。",
+                  "evidence": "三角形位于左上角，算式在图右边，划改位于左下角。",
+                  "risk": "若这些区域属于不同题目且没有分隔，可能难以确认各块归属。"
+                },
+                "skipping": {
+                  "score": "高",
+                  "observation": "已描述的两条算式行距清楚，便于逐行回看；其余步骤密度未知。",
+                  "evidence": "学生明确描述图右边有两条算式，行距清楚。",
+                  "risk": "若后续补写挤入两行之间，可能影响原有行序的辨认。"
+                },
+                "correction_pattern": {
+                  "score": "高",
+                  "observation": "旧值明确划去，新值在旁边圈出，修改前后容易区分。",
+                  "evidence": "左下角旧值被一条线划掉，新值写在旁边并圈起来。",
+                  "risk": "若后续引用时没有对应到圈出的新值，可能难以追踪修改后的使用情况。",
+                  "positive": "已有明确的划去与补写痕迹，并用圈标突出新值，体现了主动修订。"
+                },
+                "trial_and_error": {
+                  "score": "不适用",
+                  "observation": "描述未说明是否存在多种方法或分类讨论，无法判断多路径标记。",
+                  "evidence": "现有描述只涉及一个草图、右侧两条算式及左下角的一处修改。",
+                  "risk": "若之后增加另一条路径却没有标记，可能混淆两条路径的接续关系。"
+                },
+                "graphic_use": {
+                  "score": "高",
+                  "observation": "三角形草图的三个顶点均有标记，便于定位图中对象。",
+                  "evidence": "纸的左上角有三角形草图，三个顶点有字母标记。",
+                  "risk": "若后续新增交点或辅助线却没有标注，可能难以对应图形与推导。"
+                },
+                "draft_to_solution": {
+                  "score": "不适用",
+                  "observation": "描述未提及结果落点、留白或检验区，无法判断是否预留。",
+                  "evidence": "提供的位置描述止于左上角草图、图右侧算式和左下角划改。",
+                  "risk": "若结果旁没有可用留白，可能难以就近记录检验依据。"
+                }
+              },
+              "top_3_habits": [
+                {
+                  "habit": "保留清楚的修改标记",
+                  "impact": "旧值划去、新值突出，便于回看时识别当前采用的记录。",
+                  "training": "下一道题需要改值时，用单线划去旧值，并在旁边圈出新值。"
+                },
+                {
+                  "habit": "为检验预留固定位置",
+                  "impact": "若检验记录散落在其他区域，可能增加回看时的查找负担。",
+                  "training": "下一道题在结果旁留一个小空框，专门记录检验。"
+                }
+              ],
+              "next_step": "下一道题在结果旁留一个小空框，专门记录检验。",
+              "grade_level": "高中",
+              "draft_source": "text_reconstruction"
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    }
+  ]
+}

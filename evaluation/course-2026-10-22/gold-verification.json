@@ -1,0 +1,172 @@
+{
+  "engine": "sympy",
+  "version": "1.14.0",
+  "checks": [
+    {
+      "id": "C01",
+      "actual": "{4}",
+      "expected": "{4}",
+      "passed": true,
+      "scope": "原无理方程实解，不是平方后候选集"
+    },
+    {
+      "id": "C02",
+      "actual": "Interval.Ropen(-3, 7/2)",
+      "expected": "Interval.Ropen(-3, 7/2)",
+      "passed": true,
+      "scope": "定义域由两项约束交集给出"
+    },
+    {
+      "id": "C03",
+      "actual": "Union(Interval.open(-oo, -2), Interval(3, oo))",
+      "expected": "Union(Interval.open(-oo, -2), Interval(3, oo))",
+      "passed": true,
+      "scope": "零分母排除，分子零点保留"
+    },
+    {
+      "id": "C04",
+      "actual": "Interval(-oo, 1/2)",
+      "expected": "Interval(-oo, 1/2)",
+      "passed": true,
+      "scope": "导数在[1,3]的最小值位于左端；该条件等价于递增"
+    },
+    {
+      "id": "C05",
+      "actual": "{pi/6, pi/2, 5*pi/6, 3*pi/2}",
+      "expected": "{pi/6, pi/2, 5*pi/6, 3*pi/2}",
+      "passed": true,
+      "scope": "原三角方程在指定半开区间的完整解集"
+    },
+    {
+      "id": "C06",
+      "actual": "{-3, 2}",
+      "expected": "{-3, 2}",
+      "passed": true,
+      "scope": "保留负公比分支"
+    },
+    {
+      "id": "C07",
+      "actual": "1/3",
+      "expected": "1/3",
+      "passed": true,
+      "scope": "无放回组合计数的条件概率"
+    },
+    {
+      "id": "C08",
+      "actual": "[2]",
+      "expected": "[2]",
+      "passed": true,
+      "scope": "数量积为零"
+    },
+    {
+      "id": "C09",
+      "actual": "0",
+      "expected": "0",
+      "passed": true,
+      "scope": "配方恒等式；x=2在x≥-1中，平方项非负"
+    },
+    {
+      "id": "C10",
+      "actual": "sqrt(39)",
+      "expected": "sqrt(39)",
+      "passed": true,
+      "scope": "余弦定理"
+    },
+    {
+      "id": "C11",
+      "actual": "{0, 5}",
+      "expected": "{0, 5}",
+      "passed": true,
+      "scope": "除以x会遗漏的分支"
+    },
+    {
+      "id": "C12",
+      "actual": "{3}",
+      "expected": "{3}",
+      "passed": true,
+      "scope": "平方是求候选根的合法步骤；负候选在代回阶段舍去"
+    },
+    {
+      "id": "C13",
+      "actual": "0",
+      "expected": "0",
+      "passed": true,
+      "scope": "差值是完全平方，对任意实数a成立"
+    },
+    {
+      "id": "C14",
+      "actual": "Union(Interval.open(-oo, -1), Interval.open(4, oo))",
+      "expected": "Union(Interval.open(-oo, -1), Interval.open(4, oo))",
+      "passed": true,
+      "scope": "原不等式严格端点"
+    },
+    {
+      "id": "C15",
+      "actual": "0",
+      "expected": "0",
+      "passed": true,
+      "scope": "正数条件下展开恒等式；等号p=2"
+    },
+    {
+      "id": "C17",
+      "actual": "{-1, 5}",
+      "expected": "{-1, 5}",
+      "passed": true,
+      "scope": "绝对值方程两分支"
+    },
+    {
+      "id": "C18",
+      "actual": "2",
+      "expected": "2",
+      "passed": true,
+      "scope": "首项锚点；公差3给一般式3n-1"
+    },
+    {
+      "id": "C19",
+      "actual": "{-2, 4}",
+      "expected": "{-2, 4}",
+      "passed": true,
+      "scope": "供评审检查提示是否泄露，不交给作答者"
+    },
+    {
+      "id": "C20",
+      "actual": "Interval.open(-oo, -4)",
+      "expected": "Interval.open(-oo, -4)",
+      "passed": true,
+      "scope": "负数相除不等号变向"
+    },
+    {
+      "id": "C21",
+      "actual": "{1, 9}",
+      "expected": "{1, 9}",
+      "passed": true,
+      "scope": "两个正根均保留"
+    },
+    {
+      "id": "C22",
+      "actual": "0",
+      "expected": "0",
+      "passed": true,
+      "scope": "对任意正整数n的裂项求和"
+    },
+    {
+      "id": "C23",
+      "actual": "{-4, 4}",
+      "expected": "{-4, 4}",
+      "passed": true,
+      "scope": "只有答案时指出不完整，不推断学生过程"
+    },
+    {
+      "id": "C24",
+      "actual": "12",
+      "expected": "12",
+      "passed": true,
+      "scope": "等差数列第五项"
+    }
+  ],
+  "not_symbolic": [
+    "C16:互斥事件定义直接给交集为空、概率0",
+    "C25-C30:版面事实与教学建议需语义复核，不用数学计算伪装验证"
+  ],
+  "limitation": "只核验本批数学真值与关键锚点，不是模型行为评测或整篇学生过程自动证明。"
+}

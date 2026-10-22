@@ -1,0 +1,16 @@
+{
+  "case_id": "C13",
+  "arm": "skill_gates",
+  "repeat": 1,
+  "input": {
+    "mode": "check",
+    "problem": "证明：若实数 a,b 满足 a+b=6，则 ab≤9。",
+    "solution": "由 (a-b)²≥0，得 (a+b)²≥4ab。\n代入 a+b=6，得 36≥4ab，所以 ab≤9。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:18:48.066418+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:18:52.785277+00:00"
+}

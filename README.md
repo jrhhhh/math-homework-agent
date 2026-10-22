@@ -1,14 +1,31 @@
-# 高中数学作业三 Skill 项目
+# 高中数学教师 Agent
 
-一个供支持本地 Skill 的智能体使用的高中数学作业协作项目。**skill：Math Solver**（`math-solver`）从零求解高中数学题：解析题意、选择高中范围内的方法、分步推导并独立核验，输出可核验的解答与结构化教学备注；**skill：Math Error Diagnosis**（`math-error-diagnosis`）检查学生实际提交的解答，定位首错并给最小修改；**skill：Draft Coach**（`draft-coach`）只看学生**草稿**的版面习惯（分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区）——输出六维观察 + 1–3 条习惯 + 下一道题就能执行的动作。**不判断计算对错、不找错因、不做手写转写。** 重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；草稿允许随意，不评工整。学生发来整张草稿纸时，它还能按**版面**分块，大致估出做了几道题（块数不等于题目数，归属需学生确认）。它不诊断知识漏洞、不贴标签、不给整题重写。
+一个供支持本地 Skill 的智能体使用的高中数学教师协作项目，覆盖课前备课、例题教学、作业反馈和草稿复盘。**Lesson Materials Builder**（`lesson-materials-builder`）把教案草稿按学生的认知台阶转换为可放映课件；**Math Solver**（`math-solver`）从零求解高中数学题并分步复核；**Math Error Diagnosis**（`math-error-diagnosis`）检查学生提交的解答并定位首错；**Solution Refiner**（`solution-refiner`）只优化已完整诊断为正确的学生解法；**Draft Coach**（`draft-coach`）只分析学生草稿版面，不判断计算对错或识别手写。五个技能由统一的[高中数学教师 Agent](high-school-math-teacher-agent/SKILL.md)按教学周期调度：课前备课 → 例题求解 → 作业诊断 → 正解优化/草稿复盘 → 匿名化补救课件。每项产物分别保留原技能的验证边界；例如，PPT 版面复核不证明数学结论正确。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
-## 使用
+
+## 一条命令启动工作台
+
+```bash
+python3 run.py
+```
+
+打开 http://127.0.0.1:8765 。Python 3.10+；Web 服务与数据库使用标准库。真实模型入口使用已安装并登录的 Codex CLI（`codex login status` 可检查登录）。支持 `MATH_CODEX_BIN` 指定 CLI 路径，`MATH_MODEL` 指定模型；不设置时使用用户现有配置。没有模型或登录失败时显示真实错误，不回退到伪造答案。
+
+工作台分为学生练习与教师备课两个区域。学生区连接数学求解、过程诊断、正确解法优化和草稿版面反馈，实际执行原有门脚本；结构失败最多反馈修正两次。练习与每次提交保存到 `.local/workbench.sqlite3`，新提交使旧结果成为历史。提示模式保持到用户明确切换；支持历史查看与 JSON 导出。可勾选“用计算工具代回检验候选值”，要求实际执行等式核验；该项需要可选依赖 `pip install -r requirements-verify.txt`，不证明解集完备。教师区将教案整理为逐页大纲，经教师确认后生成可编辑 Markdown 和 PowerPoint，并调用 Builder 脚本独立检查结构与几何；该检查不证明课件数学内容正确或动画可播放。界面采用华东师大官网红色系。
+
+[当前能力与验收](docs/delivery/实施与验收.md) · [架构与运行](docs/delivery/架构与运行.md) · [本轮真实对照实验](evaluation/course-2026-10-22/README.md)
+
+## 单独安装技能
 
 将整个 `math-error-diagnosis/` 目录复制到宿主的技能目录。Codex 的常用位置为 `~/.codex/skills/`；若设置了自定义技能目录，则使用相应位置。避免覆盖同名技能，先比较已有版本。
 
-需要从零求解时安装 `math-solver/`。协作使用时在项目工作区以根目录的 [AGENTS.md](AGENTS.md) 作为调度约定；宿主需实际执行审查与调度，本仓库没有自动运行的后台 Agent 服务。只使用单个技能仍可独立工作。
+需要从零求解时安装 `math-solver/`；需要在正确解法上继续优化时同时安装 `math-error-diagnosis/` 和 `solution-refiner/`。完整教师流程可安装 [高中数学教师 Agent Skill](high-school-math-teacher-agent/SKILL.md) 及其引用的五个子技能，仓库根目录 [AGENTS.md](AGENTS.md) 是项目级调度入口；学生练习反馈与教师备课均可在本地工作台使用。单个技能仍可按其边界独立工作。
+
+### 课前教案转课件
+
+`lesson-materials-builder/` 根据初高中 `.docx` / `.pdf` / `.md` / `.txt` 教案草稿生成可编辑的 `课件.md` 和 `.pptx`。工作台教师区实现了“材料整理—大纲确认—源码编辑—渲染复核”流程；也可按 [技能说明](lesson-materials-builder/README.md) 和 [Skill 流程](lesson-materials-builder/SKILL.md) 独立运行。此技能来自上游分支 `feat/lesson-materials-builder`（提交 `6aae555278ed36a34cdf15c2cdc512e9e3725077`），并由项目级教师 Agent 纳入教学周期调度。
 
 ```text
 请使用 $math-error-diagnosis 检查我的解题过程，指出首个实质错误并给出最小修改。
@@ -51,7 +68,7 @@
 
 它只按版面分块（留白、分隔线、栏位、区域大小），给一个估计范围，并把分不准的地方写出来请你确认。**块数不等于题目数**：一块可能是一道题的一问、一次换方法的尝试或废弃草稿；它不会读纸上的字符。
 
-与 `$math-error-diagnosis` 的分界靠输入，不靠问题：**正式解答**走诊断，**草稿**走这里；**已判错的选择/填空题**先走分诊，确认后再走诊断。
+草稿版面与数学检查按用户意图区分：只问布局习惯时走草稿技能；要求判对错、找错因时走诊断，草稿文本保留为学生原过程。**已判错的选择/填空题**直接走诊断；只有答案时不推断过程。
 
 默认模式是过程检查。可要求“完整纠正”“只给一个提示，别告诉答案”或“仅核对答案”；只有最终答案时不会推断未提供的过程。默认使用高中方法，不擅自扣分，参考答案也需核验。
 
@@ -78,12 +95,19 @@ draft-coach/
   bench/                   当前技能版面习惯基准（24 条正面能力案例 + 确定性评分 + 夹具）
   evals/                   旧版「查错」基准，已冻结（见 evals/FROZEN.md）
   example/                 习惯卡、反例卡、整页分块单与三份 refuse 输出
+lesson-materials-builder/
+  SKILL.md                 教案转课件的触发、六步工作流和质量边界
+  scripts/                 PPT 渲染、独立几何复核、配图、回归与隐私扫描
+  references/              课件语法、版式规则和配图规范
+  evals/                   回归夹具、评估语料和评估方法
+high-school-math-teacher-agent/
+  SKILL.md                 五项技能的总调度、教学周期工作流和交接边界
 docs/                      诊断案例、验证范围与说明
 tests/                     草稿门层报告测试与固定案例计算脚本
-AGENTS.md                  三个技能的调用与反馈规则
+AGENTS.md                  五个技能的调用与反馈规则
 ```
 
-优先阅读 [技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称统一带“skill：”前缀；文件夹名称和 `$math-solver`、`$math-error-diagnosis`、`$draft-coach` 调用名保持一致。
+优先阅读 [教师 Agent Skill](high-school-math-teacher-agent/SKILL.md)、[技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称与目录名保持一致；统一教师 Agent 通过 `$high-school-math-teacher-agent` 调度五个子技能。
 
 ## 复现计算核验
 
@@ -135,7 +159,15 @@ python3 tests/behavior-evaluation/draft_gate_report.py tests/behavior-evaluation
 
 它读 `inputs.json` 与 `skill.json`，对保存下来的卡片重跑 `validate` 与 `audit --strict`，记录真实退出码与命中代码，写到 `gates.json`。退出码沿用 0/1/2：0 = 每张卡都过两道门，1 = 有效输入但有卡未过门（或一张卡都没产出），2 = 输入非法。它只说明卡片有没有越过结构线与措辞线，**不说明版面观察是否属实**。
 
-三个技能于2026-10-10通过宿主 skill-creator 的 `quick_validate.py`；全部26项单元测试、27组固定计算、参考链接与界面配置检查通过。新增 [行为对照评测](docs/行为对照评测.md) 保存12题普通问答、Skill回答及匿名独立上下文复核的真实记录；这些小样本结果不构成普遍准确率保证。
+当前项目全量验收（根目录执行）会运行各技能、工作台、数学核验和课件技能的回归探针：
+
+```bash
+BENCH_IDENTIFIERS='姓名,学号' python3 scripts/verify_all.py
+```
+
+运行前把示例值替换成将要分享的实际标识符；验证摘要只记录配置数量，不记录标识符内容。课件技能把未配置隐私扫描视为未通过。
+
+历史记录：2026-10-10 当时的三个技能通过宿主 skill-creator 的 `quick_validate.py`，当时26项单元测试和27组固定计算通过；该数量不代表当前版本。当前测试范围见 [验证说明](docs/验证说明.md)。另有 [行为对照评测](docs/行为对照评测.md) 保存12题普通问答、Skill回答及匿名独立上下文复核的真实记录；这些小样本结果不构成普遍准确率保证。
 
 **历史记录（旧版查错技能）**：[草稿行为对照评测](docs/草稿行为对照评测.md) 是 2026-10-15 针对旧版 draft-coach 的12条合成草稿对照与门层读数；当前技能已改为只看版面，**这些分数不能用来评价现在的能力**。
 

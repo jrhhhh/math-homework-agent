@@ -1,0 +1,16 @@
+{
+  "case_id": "C19",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "hint",
+    "problem": "解实数方程 (x-4)(x+2)=0。",
+    "solution": "两边约去 x+2，得到 x-4=0。\n所以只有 x=4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:47.843628+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:53.040349+00:00"
+}
