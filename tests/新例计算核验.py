@@ -2,6 +2,12 @@
 from fractions import Fraction
 from pathlib import Path
 import json
+import sys
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
 
 checks = []
 
@@ -39,5 +45,5 @@ check("N08 取倒数反例", -2 < -1 and Fraction(1, -2) > Fraction(1, -1),
 result = {"passed_groups": len(checks), "checks": checks,
           "limitation": "只核验列出的数学事实，不是自动模型评测，也不替代一般证明。"}
 output = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
-Path(__file__).with_name("新例检验_计算证据.json").write_text(output)
+Path(__file__).with_name("新例检验_计算证据.json").write_text(output, encoding="utf-8")
 print(output)

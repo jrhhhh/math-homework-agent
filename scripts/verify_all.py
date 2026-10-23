@@ -30,9 +30,10 @@ def main():
             ('math-facts-11',ROOT,['tests/高中题型计算核验.py'])]
     def execute(suite):
         name,cwd,args=suite
-        result=subprocess.run([sys.executable,*args],cwd=cwd,capture_output=True,text=True,timeout=120)
+        result=subprocess.run([sys.executable,*args],cwd=cwd,capture_output=True,text=True,
+                              encoding='utf-8',errors='replace',timeout=120)
         output=result.stdout+result.stderr
-        (OUT/f'{name}.txt').write_text(output)
+        (OUT/f'{name}.txt').write_text(output,encoding='utf-8')
         count=re.search(r'Ran (\d+) tests?',output)
         return {'suite':name,'cwd':str(cwd.relative_to(ROOT)),'args':args,
                 'exit_code':result.returncode,'tests':int(count[1]) if count else None}
@@ -43,7 +44,7 @@ def main():
              'lesson_builder_privacy_identifier_count':sum(
                  len(x.strip()) >= 2 for x in os.environ.get('BENCH_IDENTIFIERS','').split(',')),
              'all_passed':all(r['exit_code']==0 for r in records)}
-    (OUT/'verification.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
+    (OUT/'verification.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(summary,ensure_ascii=False,indent=2))
     return 0 if summary['all_passed'] else 1
 

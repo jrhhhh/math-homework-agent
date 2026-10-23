@@ -2,6 +2,7 @@
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -9,9 +10,22 @@ import tempfile
 from functools import lru_cache
 
 from . import model
+from . import uploads
 
 ROOT = Path(__file__).resolve().parents[1]
 MODES = {'check', 'hint', 'full_correction', 'answer_check', 'solve', 'draft', 'partition', 'refine'}
+
+
+def child_env():
+    """Environment for Python helper scripts: force UTF-8 on every platform.
+
+    Without this, a Chinese-locale Windows child writes GBK to stdout while
+    the parent decodes UTF-8, and the gate output becomes unparseable.
+    """
+    env = dict(os.environ)
+    env['PYTHONIOENCODING'] = 'utf-8'
+    env['PYTHONUTF8'] = '1'
+    return env
 
 
 @lru_cache(maxsize=1)
@@ -41,6 +55,13 @@ def normalize(data):
     out['source'] = data.get('source', 'student')
     if not isinstance(out['source'], str) or out['source'] not in ('student', 'assistant'):
         raise ValueError('解答来源非法')
+    raw_attachments = data.get('attachments') or []
+    legacy_image = data.get('image')
+    if legacy_image:
+        if not isinstance(raw_attachments, list):
+            raise ValueError('附件必须为数组。')
+        raw_attachments = [*raw_attachments, legacy_image]
+    out['attachments'] = uploads.normalize_attachments(raw_attachments)
     out['verification_requested'] = data.get('verification_requested', False)
     if type(out['verification_requested']) is not bool:
         raise ValueError('verification_requested 必须为布尔值')
@@ -96,16 +117,16 @@ def prompt_for(data, routing, arm='skill_gates'):
              '输出恰含 reply（给学生的文字）、result（结构化对象）两个字段；启用下文等式工具时允许额外的 tool_requests。',
              'reply只写面向学生的数学反馈，不谈宿主、JSON、卡片、等待执行等内部流程；工具执行状态由界面另行展示。']
     if arm != 'baseline':
-        parts.append((ROOT / skill / 'SKILL.md').read_text())
+        parts.append((ROOT / skill / 'SKILL.md').read_text(encoding='utf-8'))
         if skill == 'math-error-diagnosis':
             # All compact topic references avoid introducing a heuristic retrieval confound.
             for path in sorted((ROOT / skill / 'references').glob('*.md')):
-                parts.append(path.read_text())
+                parts.append(path.read_text(encoding='utf-8'))
     if skill == 'math-solver':
-        parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references/output-schema.md').read_text())
+        parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references/output-schema.md').read_text(encoding='utf-8'))
     elif skill == 'draft-coach':
         name = 'partition.md' if routing['action'] == 'partition' else 'output-schema.md'
-        parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references' / name).read_text())
+        parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references' / name).read_text(encoding='utf-8'))
         if routing['action']=='partition':
             parts.append('本次先做版面分块与归属确认，不生成六维卡。输入是学生文字描述，block_source=student_text。'+routing['reason'])
     else:
@@ -121,7 +142,11 @@ source_quote必须准确来自用户原文，明确对应此核验。substitute�
 有限候选值代回不能证明解集完备。''')
         if data.get('verification_requested'):
             parts.append('用户明确要求宿主执行等式核验：本次必须给出适用的 tool_requests，不能只在回复里手算代回。不能准确建立请求时明确说明未完成，不声称工具已经运行。')
-    parts.append('本次输入 JSON：\n' + json.dumps(data, ensure_ascii=False))
+    # Attachments are local files, not model input. Excluding them also keeps
+    # the model from implying it inspected a file it never received.
+    model_input = {key: value for key, value in data.items()
+                   if key not in ('attachments', 'image')}
+    parts.append('本次输入 JSON：\n' + json.dumps(model_input, ensure_ascii=False))
     return '\n\n'.join(parts)
 
 
@@ -166,12 +191,12 @@ def gate(output, data, routing):
     if skill == 'solution-refiner':
         with tempfile.TemporaryDirectory(prefix='refiner-gate-') as folder:
             path=Path(folder)/'card.json'
-            path.write_text(json.dumps(output['result'],ensure_ascii=False))
+            path.write_text(json.dumps(output['result'],ensure_ascii=False), encoding='utf-8')
             commands=[['validate','--card',str(path)],
                       ['audit','--card',str(path),'--solution',data['solution'],'--problem',data['problem'],'--strict']]
             for command in commands:
                 process=subprocess.run([sys.executable,str(ROOT/'solution-refiner/solution_card_check.py'),*command],
-                    cwd=ROOT,capture_output=True,text=True,timeout=15)
+                    cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace',env=child_env(),timeout=15)
                 logs.append({'gate':'solution-refiner-'+command[0], 'command':command,
                              'exit_code':process.returncode,'stdout':process.stdout,
                              'scope':'结构与越界措辞；不验证数学正确性或建议是否实际更优'})
@@ -183,7 +208,7 @@ def gate(output, data, routing):
         return logs + math_gates(output.get('tool_requests', []), data, routing)
     with tempfile.TemporaryDirectory(prefix='math-gate-') as folder:
         path = Path(folder) / 'card.json'
-        path.write_text(json.dumps(output['result'], ensure_ascii=False))
+        path.write_text(json.dumps(output['result'], ensure_ascii=False), encoding='utf-8')
         if skill == 'math-solver':
             commands = [['scripts/validate_output.py', 'validate', '--card', str(path), '--strict']]
         elif routing['action'] == 'partition':
@@ -192,7 +217,7 @@ def gate(output, data, routing):
             commands = [['scripts/validate_output.py', 'validate', '--card', str(path)],
                         ['scripts/audit_output.py', 'audit', '--card', str(path), '--draft', data['draft'], '--strict']]
         for command in commands:
-            result = subprocess.run([sys.executable, *command], cwd=ROOT / skill, capture_output=True, text=True, timeout=15)
+            result = subprocess.run([sys.executable, *command], cwd=ROOT / skill, capture_output=True, text=True, encoding='utf-8', errors='replace', env=child_env(), timeout=15)
             logs.append({'gate': command[0], 'command': [sys.executable, *command],
                          'exit_code': result.returncode, 'stdout': result.stdout,
                          'scope': '结构与固定措辞；不证明数学或版面观察真实性'})
@@ -218,7 +243,8 @@ def math_gates(requests, data, routing):
         command=[sys.executable,'-m','verification.exact']
         try:
             process=subprocess.run(command,input=json.dumps(item['request'],ensure_ascii=False),
-                                   cwd=ROOT,text=True,capture_output=True,timeout=10)
+                                   cwd=ROOT,text=True,encoding='utf-8',errors='replace',capture_output=True,
+                                   env=child_env(),timeout=10)
             try:record=json.loads(process.stdout)
             except ValueError:record={'status':'error','error':'工具未返回有效记录'}
             logs.append({'gate':'exact-math','command':command,'exit_code':process.returncode,
@@ -233,7 +259,7 @@ def refiner_handoff(data, diagnosis):
     """Replay the recovered handoff protocol against the exact submitted text."""
     with tempfile.TemporaryDirectory(prefix='teacher-handoff-') as folder:
         folder=Path(folder); problem=folder/'problem.txt'; solution=folder/'solution.txt'; handoff=folder/'handoff.json'
-        problem.write_text(data['problem']);solution.write_text(data['solution'])
+        problem.write_text(data['problem'], encoding='utf-8');solution.write_text(data['solution'], encoding='utf-8')
         packet={'protocol_version':1,'problem_id':version(data)[:16],
                 'grade_level':data['grade_level'],'problem':data['problem'],
                 'student_solution':data['solution'],
@@ -246,10 +272,10 @@ def refiner_handoff(data, diagnosis):
         # The protocol computes the canonical content hash; it does not authenticate the model's math review.
         from scripts.handoff_check import version as handoff_version
         packet['solution_version']=handoff_version(data['problem'],data['solution'],data['grade_level'])
-        handoff.write_text(json.dumps(packet,ensure_ascii=False))
+        handoff.write_text(json.dumps(packet,ensure_ascii=False), encoding='utf-8')
         command=[sys.executable,str(ROOT/'scripts/handoff_check.py'),'route','--handoff',str(handoff),
                  '--problem-file',str(problem),'--solution-file',str(solution),'--grade-level',data['grade_level']]
-        process=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=10)
+        process=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace',env=child_env(),timeout=10)
         try:record=json.loads(process.stdout)
         except ValueError:record={'eligible':False,'reasons':['交接脚本未返回有效结果']}
         return {'gate':'solution-refiner-handoff','exit_code':process.returncode,'record':record,
@@ -286,7 +312,7 @@ def run(data, arm='skill_gates', generator=None, max_repairs=2):
         # Stage two: invoke the fourth skill only after the first skill accepts this exact student version.
         refine_route={'skill':'solution-refiner','action':'refine','reason':'诊断阶段判断当前学生过程成立，用户明确请求解法优化。'}
         refine_data={**data,'mode':'check'}
-        prompt='你现在执行 solution-refiner。学生原题和完整原文过程已由上一阶段判为正确；不要重做诊断。\n'+(ROOT/'solution-refiner/SKILL.md').read_text()
+        prompt='你现在执行 solution-refiner。学生原题和完整原文过程已由上一阶段判为正确；不要重做诊断。\n'+(ROOT/'solution-refiner/SKILL.md').read_text(encoding='utf-8')
         prompt+='\n输出JSON恰含 reply 与 result。result 必须是技能规定的四字段优化卡。不得增加交接元数据。\n原题与学生原文：\n'+json.dumps({'problem':data['problem'],'solution':data['solution'],'grade_level':data['grade_level']},ensure_ascii=False)
         attempts=list(first['attempts']);output=None
         for _ in range((max_repairs if arm=='skill_gates' else 0)+1):

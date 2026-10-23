@@ -35,7 +35,12 @@ import numpy as np
 # 而且**不报错** —— 图能正常生成，只是字全是空框。这是本脚本最容易踩的坑，
 # 所以放在最前面，并在 --check-fonts 里提供显式校验。
 # --------------------------------------------------------------------------
-FONT_CANDIDATES = ["Microsoft YaHei", "SimHei", "SimSun", "KaiTi"]
+# 依次尝试 Windows 与 macOS/Linux 常见中文字体；都找不到时再看 DejaVu Sans。
+FONT_CANDIDATES = [
+    "Microsoft YaHei", "SimHei", "SimSun", "KaiTi",
+    "PingFang SC", "Heiti SC", "Songti SC", "STSong",
+    "Arial Unicode MS", "Noto Sans CJK SC", "Source Han Sans SC",
+]
 matplotlib.rcParams["font.sans-serif"] = FONT_CANDIDATES + ["DejaVu Sans"]
 # 中文环境下负号走 Unicode U+2212，雅黑无此字形，会显示成方框。必须关掉。
 matplotlib.rcParams["axes.unicode_minus"] = False
