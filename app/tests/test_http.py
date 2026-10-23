@@ -58,6 +58,34 @@ class HttpTest(unittest.TestCase):
         self.assertEqual(status,400)
         self.assertIn('课题',body['error'])
 
+    def test_teacher_task_publishes_and_student_session_returns_evidence(self):
+        status,task=self.request('/api/teaching',{'title':'逆运算','items':[{'problem':'解 x+1=2。','objective':'逆运算'}]})
+        self.assertEqual(status,201)
+        self.assertEqual(self.request('/api/teaching/'+task['id'])[0],200)
+        _,opened=self.request('/api/teaching/'+task['id']+'/open/'+task['items'][0]['id'],{})
+        _,submission=self.request('/api/sessions/'+opened['session_id']+'/submissions',{'problem':opened['problem'],'solution':'x=1','mode':'check'})
+        _,report=self.request('/api/teaching/'+task['id']+'/evidence')
+        self.assertEqual(report['items'][0]['submission_id'],submission['id'])
+        self.assertEqual(sum(report['counts'].values()),1)
+        self.assertEqual(self.request('/api/teaching/missing/evidence')[0],404)
+        self.assertEqual(self.request('/api/teaching/design',{},origin='https://example.com')[0],403)
+
+    def test_stale_teaching_evidence_is_rejected_before_lesson_model_call(self):
+        _,task=self.request('/api/teaching',{'title':'逆运算','items':[{'problem':'解 x+1=2。','objective':'逆运算'}]})
+        _,report=self.request('/api/teaching/'+task['id']+'/evidence')
+        source={'assignment_id':task['id'],'evidence_version':report['evidence_version']}
+        self.app.teaching.require_current(source)
+        _,opened=self.request('/api/teaching/'+task['id']+'/open/'+task['items'][0]['id'],{})
+        self.request('/api/sessions/'+opened['session_id']+'/submissions',{'problem':opened['problem'],'solution':'x=1','mode':'check'})
+        status,body=self.request('/api/lessons/outline',{'teaching_source':source})
+        self.assertEqual(status,400)
+        self.assertIn('过期',body['error'])
+        self.app.store.create_lesson('b'*32,'测试',{'teaching_source':source},'大纲',[],[])
+        for action in ('source','render'):
+            status,body=self.request('/api/lessons/'+'b'*32+'/'+action,{})
+            self.assertEqual(status,400)
+            self.assertIn('过期',body['error'])
+
     def test_invalid_types_return_json_400(self):
         _,session=self.request('/api/sessions',{})
         for mode in ([],{},23,None):

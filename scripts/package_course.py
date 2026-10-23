@@ -17,9 +17,9 @@ def main():
     args=parser.parse_args()
     tracked=subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
     files={ROOT/name for name in tracked if name and (ROOT/name).is_file()}
-    for directory in ('app','docs/delivery','evaluation','verification','scripts','solution-refiner','high-school-math-teacher-agent','lesson-materials-builder'):
+    for directory in ('app','docs/delivery','evaluation','verification','scripts','solution-refiner','high-school-math-teacher-agent','lesson-materials-builder','learning-task-designer','learning-evidence-bridge','remedial-lesson-planner'):
         files.update(p for p in (ROOT/directory).rglob('*') if p.is_file())
-    files.update([ROOT/'run.py',ROOT/'requirements-verify.txt',ROOT/'tests/test_handoff.py',ROOT/'tests/test_teacher_agent.py'])
+    files.update([ROOT/'run.py',ROOT/'requirements-verify.txt',ROOT/'tests/test_handoff.py',ROOT/'tests/test_teacher_agent.py',ROOT/'docs/teaching-loop.md'])
     files={p for p in files if not any(part in ('__pycache__','.local','.venv','.git') for part in p.relative_to(ROOT).parts)
            and p.suffix not in ('.pyc','.zip')}
     manifest={'created_at':datetime.now(timezone.utc).isoformat(),

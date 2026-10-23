@@ -9,6 +9,9 @@ SKILLS = (
     "math-error-diagnosis",
     "solution-refiner",
     "draft-coach",
+    "learning-task-designer",
+    "learning-evidence-bridge",
+    "remedial-lesson-planner",
 )
 
 

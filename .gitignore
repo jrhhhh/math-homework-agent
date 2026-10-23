@@ -30,3 +30,7 @@ __pycache__/
 /tests/计算核验结果.json
 /tests/新例检验_计算证据.json
 /tests/高中题型计算证据.json
+
+# Browser acceptance artifacts (published evidence is under docs/delivery)
+.playwright-cli/
+output/playwright/

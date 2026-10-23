@@ -57,7 +57,7 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；math-solver 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s math-solver/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。Lesson Materials Builder 的确定性回归在 `lesson-materials-builder/` 内运行 `python3 scripts/bench.py regress`，产出还须按该技能要求用 `verify_pptx.py` 复核。Solution Refiner 的交接协议测试在根目录 `tests/test_handoff.py`。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留五个技能（math-solver / math-error-diagnosis / solution-refiner / draft-coach / lesson-materials-builder）的职责边界和各自输出契约；math-solver 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。单独使用 Skill 时由宿主调度；`app/` 工作台覆盖学生练习反馈链，备课课件通过 lesson-materials-builder 的技能入口执行。实际数学审查、结构门与课件复核分别陈述。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；math-solver 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s math-solver/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。Lesson Materials Builder 的确定性回归在 `lesson-materials-builder/` 内运行 `python3 scripts/bench.py regress`，产出还须按该技能要求用 `verify_pptx.py` 复核。Solution Refiner 的交接协议测试在根目录 `tests/test_handoff.py`。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留五个技能（math-solver / math-error-diagnosis / solution-refiner / draft-coach / lesson-materials-builder）的职责边界和各自输出契约；math-solver 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。单独使用 Skill 时由宿主调度；`app/` 工作台覆盖学生练习反馈链、教师备课和师生任务交接；备课区实际调用 lesson-materials-builder 的本地脚本。实际数学审查、结构门与课件复核分别陈述。
 
 `draft-coach/evals/` 是旧版「查错」基准，已冻结（见 `draft-coach/evals/FROZEN.md`），不要在当前技能上运行；当前的版面习惯基准在 `draft-coach/bench/`，评的是已保存输出，不调用模型。
 
@@ -75,3 +75,14 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 修改工作台后运行 `python3 -m unittest discover -s app/tests`；全量常规验收运行 `python3 scripts/verify_all.py`。`evaluation/course-2026-10-22/runs/initial/frozen_source/` 是已评测代码快照，只用于复现，不作为工作台当前源码编辑。真实实验报告必须标注所用快照，不能把后来机制改动的效果归给先前实验。
 
 提示模式不能通过附加字段、运行记录或导出泄露完整解答。结构门对提示字段的检查不代表完整语义检查已经通过；真实行为由评测与人工复核另行判断。历史结果只能代表它绑定的原提交版本。
+
+
+## 师生任务衔接
+
+新增三个技能与原有五个技能共同构成八技能教学周期：
+
+- **Learning Task Designer**（`learning-task-designer/SKILL.md`）：教师目标/教材材料 → 练习草案 → 教师核对后发布固定原题；新题需要 Math Solver 核验，工作台模型草案标注未核验。
+- **Learning Evidence Bridge**（`learning-evidence-bridge/SKILL.md`）：读取任务项绑定的当前学生提交，按目标汇总诊断状态与证据版本；不重新判题，不将未提交/失败/提示/仅答案当作完整过程诊断。
+- **Remedial Lesson Planner**（`remedial-lesson-planner/SKILL.md`）：当前诊断证据 → 可编辑补救教案 → Lesson Materials Builder 或关联再练习。引用实际提交 ID；版本变化时旧计划失效。
+
+工作台“师生任务”由 `app/teaching_loop.py` 处理，复用原有练习的不可变提交与诊断。任务原题固定，任务项绑定练习会话，学生修改题目/来源/学段使绑定失效；再次领取会新建原题会话并保留旧记录。共用本机数据库，尚未提供独立账号或跨设备班级访问。协议见 `docs/teaching-loop.md`。新增行为测试在 `app/tests/test_teaching_loop.py`，与工作台 HTTP 测试一起运行。保留冻结实验源码和本地 RSI 资料。

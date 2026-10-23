@@ -1,6 +1,6 @@
 # 高中数学教师 Agent
 
-一个供支持本地 Skill 的智能体使用的高中数学教师协作项目，覆盖课前备课、例题教学、作业反馈和草稿复盘。**Lesson Materials Builder**（`lesson-materials-builder`）把教案草稿按学生的认知台阶转换为可放映课件；**Math Solver**（`math-solver`）从零求解高中数学题并分步复核；**Math Error Diagnosis**（`math-error-diagnosis`）检查学生提交的解答并定位首错；**Solution Refiner**（`solution-refiner`）只优化已完整诊断为正确的学生解法；**Draft Coach**（`draft-coach`）只分析学生草稿版面，不判断计算对错或识别手写。五个技能由统一的[高中数学教师 Agent](high-school-math-teacher-agent/SKILL.md)按教学周期调度：课前备课 → 例题求解 → 作业诊断 → 正解优化/草稿复盘 → 匿名化补救课件。每项产物分别保留原技能的验证边界；例如，PPT 版面复核不证明数学结论正确。
+一个供支持本地 Skill 的智能体使用的高中数学教师协作项目，覆盖课前备课、例题教学、作业反馈和草稿复盘。**Lesson Materials Builder**（`lesson-materials-builder`）把教案草稿按学生的认知台阶转换为可放映课件；**Math Solver**（`math-solver`）从零求解高中数学题并分步复核；**Math Error Diagnosis**（`math-error-diagnosis`）检查学生提交的解答并定位首错；**Solution Refiner**（`solution-refiner`）只优化已完整诊断为正确的学生解法；**Draft Coach**（`draft-coach`）只分析学生草稿版面，不判断计算对错或识别手写。原有五个技能加上学习任务设计、学习证据汇总、补救教学规划，共八个子技能，由统一的[高中数学教师 Agent](high-school-math-teacher-agent/SKILL.md)按教学周期调度：课前备课 → 例题求解 → 作业诊断 → 正解优化/草稿复盘 → 匿名化补救课件。每项产物分别保留原技能的验证边界；例如，PPT 版面复核不证明数学结论正确。
 
 覆盖函数与导数、三角函数与解三角形、圆锥曲线、数列、向量与立体几何、概率统计，以及集合、逻辑、复数等基础代数内容。
 
@@ -13,15 +13,23 @@ python3 run.py
 
 打开 http://127.0.0.1:8765 。不要双击 `app/static/index.html` 使用工作台：练习保存、模型调用和课件生成需要本地服务；文件预览会显示启动提示。Python 3.10+；学生区的 Web 服务与数据库使用标准库。教师备课区首次使用前，在仓库根目录执行 `pip install -r lesson-materials-builder/requirements.txt`；读取 PDF 教案还需 `pip install pypdf`。真实模型入口使用已安装并登录的 Codex CLI（`codex login status` 可检查登录）。支持 `MATH_CODEX_BIN` 指定 CLI 路径，`MATH_MODEL` 指定模型；不设置时使用用户现有配置。没有模型或登录失败时显示真实错误，不回退到伪造答案。
 
-工作台分为学生练习与教师备课两个区域。学生区连接数学求解、过程诊断、正确解法优化和草稿版面反馈，实际执行原有门脚本；结构失败最多反馈修正两次。练习与每次提交保存到 `.local/workbench.sqlite3`，新提交使旧结果成为历史。提示模式保持到用户明确切换；支持历史查看与 JSON 导出。可勾选“用计算工具代回检验候选值”，要求实际执行等式核验；该项需要可选依赖 `pip install -r requirements-verify.txt`，不证明解集完备。教师区将教案整理为逐页大纲，经教师确认后生成可编辑 Markdown 和 PowerPoint，并调用 Builder 脚本独立检查结构与几何；该检查不证明课件数学内容正确或动画可播放。界面采用华东师大官网红色系。
+工作台分为学生练习、教师备课与师生任务三个区域。学生区连接数学求解、过程诊断、正确解法优化和草稿版面反馈，实际执行原有门脚本；结构失败最多反馈修正两次。练习与每次提交保存到 `.local/workbench.sqlite3`，新提交使旧结果成为历史。提示模式保持到用户明确切换；支持历史查看与 JSON 导出。可勾选“用计算工具代回检验候选值”，要求实际执行等式核验；该项需要可选依赖 `pip install -r requirements-verify.txt`，不证明解集完备。教师区将教案整理为逐页大纲，经教师确认后生成可编辑 Markdown 和 PowerPoint，并调用 Builder 脚本独立检查结构与几何；该检查不证明课件数学内容正确或动画可播放。界面采用华东师大官网红色系。
 
 [当前能力与验收](docs/delivery/实施与验收.md) · [架构与运行](docs/delivery/架构与运行.md) · [本轮真实对照实验](evaluation/course-2026-10-22/README.md)
+
+## 把学生与教师串起来
+
+“师生任务”区支持教师填写或起草练习，核对原题后发布；学生领取后进入练习区作答。教师刷新即可看到每题当前提交的诊断与可回查版本，据此生成可编辑补救教案，交给教师备课或布置关联的再练习。学生修订后旧补救草稿会过期，重新规划后才能交接。
+
+新增技能：[`learning-task-designer`](learning-task-designer/SKILL.md)、[`learning-evidence-bridge`](learning-evidence-bridge/SKILL.md)、[`remedial-lesson-planner`](remedial-lesson-planner/SKILL.md)。三者分别负责任务、证据与教学调整，不替代已有求解/诊断技能。工作台模型出题草案未经过自动数学核验，发布前由教师检查；安装 Skill 后可由宿主按任务设计技能调用 Math Solver 核验。
+
+当前支持共用本机数据库的单设备协作演示，不含学生独立账号、跨设备提交或班级管理。工作流、接口与验证边界见 [师生任务交接协议](docs/teaching-loop.md)。
 
 ## 单独安装技能
 
 将整个 `math-error-diagnosis/` 目录复制到宿主的技能目录。Codex 的常用位置为 `~/.codex/skills/`；若设置了自定义技能目录，则使用相应位置。避免覆盖同名技能，先比较已有版本。
 
-需要从零求解时安装 `math-solver/`；需要在正确解法上继续优化时同时安装 `math-error-diagnosis/` 和 `solution-refiner/`。完整教师流程可安装 [高中数学教师 Agent Skill](high-school-math-teacher-agent/SKILL.md) 及其引用的五个子技能，仓库根目录 [AGENTS.md](AGENTS.md) 是项目级调度入口；学生练习反馈与教师备课均可在本地工作台使用。单个技能仍可按其边界独立工作。
+需要从零求解时安装 `math-solver/`；需要在正确解法上继续优化时同时安装 `math-error-diagnosis/` 和 `solution-refiner/`。完整教师流程可安装 [高中数学教师 Agent Skill](high-school-math-teacher-agent/SKILL.md) 及其引用的八个子技能，仓库根目录 [AGENTS.md](AGENTS.md) 是项目级调度入口；学生练习反馈与教师备课均可在本地工作台使用。单个技能仍可按其边界独立工作。
 
 ### 课前教案转课件
 
@@ -107,7 +115,7 @@ tests/                     草稿门层报告测试与固定案例计算脚本
 AGENTS.md                  五个技能的调用与反馈规则
 ```
 
-优先阅读 [教师 Agent Skill](high-school-math-teacher-agent/SKILL.md)、[技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称与目录名保持一致；统一教师 Agent 通过 `$high-school-math-teacher-agent` 调度五个子技能。
+优先阅读 [教师 Agent Skill](high-school-math-teacher-agent/SKILL.md)、[技能入口](math-error-diagnosis/SKILL.md)、[代表案例](docs/代表案例.md) 和 [验证说明](docs/验证说明.md)。展示名称与目录名保持一致；统一教师 Agent 通过 `$high-school-math-teacher-agent` 调度八个子技能。
 
 ## 复现计算核验
 

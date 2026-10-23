@@ -110,20 +110,23 @@ if(openedFromFile){
 }
 
 function switchWorkspace(name) {
-  const teacher=name==='teacher';
-  $('practice-view').hidden=teacher;$('teacher-view').hidden=!teacher;document.title=teacher?'数学作业智能体 · 教师备课':'数学作业智能体 · 练习工作台';$('header-note').textContent=teacher?'高中数学 · 教师备课':'高中数学 · 过程反馈';
-  $('practice-sidebar').hidden=teacher;$('teacher-sidebar').hidden=!teacher;
-  $('show-practice').classList.toggle('active',!teacher);$('show-practice').setAttribute('aria-selected',String(!teacher));
-  $('show-teacher').classList.toggle('active',teacher);$('show-teacher').setAttribute('aria-selected',String(teacher));
+  const teacher=name==='teacher', teaching=name==='teaching';
+  $('practice-view').hidden=name!=='practice';$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
+  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':'练习工作台');
+  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':'过程反馈');
+  $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
+  for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
+    $(id).classList.toggle('active',key===name);$(id).setAttribute('aria-selected',String(key===name));
+  }
   if(teacher)refreshLessonHistory();
 }
 $('show-practice').onclick=()=>switchWorkspace('practice');
 $('show-teacher').onclick=()=>switchWorkspace('teacher');
-let currentLesson=null,lessonBusy=false;
+let currentLesson=null,lessonBusy=false,lessonTeachingSource=null;
 const lessonLabels={outline_ready:'大纲待确认',source_ready:'源码待渲染',ready:'课件已通过结构检查',review_failed:'需修改后复核',build_failed:'生成失败'};
 function lessonStep(n){document.querySelectorAll('.teacher-step').forEach((el,i)=>el.classList.toggle('active',i===n));}
 function showLesson(lesson){
-  currentLesson=lesson;$('lesson-empty').hidden=Boolean(lesson.outline);$('lesson-outline-stage').hidden=!lesson.outline;
+  currentLesson=lesson;lessonTeachingSource=lesson.data?.teaching_source||null;$('lesson-empty').hidden=Boolean(lesson.outline);$('lesson-outline-stage').hidden=!lesson.outline;
   $('lesson-source-stage').hidden=!lesson.slides_markdown;$('lesson-badge').textContent=lessonLabels[lesson.status]||lesson.status;
   $('lesson-outline').value=lesson.outline||'';$('lesson-source').value=lesson.slides_markdown||'';
   $('lesson-topic').value=lesson.data?.topic||lesson.title||'';$('lesson-grade').value=lesson.data?.grade||'';
@@ -168,6 +171,7 @@ $('lesson-form').onsubmit=async event=>{
     const file=$('lesson-file').files[0];if(file&&file.size>5*1024*1024)throw new Error('文件不能超过 5 MB。');
     const deckType=document.querySelector('input[name="deck-type"]:checked').value;
     const payload={topic:$('lesson-topic').value,grade:$('lesson-grade').value,textbook:$('lesson-textbook').value,duration:$('lesson-duration').value,deck_type:deckType,draft_text:$('lesson-draft').value};
+    if(lessonTeachingSource)payload.teaching_source=lessonTeachingSource;
     if(file){payload.file_name=file.name;payload.file_base64=await fileToBase64(file);}
     lessonBusyState('正在依据课件 Skill 梳理教案并生成逐页大纲…');
     currentLesson=await api('/api/lessons/outline',payload);showLesson(currentLesson);lessonDone('请逐页核对大纲与待补充信息，再确认进入课件源码。');refreshLessonHistory();

@@ -1,0 +1,33 @@
+{
+  "executed_at": "2026-10-23T04:04:19.056823+00:00",
+  "passed": true,
+  "backend": "Deterministic fixture server with synthetic model and student diagnosis, not real model evaluation. Real model interface smoke recorded separately.",
+  "flow": [
+    "task design",
+    "publish",
+    "student claim",
+    "student submission",
+    "teacher current diagnosis",
+    "remedial plan",
+    "lesson handoff",
+    "linked followup",
+    "student revision",
+    "stale plan disabled"
+  ],
+  "desktop": {
+    "width": 1280,
+    "scrollWidth": 1280
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390
+  },
+  "page_errors": [],
+  "sources": {
+    "app/teaching_loop.py": "aeb0243e59f4d07f2953f455d4a47ebfd819fcfeca4871b3d3f2d407df87ce24",
+    "app/server.py": "6708678c81515e4a9b5d79cf9963bf90ca7c9d5432ad89b42b6c160e055130a8",
+    "app/static/teaching.js": "6846ab801d912bf2ade14f394bc90eca4fb3454380b5df3109bbd1f46a025a83",
+    "learning-evidence-bridge/scripts/evidence.py": "024cda0b62f6756f27db57f5df131d6f7535911e9430d17747e4c8f7d9a795d0",
+    "app/tests/browser/teaching_loop.js": "042ec81682f41c22c0dacae2c5570e8e0aebeaa6230fefcc0b41a4fbc8cb73c0"
+  }
+}

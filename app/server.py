@@ -15,6 +15,7 @@ import uuid
 from .core import normalize, run, version
 from .model import available
 from .lesson_studio import LessonStudio
+from .teaching_loop import TeachingLoop
 
 STATIC = Path(__file__).parent / 'static'
 
@@ -156,6 +157,7 @@ class Application:
         except OSError as exc:
             self.lock.close()
             raise RuntimeError('这个练习数据库已由另一个工作台使用，请使用独立 --db 路径。') from exc
+        self.teaching = TeachingLoop(store)
         self.pool = ThreadPoolExecutor(max_workers=2)
         self.capacity = threading.BoundedSemaphore(4)
         # A process restart cannot resume an inference handle; retain a truthful terminal record.
@@ -213,6 +215,17 @@ def handler_for(app):
             if self.path.startswith('/api/submissions/'):
                 result = app.store.get(self.path.split('/')[3])
                 return self.send(result or {'error': '提交不存在'}, 200 if result else 404)
+            if self.path == '/api/teaching':
+                return self.send(app.teaching.list())
+            if self.path.startswith('/api/teaching/'):
+                parts = self.path.split('/')
+                try:
+                    if len(parts) == 4:
+                        return self.send(app.teaching.get(parts[3]))
+                    if len(parts) == 5 and parts[4] == 'evidence':
+                        return self.send(app.teaching.report(parts[3]))
+                except ValueError as exc:
+                    return self.send({'error': str(exc)}, 404)
             if self.path == '/api/lessons':
                 return self.send(app.store.list_lessons())
             if self.path.startswith('/api/lessons/'):
@@ -234,7 +247,7 @@ def handler_for(app):
                     self.end_headers()
                     self.wfile.write(content)
                     return
-            name = {'/': 'index.html', '/style.css': 'style.css', '/app.js': 'app.js'}.get(self.path)
+            name = {'/': 'index.html', '/style.css': 'style.css', '/app.js': 'app.js', '/teaching.js': 'teaching.js'}.get(self.path)
             if self.path.startswith('/vendor/katex/'):
                 candidate=(STATIC/self.path.lstrip('/')).resolve()
                 if candidate.is_relative_to((STATIC/'vendor/katex').resolve()) and candidate.is_file() and candidate.suffix in ('.js','.css','.woff2'):
@@ -272,13 +285,31 @@ def handler_for(app):
                     raise ValueError('需要 JSON 对象')
                 if self.path == '/api/sessions':
                     return self.send({'id': app.store.create_session()}, 201)
+                if self.path == '/api/teaching/design':
+                    return self.send(app.teaching.design(data))
+                if self.path == '/api/teaching':
+                    return self.send(app.teaching.create(data), 201)
+                if self.path.startswith('/api/teaching/'):
+                    parts = self.path.split('/')
+                    if len(parts) == 5 and parts[4] == 'plan':
+                        return self.send(app.teaching.plan(parts[3]))
+                    if len(parts) == 6 and parts[4] == 'open':
+                        return self.send(app.teaching.open_item(parts[3], parts[5]))
                 if self.path == '/api/lessons/outline':
+                    if data.get('teaching_source') is not None:
+                        app.teaching.require_current(data['teaching_source'])
                     return self.send(app.lesson_studio.create_outline(data), 201)
                 if self.path.startswith('/api/lessons/') and self.path.endswith('/source'):
                     lesson_id = self.path.split('/')[3]
+                    lesson = app.store.get_lesson(lesson_id)
+                    if lesson and lesson['data'].get('teaching_source') is not None:
+                        app.teaching.require_current(lesson['data']['teaching_source'])
                     return self.send(app.lesson_studio.generate_source(lesson_id, data))
                 if self.path.startswith('/api/lessons/') and self.path.endswith('/render'):
                     lesson_id = self.path.split('/')[3]
+                    lesson = app.store.get_lesson(lesson_id)
+                    if lesson and lesson['data'].get('teaching_source') is not None:
+                        app.teaching.require_current(lesson['data']['teaching_source'])
                     return self.send(app.lesson_studio.render(lesson_id, data))
                 if self.path.startswith('/api/sessions/') and self.path.endswith('/submissions'):
                     sid = self.path.split('/')[3]
