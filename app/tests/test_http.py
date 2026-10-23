@@ -1,10 +1,14 @@
 from http.server import ThreadingHTTPServer
+import base64
 import json
+import os
 from pathlib import Path
+import sys
 import tempfile
 import threading
 import time
 import unittest
+from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request,urlopen
 
@@ -25,6 +29,12 @@ class HttpTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.server.shutdown();cls.server.server_close();cls.app.close();cls.tmp.cleanup()
+
+    def delete(self,path):
+        request=Request(self.base+path,method='DELETE')
+        try:
+            with urlopen(request,timeout=5) as response:return response.status,json.load(response)
+        except HTTPError as exc:return exc.code,json.load(exc)
 
     def request(self,path,data=None,origin=None):
         headers={}
@@ -116,6 +126,162 @@ class HttpTest(unittest.TestCase):
                 with self.assertRaises(RuntimeError):Application(store)
                 self.assertEqual(store.get(rid)['state'],'running')
             finally:app.close()
+
+    def test_attachments_are_stored_in_any_mode_and_served(self):
+        png = b'\x89PNG\r\n\x1a\n' + b'0' * 24
+        pdf = b'%PDF-1.4\n' + b'0' * 24
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.dict(os.environ, {'MATH_UPLOAD_DIR': folder}, clear=True):
+                _, session = self.request('/api/sessions', {})
+                status, record = self.request(
+                    f'/api/sessions/{session["id"]}/submissions',
+                    {'problem': '解 x+1=2', 'solution': 'x=1', 'mode': 'check',
+                     'attachments': [
+                         {'name': 'work.png', 'base64': base64.b64encode(png).decode()},
+                         {'name': 'problem.pdf', 'base64': base64.b64encode(pdf).decode()},
+                     ]})
+                self.assertEqual(status, 202)
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline:
+                    _, payload = self.request('/api/submissions/' + record['id'])
+                    if payload['state'] != 'queued':
+                        break
+                    time.sleep(.02)
+                attachments = payload['data']['attachments']
+                self.assertEqual([item['ext'] for item in attachments], ['.png', '.pdf'])
+                self.assertNotIn('name', attachments[0])
+                self.assertNotIn('base64', json.dumps(payload))
+                with urlopen(self.base + '/api/uploads/' + attachments[0]['sha256'] + '.png',
+                             timeout=5) as response:
+                    self.assertEqual(response.headers.get_content_type(), 'image/png')
+                    self.assertEqual(response.read(), png)
+                with urlopen(self.base + '/api/uploads/' + attachments[1]['sha256'] + '.pdf',
+                             timeout=5) as response:
+                    self.assertEqual(response.headers.get_content_type(), 'application/pdf')
+                    self.assertEqual(response.read(), pdf)
+
+    def test_attachment_without_text_is_rejected(self):
+        png = b'\x89PNG\r\n\x1a\n' + b'0' * 24
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.dict(os.environ, {'MATH_UPLOAD_DIR': folder}, clear=True):
+                _, session = self.request('/api/sessions', {})
+                status, body = self.request(
+                    f'/api/sessions/{session["id"]}/submissions',
+                    {'mode': 'draft', 'attachments': [
+                        {'name': 'draft.png',
+                         'base64': base64.b64encode(png).decode()}]})
+                self.assertEqual(status, 400)
+                self.assertIn('草稿', body['error'])
+
+    def test_attachment_text_extraction_endpoint(self):
+        text = '第一行\n第二行'
+        status, body = self.request('/api/attachments/extract', {
+            'name': 'lesson.txt', 'base64': base64.b64encode(text.encode()).decode()})
+        self.assertEqual(status, 200)
+        self.assertEqual(body['text'], text)
+        status, body = self.request('/api/attachments/extract', {
+            'name': 'draft.png', 'base64': base64.b64encode(b'\x89PNG\r\n\x1a\n').decode()})
+        self.assertEqual(status, 400)
+        self.assertIn('文字识别', body['error'])
+
+    def test_session_archive_and_delete(self):
+        _, session = self.request('/api/sessions', {})
+        self.request(f'/api/sessions/{session["id"]}/submissions',
+                     {'problem': '解 x+1=2', 'solution': 'x=1'})
+        status, body = self.request(f'/api/sessions/{session["id"]}/archive',
+                                    {'archived': True})
+        self.assertEqual(status, 200)
+        self.assertTrue(body['archived'])
+        _, rows = self.request('/api/sessions')
+        self.assertEqual(next(row for row in rows if row['id'] == session['id'])['archived'], 1)
+        status, body = self.request(f'/api/sessions/{session["id"]}/archive',
+                                    {'archived': False})
+        self.assertFalse(body['archived'])
+        status, body = self.delete('/api/sessions/' + session['id'])
+        self.assertEqual(status, 200)
+        self.assertTrue(body['deleted'])
+        _, rows = self.request('/api/sessions')
+        self.assertFalse(any(row['id'] == session['id'] for row in rows))
+        self.assertEqual(self.delete('/api/sessions/' + session['id'])[0], 400)
+
+    def test_delete_session_removes_unreferenced_attachment_files(self):
+        png = b'\x89PNG\r\n\x1a\n' + b'unique-delete-' * 2
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.dict(os.environ, {'MATH_UPLOAD_DIR': folder}, clear=True):
+                _, session = self.request('/api/sessions', {})
+                _, record = self.request(
+                    f'/api/sessions/{session["id"]}/submissions',
+                    {'problem': '解 x+1=2', 'solution': 'x=1',
+                     'attachments': [{'name': 'work.png',
+                                      'base64': base64.b64encode(png).decode()}]})
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline:
+                    _, payload = self.request('/api/submissions/' + record['id'])
+                    if payload['state'] != 'queued':
+                        break
+                    time.sleep(.02)
+                meta = payload['data']['attachments'][0]
+                path = Path(folder) / (meta['sha256'] + meta['ext'])
+                self.assertTrue(path.exists())
+                self.delete('/api/sessions/' + session['id'])
+                self.assertFalse(path.exists())
+
+    def test_bound_teaching_session_cannot_be_deleted_but_can_be_archived(self):
+        _, task = self.request('/api/teaching', {
+            'title': '逆运算', 'items': [{'problem': '解 x+1=2。', 'objective': '逆运算'}]})
+        _, opened = self.request(
+            f'/api/teaching/{task["id"]}/open/{task["items"][0]["id"]}', {})
+        sid = opened['session_id']
+        status, body = self.delete('/api/sessions/' + sid)
+        self.assertEqual(status, 400)
+        self.assertIn('师生任务', body['error'])
+        status, body = self.request(f'/api/sessions/{sid}/archive', {'archived': True})
+        self.assertEqual(status, 200)
+        self.assertTrue(body['archived'])
+
+    def test_settings_endpoint_saves_without_exposing_key(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'settings.json'
+            with patch.dict(os.environ, {'MATH_SETTINGS_PATH': str(path)}, clear=True):
+                status, body = self.request('/api/settings')
+                self.assertEqual(status, 200)
+                self.assertNotIn('api_key', body)
+                status, saved = self.request('/api/settings', {
+                    'backend': 'http', 'base_url': 'https://api.example.com/v1',
+                    'model': 'demo', 'api_key': 'secret-value'})
+                self.assertEqual(status, 200)
+                self.assertTrue(saved['has_key'])
+                self.assertNotIn('secret-value', json.dumps(saved))
+                status, body = self.request('/api/settings')
+                self.assertTrue(body['has_key'])
+                self.assertNotIn('secret-value', json.dumps(body))
+
+    def test_settings_environment_overrides_and_rejects_ui_save(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'settings.json'
+            with patch.dict(os.environ, {
+                    'MATH_SETTINGS_PATH': str(path),
+                    'MATH_API_BASE': 'https://env.example.com/v1',
+                    'MATH_MODEL': 'env-model'}, clear=True):
+                status, body = self.request('/api/settings')
+                self.assertEqual(status, 200)
+                self.assertTrue(body['environment_locked'])
+                self.assertEqual(body['source'], 'environment')
+                self.assertEqual(body['base_url'], 'https://env.example.com/v1')
+                status, error = self.request('/api/settings', {
+                    'backend': 'http', 'base_url': 'https://new.example.com/v1', 'model': 'm'})
+                self.assertEqual(status, 400)
+                self.assertIn('环境变量', error['error'])
+
+    def test_settings_test_endpoint_without_network(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'settings.json'
+            with patch.dict(os.environ, {'MATH_SETTINGS_PATH': str(path)}, clear=True):
+                status, body = self.request('/api/settings/test', {
+                    'backend': 'codex-cli', 'codex_bin': sys.executable})
+                self.assertEqual(status, 200)
+                self.assertFalse(body['ok'])
+                self.assertEqual(body['backend'], 'codex-cli')
 
 
 if __name__=='__main__':unittest.main()

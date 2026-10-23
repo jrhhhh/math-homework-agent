@@ -1,8 +1,10 @@
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -12,6 +14,7 @@ GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
 PROBLEM = "求 x²-5x+6=0 的根。"
 SOLUTION = "用求根公式：x=(5±√1)/2，所以 x1=3，x2=2。"
+ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
 
 
 def packet():
@@ -29,12 +32,12 @@ class HandoffTests(unittest.TestCase):
             path = Path(directory)/"bad-card.json"
             path.write_bytes(b"\xff\xfe")
             for command in ("validate", "audit"):
-                args = ["python3", str(ROOT/"solution-refiner/solution_card_check.py"),
+                args = [sys.executable, str(ROOT/"solution-refiner/solution_card_check.py"),
                         command, "--card", str(path)]
                 if command == "audit":
                     args += ["--solution", SOLUTION, "--problem", PROBLEM]
                 with self.subTest(command=command):
-                    result = subprocess.run(args, text=True, capture_output=True)
+                    result = subprocess.run(args, text=True, capture_output=True, encoding="utf-8", env=ENV)
                     self.assertEqual(result.returncode, 2)
                     self.assertEqual(json.loads(result.stdout)["error"], "card file is not valid UTF-8")
                     self.assertNotIn("Traceback", result.stderr)
@@ -88,16 +91,16 @@ class HandoffTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
             p, s, h = directory/"problem.txt", directory/"solution.txt", directory/"handoff.json"
-            p.write_text(PROBLEM)
-            s.write_text(SOLUTION)
-            args = ["python3", str(ROOT/"scripts/handoff_check.py"), "route",
+            p.write_text(PROBLEM, encoding="utf-8")
+            s.write_text(SOLUTION, encoding="utf-8")
+            args = [sys.executable, str(ROOT/"scripts/handoff_check.py"), "route",
                     "--handoff", str(h), "--problem-file", str(p), "--solution-file", str(s)]
             for value, expected in [(packet(), 0), ({**packet(), "process_status": "gap"}, 1), ({}, 2)]:
-                h.write_text(json.dumps(value, ensure_ascii=False))
-                result = subprocess.run(args, text=True, capture_output=True)
+                h.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+                result = subprocess.run(args, text=True, capture_output=True, encoding="utf-8", env=ENV)
                 self.assertEqual(result.returncode, expected, result.stdout)
                 json.loads(result.stdout)
-            h.write_text("not JSON")
+            h.write_text("not JSON", encoding="utf-8")
             self.assertEqual(subprocess.run(args, capture_output=True).returncode, 2)
             p.unlink()
             self.assertEqual(subprocess.run(args, capture_output=True).returncode, 2)
@@ -108,11 +111,11 @@ class HandoffTests(unittest.TestCase):
                                    ("mixed_diagnosis_card.json", (0, 1)),
                                    ("mathematically_wrong_card.json", (0, 0))]:
             card = ROOT/"solution-refiner/example"/filename
-            results = [subprocess.run(["python3", str(checker), "validate", "--card", str(card)],
-                                      text=True, capture_output=True),
-                       subprocess.run(["python3", str(checker), "audit", "--card", str(card),
+            results = [subprocess.run([sys.executable, str(checker), "validate", "--card", str(card)],
+                                      text=True, capture_output=True, encoding="utf-8", env=ENV),
+                       subprocess.run([sys.executable, str(checker), "audit", "--card", str(card),
                                        "--problem", PROBLEM, "--solution", SOLUTION, "--strict"],
-                                      text=True, capture_output=True)]
+                                      text=True, capture_output=True, encoding="utf-8", env=ENV)]
             with self.subTest(card=filename):
                 self.assertEqual(tuple(r.returncode for r in results), expected)
                 for r in results:
@@ -121,13 +124,13 @@ class HandoffTests(unittest.TestCase):
         self.assertNotEqual(-1-6, -5)
 
     def test_handoff_metadata_not_allowed_in_card(self):
-        card = json.loads((ROOT/"solution-refiner/example/correct_card.json").read_text())
+        card = json.loads((ROOT/"solution-refiner/example/correct_card.json").read_text(encoding="utf-8"))
         card["process_status"] = "valid"
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/"card.json"
-            path.write_text(json.dumps(card, ensure_ascii=False))
-            r = subprocess.run(["python3", str(ROOT/"solution-refiner/solution_card_check.py"),
-                                "validate", "--card", str(path)], text=True, capture_output=True)
+            path.write_text(json.dumps(card, ensure_ascii=False), encoding="utf-8")
+            r = subprocess.run([sys.executable, str(ROOT/"solution-refiner/solution_card_check.py"),
+                                "validate", "--card", str(path)], text=True, capture_output=True, encoding="utf-8", env=ENV)
             self.assertEqual(r.returncode, 1)
             self.assertIn("E_EXTRA_FIELD", [e["code"] for e in json.loads(r.stdout)["errors"]])
 

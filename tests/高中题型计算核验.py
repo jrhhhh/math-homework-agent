@@ -3,6 +3,12 @@ from fractions import Fraction as F
 from pathlib import Path
 import json
 import math
+import sys
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
 
 checks = []
 
@@ -44,5 +50,5 @@ check('H12 正确数列', 2*1+1 == 3 and all(
 result = dict(passed_groups=len(checks), checks=checks,
               limitation='固定计算事实核验，不是诊断模型准确率或独立盲测结果')
 content = json.dumps(result, ensure_ascii=False, indent=2)+'\n'
-Path(__file__).with_name('高中题型计算证据.json').write_text(content)
+Path(__file__).with_name('高中题型计算证据.json').write_text(content, encoding='utf-8')
 print(content)

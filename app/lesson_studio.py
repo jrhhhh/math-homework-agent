@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from . import model
+from .core import child_env
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "lesson-materials-builder"
@@ -227,7 +228,8 @@ class LessonStudio:
         logs = []
         for stage, command in commands:
             try:
-                process = subprocess.run(command, cwd=BUILDER, capture_output=True, text=True, timeout=180)
+                process = subprocess.run(command, cwd=BUILDER, capture_output=True, text=True,
+                                         encoding='utf-8', errors='replace', env=child_env(), timeout=180)
             except subprocess.TimeoutExpired as exc:
                 self.store.finish_lesson_render(lesson_id, "build_failed", {"errors": [f"{stage} 阶段超时。"], "logs": logs})
                 raise ValueError(f"{stage} 阶段超时，请缩减课件或配图后重试。") from exc
@@ -240,7 +242,8 @@ class LessonStudio:
         try:
             verify = subprocess.run([sys.executable, str(BUILDER / "scripts/verify_pptx.py"),
                                      str(deck_path), "--figures", str(figures_dir), "--json"],
-                                    cwd=BUILDER, capture_output=True, text=True, timeout=180)
+                                    cwd=BUILDER, capture_output=True, text=True,
+                                    encoding='utf-8', errors='replace', env=child_env(), timeout=180)
             report = json.loads(verify.stdout)
         except (subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
             result = {"errors": ["独立课件复核未能完成，不能标记为通过。"], "logs": logs}

@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
+import sqlite3
 import tempfile
 import unittest
 
-from app.core import gate, normalize, route, run
+from app.core import gate, normalize, prompt_for, route, run
 from app.server import Store
 
 
@@ -18,6 +19,21 @@ class RoutingTest(unittest.TestCase):
 
     def test_layout_does_not_require_problem(self):
         self.assertEqual(route(normalize({'draft': '左边密集，右边留白', 'mode': 'draft'}))['skill'], 'draft-coach')
+
+    def test_attachments_are_accepted_in_any_mode_but_never_enter_the_prompt(self):
+        data = normalize({'problem': '解 x+1=2', 'solution': 'x=1', 'mode': 'check',
+                          'attachments': [{'name': 'work.png', 'base64': 'iVBORw0KGgo='}]})
+        self.assertEqual(data['attachments'][0]['name'], 'work.png')
+        prompt = prompt_for(data, route(data))
+        self.assertNotIn('"attachments"', prompt)
+        self.assertNotIn('iVBORw0KGgo=', prompt)
+
+    def test_draft_attachment_never_enters_the_model_prompt(self):
+        data = normalize({'draft': '左栏第1题，右栏第2题；中间有划改。', 'mode': 'draft',
+                          'attachments': [{'name': 'draft.pdf', 'base64': 'JVBERi0='}]})
+        prompt = prompt_for(data, route(data))
+        self.assertNotIn('"attachments"', prompt)
+        self.assertNotIn('JVBERi0=', prompt)
 
     def test_multiple_problem_markers_partition_before_card(self):
         data=normalize({'draft':'左栏第1题，右栏第2题，中间有竖线','mode':'draft'})
@@ -43,7 +59,7 @@ class RoutingTest(unittest.TestCase):
     def test_refiner_runs_only_after_correct_diagnosis(self):
         data=normalize({'problem':'求 x²-5x+6=0 的根。','solution':'用求根公式：x=(5±√1)/2，所以x1=3，x2=2。','mode':'refine'})
         diagnosis={'judgment':'correct','first_error':None,'minimal_fix':'','hint':'','evidence':['原式分解与验根成立']}
-        card=json.loads((Path(__file__).resolve().parents[2]/'solution-refiner/example/correct_card.json').read_text())
+        card=json.loads((Path(__file__).resolve().parents[2]/'solution-refiner/example/correct_card.json').read_text(encoding='utf-8'))
         outputs=iter([{'raw':json.dumps({'reply':'过程正确。','result':diagnosis},ensure_ascii=False)},
                       {'raw':json.dumps({'reply':'我已经运行脚本，沿用上一轮真实结果。','result':card},ensure_ascii=False)}])
         result=run(data,generator=lambda _:next(outputs))
@@ -110,7 +126,7 @@ class GateTest(unittest.TestCase):
 
     def test_native_solver_gate_replayed(self):
         root=Path(__file__).resolve().parents[2]
-        card=json.loads((root/'math-solver/example/sqrt_equation_solved.json').read_text())
+        card=json.loads((root/'math-solver/example/sqrt_equation_solved.json').read_text(encoding='utf-8'))
         data=normalize({'problem':'解 √(x+2)=x', 'mode':'solve'})
         logs=gate({'reply':'x=2','result':card}, data, route(data))
         self.assertEqual(logs[0]['exit_code'],0)
@@ -137,7 +153,7 @@ class GateTest(unittest.TestCase):
 
     def test_auto_partition_uses_partition_gate_instead_of_card_gate(self):
         root=Path(__file__).resolve().parents[2]
-        card=json.loads((root/'draft-coach/example/partition_sheet.json').read_text())
+        card=json.loads((root/'draft-coach/example/partition_sheet.json').read_text(encoding='utf-8'))
         card['block_source']='student_text'
         data=normalize({'draft':'第1题在左栏，第2题在右栏','mode':'draft'})
         logs=gate({'reply':'先确认各块归属。','result':card},data,route(data))
@@ -167,6 +183,25 @@ class RevisionTest(unittest.TestCase):
         self.assertEqual(self.store.get(two)['data']['mode'], 'hint')
         three=self.store.submit(self.sid, {'problem':'x+1=2','solution':'x=1','mode':'check'}, allow_mode_change=True)
         self.assertEqual(self.store.get(three)['data']['mode'], 'check')
+
+
+class StoreMigrationTest(unittest.TestCase):
+    def test_existing_session_table_gets_archived_column(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'old.db'
+            db = sqlite3.connect(path)
+            db.execute('CREATE TABLE sessions (id TEXT PRIMARY KEY, title TEXT, created TEXT)')
+            db.commit()
+            db.close()
+            store = Store(path)
+            sid = store.create_session()
+            row = store.list_sessions()[0]
+            self.assertEqual(row['id'], sid)
+            self.assertEqual(row['archived'], 0)
+            store.set_archived(sid, True)
+            self.assertEqual(store.list_sessions()[0]['archived'], 1)
+            store.delete_session(sid)
+            self.assertEqual(store.list_sessions(), [])
 
 
 if __name__ == '__main__':

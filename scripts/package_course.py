@@ -23,7 +23,7 @@ def main():
     files={p for p in files if not any(part in ('__pycache__','.local','.venv','.git') for part in p.relative_to(ROOT).parts)
            and p.suffix not in ('.pyc','.zip')}
     manifest={'created_at':datetime.now(timezone.utc).isoformat(),
-              'base_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+              'base_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True,encoding='utf-8').strip(),
               'scope':'Current project sources and course delivery evidence. Excludes local student database, credentials and pre-existing untracked RSI experiments.',
               'files':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}}
     args.out.parent.mkdir(parents=True,exist_ok=True)
@@ -39,7 +39,7 @@ def main():
     result={'archive':str(args.out.resolve()),'files':len(files),'bytes':args.out.stat().st_size,
             'sha256':hashlib.sha256(args.out.read_bytes()).hexdigest(),'crc_and_all_content_hashes_verified':True}
     # Keep this outside the archived source manifest to avoid a self-referential hash.
-    args.out.with_suffix('.verification.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+    args.out.with_suffix('.verification.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
 
