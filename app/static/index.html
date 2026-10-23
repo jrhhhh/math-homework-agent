@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>数学作业智能体 · 练习工作台</title><link rel="stylesheet" href="/vendor/katex/katex.min.css"><link rel="stylesheet" href="/style.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#b70031"><title>数学作业智能体 · 练习工作台</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5zM20 13v23' fill='none' stroke='%23b70031' stroke-width='2'/%3E%3C/svg%3E"><link rel="stylesheet" href="vendor/katex/katex.min.css"><link rel="stylesheet" href="style.css"></head>
 <body>
 <header><a class="brand" href="/" aria-label="数学作业智能体首页"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5Z"/><path d="M20 13v23M10 15h5M10 21h5M26 17l3 3 6-7"/></svg><span>数学作业智能体<small>MATH HOMEWORK AGENT</small></span></a><span id="header-note" class="header-note">高中数学 · 过程反馈</span><span id="connection" role="status">正在连接</span></header>
+<div id="file-launch-notice" class="file-launch-notice" role="alert" hidden><strong>请从工作台入口打开</strong><span>这个文件预览不能保存练习或生成课件。请在项目目录运行 <code>python3 run.py</code>，再打开</span><a href="http://127.0.0.1:8765/">http://127.0.0.1:8765/</a></div>
 <div class="layout">
 <aside><nav class="workspace-switcher" aria-label="工作台切换"><button id="show-practice" class="active" aria-selected="true">学生练习</button><button id="show-teacher" aria-selected="false">教师备课</button></nav><div id="practice-sidebar"><div class="aside-heading">我的练习 <button id="new-session" class="icon-button" aria-label="新建练习">＋</button></div><nav id="sessions" aria-label="练习历史"></nav><div class="aside-bottom"><span class="small-label">学，而后知不足</span><p>保留每一次尝试，<br>看见解题的进步。</p><small>课程项目 · 本地工作台</small></div></div><div id="teacher-sidebar" hidden><div class="aside-heading">近期备课</div><nav id="lesson-history" aria-label="备课记录"></nav><div class="aside-bottom"><span class="small-label">从目标到课堂</span><p>让每一页课件，<br>对应一个思维动作。</p><small>教案转课件 · 本地生成</small></div></div></aside>
 <main>
@@ -46,4 +47,4 @@
 </div>
 <footer>数学作业智能体 · 教师备课 <span>本地生成教案源码与课件；请教师审阅数学内容并在实际放映软件中复核。</span></footer>
 </section>
-</main></div><script src="/vendor/katex/katex.min.js"></script><script src="/vendor/katex/auto-render.min.js"></script><script src="/app.js"></script></body></html>
+</main></div><script src="vendor/katex/katex.min.js"></script><script src="vendor/katex/auto-render.min.js"></script><script src="app.js"></script></body></html>

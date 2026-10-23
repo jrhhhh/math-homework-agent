@@ -11,7 +11,7 @@
 python3 run.py
 ```
 
-打开 http://127.0.0.1:8765 。Python 3.10+；Web 服务与数据库使用标准库。真实模型入口使用已安装并登录的 Codex CLI（`codex login status` 可检查登录）。支持 `MATH_CODEX_BIN` 指定 CLI 路径，`MATH_MODEL` 指定模型；不设置时使用用户现有配置。没有模型或登录失败时显示真实错误，不回退到伪造答案。
+打开 http://127.0.0.1:8765 。不要双击 `app/static/index.html` 使用工作台：练习保存、模型调用和课件生成需要本地服务；文件预览会显示启动提示。Python 3.10+；学生区的 Web 服务与数据库使用标准库。教师备课区首次使用前，在仓库根目录执行 `pip install -r lesson-materials-builder/requirements.txt`；读取 PDF 教案还需 `pip install pypdf`。真实模型入口使用已安装并登录的 Codex CLI（`codex login status` 可检查登录）。支持 `MATH_CODEX_BIN` 指定 CLI 路径，`MATH_MODEL` 指定模型；不设置时使用用户现有配置。没有模型或登录失败时显示真实错误，不回退到伪造答案。
 
 工作台分为学生练习与教师备课两个区域。学生区连接数学求解、过程诊断、正确解法优化和草稿版面反馈，实际执行原有门脚本；结构失败最多反馈修正两次。练习与每次提交保存到 `.local/workbench.sqlite3`，新提交使旧结果成为历史。提示模式保持到用户明确切换；支持历史查看与 JSON 导出。可勾选“用计算工具代回检验候选值”，要求实际执行等式核验；该项需要可选依赖 `pip install -r requirements-verify.txt`，不证明解集完备。教师区将教案整理为逐页大纲，经教师确认后生成可编辑 Markdown 和 PowerPoint，并调用 Builder 脚本独立检查结构与几何；该检查不证明课件数学内容正确或动画可播放。界面采用华东师大官网红色系。
 

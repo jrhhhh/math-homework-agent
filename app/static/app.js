@@ -98,7 +98,16 @@ $('new-session').onclick=async()=>{const {id}=await api('/api/sessions',{});awai
 $('mode').onchange=setMode;
 $('example').onclick=()=>{populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),session_id:sessionId,submissions:history},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='数学练习-'+sessionId.slice(0,8)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-api('/api/health').then(data=>{$('connection').textContent=data.available?'本地模型入口已连接':'请安装并登录 Codex';verificationAvailable=data.exact_verification_available;setMode();}).catch(()=>{$('connection').textContent='服务未连接';});sessions();setMode();
+const openedFromFile=location.protocol==='file:';
+if(openedFromFile){
+  $('file-launch-notice').hidden=false;
+  $('connection').textContent='请启动本地服务';
+  document.querySelector('.brand').href='http://127.0.0.1:8765/';
+  document.querySelectorAll('button,input,textarea,select').forEach(control=>control.disabled=true);
+}else{
+  api('/api/health').then(data=>{$('connection').textContent=data.available?'本地模型入口已连接':'请安装并登录 Codex';verificationAvailable=data.exact_verification_available;setMode();}).catch(()=>{$('connection').textContent='服务未连接';});
+  sessions();setMode();
+}
 
 function switchWorkspace(name) {
   const teacher=name==='teacher';
@@ -178,4 +187,4 @@ $('lesson-render-button').onclick=async()=>{
     currentLesson=await api('/api/lessons/'+currentLesson.id);showLesson(currentLesson);lessonDone(result.status==='ready'?'结构检查通过。请下载并在实际放映软件中通看，数学内容仍需教师审阅。':'检查未通过；根据上方告警修订源码后重试。');refreshLessonHistory();
   }catch(error){lessonDone(error.message);}
 };
-refreshLessonHistory();
+if(!openedFromFile)refreshLessonHistory();
