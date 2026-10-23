@@ -1,0 +1,443 @@
+{
+  "_doc": [
+    "告警类别表。写这张表的规矩：pattern 必须是**实测**打出来的字串，不是读代码推出来的。",
+    "计划里那张表就是读代码推的，一测就发现两处对不上（见 dead 与 xfail 条目）——",
+    "所以这里的 status 字段记的是实测结论，不是意图。",
+    "",
+    "status 取值：",
+    "  verified  有夹具实测报出过，how 写明是哪个夹具",
+    "  dead      代码里有这段，但结构上不可达，永远不会报。how 写明为什么",
+    "  xfail     预期当前**不报**。是已经记录在案的漏检，不是没测",
+    "  untested  还没配夹具。不许当成「没问题」"
+  ],
+
+  "layers": {
+    "build": "scripts/build_pptx.py —— 渲染时的结构告警，不影响渲染完成",
+    "verify": "scripts/verify_pptx.py —— 对已生成 pptx 的独立几何复核"
+  },
+
+  "_calibration": [
+    "**怎么判断一个类别能不能当「质量判据」：拿一份人写的课件去撞它。**",
+    "",
+    "凡是在人写的课件上也大量触发的类别，量的是「是不是用这个技能做的」——",
+    "也就是本技能的文风 —— 不是「好不好」。拿它计分等于宣布人做的课件不合格。",
+    "",
+    "实测基准：示例/教学技能大赛ppt - 复赛.pptx（人写的 13 页比赛稿，27E/34W；文件名里的讲师姓名已抹掉）。",
+    "它触发的类别：spacing.missing 17、spacing.pct 17、outside_content 9、pic.offcenter 5、",
+    "row.off_center 3、overlap.pic_text 6、row.gap_uneven 1、footer.leak 1、bullets.too_many 2。",
+    "→ 以上一律**不能**当质量判据。",
+    "",
+    "**但「人写稿没触发」也不自动等于校准通过** —— 可能是那份课件压根没有该类检查",
+    "适用的版面（检查不适用 → 计数恒为 0，是空集不是校准）。gap.large 就栽在这上面：",
+    "人写稿有 5 个并排页测量值，但全部 has_mate=False（配不上文字块），",
+    "也就是说检查在那份上没生效。**要报一条信号，必须同时说清它的校准到什么程度。**",
+    "",
+    "字段 human_control 记的就是这份实测计数；null = 该份上没有该类检查适用的版面。"
+  ],
+
+  "categories": [
+    {
+      "id": "build.wording.colloquial",
+      "layer": "build", "level": "warn",
+      "pattern": "要点行有口语痕迹",
+      "status": "verified", "how": "fixtures/wording-defects.md → 4 处命中（谁都会 / 一下 / 它×2）"
+    },
+    {
+      "id": "build.wording.gap",
+      "layer": "build", "level": "warn",
+      "pattern": null,
+      "status": "xfail",
+      "how": "fixtures/wording-defects.md",
+      "note": [
+        "deck-rules.md 规则 9 缺陷表里有 3 句至今漏检：",
+        "「越切越薄，本数变多」/「要求只用以前学过的知识」/「长方体 V = Sh，这是已知的」。",
+        "检测器词典只有 8 个词 + 一条「它」，这三句一个都不沾。",
+        "用户已定：只记录，不修。哪天补了词典，wording-defects 的 xfail 会转成 XPASS 提示摘掉。"
+      ]
+    },
+    {
+      "id": "build.wording.prose",
+      "layer": "build", "level": "warn",
+      "pattern": "可能是一整句话被塞进一条要点",
+      "status": "verified", "how": "fixtures/flow-caption-overflow.md（41 字、1 个逗号）"
+    },
+    {
+      "id": "build.wording.clean-control",
+      "layer": "build", "level": "none",
+      "pattern": null,
+      "status": "verified", "how": "fixtures/wording-clean.md → 0 条语体告警",
+      "note": "防过度告警的对照。一个见谁都报的检查等于没有检查。"
+    },
+    {
+      "id": "build.layout.alias",
+      "layer": "build", "level": "warn",
+      "pattern": "[分步] 已更名为 [流程]",
+      "status": "verified",
+      "how": "fixtures/layout-alias.md → 现在报「[分步] 已更名为 [流程]（现渲染为单页流程），建议改 md」",
+      "note": [
+        "修复前是**死代码**：构建循环先把 page.layout 就地改写成 流程，之后才调",
+        "validate()，而 validate 判的是 `p.layout in LAYOUT_ALIAS` —— 改名前就改完了，",
+        "条件恒为假。SKILL.md 与 slides-spec.md 却都写着「会被改名并**提示**」，",
+        "实际是静默改名，用户永远等不到那条提示。",
+        "修法：改名前先把来源记进 page.layout_origin，validate 判这个字段。",
+        "对照：不含 [分步] 的课件（mutation-base）仍 0 告警，没被误伤。"
+      ]
+    },
+    {
+      "id": "build.answer.on_invisible_layout",
+      "layer": "build", "level": "warn",
+      "pattern": "版式不渲染底部块",
+      "status": "verified", "how": "fixtures/ans-loss.md（[封面] 与 [阐述] 各一条，分列不合并）"
+    },
+    {
+      "id": "build.answer.blank",
+      "layer": "build", "level": "warn",
+      "pattern": "后面是空的",
+      "status": "verified", "how": "fixtures/ans-loss.md"
+    },
+    {
+      "id": "build.page.sparse",
+      "layer": "build", "level": "warn",
+      "pattern": "仅占正文区",
+      "status": "verified", "how": "所有短夹具都会报（内容少是夹具的共性，不是缺陷信号）"
+    },
+    {
+      "id": "build.flow.caption_wrap",
+      "layer": "build", "level": "warn",
+      "pattern": "折了",
+      "status": "verified", "how": "fixtures/flow-caption-overflow.md → 折了 5 行"
+    },
+    {
+      "id": "build.flow.caption_overflow",
+      "layer": "build", "level": "warn",
+      "pattern": "说明行越过底部堆叠区",
+      "status": "untested",
+      "how": null,
+      "note": "flow-caption-overflow 只触发了「折 N 行」，没触发这一条。要另配夹具或加长说明。"
+    },
+    {
+      "id": "build.glyph.unchecked",
+      "layer": "build", "level": "warn",
+      "pattern": "字形覆盖未检查",
+      "status": "verified",
+      "how": "PYTHONPATH=evals/fixtures/no-fonttools 注入挡板后实测报出",
+      "note": "查不到时必须明说，而不是安静地当作没问题 —— 这条挡板让「没装 fontTools」变成可复现状态。"
+    },
+    {
+      "id": "build.flow.ink_normalized",
+      "layer": "build", "level": "warn",
+      "pattern": "流程页统一比例后图形仅",
+      "status": "untested", "how": null
+    },
+    {
+      "id": "build.flow.step_count",
+      "layer": "build", "level": "warn",
+      "pattern": "流程页只有 1 步",
+      "status": "untested", "how": null
+    },
+    {
+      "id": "build.overflow.*",
+      "layer": "build", "level": "warn",
+      "pattern": "文字+图超出可用高度",
+      "status": "untested", "how": null
+    },
+
+    {
+      "id": "verify.canvas.not_169",
+      "layer": "verify", "level": "error",
+      "pattern": "画布 9144000×6858000 EMU，应为 12192000×6858000",
+      "status": "verified", "how": "fixtures/mutate_pptx.py → canvas-43",
+      "human_control": 0,
+      "note": [
+        "**加了 0.02in 容差，因为原来这条在喊狼来了。** 实测：基线那份的产出是",
+        "12191695×6858000，比标称窄 305 EMU = 0.0003 英寸 —— 0.0025% 的差，",
+        "投影上根本看不出来，却被判成 ERROR，于是「基线 1 ERROR」被当成了技能的优势。",
+        "这条检查的目的只有一个：画布非 16:9 时投影会**整体变形**。4:3 差 3.33in，",
+        "远超 0.02in 的门槛，canvas-43 变异照样命中（已实测）。",
+        "value 字段记的是最大偏差英寸数。"
+      ]
+    },
+    {
+      "id": "verify.shape.outside_content",
+      "layer": "verify", "level": "warn",
+      "pattern": "越出版心：Rectangle 1 左 0.00 右 13.33（版心 0.76~12.57）",
+      "status": "verified",
+      "how": "五份真卡组实测均有触发（基线 14、人写参赛稿 9）",
+      "human_control": 9,
+      "exclude_from_scoring": true,
+      "note": [
+        "**这条过去不在表里**，是接上 --json 之后按类别统计才浮出来的。",
+        "别拿它当质量判据：人写的参赛稿触发 9 次，最大溢出 0.629in —— 那份课件",
+        "照样是拿得出手的比赛稿。**试过按量值切一刀（value > 0.15in 才算），救不回来：**",
+        "基线从 14 降到 2，但人写那份从 0 升到 7。",
+        "value 字段 = max(版心左 − 左缘, 右缘 − 版心右)，英寸。",
+        "另注：基线 14 条里有 10 条正好是 0.060in，纯粹是版心 0.76 与作者敲的 0.70 之差。"
+      ]
+    },
+    {
+      "id": "verify.body.above_area",
+      "layer": "verify", "level": "warn",
+      "pattern": "正文块 TextBox 1 上沿高于正文区顶 1.42：0.450in",
+      "status": "verified",
+      "how": "fixtures/mutate_pptx.py → body-rides-up（正文块顶到 0.90in，标题仍在 0.39in）",
+      "human_control": 0,
+      "note": [
+        "**这条差点被当成「基线与技能唯一干净的区分点」，其实是误报。**",
+        "初测：基线 10 页报 9 页，而技能产出 0、人写稿 0、好/坏两份祖暅 0 —— 看着像",
+        "最硬的那种信号（纯几何、可重复、只有一方触发）。逐页拆开看，那 9 个被点名的",
+        "形状**全是标题**（P2「一、情境导入：从地砖说起」，30pt，top=0.45），而正文块",
+        "规规矩矩从 1.90~2.30 起排 —— 那份课件的版面一个毛病都没有。",
+        "",
+        "根因：判据用「字号 > 40pt」认标题，而那是 30pt 的**节标题**；另一道守卫",
+        "「高度 < 1.0in 跳过」也没拦住（标题框正好 1.00in）。技能自己的产出躲过这条",
+        "纯属侥幸：它的标题框 0.79in，恰好卡在高度守卫外面。**是侥幸，不是质量。**",
+        "",
+        "修法：跳过每页最高的那个文字块（标题按定义就在正文区之上）。",
+        "同时加 body-rides-up 变异 —— 「跳过最高的块」离「这条检查整个不跑了」只差一步，",
+        "没有对照就不算修好。"
+      ]
+    },
+    {
+      "id": "verify.body.into_stack",
+      "layer": "verify", "level": "warn",
+      "pattern": "正文块 TextBox 1 下沿 7.10in 压到堆叠区顶 6.32in",
+      "status": "untested", "how": null,
+      "human_control": 0,
+      "note": "五份真卡组上计数全为 0，还没配夹具。不许当成「没问题」。"
+    },
+    {
+      "id": "verify.row.off_center",
+      "layer": "verify", "level": "error",
+      "pattern": "一排 3 张图整体未居中：左空 0.420 / 右空 0.980",
+      "status": "verified",
+      "how": "五份真卡组实测（人写参赛稿 3 次）",
+      "human_control": 3,
+      "exclude_from_scoring": true,
+      "note": "人写稿触发的，是本技能的版心约定，不是质量。原表把它并进 pic.offcenter，单列出来才看得清。"
+    },
+    {
+      "id": "verify.shape.offscreen",
+      "layer": "verify", "level": "error",
+      "pattern": "越出画布",
+      "status": "verified", "how": "mutate_pptx.py → offscreen"
+    },
+    {
+      "id": "verify.pic.stretched",
+      "layer": "verify", "level": "error",
+      "pattern": "图片被拉伸",
+      "status": "verified", "how": "mutate_pptx.py → stretch"
+    },
+    {
+      "id": "verify.pic.offcenter",
+      "layer": "verify", "level": "error",
+      "pattern": "图片未水平居中",
+      "status": "verified", "how": "mutate_pptx.py → offcenter（整排）/ gap-negative 的副产品",
+      "human_control": 5, "exclude_from_scoring": true,
+      "note": [
+        "修复前有一处**误报**：图放在 [两栏] 的 ## 左（左图右文）时，verify 报「图片未水平居中」。",
+        "配对逻辑只找图**左边**的文字块（t.left+t.width <= gl），找不到 mate 就退化成",
+        "「要求图在整页版心里居中」—— 而 ## 左/## 右 是文档里写着的合法写法。",
+        "修法：右边那一栏也认。同时修了一个更隐蔽的：栏间隙该减外边距，但哪项是哪个",
+        "取决于文字在图左还是图右 —— 两种排布渲染器给的是**完全镜像**的数",
+        "（左文右图 0.613/0.113，左图右文 0.113/0.614），只差一个符号。",
+        "原来固定算 lg−rg，图在左时就得到 −0.501，报成「图文间隙为负」。",
+        "按 mate 在哪一侧取符号，两种排布才归到同一条判据。",
+        "对照：fixtures/two-col-img-left.md 与 mutation-base 的 P4 现在都必须 0 ERROR。"
+      ]
+    },
+    {
+      "id": "verify.row.gap_uneven",
+      "layer": "verify", "level": "error",
+      "pattern": "一排图间距不均",
+      "status": "verified", "how": "mutate_pptx.py → gap-uneven",
+      "human_control": 1, "exclude_from_scoring": true
+    },
+    {
+      "id": "verify.flow.ink_mismatch",
+      "layer": "verify", "level": "error",
+      "pattern": "流程页同组图着墨高度不一致",
+      "status": "verified",
+      "how": "evals/fixtures/test_ink_check.py —— 两个方向都钉：渲染器产出必须干净；框高相同但不裁切的坏渲染器必须被抓",
+      "note": [
+        "**这条曾被误判成死代码，是错的。** 只看到「渲染器产出上 0 ERROR」就下了结论，",
+        "而这正是本项目最防的那个推理：从「没报」推出「没问题」，没去构造反例。",
+        "真相：真渲染器给每张图按各自着墨带写 a:srcRect 并归一化可见高度（实测三张框高",
+        "都是 1.925in），看得见的图形**本来就该一样高**，不报才对。",
+        "造出反例（框高相同、不裁切，模拟按画布归一化的坏渲染器）后，它立刻报：",
+        "['0.526','0.526','0.994']（1.89 倍差距）。",
+        "**真实证据**：拿它跑示例产出/盲跑-祖暅原理/那份 13 页课件 —— P7 报出",
+        "['3.359','3.359','1.784']（1.88 倍差距），正是计划点名的那条「A5 之前第三个",
+        "锥体只有前两个一半高」，那个缺陷至今还在那份 .pptx 文件里。",
+        "同一份盲跑课件另报 P12「内页出现课题/教材出处」。",
+        "对照：示例产出/祖暅原理/课件.pptx 仍 0 ERROR 0 WARN —— 改动没有误伤。",
+        "",
+        "**但别拿那份旧文件去推现在的渲染器。** 后来实测：把**同一个** 课件.md 用现在的",
+        "渲染器重渲染，P7 变成一排规规矩矩的图 —— 宽 2.066/2.066/6.521、高一律 3.444、",
+        "间距均等 0.580、左右外边距都恰好 0.760；图按各自长宽比缩放、白边被 a:srcRect 裁掉，",
+        "着墨自然就齐了，这条错误不再报。而旧 .pptx 里三张都是 3.551×3.551 的**正方形** ——",
+        "那是被拉伸成方块的痕迹，出自更早一版的渲染器。",
+        "所以 P7 那条是**那份历史产物**的属性，不是渲染器现在的属性。",
+        "（好那份的几何逐页比对过：原有与重渲染**完全一致**，含一排同样 2.066/2.066/6.521。）"
+      ]
+    },
+    {
+      "id": "verify.font.contract",
+      "layer": "verify", "level": "error",
+      "pattern": "字体不在契约内",
+      "status": "verified", "how": "mutate_pptx.py → font-break（a:latin='Arial'）"
+    },
+    {
+      "id": "verify.font.times",
+      "layer": "verify", "level": "error",
+      "pattern": "出现 Times New Roman",
+      "status": "verified", "how": "mutate_pptx.py → times"
+    },
+    {
+      "id": "verify.spacing.pct",
+      "layer": "verify", "level": "error",
+      "pattern": "行距写成百分比 spcPct",
+      "status": "verified", "how": "mutate_pptx.py → spcpct",
+      "human_control": 17, "exclude_from_scoring": true,
+      "note": "人写参赛稿触发 17 次。百分比行距在 PowerPoint 里是合法且常见的做法 —— 技能不用它，那是技能的契约，不是质量。"
+    },
+    {
+      "id": "verify.spacing.missing",
+      "layer": "verify", "level": "warn",
+      "pattern": "行距未显式指定",
+      "status": "verified",
+      "human_control": 17,
+      "exclude_from_scoring": true,
+      "how": "fixtures/emph-wrap.md —— 折成两行的 `!!!` 强调块、折成三行的 `>` 驱动问题块",
+      "note": [
+        "判据（verify_pptx.py:373）：非封面、有文字的块只要高 ≥1.0in，每个非空段落都必须",
+        "有 a:spcPts。写成百分比归 verify.spacing.pct；**没写**归这一条。",
+        "这条过去**不在表里** —— 表是读代码列的，而它是产出层真跑时才冒出来的。",
+        "with_skill 组的子代理报上来：折成两行的 `!!!` 必报这一条，而作者从 课件.md 里",
+        "**改不掉**，只能把句子压成一行。那是绕过，不是修好。",
+        "根因比「多一条告警」深：add_emph()/add_question() 各自手搓形状、不走 layout_block，",
+        "于是**谁也不给它们写 spcPts**；而它们的高度是按 EMPH_LINE=0.62 / QUESTION_LINE=0.47",
+        "算出来的，渲染行高却由字体自然行高决定 —— 模型假定 0.62in/行，实际是另一个数。",
+        "这正是 check_spacing_written 的 docstring 自己警告的那种「静默脱钩」。",
+        "两套行距校验当时又都只查 body-block/answer-block，这类块便整片漏掉。",
+        "修法：两块各取形状名 EMPH_BLOCK / QUESTION_BLOCK，行距写死与算高**同一个常量**，",
+        "并纳入 check_spacing_written 的名字元组。",
+        "对照：emph-wrap 里那句一行的 `!!!`（短结论）本来就没事 —— 不能因为修它而让",
+        "所有强调块都多出一条告警。修完 verify 对这份夹具报 ERROR 0 / WARN 0。"
+      ]
+    },
+    {
+      "id": "verify.footer.leak",
+      "layer": "verify", "level": "error",
+      "pattern": "内页出现课题/教材出处",
+      "status": "verified", "how": "mutate_pptx.py → footer-leak",
+      "human_control": 1, "exclude_from_scoring": true,
+      "note": "人写参赛稿的 P12 就带着教材出处 —— 所以 deck-rules 规则 1 是**本技能的规矩**，不是通用质量判据。"
+    },
+    {
+      "id": "verify.text.duplicate",
+      "layer": "verify", "level": "error",
+      "pattern": "同页重复文本",
+      "status": "verified",
+      "how": "mutate_pptx.py → dup-text（副本改名）与 dup-text-samename（同名），两条都必须命中",
+      "note": [
+        "修复前有个洞：判据是 seen[norm].add(sh.name) —— 按**形状名**收，同名同文的两块",
+        "会被并成一个名字，len==1 就不报。而「渲染器把同一块吐了两次」必然同名，",
+        "恰恰是这条检查最该抓的情形。",
+        "修法：改按 id(sh) 计数。两个形状 → 两条记录 → 报；同一形状里同段文字出现",
+        "两次 → 仍是一条。dup-text-samename 已从 xfail 转成命中。"
+      ]
+    },
+    {
+      "id": "verify.bullets.too_many",
+      "layer": "verify", "level": "warn",
+      "pattern": "要点 7 行（规则 7 上限 6）",
+      "status": "verified", "how": "mutate_pptx.py → bullets-7",
+      "human_control": 2, "exclude_from_scoring": true,
+      "note": "门槛：形状高 ≥1.0in。标题框只有 0.79in，所以拿标题做变异会静默打偏。"
+    },
+    {
+      "id": "verify.gap.negative",
+      "layer": "verify", "level": "error",
+      "pattern": "图文间隙为负",
+      "status": "verified", "how": "mutate_pptx.py → gap-negative（-0.767in）",
+      "note": [
+        "这条有前置门：`if not has_mate: continue`。图推得太远（比如 2in）会跑出文字块左缘，",
+        "配对条件 t.left+t.width <= gl+0.05in 不成立 → 这条直接跳过，只剩一条笼统的重叠 WARN。",
+        "要触发它，得把图停在文字右缘之内 0.02in 那条窄带里。"
+      ]
+    },
+    {
+      "id": "verify.gap.large",
+      "layer": "verify", "level": "warn",
+      "pattern": "图文间隙偏大",
+      "status": "verified",
+      "how": "五份真卡组实测；夹具尚未配",
+      "human_control": null,
+      "note": [
+        "**这是目前唯一一条「技能 0 / 基线 5」的纯脚本信号，但它的校准没做完。**",
+        "并排页实测（左空−右空）：",
+        "  有技能 ['0.350'×5] —— 五页完全一致，正好是 [标题] 并排族的栏间隙常量",
+        "  基线   ['0.627','0.827','0.927','0.727','0.627'] —— 页页不同，图被甩得远近不一",
+        "  好·祖暅 ['0.350','0.500','0.350'] —— 两个合法族各就各位",
+        "  人·参赛稿 ['-6.783','-4.297','0.124','-0.869','-0.135'] —— **配不上文字块，",
+        "           has_mate 全为 False，检查在那份上根本没生效**",
+        "",
+        "所以 human_control 记 null 而不是 0：**那个 0 是空集，不是校准。**",
+        "「人写稿没触发」有两种意思 —— 人写的课件这样做也没事，或者这份课件压根",
+        "没有该类检查适用的版面。这里是后者。",
+        "",
+        "能说的：技能产出的图文间隙是一个**系统常量**（0.35），基线是手敲的坐标、",
+        "页页不同。这是个真实、可重复、可测的差别。",
+        "不能说的：0.93in 的留白是「缺陷」—— 没有证据表明老师会这么认为。",
+        "**报这条时必须连校准程度一起报。**"
+      ]
+    },
+    {
+      "id": "verify.gap.unknown_family",
+      "layer": "verify", "level": "warn",
+      "pattern": "不属于任何一个已知版式族",
+      "status": "untested", "how": null
+    },
+    {
+      "id": "verify.overlap.pic_text",
+      "layer": "verify", "level": "warn",
+      "pattern": "图片与文字可能重叠",
+      "status": "verified", "how": "gap-negative 调整过程中实测报出",
+      "human_control": 6, "exclude_from_scoring": true
+    },
+
+    {
+      "id": "harness.stdout_gbk",
+      "layer": "harness", "level": "fatal",
+      "pattern": null,
+      "status": "fixed",
+      "how": "verify_pptx.py main() 开头 sys.stdout.reconfigure(encoding='utf-8')",
+      "note": [
+        "实测事故：Windows 上 stdout 默认 GBK，打一个 ✓(U+2713) 就 UnicodeEncodeError 退出码 1。",
+        "一份**完全合格**的课件被判成失败 —— 恰好在「没问题」的时候崩。",
+        "同一个坑在 mutate_pptx.py 里又踩了一次，同样加了防线。"
+      ]
+    },
+    {
+      "id": "harness.W_shadow",
+      "layer": "harness", "level": "fatal",
+      "pattern": null,
+      "status": "fixed",
+      "how": "verify_pptx.py:174 的 `W, H = rgba.size` 改名为 `iw, ih`",
+      "note": [
+        "实测事故：扫描 --figures 时把模块级的 W()（告警函数）就地覆盖成图片宽度整数。",
+        "此后 check() 里任何一处 W(...) 都 TypeError: 'int' object is not callable。",
+        "后果：`verify_pptx.py 课件.pptx --figures figures/` —— SKILL.md 第 6 步教用户跑的那条命令 ——",
+        "只要课件有**一条**告警就崩。之前几次显示「WARN 0 条」才没暴露。"
+      ]
+    },
+    {
+      "id": "harness.independence",
+      "layer": "harness", "level": "fatal",
+      "pattern": null,
+      "status": "verified",
+      "how": "grep -nE '^[[:space:]]*(import|from)[[:space:]]+build_pptx' scripts/verify_pptx.py → 无命中",
+      "note": "复核必须独立于被检代码，否则是自证。这条要作为静态断言常驻。"
+    }
+  ]
+}

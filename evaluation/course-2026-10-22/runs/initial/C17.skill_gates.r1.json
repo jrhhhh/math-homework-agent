@@ -1,0 +1,16 @@
+{
+  "case_id": "C17",
+  "arm": "skill_gates",
+  "repeat": 1,
+  "input": {
+    "mode": "check",
+    "problem": "解实数方程 |x-2|=3。",
+    "solution": "当 x≥2 时，x-2=3，得 x=5。\n当 x<2 时，2-x=3，得 x=-1。\n因此解集为 {-1,5}。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:26.685466+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:31.639901+00:00"
+}

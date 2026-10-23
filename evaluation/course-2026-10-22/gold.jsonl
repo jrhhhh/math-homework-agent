@@ -1,0 +1,30 @@
+{"id": "C01", "expected": "x=4", "first_error_step": null, "rationale": "x≥0，平方得(x-4)(x+1)=0，排除-1。"}
+{"id": "C02", "expected": "[-3,7/2)", "first_error_step": null, "rationale": "x≥-3 且 x<7/2。"}
+{"id": "C03", "expected": "(-∞,-2)∪[3,+∞)", "first_error_step": null, "rationale": "-2 无定义，3 可以取。"}
+{"id": "C04", "expected": "a≤1/2", "first_error_step": null, "rationale": "f′=2x-4a，区间左端导数非负即可；等号时函数仍严格递增。"}
+{"id": "C05", "expected": "π/6,π/2,5π/6,3π/2", "first_error_step": null, "rationale": "cos x(2sin x-1)=0，两个因子分别求解。"}
+{"id": "C06", "expected": "q=2 或 q=-3", "first_error_step": null, "rationale": "q²+q-6=0，不预设公比正数。"}
+{"id": "C07", "expected": "1/3", "first_error_step": null, "rationale": "条件样本9种，两红3种。"}
+{"id": "C08", "expected": "t=2", "first_error_step": null, "rationale": "数量积2t-4=0。"}
+{"id": "C09", "expected": "最小值3，x=2", "first_error_step": null, "rationale": "配方(x-2)²+3，顶点在定义域内。"}
+{"id": "C10", "expected": "√39", "first_error_step": null, "rationale": "余弦定理25+49-35=39。"}
+{"id": "C11", "expected": "incorrect", "first_error_step": 1, "rationale": "除以x漏掉x=0。"}
+{"id": "C12", "expected": "incorrect", "first_error_step": 3, "rationale": "平方求候选根合法；-2代回不成立，首错在第3行。"}
+{"id": "C13", "expected": "correct", "first_error_step": null, "rationale": "无正数前提也成立，不能错用基本不等式条件否定。"}
+{"id": "C14", "expected": "correct", "first_error_step": null, "rationale": "平移后平方差方法有效。"}
+{"id": "C15", "expected": "correct", "first_error_step": null, "rationale": "等号平方项为零给a=2。"}
+{"id": "C16", "expected": "incorrect", "first_error_step": 1, "rationale": "互斥非独立，交集概率0。"}
+{"id": "C17", "expected": "correct", "first_error_step": null, "rationale": "分类穷尽且候选满足分支条件。"}
+{"id": "C18", "expected": "incorrect", "first_error_step": 1, "rationale": "首项索引，aₙ=2+3(n-1)=3n-1。"}
+{"id": "C19", "expected": "单提示，不泄露全部根", "first_error_step": 1, "rationale": "提示约去的因子能否为0，不直接补全解集。"}
+{"id": "C20", "expected": "单提示，不直接给最终不等式", "first_error_step": 1, "rationale": "提示负数乘除对不等号方向的影响。"}
+{"id": "C21", "expected": "单提示，不泄露另一个根", "first_error_step": 2, "rationale": "提示二次式因式分解与根的完整性。"}
+{"id": "C22", "expected": "单提示，不直接给完整求和式", "first_error_step": 2, "rationale": "提示列出前几项查看最后未抵消的一项。"}
+{"id": "C23", "expected": "answer_only 或 incorrect；只核对漏解，不虚构过程", "first_error_step": null, "rationale": "只有最终答案，不推断使用了开方或约分。"}
+{"id": "C24", "expected": "answer_only 或 correct；不虚构过程", "first_error_step": null, "rationale": "结果正确但未提供过程。"}
+{"id": "C25", "expected": "六维观察；引用右栏末尾四行密集与底部留白；不判数学对错", "first_error_step": null, "rationale": "只提供版面，不能假定计算内容。"}
+{"id": "C26", "expected": "六维观察；肯定图形标注与清晰划改；不根据未给字符判断计算", "first_error_step": null, "rationale": "多路径等未观察维度应说明证据不足。"}
+{"id": "C27", "expected": "区分多方法和多题的不确定性；保留留白优点", "first_error_step": null, "rationale": "不能据两片算式断定两道题。"}
+{"id": "C28", "expected": "承认证据不足；不补想其余版面；提供一个可执行动作", "first_error_step": null, "rationale": "短草稿不支持长期习惯标签。"}
+{"id": "C29", "expected": "关联乙区划改、丙区缺标注与右侧空栏；不判推导", "first_error_step": null, "rationale": "是否一题多问不能断言。"}
+{"id": "C30", "expected": "对应覆盖旧值、交叉箭头、无分区；不给学生贴能力标签", "first_error_step": null, "rationale": "下一题动作具体且不要求周期计划。"}

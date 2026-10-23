@@ -1,0 +1,16 @@
+{
+  "case_id": "C20",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "hint",
+    "problem": "解实数不等式 -3x>12。",
+    "solution": "两边除以 -3，得 x>-4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:53.040706+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:57.942053+00:00"
+}

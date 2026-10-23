@@ -1,0 +1,23 @@
+{
+  "action": "partition",
+  "block_source": "<image_layout / student_text>",
+  "blocks": [
+    {
+      "block_id": "<B1>",
+      "location": "<版面位置：左上 / 右上 / 中部 / 下方>",
+      "visual_cues": "<为什么把它当成一块：留白、分隔线、区域大小、书写方向>",
+      "separate_problem": "<true / false：像不像一次独立的题目尝试>",
+      "confidence": "<高 / 中 / 低>",
+      "note": "<这块与相邻块的关系，或为什么分不准>"
+    }
+  ],
+  "estimated_problem_count": "<整数：估计做了几道题>",
+  "count_range": ["<最少>", "<最多>"],
+  "uncertainty": "<哪里分不准、可能是同一题/不同题的原因>",
+  "confirmation_question": "<请学生确认：我大致看到几块，哪两块其实是一道题？>",
+  "limitations": [
+    "只看版面，不读字符",
+    "块数不等于题目数",
+    "归属需要学生确认"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C29\",\n  \"input\": {\n    \"mode\": \"draft\",\n    \"problem\": \"\",\n    \"solution\": \"\",\n    \"draft\": \"顶部写了一个题号，随后分成甲、乙、丙三个有编号的小区域；乙区有两次划改，丙区的图没有点名；纸面右侧留着一条空栏，但没有检验标记。\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"顶部题号和甲、乙、丙的编号有助于回找步骤，右侧空栏也提供了可利用的空间。乙区有两次划改，但是否补写、旧内容是否作废尚不清楚；丙区图形未标点名，可能影响图文对应。下一道题只做一件事：画图时给需要引用的点标上名称。本次仅依据你的文字描述分析版面，未查看原图、不判断计算对错；脚本未运行，结果未验证。\",\n      \"result\": {\n        \"scope\": \"仅依据学生文字描述观察草稿版面：顶部题号、三个编号区域、乙区划改、丙区图形及右侧空栏。未提供原题或原图，未读取手写字符，不判断计算对错；各区域归属、分行密度及划改后的补写情况未经确认。未运行结构门与越界审计，结果未验证。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"高\",\n            \"observation\": \"顶部题号与三个编号小区域提供了清楚的定位线索，但区域之间的关系尚未说明。\",\n            \"evidence\": \"描述明确指出顶部有一个题号，随后分成甲、乙、丙三个有编号的小区域。\",\n            \"risk\": \"若三个区域之间需要衔接却没有对应提示，可能增加回找前后步骤的时间。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"未描述各区域内的分行与书写密度，无法判断步骤是否拥挤。\",\n            \"evidence\": \"现有描述只交代区域位置及编号，没有提供区域内部行距或步骤排列信息。\",\n            \"risk\": \"若后续将需要回查的多个步骤挤在同一行，可能不便逐步复核。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"不适用\",\n            \"observation\": \"已知有两次划改，但缺少补写及作废方式的信息，无法判断划改是否可追溯。\",\n            \"evidence\": \"描述指出乙区有两次划改，未说明划改旁是否补写或旧内容是否继续使用。\",\n            \"risk\": \"若划改后新旧内容的使用状态不清楚，可能难以确定应接着哪一处往下看。\",\n            \"positive\": \"乙区留下了可定位的修改痕迹；是否完成自我纠正仍需确认。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"三个区域有编号，但未说明它们是不同方法、不同小问还是连续步骤，无法评价多路径标记。\",\n            \"evidence\": \"甲、乙、丙分别有编号，但描述没有交代三个区域之间的用途关系。\",\n            \"risk\": \"若这些区域代表不同尝试却只标编号，可能不便辨认各条路径的用途。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"中\",\n            \"observation\": \"丙区已使用图形，但图中没有点名，引用位置时缺少对应标记。\",\n            \"evidence\": \"描述明确指出丙区有图，并且图没有点名。\",\n            \"risk\": \"若后续推导需要引用图中的点，可能难以把文字与图上位置对应起来。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"右侧留有空栏，但尚未标明检验用途。\",\n            \"evidence\": \"描述指出纸面右侧留着一条空栏，但没有检验标记。\",\n            \"risk\": \"若后续补写占用了这条空栏，可能减少集中记录检验内容的空间。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"图中引用的点及时命名\",\n            \"impact\": \"图上缺少点名时，后续文字可能难以对应到具体位置。\",\n            \"training\": \"下一道题画图时，给后续需要引用的每个点标上名称。\"\n          },\n          {\n            \"habit\": \"明确划改内容的使用状态\",\n            \"impact\": \"新旧内容若缺少明确区分，可能增加回查修改过程的困难。\",\n            \"training\": \"下一道题需要划改时，用单线划去作废内容，并在旁边留空处补写。\"\n          },\n          {\n            \"habit\": \"给已有空栏标明用途\",\n            \"impact\": \"未标用途的空栏可能被零散补写占用。\",\n            \"training\": \"下一道题开始时，在右侧空栏顶部写上“检验”。\"\n          }\n        ],\n        \"next_step\": \"下一道题画图时，给需要引用的点标上名称。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"text_reconstruction\"\n      }\n    },\n    \"B\": {\n      \"reply\": \"甲、乙、丙三个编号区域便于区分记录；乙区的划改也留下了主动修订的痕迹。仅凭描述，还不能确认旧内容是否明确作废。下一道题先只做一件事：画图时给需要引用的点标上名称。本次只看草稿布局，不判断计算或推理对错。\",\n      \"result\": {\n        \"scope\": \"仅依据文字描述查看一道题草稿的分区、划改、图形标注与留白；未见原图、原题及推导内容，不判断数学对错，也不把甲、乙、丙视为多道题。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"高\",\n            \"observation\": \"顶部题号和三个编号区域使记录有明确分区。\",\n            \"evidence\": \"描述指出顶部有一个题号，下方分成甲、乙、丙三个有编号的小区域。\",\n            \"risk\": \"若后续记录跨区延伸而没有对应标记，可能难以追踪各区内容的联系。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"描述未提供推导行距、步骤内容或书写密度，无法判断步骤分行情况。\",\n            \"evidence\": \"现有材料只交代分区、划改、图形和空栏，未描述推导如何分行。\",\n            \"risk\": \"若关键变形挤在同一行且缺少分隔，可能增加回看时核对步骤的难度。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"中\",\n            \"observation\": \"乙区保留了两次修订痕迹，但旧内容是否作废及新内容位置尚不明确。\",\n            \"evidence\": \"描述明确提到乙区有两次划改，但未说明划线方式或补写位置。\",\n            \"risk\": \"若划改后仍同时保留两种可读记录而未标明取舍，可能难以确定最终采用的内容。\",\n            \"positive\": \"两次划改留下了主动回看和修订记录的积极信号。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"尚不清楚甲、乙、丙是否代表不同方法或分类分支，无法判断多路径标记是否充分。\",\n            \"evidence\": \"材料只说明三个小区域有编号，没有交代各区域所记录内容的关系。\",\n            \"risk\": \"若三个区域实际代表不同分支却只写编号，可能在回看时混淆各分支对应的条件。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"低\",\n            \"observation\": \"丙区图形缺少点名，图与文字记录的对应关系不够明确。\",\n            \"evidence\": \"描述明确指出丙区画有图形，但图中的点没有标注名称。\",\n            \"risk\": \"若后续推导需要引用图中的点，可能难以确认文字所指的具体位置。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"右侧已有可用留白，但尚未形成带标记的检验区。\",\n            \"evidence\": \"纸面右侧留着一条空栏，描述同时说明没有检验标记。\",\n            \"risk\": \"若检验记录与其他补写内容共用空栏而没有标记，可能难以辨认哪些内容已经核查。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"图中点名尚未补齐\",\n            \"impact\": \"需要引用图中位置时，可能难以建立图形与文字之间的对应。\",\n            \"training\": \"下一道题画图时，给需要在推导中引用的点逐一标上名称。\"\n          }\n        ],\n        \"next_step\": \"下一道题画图时，给需要在推导中引用的点逐一标上名称。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"text_reconstruction\"\n      }\n    },\n    \"C\": {\n      \"reply\": \"题号和甲、乙、丙编号让三个区域容易区分，右侧空栏也给后续核对留出了空间。乙区有两次划改，但是否补写、旧内容是否明确作废还不清楚，不能据此判断自纠情况；丙区图形没有点名，回看时可能不易对应。下一道题只做一件事：画图后，给需要引用的点标上名称。本次仅依据你的文字描述分析版面，未查看图片、未识读手写字符，也不判断数学对错；两道脚本门未执行，结果未验证。\",\n      \"result\": {\n        \"scope\": \"仅依据学生文字描述中的顶部题号、甲乙丙编号分区、乙区划改、丙区图形及右侧空栏分析版面；未提供原题，未查看图片、未识读手写字符，不判断数学对错。三个区域是否属于同一道题尚未确认，不逐区分析内容。未调用工具，结构门与越界审计均未执行，结果未验证。\",\n        \"dimensions\": {\n          \"organization\": {\n            \"score\": \"高\",\n            \"observation\": \"顶部题号与三个编号区域提供了清晰的分区线索，但区域归属尚未确认。\",\n            \"evidence\": \"描述指出顶部有一个题号，下方分成甲、乙、丙三个有编号的小区域。\",\n            \"risk\": \"若三个区域的归属未注明，可能在回看时难以区分不同小问与不同尝试。\"\n          },\n          \"skipping\": {\n            \"score\": \"不适用\",\n            \"observation\": \"描述没有提供行距、步骤分行或书写密度信息，无法判断。\",\n            \"evidence\": \"现有描述涉及区域位置与痕迹，未说明各区域内部的行序和疏密。\",\n            \"risk\": \"若区域内部的关键步骤挤在同一行，可能增加回看时追踪步骤的困难。\"\n          },\n          \"correction_pattern\": {\n            \"score\": \"不适用\",\n            \"observation\": \"乙区有两次划改，但未说明补写情况及旧内容是否明确作废，无法判断自纠状态。\",\n            \"evidence\": \"描述明确提到乙区有两次划改，没有交代划改后的衔接与补写位置。\",\n            \"risk\": \"若划改前后的内容未明确区分，可能在继续书写时混用不同版本。\",\n            \"positive\": \"两次划改留下了调整痕迹；是否完成自我纠正仍需补充描述。\"\n          },\n          \"trial_and_error\": {\n            \"score\": \"不适用\",\n            \"observation\": \"三个区域虽有编号，但未说明它们是否代表不同方法或尝试，无法判断多路径标记。\",\n            \"evidence\": \"甲、乙、丙分别有编号，但描述没有说明区域之间的方法关系。\",\n            \"risk\": \"若这些区域代表不同尝试却未注明关系，可能在整理时难以辨认采用了哪条路径。\"\n          },\n          \"graphic_use\": {\n            \"score\": \"中\",\n            \"observation\": \"丙区使用了图形，但图中未标点名，引用位置不够明确。\",\n            \"evidence\": \"描述明确指出丙区有图，且图中的点没有名称标注。\",\n            \"risk\": \"若后续需要引用图中的点，可能难以将文字步骤与图上位置对应。\"\n          },\n          \"draft_to_solution\": {\n            \"score\": \"中\",\n            \"observation\": \"右侧已留空栏，但尚未明确作为检验区使用。\",\n            \"evidence\": \"纸面右侧留着一条空栏，描述同时指出没有检验标记。\",\n            \"risk\": \"若空栏用途始终未标明，可能在继续书写时被占用而难以集中记录核对内容。\"\n          }\n        },\n        \"top_3_habits\": [\n          {\n            \"habit\": \"给图中需引用的点命名\",\n            \"impact\": \"缺少点名可能使图形位置与后续文字难以对应。\",\n            \"training\": \"下一道题画图后，给后续需要引用的点标上名称。\"\n          },\n          {\n            \"habit\": \"让预留空栏有明确用途\",\n            \"impact\": \"空栏没有用途标记，可能难以集中查找核对记录。\",\n            \"training\": \"下一道题开始时，在右侧预留空栏顶部写上“检验区”。\"\n          }\n        ],\n        \"next_step\": \"下一道题画图后，给后续需要引用的点标上名称。\",\n        \"grade_level\": \"高中\",\n        \"draft_source\": \"text_reconstruction\"\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"材料仅支持版面判断：顶部有题号，甲、乙、丙三区有编号，乙区有两次划改，丙区图形无点名，右侧有空栏但无检验标记。无法判断数学计算、推理、修改是否正确，也不能据此推断长期能力。可建议给需要引用的点命名、明确划改内容的取舍及空栏用途；没有检验标记不等于没有检验。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出均限于版面及条件性风险，明确承认划改后的补写和作废状态未知，没有推断计算或能力。点名、划改取舍与空栏用途的建议具体可执行。\"\n    },\n    \"B\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": false,\n      \"teaching_useful\": true,\n      \"reason\": \"点名建议具体且有依据，也未评价数学对错；但将两次划改解释为“主动回看”的积极信号，超出了可观察的修改痕迹。仅凭划改不能确认发生过主动回看。\"\n    },\n    \"C\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出区分了可见痕迹与未知信息，未由划改推断自纠成功，也未由空栏无标记断定没有检验。给引用点命名和标明空栏用途均能帮助下一步整理草稿。\"\n    }\n  }\n}",
+    "elapsed_seconds": 20.829,
+    "usage": [
+      {
+        "input_tokens": 30893,
+        "cached_input_tokens": 26368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 443,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643e-c742-7391-a0cd-b2e8d3e204f8"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"材料仅支持版面判断：顶部有题号，甲、乙、丙三区有编号，乙区有两次划改，丙区图形无点名，右侧有空栏但无检验标记。无法判断数学计算、推理、修改是否正确，也不能据此推断长期能力。可建议给需要引用的点命名、明确划改内容的取舍及空栏用途；没有检验标记不等于没有检验。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出均限于版面及条件性风险，明确承认划改后的补写和作废状态未知，没有推断计算或能力。点名、划改取舍与空栏用途的建议具体可执行。\"\n    },\n    \"B\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": false,\n      \"teaching_useful\": true,\n      \"reason\": \"点名建议具体且有依据，也未评价数学对错；但将两次划改解释为“主动回看”的积极信号，超出了可观察的修改痕迹。仅凭划改不能确认发生过主动回看。\"\n    },\n    \"C\": {\n      \"math_correct\": null,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"完整输出区分了可见痕迹与未知信息，未由划改推断自纠成功，也未由空栏无标记断定没有检验。给引用点命名和标明空栏用途均能帮助下一步整理草稿。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 30893,
+          "cached_input_tokens": 26368,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 443,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "材料仅支持版面判断：顶部有题号，甲、乙、丙三区有编号，乙区有两次划改，丙区图形无点名，右侧有空栏但无检验标记。无法判断数学计算、推理、修改是否正确，也不能据此推断长期能力。可建议给需要引用的点命名、明确划改内容的取舍及空栏用途；没有检验标记不等于没有检验。",
+    "ratings": {
+      "A": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整输出均限于版面及条件性风险，明确承认划改后的补写和作废状态未知，没有推断计算或能力。点名、划改取舍与空栏用途的建议具体可执行。"
+      },
+      "B": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": false,
+        "teaching_useful": true,
+        "reason": "点名建议具体且有依据，也未评价数学对错；但将两次划改解释为“主动回看”的积极信号，超出了可观察的修改痕迹。仅凭划改不能确认发生过主动回看。"
+      },
+      "C": {
+        "math_correct": null,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "完整输出区分了可见痕迹与未知信息，未由划改推断自纠成功，也未由空栏无标记断定没有检验。给引用点命名和标明空栏用途均能帮助下一步整理草稿。"
+      }
+    }
+  }
+}

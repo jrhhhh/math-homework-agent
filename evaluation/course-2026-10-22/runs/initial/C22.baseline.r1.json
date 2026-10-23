@@ -1,0 +1,16 @@
+{
+  "case_id": "C22",
+  "arm": "baseline",
+  "repeat": 1,
+  "input": {
+    "mode": "hint",
+    "problem": "数列 aₙ=1/[n(n+1)]，求前 n 项和。",
+    "solution": "aₙ=1/n-1/(n+1)。\n所以前 n 项和为 1-1/n。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:20:17.890348+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:20:23.109482+00:00"
+}

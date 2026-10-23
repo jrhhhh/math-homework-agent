@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C21\",\n  \"input\": {\n    \"mode\": \"hint\",\n    \"problem\": \"正实数 x 满足 x+9/x=10，求 x。\",\n    \"solution\": \"两边乘以 x，得到 x²-10x+9=0。\\n我只找到了 x=1，觉得没有别的解。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"把二次三项式因式分解，看看两个因式分别为零时会得到什么。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 2,\n          \"quote\": \"觉得没有别的解\",\n          \"reason\": \"尚未检查二次方程的所有根，不能据此排除其他正实数解。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"把二次三项式因式分解，看看两个因式分别为零时会得到什么。\",\n        \"evidence\": []\n      }\n    },\n    \"B\": {\n      \"reply\": \"把你找到的根代入因式分解：x²−10x+9=(x−1)(x−□)，另一个括号应怎样填写？\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 2,\n          \"quote\": \"觉得没有别的解\",\n          \"reason\": \"尚未检查二次方程的另一个因式能否为零。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"把你找到的根代入因式分解：x²−10x+9=(x−1)(x−□)，另一个括号应怎样填写？\",\n        \"evidence\": []\n      }\n    },\n    \"C\": {\n      \"reply\": \"试着把 x²-10x+9 分解因式，看看每个因子为零时分别会得到什么。\",\n      \"result\": {\n        \"judgment\": \"gap\",\n        \"first_error\": {\n          \"step\": 2,\n          \"quote\": \"觉得没有别的解\",\n          \"reason\": \"只找到一个根，尚不足以排除其他正实数根。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"试着把 x²-10x+9 分解因式，看看每个因子为零时分别会得到什么。\",\n        \"evidence\": []\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"因x>0，两边乘以x等价地得到x²−10x+9=0。因式分解为(x−1)(x−9)=0，所以x=1或x=9，两者均满足原式。学生第一步正确；第二步找到x=1正确，但认为没有别的解错误，遗漏了另一个正实数根。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确定位第二步排除其他解的问题，并提示因式分解后分别检查两个因式为零的情形；所有字段均未直接给出缺失根或完整答案。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确利用学生已经找到的根搭建因式分解填空，明确引导下一步检查另一个因式。填空没有直接写出缺失根，其他字段也未泄露完整答案。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"将只找到一个根便排除其他根识别为论证缺口，定位准确；提示逐个检查因子为零的情形，能够帮助补全求解，且所有字段均未给出缺失根或完整答案。\"\n    }\n  }\n}",
+    "elapsed_seconds": 19.607,
+    "usage": [
+      {
+        "input_tokens": 28066,
+        "cached_input_tokens": 12544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 401,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643b-b101-7861-bedb-54348175f927"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"因x>0，两边乘以x等价地得到x²−10x+9=0。因式分解为(x−1)(x−9)=0，所以x=1或x=9，两者均满足原式。学生第一步正确；第二步找到x=1正确，但认为没有别的解错误，遗漏了另一个正实数根。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"准确定位第二步排除其他解的问题，并提示因式分解后分别检查两个因式为零的情形；所有字段均未直接给出缺失根或完整答案。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确利用学生已经找到的根搭建因式分解填空，明确引导下一步检查另一个因式。填空没有直接写出缺失根，其他字段也未泄露完整答案。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"将只找到一个根便排除其他根识别为论证缺口，定位准确；提示逐个检查因子为零的情形，能够帮助补全求解，且所有字段均未给出缺失根或完整答案。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 28066,
+          "cached_input_tokens": 12544,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 401,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "因x>0，两边乘以x等价地得到x²−10x+9=0。因式分解为(x−1)(x−9)=0，所以x=1或x=9，两者均满足原式。学生第一步正确；第二步找到x=1正确，但认为没有别的解错误，遗漏了另一个正实数根。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "准确定位第二步排除其他解的问题，并提示因式分解后分别检查两个因式为零的情形；所有字段均未直接给出缺失根或完整答案。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确利用学生已经找到的根搭建因式分解填空，明确引导下一步检查另一个因式。填空没有直接写出缺失根，其他字段也未泄露完整答案。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "将只找到一个根便排除其他根识别为论证缺口，定位准确；提示逐个检查因子为零的情形，能够帮助补全求解，且所有字段均未给出缺失根或完整答案。"
+      }
+    }
+  }
+}

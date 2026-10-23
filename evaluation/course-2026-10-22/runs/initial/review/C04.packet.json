@@ -1,0 +1,314 @@
+{
+  "case_id": "C04",
+  "input": {
+    "mode": "solve",
+    "problem": "已知 f(x)=x²-4ax+5 在闭区间 [1,3] 上单调递增，求实数 a 的范围。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "抛物线的对称轴为 x=2a。要使 f(x) 在整个 [1,3] 上单调递增，对称轴必须位于区间左端点或其左侧，即 2a≤1，所以 a≤1/2。等号可以取：当 a=1/2 时，f(x)=(x-1)²+4，在 [1,3] 上仍严格递增。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 f(x)=x²-4ax+5 在闭区间 [1,3] 上单调递增，求实数 a 的范围。",
+          "topic": "二次函数的单调性",
+          "subtopics": [
+            "对称轴",
+            "区间单调性",
+            "参数范围"
+          ],
+          "givens": [
+            "f(x)=x²-4ax+5",
+            "f(x) 在 [1,3] 上单调递增"
+          ],
+          "variables": [
+            "x：自变量",
+            "a：实数参数"
+          ],
+          "constraints": [
+            "x∈[1,3]",
+            "a∈R"
+          ],
+          "goal": "求实数 a 的取值范围",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用开口向上的二次函数在对称轴右侧递增的性质，确定对称轴的位置。",
+          "method": "配方法与二次函数单调性，并用作差法核验",
+          "prerequisites": [
+            "二次函数的对称轴与单调区间"
+          ],
+          "steps": [
+            "配方确定对称轴",
+            "结合整个区间递增确定参数条件",
+            "用作差法核验充分性并检查端点"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "f(x)=(x-2a)²+5-4a²，对称轴为 x=2a。",
+              "justification": "配方得到顶点式；二次项系数为正，函数在对称轴左侧递减、右侧递增。"
+            },
+            {
+              "step": 2,
+              "expression": "f(x) 在 [1,3] 上单调递增 ⇔ 2a≤1。",
+              "justification": "若 2a≤1，整个区间均在对称轴右侧，函数递增。若 2a>1，则区间 [1,min(2a,3)] 长度为正，函数在该区间上递减，与题设矛盾。"
+            },
+            {
+              "step": 3,
+              "expression": "a≤1/2，即 a∈(-∞,1/2]。",
+              "justification": "将 2a≤1 两边同除以正数 2，不等号方向不变。"
+            }
+          ],
+          "answer": "a∈(-∞,1/2]",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "作差法核验充分性",
+              "status": "passed",
+              "details": "任取 1≤x₁<x₂≤3，当 a≤1/2 时，f(x₂)-f(x₁)=(x₂-x₁)(x₁+x₂-4a)。其中 x₂-x₁>0，且 x₁+x₂>2、4a≤2，故差值为正，满足严格递增。"
+            },
+            {
+              "name": "边界值检查",
+              "status": "passed",
+              "details": "当 a=1/2 时，f(x)=(x-1)²+4；对于 1≤x₁<x₂≤3，有 (x₁-1)²<(x₂-1)²，因此边界值可以取。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "整个区间都要处在二次函数的递增一侧，因此应比较对称轴与区间左端点。",
+          "difficult_steps": [
+            "说明对称轴位于 1 的右侧时，区间内必然出现递减的一段",
+            "判断 a=1/2 是否可以取到"
+          ],
+          "common_mistakes": [
+            "只比较 f(3) 与 f(1)，把端点大小关系误当作整个区间的单调性",
+            "误认为左端点是顶点就不能严格递增，从而漏掉等号"
+          ],
+          "prerequisite_explanations": [
+            "开口向上的二次函数在对称轴左侧递减、右侧递增，顶点可以作为单调区间的端点。"
+          ],
+          "alternative_method": "用导数：f′(x)=2x-4a 在 [1,3] 上的最小值为 2-4a，要求其非负得 a≤1/2；结合导数在区间内部为正，可知函数严格递增。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "二次函数 f(x)=x²-4ax+5=(x-2a)²+5-4a² 的对称轴为 x=2a，开口向上，在 [2a,+∞) 上单调递增。因此，要使它在整个 [1,3] 上单调递增，必须且只需 2a≤1，即 a≤1/2。\n核验：当 a≤1/2 时，任取 1≤x₁<x₂≤3，有 f(x₂)-f(x₁)=(x₂-x₁)(x₁+x₂-4a)>0，因为 x₁+x₂>2≥4a。边界 a=1/2 也满足。\n所以 a 的范围为 (-∞,1/2]。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 f(x)=x²-4ax+5 在闭区间 [1,3] 上单调递增，求实数 a 的范围。",
+          "topic": "二次函数的单调性",
+          "subtopics": [
+            "对称轴",
+            "参数范围",
+            "单调性的定义"
+          ],
+          "givens": [
+            "f(x)=x²-4ax+5",
+            "f(x)在闭区间[1,3]上单调递增"
+          ],
+          "variables": [
+            "x：自变量",
+            "a：实数参数"
+          ],
+          "constraints": [
+            "a∈R",
+            "单调性考察区间为[1,3]"
+          ],
+          "goal": "求解实数参数a的取值范围。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用开口向上的二次函数在对称轴右侧递增的性质。",
+          "method": "配方确定对称轴，再用作差法核验。",
+          "prerequisites": [
+            "二次函数的图象与单调区间",
+            "函数单调递增的定义"
+          ],
+          "steps": [
+            "配方求出对称轴",
+            "根据整个区间递增确定参数条件",
+            "作差核验充分性、必要性及边界"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "f(x)=(x-2a)²+5-4a²，对称轴为x=2a。",
+              "justification": "配方可得顶点横坐标；二次项系数为正，抛物线开口向上。"
+            },
+            {
+              "step": 2,
+              "expression": "f在(-∞,2a]上单调递减，在[2a,+∞)上单调递增。",
+              "justification": "开口向上的二次函数在对称轴左侧递减、右侧递增。"
+            },
+            {
+              "step": 3,
+              "expression": "f在[1,3]上单调递增⇔2a≤1⇔a≤1/2。",
+              "justification": "若2a≤1，整个[1,3]都位于递增区间内；若2a>1，则[1,min(2a,3)]是长度为正的递减区间，与题设矛盾。"
+            }
+          ],
+          "answer": "a∈(-∞,1/2]。",
+          "conditions": []
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "用单调性定义核验充分性",
+              "status": "passed",
+              "details": "当a≤1/2时，任取1≤x₁<x₂≤3，因x₁+x₂>2≥4a，故f(x₂)-f(x₁)=(x₂-x₁)(x₁+x₂-4a)>0。"
+            },
+            {
+              "name": "构造区间内两点核验必要性",
+              "status": "passed",
+              "details": "若a>1/2，令h=min(1,2a-1)，则0<h≤1且h<4a-2。于是1、1+h均在[1,3]内，而f(1+h)-f(1)=h(2+h-4a)<0，不满足单调递增。"
+            },
+            {
+              "name": "检查参数边界是否包含",
+              "status": "passed",
+              "details": "a=1/2时，f(x)=(x-1)²+4，在[1,3]上严格递增，因此包含端点1/2。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "整个指定区间必须位于抛物线对称轴的右侧，允许对称轴经过区间左端点。",
+          "difficult_steps": [
+            "理解对称轴应满足2a≤1"
+          ],
+          "common_mistakes": [
+            "只比较f(1)与f(3)，把端点大小关系当作整个区间递增",
+            "误将边界a=1/2排除"
+          ],
+          "prerequisite_explanations": [
+            "单调递增要求区间内任意两个自变量都满足相应的函数值大小关系"
+          ],
+          "alternative_method": "若已学导数，可由f′(x)=2x-4a在[1,3]上的最小值为2-4a确定条件，并核验边界。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "将函数配方：f(x)=(x-2a)²+5-4a²，对称轴为 x=2a，函数在对称轴右侧单调递增。因此，要在整个 [1,3] 上单调递增，必须且只需 2a≤1，即 a≤1/2。\n核验：当 a≤1/2 时，任取 1≤x₁<x₂≤3，有 f(x₂)-f(x₁)=(x₂-x₁)(x₁+x₂-4a)>0，因为 x₁+x₂>2≥4a。所以端点 a=1/2 也满足条件。\n答案：a∈(-∞,1/2]。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "已知 f(x)=x²-4ax+5 在闭区间 [1,3] 上单调递增，求实数 a 的范围。",
+          "topic": "二次函数的单调性",
+          "subtopics": [
+            "配方法",
+            "对称轴",
+            "参数范围",
+            "单调性的定义"
+          ],
+          "givens": [
+            "f(x)=x²-4ax+5",
+            "f(x)在闭区间[1,3]上单调递增"
+          ],
+          "variables": [
+            "x：自变量",
+            "a：实数参数"
+          ],
+          "constraints": [
+            "a∈R",
+            "所考察的区间为[1,3]"
+          ],
+          "goal": "求使函数在[1,3]上单调递增的实数a的范围。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用开口向上的抛物线在对称轴右侧递增，将单调性条件转化为对称轴位置的限制。",
+          "method": "配方法与二次函数图像性质",
+          "prerequisites": [
+            "二次函数的对称轴与单调区间",
+            "单调递增的定义"
+          ],
+          "steps": [
+            "配方确定对称轴",
+            "根据整个区间递增确定参数条件",
+            "用作差法核验并检查等号"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "f(x)=(x-2a)²+5-4a²，对称轴为x=2a。",
+              "justification": "配方得到顶点式；二次项系数为正，函数在(-∞,2a]上递减，在[2a,+∞)上递增。"
+            },
+            {
+              "step": 2,
+              "expression": "f(x)在[1,3]上单调递增，当且仅当2a≤1。",
+              "justification": "若2a≤1，则整个[1,3]位于递增区间内；若2a>1，则min(2a,3)>1，函数在非退化子区间[1,min(2a,3)]上递减，与题设矛盾。"
+            },
+            {
+              "step": 3,
+              "expression": "a≤1/2，即a∈(-∞,1/2]。",
+              "justification": "将不等式2a≤1两边同除以正数2，不等号方向不变。"
+            }
+          ],
+          "answer": "a∈(-∞,1/2]。",
+          "conditions": [
+            "a为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "用单调性定义核验充分性",
+              "status": "passed",
+              "details": "当a≤1/2时，任取1≤x₁<x₂≤3，因x₂-x₁>0且x₁+x₂>2≥4a，故f(x₂)-f(x₁)=(x₂-x₁)(x₁+x₂-4a)>0。"
+            },
+            {
+              "name": "用具体取点核验排除范围",
+              "status": "passed",
+              "details": "若a>1/2，令h=min(1,2a-1)，则0<h≤1，且h≤2a-1。因此1与1+h都在[1,3]内，而f(1+h)-f(1)=h(2+h-4a)≤h(1-2a)<0，不满足单调递增。"
+            },
+            {
+              "name": "检查参数临界值是否包含",
+              "status": "passed",
+              "details": "当a=1/2时，f(x)=(x-1)²+4；任取1≤x₁<x₂≤3，均有(x₂-1)²>(x₁-1)²，故临界值应包含。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "整个给定区间都要位于抛物线对称轴的右侧，关键是比较对称轴与区间左端点。",
+          "difficult_steps": [
+            "理解为什么对称轴必须在左端点1处或其左侧"
+          ],
+          "common_mistakes": [
+            "只比较f(3)与f(1)，误把端点大小关系当作整个区间单调的充分条件",
+            "误排除对称轴恰好为x=1的情形"
+          ],
+          "prerequisite_explanations": [
+            "开口向上的二次函数在对称轴左侧递减、右侧递增"
+          ],
+          "alternative_method": "直接用作差法，要求任意1≤x₁<x₂≤3时(x₂-x₁)(x₁+x₂-4a)>0。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

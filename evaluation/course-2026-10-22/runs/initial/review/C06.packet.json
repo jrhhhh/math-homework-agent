@@ -1,0 +1,315 @@
+{
+  "case_id": "C06",
+  "input": {
+    "mode": "solve",
+    "problem": "等比数列首项为3，前三项和为21，公比为实数，求全部公比。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "设公比为 q，则前三项为 3、3q、3q²。由题意，3+3q+3q²=21，即 q²+q−6=0。因式分解得 (q+3)(q−2)=0，所以全部公比为 q=2 或 q=−3。核验：q=2 时前三项和为 3+6+12=21；q=−3 时为 3−9+27=21，均符合题意。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "等比数列首项为3，前三项和为21，公比为实数，求全部公比。",
+          "topic": "等比数列",
+          "subtopics": [
+            "等比数列通项",
+            "一元二次方程",
+            "因式分解"
+          ],
+          "givens": [
+            "首项为3",
+            "前三项和为21",
+            "公比为实数"
+          ],
+          "variables": [
+            "q：等比数列的公比"
+          ],
+          "constraints": [
+            "q∈R"
+          ],
+          "goal": "求全部实数公比",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "用公比表示前三项，根据它们的和建立方程。",
+          "method": "直接列项并用因式分解解一元二次方程",
+          "prerequisites": [
+            "等比数列相邻两项的比为公比",
+            "乘积为零时至少一个因式为零"
+          ],
+          "steps": [
+            "将前三项表示为3、3q、3q²",
+            "由前三项和建立二次方程",
+            "求根并逐一代回核验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a₁=3，a₂=3q，a₃=3q²",
+              "justification": "等比数列从第二项起，每一项等于前一项乘以公比q。"
+            },
+            {
+              "step": 2,
+              "expression": "3+3q+3q²=21，即 q²+q−6=0",
+              "justification": "利用前三项和为21，两边除以3，再移项。"
+            },
+            {
+              "step": 3,
+              "expression": "(q+3)(q−2)=0",
+              "justification": "因为3+(−2)=1，3×(−2)=−6，所以二次多项式可作上述因式分解。"
+            },
+            {
+              "step": 4,
+              "expression": "q=−3 或 q=2",
+              "justification": "两个实数的乘积为零，当且仅当其中至少一个为零；两个根均满足公比为实数的要求。"
+            }
+          ],
+          "answer": "全部公比为2和−3。",
+          "conditions": [
+            "公比为实数，允许为负数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "逐根代回题设",
+              "status": "passed",
+              "details": "q=2时前三项为3、6、12，和为21；q=−3时前三项为3、−9、27，和为21，两组相邻项的比也分别为2和−3。"
+            },
+            {
+              "name": "解的完整性",
+              "status": "passed",
+              "details": "列项和除以非零常数3均为等价变形；方程等价于(q+3)(q−2)=0，故仅有−3、2两个实数根，没有遗漏。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "前三项可直接写出，无须使用含分母的等比数列求和公式。",
+          "difficult_steps": [
+            "将前三项表示为3、3q、3q²",
+            "保留负公比对应的解"
+          ],
+          "common_mistakes": [
+            "误以为公比必须为正数，漏掉−3",
+            "将第三项误写成3q"
+          ],
+          "prerequisite_explanations": [
+            "实数公比可以为负数，此时非零项的符号交替。"
+          ],
+          "alternative_method": "对q²+q−6=0使用求根公式，得到q=(−1±5)/2，即2或−3。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "设公比为 q，则前三项为 3、3q、3q²。\n由前三项和为 21，得 3+3q+3q²=21，即 q²+q−6=0。\n因式分解得 (q+3)(q−2)=0，所以 q=2 或 q=−3。\n核验：q=2 时，前三项和为 3+6+12=21；q=−3 时，前三项和为 3−9+27=21。因此全部公比为 2、−3。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "等比数列首项为3，前三项和为21，公比为实数，求全部公比。",
+          "topic": "等比数列",
+          "subtopics": [
+            "等比数列通项",
+            "一元二次方程"
+          ],
+          "givens": [
+            "首项为3",
+            "前三项和为21",
+            "公比为实数"
+          ],
+          "variables": [
+            "q：等比数列的公比"
+          ],
+          "constraints": [
+            "q为实数"
+          ],
+          "goal": "求全部满足条件的公比",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "用公比表示前三项，再根据和的条件建立方程。",
+          "method": "直接列项求和，因式分解求解",
+          "prerequisites": [
+            "等比数列相邻两项的关系",
+            "因式分解解一元二次方程"
+          ],
+          "steps": [
+            "表示前三项",
+            "建立并求解公比方程",
+            "将全部候选公比代回核验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "a₁=3，a₂=3q，a₃=3q²。",
+              "justification": "等比数列每一项等于前一项乘公比q。"
+            },
+            {
+              "step": 2,
+              "expression": "3+3q+3q²=21，即q²+q−6=0。",
+              "justification": "代入前三项和的条件，两边除以非零常数3，再移项。"
+            },
+            {
+              "step": 3,
+              "expression": "(q+3)(q−2)=0，所以q=−3或q=2。",
+              "justification": "因式分解后，两个实数的乘积为零，当且仅当至少一个因式为零。"
+            }
+          ],
+          "answer": "全部公比为q=2或q=−3。",
+          "conditions": [
+            "首项为3，前三项和为21，公比为实数"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回前三项和核验",
+              "status": "passed",
+              "details": "q=2时，前三项为3、6、12，和为21；q=−3时，前三项为3、−9、27，和也为21。"
+            },
+            {
+              "name": "检查实数条件及解的完备性",
+              "status": "passed",
+              "details": "两个候选公比均为非零实数；列方程的变形均等价，因式分解已列出该方程的全部实根，没有漏解或增根。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "前三项只有三项，直接写成3、3q、3q²即可列方程。",
+          "difficult_steps": [
+            "保留二次方程得到的两个公比，并分别核验"
+          ],
+          "common_mistakes": [
+            "误以为公比必须为正，从而漏掉q=−3",
+            "将第三项误写成3q³"
+          ],
+          "prerequisite_explanations": [
+            "公比为负数时，等比数列的各项可以正负交替。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "设公比为 q，则前三项为 3、3q、3q²。\n由题意，3+3q+3q²=21，两边除以 3，得 q²+q−6=0。\n因式分解得 (q+3)(q−2)=0，所以 q=−3 或 q=2。\n核验：q=−3 时，前三项为 3、−9、27，和为 21；q=2 时，前三项为 3、6、12，和也为 21。\n因此全部公比为 2 和 −3。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "等比数列首项为3，前三项和为21，公比为实数，求全部公比。",
+          "topic": "等比数列",
+          "subtopics": [
+            "等比数列通项关系",
+            "一元二次方程"
+          ],
+          "givens": [
+            "首项为3",
+            "前三项和为21",
+            "公比为实数"
+          ],
+          "variables": [
+            "q：等比数列的公比"
+          ],
+          "constraints": [
+            "q为实数",
+            "按等比数列定义，q不为0"
+          ],
+          "goal": "求满足条件的全部实数公比",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "用公比表示前三项，将求公比转化为解一元二次方程。",
+          "method": "直接列出前三项之和，因式分解求解",
+          "prerequisites": [
+            "等比数列相邻两项的关系",
+            "因式分解法解一元二次方程"
+          ],
+          "steps": [
+            "表示前三项",
+            "根据和为21列方程",
+            "解方程",
+            "逐一代回并检查解是否齐全"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "前三项为3、3q、3q²。",
+              "justification": "等比数列每一项等于前一项乘以公比q。"
+            },
+            {
+              "step": 2,
+              "expression": "3+3q+3q²=21，即q²+q−6=0。",
+              "justification": "利用前三项和为21列方程，两边同除以非零常数3，再移项。"
+            },
+            {
+              "step": 3,
+              "expression": "(q+3)(q−2)=0，所以q=−3或q=2。",
+              "justification": "因式分解；两个实数的乘积为0，当且仅当至少一个因式为0。"
+            }
+          ],
+          "answer": "全部公比为q=2或q=−3。",
+          "conditions": [
+            "两种公比均满足题设，无需附加条件。"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代回检查前三项之和",
+              "status": "passed",
+              "details": "q=2时，3+6+12=21；q=−3时，3−9+27=21。"
+            },
+            {
+              "name": "检查公比与数列定义",
+              "status": "passed",
+              "details": "2与−3均为非零实数，对应数列的相邻两项之比分别恒为2与−3。"
+            },
+            {
+              "name": "检查全部解与变形等价性",
+              "status": "passed",
+              "details": "列方程后只除以非零常数3并移项，均为等价变形；因式分解给出全部两个实根，没有遗漏负公比。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "直接写出前三项，可以避免使用求和公式时对q=1另作讨论。",
+          "difficult_steps": [
+            "将前三项和的条件转化为关于公比的二次方程"
+          ],
+          "common_mistakes": [
+            "误以为公比必须为正数，从而遗漏q=−3",
+            "将第三项误写成3q³"
+          ],
+          "prerequisite_explanations": [
+            "首项对应q的0次幂，因此第三项为3q²。"
+          ],
+          "alternative_method": null,
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

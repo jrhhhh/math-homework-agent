@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C18\",\n  \"input\": {\n    \"mode\": \"check\",\n    \"problem\": \"已知 a₁=2，且对所有正整数 n，aₙ₊₁-aₙ=3，求 aₙ。\",\n    \"solution\": \"由相邻两项差为3，得到 aₙ=3n+2。\\n所以 a₁=5。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"首错在第1行：通项应从首项开始累加 n−1 次公差，因此 aₙ=2+3(n−1)=3n−1。原式代入 n=1 得5，与已知 a₁=2矛盾。第2行是这一错误的连带结果。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 1,\n          \"quote\": \"得到 aₙ=3n+2\",\n          \"reason\": \"从第1项到第n项共增加n−1次公差，应有aₙ=a₁+3(n−1)，原式不满足首项a₁=2。\"\n        },\n        \"minimal_fix\": \"将第1行通项改为 aₙ=2+3(n−1)=3n−1；第2行改为“代入 n=1，得 a₁=2，与题设一致”。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"原通项在n=1时给出a₁=5，与题设a₁=2矛盾。\",\n          \"修正后a₁=3×1−1=2，且aₙ₊₁−aₙ=[3(n+1)−1]−(3n−1)=3，满足全部题设。\"\n        ]\n      }\n    },\n    \"B\": {\n      \"reply\": \"首错在第1行：通项应为 aₙ=a₁+(n−1)×3=3n−1，因为从第1项到第n项共有 n−1 次增加。第2行是错误通项的连带结果，且与题设 a₁=2 矛盾。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 1,\n          \"quote\": \"得到 aₙ=3n+2\",\n          \"reason\": \"从第1项到第n项应累加 n−1 个公差，因此 aₙ=2+3(n−1)=3n−1。\"\n        },\n        \"minimal_fix\": \"将第1行通项改为 aₙ=2+3(n−1)=3n−1；第2行改为“代入 n=1，得 a₁=2，与题设一致”。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"原通项在 n=1 时给出 a₁=5，与已知 a₁=2 矛盾。\",\n          \"修正后 a₁=3×1−1=2，且 aₙ₊₁−aₙ=[3(n+1)−1]−(3n−1)=3，满足全部题设。\"\n        ]\n      }\n    },\n    \"C\": {\n      \"reply\": \"第1行首次出错：从第1项到第n项共增加n−1次，每次增加3，因此aₙ=2+3(n−1)=3n−1。第2行的a₁=5也与已知a₁=2矛盾。\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 1,\n          \"quote\": \"得到 aₙ=3n+2\",\n          \"reason\": \"从第1项到第n项只有n−1次递增，应有aₙ=a₁+3(n−1)，原式多加了一次3。\"\n        },\n        \"minimal_fix\": \"将第1行通项改为aₙ=2+3(n−1)=3n−1；第2行改为“代入n=1，得a₁=2，与已知一致”。\",\n        \"hint\": \"\",\n        \"evidence\": [\n          \"累加相邻项之差：aₙ−a₁=3(n−1)，故aₙ=3n−1。\",\n          \"修正后的通项满足a₁=2，且aₙ₊₁−aₙ=3。\"\n        ]\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"由aₙ₊₁−aₙ=3可知数列为公差3的等差数列。从第1项到第n项共递增n−1次，故aₙ=2+3(n−1)=3n−1。该式满足首项为2且相邻项差为3。学生首错在第1行“得到aₙ=3n+2”，多计了一次公差；第2行由错误通项代入得到a₁=5，是连带结果，并与题设矛盾。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段的通项、首项检验及递推检验均正确，准确定位第1行首错，并说明第2行为连带结果。修正具体，以递增次数和代入首项帮助学生理解及自查，符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段均正确，首错定位与原解一致。明确解释应累加n−1个公差，给出最小修改，并验证首项和相邻项差，反馈有依据且能指导下一步修改，符合check模式。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段均正确，准确指出第1行多加一次3，且指出第2行与首项条件矛盾。累加依据、修正通项及验证均成立，未推断未提供的学生过程，能帮助学生修正计数错误，符合check模式。\"\n    }\n  }\n}",
+    "elapsed_seconds": 28.406,
+    "usage": [
+      {
+        "input_tokens": 28670,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 480,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643a-a5ff-7fb0-b657-59cf92b01955"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"由aₙ₊₁−aₙ=3可知数列为公差3的等差数列。从第1项到第n项共递增n−1次，故aₙ=2+3(n−1)=3n−1。该式满足首项为2且相邻项差为3。学生首错在第1行“得到aₙ=3n+2”，多计了一次公差；第2行由错误通项代入得到a₁=5，是连带结果，并与题设矛盾。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段的通项、首项检验及递推检验均正确，准确定位第1行首错，并说明第2行为连带结果。修正具体，以递增次数和代入首项帮助学生理解及自查，符合check模式。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段均正确，首错定位与原解一致。明确解释应累加n−1个公差，给出最小修改，并验证首项和相邻项差，反馈有依据且能指导下一步修改，符合check模式。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"全部字段均正确，准确指出第1行多加一次3，且指出第2行与首项条件矛盾。累加依据、修正通项及验证均成立，未推断未提供的学生过程，能帮助学生修正计数错误，符合check模式。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 28670,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 480,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "由aₙ₊₁−aₙ=3可知数列为公差3的等差数列。从第1项到第n项共递增n−1次，故aₙ=2+3(n−1)=3n−1。该式满足首项为2且相邻项差为3。学生首错在第1行“得到aₙ=3n+2”，多计了一次公差；第2行由错误通项代入得到a₁=5，是连带结果，并与题设矛盾。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "全部字段的通项、首项检验及递推检验均正确，准确定位第1行首错，并说明第2行为连带结果。修正具体，以递增次数和代入首项帮助学生理解及自查，符合check模式。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "全部字段均正确，首错定位与原解一致。明确解释应累加n−1个公差，给出最小修改，并验证首项和相邻项差，反馈有依据且能指导下一步修改，符合check模式。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "全部字段均正确，准确指出第1行多加一次3，且指出第2行与首项条件矛盾。累加依据、修正通项及验证均成立，未推断未提供的学生过程，能帮助学生修正计数错误，符合check模式。"
+      }
+    }
+  }
+}

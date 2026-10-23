@@ -1,0 +1,52 @@
+{
+  "case_id": "C23",
+  "input": {
+    "mode": "answer_check",
+    "problem": "解实数方程 x²=16。",
+    "solution": "x=4。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "答案不完整。因为 4²=16，(-4)²=16，所以实数解为 x=±4。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "将答案补全为 x=±4。",
+        "hint": "",
+        "evidence": [
+          "原文只有最终答案，不能据此推断解题过程。",
+          "4²=16，(-4)²=16。",
+          "x²-16=(x-4)(x+4)=0，所以 x=4 或 x=-4。"
+        ]
+      }
+    },
+    "B": {
+      "reply": "答案不完整：x=4和x=-4都满足x²=16，解集为{-4,4}。你只提供了答案，无法定位具体过程中的错误。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "补上x=-4，完整答案为x=±4。",
+        "hint": "",
+        "evidence": [
+          "x²=16等价于(x-4)(x+4)=0，因此x=4或x=-4。"
+        ]
+      }
+    },
+    "C": {
+      "reply": "答案不完整，还漏了 x=-4。因为 x²=16 等价于 x=±4，所以解为 x=4 或 x=-4。你只提供了答案，无法定位具体过程错误。",
+      "result": {
+        "judgment": "answer_only",
+        "first_error": null,
+        "minimal_fix": "补上 x=-4，完整解为 x=±4。",
+        "hint": "",
+        "evidence": [
+          "4²=16，(-4)²=16，两者都满足原方程。",
+          "x²-16=(x-4)(x+4)=0，因此 x=4 或 x=-4。"
+        ]
+      }
+    }
+  }
+}

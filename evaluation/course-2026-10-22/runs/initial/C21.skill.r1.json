@@ -1,0 +1,16 @@
+{
+  "case_id": "C21",
+  "arm": "skill",
+  "repeat": 1,
+  "input": {
+    "mode": "hint",
+    "problem": "正实数 x 满足 x+9/x=10，求 x。",
+    "solution": "两边乘以 x，得到 x²-10x+9=0。\n我只找到了 x=1，觉得没有别的解。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:20:12.592884+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:20:18.499924+00:00"
+}

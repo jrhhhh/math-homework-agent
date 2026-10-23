@@ -1,0 +1,281 @@
+{
+  "reviewer_name": null,
+  "reviewer_role": null,
+  "reviewed_at": null,
+  "source": "human",
+  "instructions": "请先独立检查原题及学生过程，不查看mapping.json；可以只评已阅读条目。",
+  "cases": [
+    {
+      "packet": {
+        "case_id": "C11",
+        "input": {
+          "mode": "check",
+          "problem": "在实数范围内解 x(x-5)=0。",
+          "solution": "两边除以 x，得到 x-5=0。\n所以唯一的解为 x=5。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "首错在第1行：未确认 x≠0 就两边除以 x，会漏掉 x=0。应由 x(x-5)=0 得 x=0 或 x-5=0，所以原方程的解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 要求 x≠0，而原方程允许 x=0，直接相除会漏解。"
+              },
+              "minimal_fix": "将第1行改为：由两因式乘积为0，得 x=0 或 x-5=0。因此解为 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "代入 x=0：0×(0-5)=0，满足原方程。",
+                "代入 x=5：5×(5-5)=0，满足原方程。",
+                "实数中两因式乘积为0，当且仅当至少一个因式为0，因此这两个解已穷尽。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "第1步除以 x 时，没有先确认 x≠0，因此漏掉了 x=0。由两数乘积为0可知，x=0 或 x-5=0，所以解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 需要 x≠0，但原方程允许 x=0，直接相除会漏解。"
+              },
+              "minimal_fix": "改为：由 x(x-5)=0，得 x=0 或 x-5=0，所以 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "当 x=0 时，x(x-5)=0，故 x=0 是原方程的解。",
+                "当 x=5 时，x(x-5)=0，故 x=5 是原方程的解。",
+                "实数中两数乘积为0，当且仅当至少一个因数为0，因此没有其他解。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "结论错误。第1步直接除以 x，未讨论 x=0，导致漏解。最小修改：先判断 x=0 满足原方程；当 x≠0 时，两边除以 x，得 x=5。因此原方程的解为 x=0 或 x=5。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边除以 x，得到 x-5=0。",
+                "reason": "除以 x 要求 x≠0，但题设未保证这一点；x=0 满足原方程，直接相除会漏掉该解。"
+              },
+              "minimal_fix": "补充分支：x=0 时原方程成立；x≠0 时可除以 x，得到 x=5。将最终结论改为 x=0 或 x=5。",
+              "hint": "",
+              "evidence": [
+                "代入 x=0：0×(0-5)=0，因此“唯一的解为 x=5”不成立。",
+                "由两实数乘积为0可知，x=0 或 x-5=0，故全部实数解为 x=0 或 x=5。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C12",
+        "input": {
+          "mode": "check",
+          "problem": "解实数方程 √(x+6)=x。",
+          "solution": "平方得到 x+6=x²。\n因式分解得 x=3 或 x=-2。\n两个根都满足原方程。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "首错在第3行：x=-2不满足原方程，因为代入后左边为√4=2，右边为-2。前两行求候选根成立；补充验根，舍去-2，保留x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "x=-2代入原方程得到2=-2，不成立。平方所得候选根需要验根。"
+              },
+              "minimal_fix": "将第3行改为：代入原方程，x=3时√9=3，成立；x=-2时√4≠-2，舍去。因此原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "平方得到x²=x+6，再由(x-3)(x+2)=0得到候选根3和-2，前两行成立。",
+                "原方程左边非负，因此任何解都必须满足x≥0，候选根-2不符合。",
+                "x=3代入原方程，左边√(3+6)=3，等于右边。"
+              ]
+            }
+          },
+          "B": {
+            "reply": "前两步正确，首错在第3行。平方可能产生增根，需要代回原方程检验：x=3时，√9=3，成立；x=-2时，√4=2≠-2，不成立。因此原方程的解为x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "当x=-2时，左边√(x+6)=2，右边为-2，两边不相等，所以x=-2是平方产生的增根。"
+              },
+              "minimal_fix": "将第3行改为：代回检验，x=3满足原方程，x=-2不满足原方程，故原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "算术平方根非负，因此原方程要求x≥0。",
+                "x=3时，√(3+6)=3，满足原方程。",
+                "x=-2时，√(-2+6)=2≠-2，不满足原方程。"
+              ]
+            }
+          },
+          "C": {
+            "reply": "首错在第3行：x=-2不满足原方程。前两行可用于求候选根；代回得，x=3时两边均为3，x=-2时左边为2、右边为-2。因此应舍去-2，原方程的解为x=3。",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 3,
+                "quote": "两个根都满足原方程。",
+                "reason": "代入x=-2，√(x+6)=2≠-2，因此该候选根不满足原方程。"
+              },
+              "minimal_fix": "将第3行改为：代回原方程，x=3成立，x=-2不成立，故原方程的解为x=3。",
+              "hint": "",
+              "evidence": [
+                "平方得到x+6=x²，可用于求候选根，但平方后的根需要检验。",
+                "x²-x-6=(x-3)(x+2)，候选根为3和-2。",
+                "x=3时，√9=3；x=-2时，√4=2≠-2。"
+              ]
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    },
+    {
+      "packet": {
+        "case_id": "C19",
+        "input": {
+          "mode": "hint",
+          "problem": "解实数方程 (x-4)(x+2)=0。",
+          "solution": "两边约去 x+2，得到 x-4=0。\n所以只有 x=4。",
+          "draft": "",
+          "grade_level": "高中",
+          "request": ""
+        },
+        "answers": {
+          "A": {
+            "reply": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "约去因子需要该因子非零，原题尚未保证 x+2≠0。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：当 x+2=0 时，这样约分还成立吗？",
+              "evidence": []
+            }
+          },
+          "B": {
+            "reply": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "未检查 x+2 是否为零，直接约去可能遗漏解。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：当 x+2=0 时，原方程是否成立？",
+              "evidence": []
+            }
+          },
+          "C": {
+            "reply": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+            "result": {
+              "judgment": "incorrect",
+              "first_error": {
+                "step": 1,
+                "quote": "两边约去 x+2",
+                "reason": "约去一个因式需要先确认它不为零。"
+              },
+              "minimal_fix": "",
+              "hint": "约去 x+2 前，先想一想：x+2 会不会等于 0？",
+              "evidence": []
+            }
+          }
+        }
+      },
+      "ratings": {
+        "A": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "B": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        },
+        "C": {
+          "math_correct": null,
+          "first_error_correct": null,
+          "mode_obeyed": null,
+          "grounded": null,
+          "teaching_useful": null,
+          "reason": ""
+        }
+      }
+    }
+  ]
+}

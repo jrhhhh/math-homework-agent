@@ -1,0 +1,16 @@
+{
+  "case_id": "C24",
+  "arm": "baseline",
+  "repeat": 1,
+  "input": {
+    "mode": "answer_check",
+    "problem": "已知 a₁=4，aₙ₊₁=aₙ+2，求 a₅。",
+    "solution": "a₅=12。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:20:49.100970+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:20:54.439618+00:00"
+}

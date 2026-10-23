@@ -1,0 +1,54 @@
+{
+  "case_id": "C13",
+  "input": {
+    "mode": "check",
+    "problem": "证明：若实数 a,b 满足 a+b=6，则 ab≤9。",
+    "solution": "由 (a-b)²≥0，得 (a+b)²≥4ab。\n代入 a+b=6，得 36≥4ab，所以 ab≤9。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "过程正确。由 (a-b)²=(a+b)²-4ab≥0，得到 (a+b)²≥4ab；代入 a+b=6，再除以正数4，得 ab≤9。等号当且仅当 a=b=3 时成立。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "无需修改。",
+        "hint": "",
+        "evidence": [
+          "对任意实数 a,b，均有 (a-b)²≥0，且 (a-b)²=(a+b)²-4ab。",
+          "由 a+b=6 得 36≥4ab；除以正数4，不等号方向不变，故 ab≤9。",
+          "等号成立当且仅当 a=b，结合 a+b=6，得 a=b=3。"
+        ]
+      }
+    },
+    "B": {
+      "reply": "过程成立。由 (a-b)²≥0 得 (a+b)²−4ab≥0，代入 a+b=6 即得 ab≤9。各步变形均有效，且不需要假设 a、b 为正数。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "",
+        "evidence": [
+          "恒等式 (a+b)²−4ab=(a-b)²≥0 对任意实数 a、b 成立。",
+          "代入 a+b=6 得 36≥4ab，两边除以正数4，得 ab≤9。",
+          "当且仅当 a=b=3 时等号成立。"
+        ]
+      }
+    },
+    "C": {
+      "reply": "证明正确。由 (a-b)²≥0 可得 (a+b)²≥4ab，再代入 a+b=6，得到 ab≤9，推导完整。",
+      "result": {
+        "judgment": "correct",
+        "first_error": null,
+        "minimal_fix": "",
+        "hint": "",
+        "evidence": [
+          "第1行：(a+b)²-4ab=(a-b)²≥0，因此 (a+b)²≥4ab。",
+          "第2行：代入 a+b=6 得 36≥4ab，两边同除以正数4，得 ab≤9。"
+        ]
+      }
+    }
+  }
+}

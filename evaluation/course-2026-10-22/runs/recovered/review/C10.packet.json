@@ -1,0 +1,299 @@
+{
+  "case_id": "C10",
+  "input": {
+    "mode": "solve",
+    "problem": "三角形 ABC 中 AB=5，AC=7，∠BAC=60°，求 BC。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "由余弦定理，BC²=AB²+AC²−2·AB·AC·cos∠BAC=5²+7²−2×5×7×cos60°=25+49−35=39。因为边长为正，所以 BC=√39。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "三角形 ABC 中 AB=5，AC=7，∠BAC=60°，求 BC。",
+          "topic": "解三角形",
+          "subtopics": [
+            "余弦定理"
+          ],
+          "givens": [
+            "AB=5",
+            "AC=7",
+            "∠BAC=60°"
+          ],
+          "variables": [
+            "BC：所求边长"
+          ],
+          "constraints": [
+            "ABC 为三角形，各边长为正"
+          ],
+          "goal": "求边长 BC",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "已知两边及其夹角，用余弦定理求第三边。",
+          "method": "余弦定理",
+          "prerequisites": [
+            "余弦定理",
+            "cos60°=1/2"
+          ],
+          "steps": [
+            "列出 BC² 的表达式并代入计算",
+            "取正平方根",
+            "用坐标法核验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "BC²=AB²+AC²−2·AB·AC·cos∠BAC",
+              "justification": "∠BAC 是已知两边 AB、AC 的夹角，BC 是其对边，适用余弦定理。"
+            },
+            {
+              "step": 2,
+              "expression": "BC²=25+49−2×5×7×1/2=39",
+              "justification": "代入已知边长及 cos60°=1/2。"
+            },
+            {
+              "step": 3,
+              "expression": "BC=√39",
+              "justification": "边长为正，因此取正平方根。"
+            }
+          ],
+          "answer": "BC=√39",
+          "conditions": [
+            "在题设三角形中"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "用坐标距离公式独立核验",
+              "status": "passed",
+              "details": "取 A=(0,0)、B=(5,0)，令 C 在横轴上方，则 C=(7cos60°,7sin60°)=(7/2,7√3/2)。距离公式给出 BC²=(7/2−5)²+(7√3/2)²=9/4+147/4=39，与答案一致。"
+            },
+            {
+              "name": "检查边长正值与三角形不等式",
+              "status": "passed",
+              "details": "√39>0，且 |7−5|=2<√39<12=7+5，满足边长限制。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "两边及其夹角已知时，可直接用余弦定理。",
+          "difficult_steps": [
+            "对应好夹角与其对边"
+          ],
+          "common_mistakes": [
+            "漏掉余弦定理中的系数 2",
+            "把 BC²=39 误写成 BC=39"
+          ],
+          "prerequisite_explanations": [
+            "余弦定理中，夹角的对边平方等于两邻边平方和减去两邻边乘积的两倍再乘夹角余弦"
+          ],
+          "alternative_method": "建立平面直角坐标系，用点的坐标和距离公式求 BC。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "由余弦定理，BC²=AB²+AC²−2·AB·AC·cos∠BAC=5²+7²−2×5×7×cos60°=25+49−35=39。因为边长为正，所以 BC=√39。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "三角形 ABC 中 AB=5，AC=7，∠BAC=60°，求 BC。",
+          "topic": "解三角形",
+          "subtopics": [
+            "余弦定理"
+          ],
+          "givens": [
+            "AB=5",
+            "AC=7",
+            "∠BAC=60°"
+          ],
+          "variables": [
+            "BC：所求边长"
+          ],
+          "constraints": [
+            "ABC 为三角形",
+            "BC>0"
+          ],
+          "goal": "求解边长 BC",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "已知两边及其夹角，用余弦定理求第三边。",
+          "method": "余弦定理",
+          "prerequisites": [
+            "余弦定理",
+            "cos60°=1/2"
+          ],
+          "steps": [
+            "列出 BC² 的余弦定理表达式",
+            "代入计算并取正平方根",
+            "用坐标距离公式独立核验"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "BC²=AB²+AC²−2·AB·AC·cos∠BAC",
+              "justification": "∠BAC 是 AB 与 AC 的夹角，其对边为 BC，适用余弦定理。"
+            },
+            {
+              "step": 2,
+              "expression": "BC²=5²+7²−2×5×7×(1/2)=39",
+              "justification": "代入已知边长及 cos60°=1/2，计算得 25+49−35=39。"
+            },
+            {
+              "step": 3,
+              "expression": "BC=√39",
+              "justification": "边长为正，因此取正平方根。"
+            }
+          ],
+          "answer": "BC=√39",
+          "conditions": [
+            "在题设三角形条件下成立"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "用坐标距离公式独立核验",
+              "status": "passed",
+              "details": "取 A=(0,0)、B=(5,0)，将 C 置于横轴上方，则 C=(7/2,7√3/2)。距离公式给出 BC²=(5−7/2)²+(7√3/2)²=9/4+147/4=39，与答案一致。"
+            },
+            {
+              "name": "检查边长正值与三角形不等式",
+              "status": "passed",
+              "details": "√39>0，且 |7−5|=2<√39<12=7+5，满足第三边的范围要求。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "两边及其夹角已知，可直接使用余弦定理。",
+          "difficult_steps": [
+            "识别 60° 的对边为 BC"
+          ],
+          "common_mistakes": [
+            "将余弦定理中的减号写成加号",
+            "求得 BC²=39 后忘记开平方"
+          ],
+          "prerequisite_explanations": [
+            "余弦定理中，夹角的余弦与夹角两侧边长的乘积对应"
+          ],
+          "alternative_method": "建立平面直角坐标系，用 C 的坐标和两点间距离公式求 BC。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "由余弦定理，BC²=AB²+AC²−2·AB·AC·cos∠BAC=25+49−2×5×7×1/2=39。因为边长为正，所以 BC=√39。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "三角形 ABC 中 AB=5，AC=7，∠BAC=60°，求 BC。",
+          "topic": "解三角形",
+          "subtopics": [
+            "余弦定理"
+          ],
+          "givens": [
+            "AB=5",
+            "AC=7",
+            "∠BAC=60°"
+          ],
+          "variables": [
+            "BC：所求边长"
+          ],
+          "constraints": [
+            "ABC 为三角形",
+            "BC>0"
+          ],
+          "goal": "求边长 BC",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "利用两边及其夹角确定第三边。",
+          "method": "余弦定理",
+          "prerequisites": [
+            "余弦定理",
+            "cos60°=1/2"
+          ],
+          "steps": [
+            "将已知两边和夹角代入余弦定理。",
+            "计算 BC²，并取正平方根。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "BC²=AB²+AC²−2·AB·AC·cos∠BAC",
+              "justification": "余弦定理中，BC 是已知夹角 ∠BAC 的对边。"
+            },
+            {
+              "step": 2,
+              "expression": "BC²=5²+7²−2×5×7×cos60°=25+49−35=39",
+              "justification": "代入已知边长及 cos60°=1/2，计算得出。"
+            },
+            {
+              "step": 3,
+              "expression": "BC=√39",
+              "justification": "边长为正，因此取 BC²=39 的正平方根。"
+            }
+          ],
+          "answer": "BC=√39。",
+          "conditions": [
+            "AB=5，AC=7，∠BAC=60°。"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "坐标法独立核验",
+              "status": "passed",
+              "details": "取 A=(0,0)，B=(5,0)，C=(7cos60°,7sin60°)=(7/2,7√3/2)。由两点距离公式，BC²=(7/2−5)²+(7√3/2)²=9/4+147/4=39，与所得答案一致。"
+            },
+            {
+              "name": "三角形不等式检查",
+              "status": "passed",
+              "details": "三边应满足 |7−5|<BC<7+5。因 4<39<144，所以 2<√39<12，满足要求。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "已知两边及其夹角，直接用余弦定理求第三边。",
+          "difficult_steps": [
+            "正确对应夹角与其对边。"
+          ],
+          "common_mistakes": [
+            "把余弦定理中的减号写成加号。",
+            "求出 BC² 后忘记开平方。"
+          ],
+          "prerequisite_explanations": [
+            "余弦定理 a²=b²+c²−2bc cos A 中，A 必须是边 b、c 的夹角。"
+          ],
+          "alternative_method": "建立平面直角坐标系，确定三个顶点坐标后用两点距离公式计算。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

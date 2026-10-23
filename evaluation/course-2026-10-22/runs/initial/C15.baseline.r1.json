@@ -1,0 +1,16 @@
+{
+  "case_id": "C15",
+  "arm": "baseline",
+  "repeat": 1,
+  "input": {
+    "mode": "check",
+    "problem": "已知 a>0，证明 a+4/a≥4。",
+    "solution": "因为 a>0，故 (√a-2/√a)²≥0。\n展开得到 a+4/a-4≥0。\n所以 a+4/a≥4，当且仅当 a=2 时等号成立。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "started_at": "2026-10-22T09:19:02.122973+00:00",
+  "error": "模型调用失败，请检查 Codex 登录状态与网络。",
+  "completed_at": "2026-10-22T09:19:11.502804+00:00"
+}

@@ -1,0 +1,299 @@
+{
+  "case_id": "C09",
+  "input": {
+    "mode": "solve",
+    "problem": "求实数 x 满足 x≥-1 时，x²-4x+7 的最小值及取得最小值的 x。",
+    "solution": "",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "配方得：x²-4x+7=(x-2)²+3。因为 (x-2)²≥0，所以原式≥3；当且仅当 x=2 时等号成立，且 2≥-1，符合条件。因此最小值为 3，取得最小值的 x=2。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求实数 x 满足 x≥-1 时，x²-4x+7 的最小值及取得最小值的 x。",
+          "topic": "二次函数的最值",
+          "subtopics": [
+            "配方法",
+            "平方的非负性",
+            "定义域限制"
+          ],
+          "givens": [
+            "目标表达式为 x²-4x+7",
+            "x≥-1"
+          ],
+          "variables": [
+            "x：实数自变量"
+          ],
+          "constraints": [
+            "x∈[-1,+∞)"
+          ],
+          "goal": "求表达式的最小值及取得最小值的 x。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "将二次式配方，利用平方非负，并检查等号条件是否满足定义域。",
+          "method": "配方法",
+          "prerequisites": [
+            "完全平方公式",
+            "实数的平方非负"
+          ],
+          "steps": [
+            "将二次式配成平方项与常数之和。",
+            "确定下界及等号条件。",
+            "检查等号条件是否在允许范围内。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-4x+7=(x-2)²+3。",
+              "justification": "由 (x-2)²=x²-4x+4，补足常数项得到恒等式。"
+            },
+            {
+              "step": 2,
+              "expression": "(x-2)²+3≥3，等号当且仅当 x=2 时成立。",
+              "justification": "实数的平方非负，且平方为零当且仅当底数为零。"
+            },
+            {
+              "step": 3,
+              "expression": "2≥-1，因此最小值为 3，在 x=2 时取得。",
+              "justification": "等号对应的 x 满足题设限制，所以下界可以取到。"
+            }
+          ],
+          "answer": "最小值为 3，取得最小值的 x=2。",
+          "conditions": [
+            "x 为实数且 x≥-1"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代入核对最小值及可行性",
+              "status": "passed",
+              "details": "x=2 满足 x≥-1；代入原式得 2²-4×2+7=3。"
+            },
+            {
+              "name": "用二次函数性质核验最小值",
+              "status": "passed",
+              "details": "二次项系数为 1>0，抛物线开口向上，对称轴为 x=-(-4)/(2×1)=2；顶点在允许区间内，因此顶点对应全区间最小值。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "配方后既能得到下界，也能直接读出等号成立条件。",
+          "difficult_steps": [
+            "确认等号成立时的 x 在题设区间内。"
+          ],
+          "common_mistakes": [
+            "只求出下界，却不检查能否取到。",
+            "误以为限制区间的左端点一定取得最小值。"
+          ],
+          "prerequisite_explanations": [
+            "(x-2)²≥0，且仅当 x=2 时为零。"
+          ],
+          "alternative_method": "利用二次函数的开口方向和对称轴，确定顶点在定义域内，再求顶点的函数值。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "B": {
+      "reply": "配方得 x²-4x+7=(x-2)²+3。因为 (x-2)²≥0，且 x=2 满足 x≥-1，所以最小值为 3，在 x=2 时取得。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求实数 x 满足 x≥-1 时，x²-4x+7 的最小值及取得最小值的 x。",
+          "topic": "二次函数的最值",
+          "subtopics": [
+            "配方法",
+            "非负性",
+            "定义域约束"
+          ],
+          "givens": [
+            "目标表达式为 x²-4x+7",
+            "x≥-1"
+          ],
+          "variables": [
+            "x：实数自变量"
+          ],
+          "constraints": [
+            "x∈[-1,+∞)"
+          ],
+          "goal": "求表达式的最小值及对应的 x。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "将二次式配成平方项与常数之和，并检查平方项为零时是否满足约束。",
+          "method": "配方法",
+          "prerequisites": [
+            "实数的平方非负"
+          ],
+          "steps": [
+            "配方改写二次式。",
+            "确定下界及等号条件。",
+            "检查等号条件是否在定义域内。"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-4x+7=x²-4x+4+3=(x-2)²+3",
+              "justification": "利用完全平方公式 x²-4x+4=(x-2)²。"
+            },
+            {
+              "step": 2,
+              "expression": "(x-2)²+3≥3，等号成立当且仅当 x=2。",
+              "justification": "实数的平方非负，且平方为零当且仅当底数为零。"
+            },
+            {
+              "step": 3,
+              "expression": "2≥-1，因此最小值为 3，在 x=2 时取得。",
+              "justification": "等号对应的 x=2 属于题设定义域，所以下界能够取得。"
+            }
+          ],
+          "answer": "最小值为 3，取得最小值的 x=2。",
+          "conditions": [
+            "x 为实数且 x≥-1"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代入检查",
+              "status": "passed",
+              "details": "将 x=2 代入原式，得 2²-4×2+7=3，且 2≥-1。"
+            },
+            {
+              "name": "二次函数顶点核验",
+              "status": "passed",
+              "details": "原二次函数的二次项系数为 1>0，开口向上；对称轴为 x=-(-4)/(2×1)=2，位于定义域内，因此顶点值 3 就是该区间上的最小值。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "配方后利用平方非负，并确认等号能够在给定范围内成立。",
+          "difficult_steps": [
+            "配方时补上 4 后，应将原常数 7 分成 4+3。",
+            "求出等号条件后，还需检查其是否满足 x≥-1。"
+          ],
+          "common_mistakes": [
+            "配方时将常数项算错。",
+            "忽略定义域，直接把顶点值作为区间最小值。"
+          ],
+          "prerequisite_explanations": [
+            "完全平方公式：(a-b)²=a²-2ab+b²。",
+            "求最小值需要同时证明所有函数值不小于该值，并且该值能够取得。"
+          ],
+          "alternative_method": "利用二次函数开口向上、对称轴为 x=2，且顶点位于定义域内，求得最小值。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    },
+    "C": {
+      "reply": "配方得：x²-4x+7=(x-2)²+3。因为(x-2)²≥0，所以原式≥3；当且仅当x=2时等号成立。又2≥-1，符合题设。因此最小值为3，在x=2时取得。",
+      "result": {
+        "status": "solved",
+        "problem": {
+          "statement": "求实数 x 满足 x≥-1 时，x²-4x+7 的最小值及取得最小值的 x。",
+          "topic": "二次函数最值",
+          "subtopics": [
+            "配方法",
+            "非负性",
+            "最值的取等条件"
+          ],
+          "givens": [
+            "x为实数",
+            "x≥-1"
+          ],
+          "variables": [
+            "x：自变量"
+          ],
+          "constraints": [
+            "x∈[-1,+∞)"
+          ],
+          "goal": "求x²-4x+7的最小值及取得最小值的x。",
+          "requested_method": null,
+          "ambiguities": [],
+          "assumptions": []
+        },
+        "plan": {
+          "main_idea": "把二次式配成平方项与常数之和，并检查等号成立时的x是否在规定范围内。",
+          "method": "配方法",
+          "prerequisites": [
+            "实数的平方非负",
+            "最小值必须能够取到"
+          ],
+          "steps": [
+            "配方得到(x-2)²+3",
+            "利用平方非负确定下界",
+            "检查x=2满足约束，确定最小值及取值点"
+          ]
+        },
+        "solution": {
+          "derivation": [
+            {
+              "step": 1,
+              "expression": "x²-4x+7=(x-2)²+3",
+              "justification": "由(x-2)²=x²-4x+4，将常数7拆为4+3。"
+            },
+            {
+              "step": 2,
+              "expression": "(x-2)²+3≥3，等号成立当且仅当x=2。",
+              "justification": "实数的平方非负，且平方等于0当且仅当底数为0。"
+            },
+            {
+              "step": 3,
+              "expression": "最小值为3，在x=2时取得。",
+              "justification": "x=2满足x≥-1，因此下界3可以在题设范围内取到。"
+            }
+          ],
+          "answer": "最小值为3，取得最小值的x为2。",
+          "conditions": [
+            "x为实数且x≥-1"
+          ]
+        },
+        "verification": {
+          "status": "passed",
+          "checks": [
+            {
+              "name": "代入核验取值点与约束",
+              "status": "passed",
+              "details": "x=2满足2≥-1，代入原式得4-8+7=3。"
+            },
+            {
+              "name": "用二次函数单调性核验全局最小值",
+              "status": "passed",
+              "details": "二次函数开口向上，对称轴为x=2；在[-1,2]上递减，在[2,+∞)上递增，因此整个规定范围内的最小值在x=2处取得，与配方法结论一致。"
+            }
+          ],
+          "issues": []
+        },
+        "teaching_notes": {
+          "key_insight": "配方后利用平方非负，同时确认等号成立时的x属于题设范围。",
+          "difficult_steps": [
+            "区分得到下界与证明下界能够取到"
+          ],
+          "common_mistakes": [
+            "得到下界3后，遗漏检查x=2是否满足x≥-1"
+          ],
+          "prerequisite_explanations": [],
+          "alternative_method": "利用抛物线开口向上、顶点为(2,3)，且顶点横坐标属于规定范围，确定最小值。",
+          "follow_up_exercise_suggestion": null
+        }
+      }
+    }
+  }
+}

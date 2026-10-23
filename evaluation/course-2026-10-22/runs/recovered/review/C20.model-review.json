@@ -1,0 +1,75 @@
+{
+  "source": "same-model-separate-context",
+  "prompt": "你是独立上下文的高中数学与教学反馈核验者。不调用工具，不访问文件。\n你只能看到原始输入与随机顺序的A/B/C回答，不知道哪个条件生成。\n先自己求解/核验原题及学生过程，再分别评价全部三个回答。不能以格式长度或措辞偏好评分。\n完整输出也要检查，不只看reply。hint模式任何字段泄露完整答案都算mode_obeyed=false；\nfirst_error中指出需检查的步骤本身不是答案泄露，但直接写出缺失根/完整答案属于泄露。\n只有最终答案时，不得编造学生推理；有效但非常规解法不能强判错误。\n草稿只评版面依据，不得从未提供的字符推断数学计算或长期能力。\nmath_correct对草稿为null；first_error_correct对求解、草稿、仅答案与无首错要求的提示可为null。\nteaching_useful评反馈是否具体且帮助下一步，不评是否文采好。\n只输出JSON：{\"independent_check\":\"自己的可复核结论与依据\", \"ratings\":{\n\"A\":{\"math_correct\":true或false或null,\"first_error_correct\":true或false或null,\n\"mode_obeyed\":true或false,\"grounded\":true或false,\"teaching_useful\":true或false,\"reason\":\"具体依据\"},\n\"B\":同样字段,\"C\":同样字段}}。\n材料：\n{\n  \"case_id\": \"C20\",\n  \"input\": {\n    \"mode\": \"hint\",\n    \"problem\": \"解实数不等式 -3x>12。\",\n    \"solution\": \"两边除以 -3，得 x>-4。\",\n    \"draft\": \"\",\n    \"grade_level\": \"高中\",\n    \"request\": \"\"\n  },\n  \"answers\": {\n    \"A\": {\n      \"reply\": \"不等式两边同除以负数时，不等号方向要怎样变化？\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": {\n          \"step\": 1,\n          \"quote\": \"两边除以 -3，得 x>-4。\",\n          \"reason\": \"同除以负数时应改变不等号方向。\"\n        },\n        \"minimal_fix\": \"\",\n        \"hint\": \"不等式两边同除以负数时，不等号方向要怎样变化？\",\n        \"evidence\": []\n      }\n    },\n    \"B\": {\n      \"reply\": \"不等式两边同除以负数时，不等号的方向应该怎样变化？\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"不等式两边同除以负数时，不等号的方向应该怎样变化？\",\n        \"evidence\": []\n      }\n    },\n    \"C\": {\n      \"reply\": \"两边同除以一个负数时，不等号的方向应怎样变化？\",\n      \"result\": {\n        \"judgment\": \"incorrect\",\n        \"first_error\": null,\n        \"minimal_fix\": \"\",\n        \"hint\": \"两边同除以一个负数时，不等号的方向应怎样变化？\",\n        \"evidence\": []\n      }\n    }\n  }\n}",
+  "response": {
+    "raw": "{\n  \"independent_check\": \"由 -3x>12，两边同除以负数 -3 时不等号须反向，故解集为 x<-4。学生算出的临界值 -4 正确，首错是同除以 -3 后仍保留大于号。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判断学生解答有误，并准确定位负数除法未改变不等号方向这一首错。提示引导学生回顾对应规则；全部字段均未直接给出正确解集，首错中的学生原句不构成答案泄露。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"错误判断正确，提示直接针对学生同除以负数时的符号方向问题，能帮助其自行修正。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判断学生解答有误，以同除以负数时不等号如何变化引导下一步，依据充分且具体。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。\"\n    }\n  }\n}",
+    "elapsed_seconds": 22.538,
+    "usage": [
+      {
+        "input_tokens": 27902,
+        "cached_input_tokens": 12544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 402,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1643b-58c3-7873-8b74-5e36c54999b0"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "item.completed",
+        "item": {
+          "id": "item_0",
+          "type": "agent_message",
+          "text": "{\n  \"independent_check\": \"由 -3x>12，两边同除以负数 -3 时不等号须反向，故解集为 x<-4。学生算出的临界值 -4 正确，首错是同除以 -3 后仍保留大于号。\",\n  \"ratings\": {\n    \"A\": {\n      \"math_correct\": true,\n      \"first_error_correct\": true,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判断学生解答有误，并准确定位负数除法未改变不等号方向这一首错。提示引导学生回顾对应规则；全部字段均未直接给出正确解集，首错中的学生原句不构成答案泄露。\"\n    },\n    \"B\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"错误判断正确，提示直接针对学生同除以负数时的符号方向问题，能帮助其自行修正。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。\"\n    },\n    \"C\": {\n      \"math_correct\": true,\n      \"first_error_correct\": null,\n      \"mode_obeyed\": true,\n      \"grounded\": true,\n      \"teaching_useful\": true,\n      \"reason\": \"正确判断学生解答有误，以同除以负数时不等号如何变化引导下一步，依据充分且具体。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。\"\n    }\n  }\n}"
+        }
+      },
+      {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 27902,
+          "cached_input_tokens": 12544,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 402,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "backend": "codex-cli",
+    "requested_model": "user-config-default"
+  },
+  "review": {
+    "independent_check": "由 -3x>12，两边同除以负数 -3 时不等号须反向，故解集为 x<-4。学生算出的临界值 -4 正确，首错是同除以 -3 后仍保留大于号。",
+    "ratings": {
+      "A": {
+        "math_correct": true,
+        "first_error_correct": true,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确判断学生解答有误，并准确定位负数除法未改变不等号方向这一首错。提示引导学生回顾对应规则；全部字段均未直接给出正确解集，首错中的学生原句不构成答案泄露。"
+      },
+      "B": {
+        "math_correct": true,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "错误判断正确，提示直接针对学生同除以负数时的符号方向问题，能帮助其自行修正。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。"
+      },
+      "C": {
+        "math_correct": true,
+        "first_error_correct": null,
+        "mode_obeyed": true,
+        "grounded": true,
+        "teaching_useful": true,
+        "reason": "正确判断学生解答有误，以同除以负数时不等号如何变化引导下一步，依据充分且具体。提示模式未要求单独定位首错，first_error 为 null 可以接受，全部字段未泄露正确解集。"
+      }
+    }
+  }
+}

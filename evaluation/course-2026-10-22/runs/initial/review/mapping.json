@@ -1,0 +1,62 @@
+{
+  "C01": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C02": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C03": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C04": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C05": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C06": {
+    "A": "baseline",
+    "B": "skill",
+    "C": "skill_gates"
+  },
+  "C07": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C08": {
+    "A": "skill",
+    "B": "skill_gates",
+    "C": "baseline"
+  },
+  "C09": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C10": {
+    "A": "skill_gates",
+    "B": "skill",
+    "C": "baseline"
+  },
+  "C11": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  },
+  "C12": {
+    "A": "skill",
+    "B": "baseline",
+    "C": "skill_gates"
+  }
+}

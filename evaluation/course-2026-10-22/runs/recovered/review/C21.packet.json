@@ -1,0 +1,55 @@
+{
+  "case_id": "C21",
+  "input": {
+    "mode": "hint",
+    "problem": "正实数 x 满足 x+9/x=10，求 x。",
+    "solution": "两边乘以 x，得到 x²-10x+9=0。\n我只找到了 x=1，觉得没有别的解。",
+    "draft": "",
+    "grade_level": "高中",
+    "request": ""
+  },
+  "answers": {
+    "A": {
+      "reply": "把二次三项式因式分解，看看两个因式分别为零时会得到什么。",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 2,
+          "quote": "觉得没有别的解",
+          "reason": "尚未检查二次方程的所有根，不能据此排除其他正实数解。"
+        },
+        "minimal_fix": "",
+        "hint": "把二次三项式因式分解，看看两个因式分别为零时会得到什么。",
+        "evidence": []
+      }
+    },
+    "B": {
+      "reply": "把你找到的根代入因式分解：x²−10x+9=(x−1)(x−□)，另一个括号应怎样填写？",
+      "result": {
+        "judgment": "incorrect",
+        "first_error": {
+          "step": 2,
+          "quote": "觉得没有别的解",
+          "reason": "尚未检查二次方程的另一个因式能否为零。"
+        },
+        "minimal_fix": "",
+        "hint": "把你找到的根代入因式分解：x²−10x+9=(x−1)(x−□)，另一个括号应怎样填写？",
+        "evidence": []
+      }
+    },
+    "C": {
+      "reply": "试着把 x²-10x+9 分解因式，看看每个因子为零时分别会得到什么。",
+      "result": {
+        "judgment": "gap",
+        "first_error": {
+          "step": 2,
+          "quote": "觉得没有别的解",
+          "reason": "只找到一个根，尚不足以排除其他正实数根。"
+        },
+        "minimal_fix": "",
+        "hint": "试着把 x²-10x+9 分解因式，看看每个因子为零时分别会得到什么。",
+        "evidence": []
+      }
+    }
+  }
+}
