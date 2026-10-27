@@ -46,6 +46,13 @@ def extract_docx_command():
     return None
 
 
+def _interpreter():
+    """The document writes `python`; that name is absent on Windows Store
+    installs and often on macOS (only `python3` exists). Use the interpreter
+    running this fixture so the rest of the command stays literal."""
+    return sys.executable
+
+
 def main():
     cmd = extract_docx_command()
     if cmd is None:
@@ -64,9 +71,12 @@ def main():
     # 命令里的占位参数是「教案.docx」，换成真夹具路径
     # 用 lambda 而不是字符串做替换：DOCX 是 Windows 绝对路径，
     # 里面 C:\Users 的 \U 会被 re 当成转义符，直接传字符串会 PatternError。
-    real = re.sub(r"\s+教案\.docx\s*$", lambda m: " " + DOCX, cmd)
+    # 路径含空格（如 "university learning"），必须加引号，否则 shell 会截断。
+    real = re.sub(r"\s+教案\.docx\s*$", lambda m: ' "%s"' % DOCX, cmd)
     if real == cmd:
-        real = cmd + " " + DOCX
+        real = cmd + ' "%s"' % DOCX
+    real = re.sub(r"^python(\s+)",
+                  lambda m: '"%s"%s' % (_interpreter(), m.group(1)), real, count=1)
 
     p = subprocess.run(real, shell=True, capture_output=True, env=env)
     if p.returncode != 0:

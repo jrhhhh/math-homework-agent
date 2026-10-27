@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#b70031"><title>数学作业智能体 · 练习工作台</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5zM20 13v23' fill='none' stroke='%23b70031' stroke-width='2'/%3E%3C/svg%3E"><link rel="stylesheet" href="vendor/katex/katex.min.css"><link rel="stylesheet" href="style.css"></head>
 <body>
-<header><a class="brand" href="/" aria-label="数学作业智能体首页"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5Z"/><path d="M20 13v23M10 15h5M10 21h5M26 17l3 3 6-7"/></svg><span>数学作业智能体<small>MATH HOMEWORK AGENT</small></span></a><span id="header-note" class="header-note">高中数学 · 过程反馈</span><span id="connection" role="status">正在连接</span><button id="jobs-toggle" class="text-button" aria-expanded="false">任务中心 <span id="jobs-count">0</span></button></header><section id="jobs-dock" class="panel jobs-dock" hidden aria-label="任务中心"><div class="section-title"><h2>后台任务与已保存步骤</h2><button id="jobs-refresh" class="text-button">刷新任务</button></div><p class="history-empty">关闭页面后任务继续；服务重启后可继续暂停任务。停止请求在当前步骤返回后生效。</p><div id="jobs-list"></div></section>
+<header><a class="brand" href="/" aria-label="数学作业智能体首页"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M5 8h10l5 5 5-5h10v25H25l-5 3-5-3H5Z"/><path d="M20 13v23M10 15h5M10 21h5M26 17l3 3 6-7"/></svg><span>数学作业智能体<small>MATH HOMEWORK AGENT</small></span></a><span id="header-note" class="header-note">高中数学 · 过程反馈</span><button id="open-settings" class="header-button" type="button">模型设置</button><span id="connection" role="status">正在连接</span><button id="jobs-toggle" class="text-button" aria-expanded="false">任务中心 <span id="jobs-count">0</span></button></header><section id="jobs-dock" class="panel jobs-dock" hidden aria-label="任务中心"><div class="section-title"><h2>后台任务与已保存步骤</h2><button id="jobs-refresh" class="text-button">刷新任务</button></div><p class="history-empty">关闭页面后任务继续；服务重启后可继续暂停任务。停止请求在当前步骤返回后生效。</p><div id="jobs-list"></div></section>
 <div id="file-launch-notice" class="file-launch-notice" role="alert" hidden><strong>请从工作台入口打开</strong><span>这个文件预览不能保存练习或生成课件。请在项目目录运行 <code>python3 run.py</code>，再打开</span><a href="http://127.0.0.1:8765/">http://127.0.0.1:8765/</a></div>
 <div class="layout">
-<aside><nav class="workspace-switcher" aria-label="工作台切换"><button id="show-practice" class="active" aria-selected="true">学生练习</button><button id="show-teacher" aria-selected="false">教师备课</button><button id="show-teaching" aria-selected="false">师生任务</button></nav><div id="practice-sidebar"><div class="aside-heading">我的练习 <button id="new-session" class="icon-button" aria-label="新建练习">＋</button></div><nav id="sessions" aria-label="练习历史"></nav><div class="aside-bottom"><span class="small-label">学，而后知不足</span><p>保留每一次尝试，<br>看见解题的进步。</p><small>课程项目 · 本地工作台</small></div></div><div id="teacher-sidebar" hidden><div class="aside-heading">近期备课</div><nav id="lesson-history" aria-label="备课记录"></nav><div class="aside-bottom"><span class="small-label">从目标到课堂</span><p>让每一页课件，<br>对应一个思维动作。</p><small>教案转课件 · 本地生成</small></div></div></aside>
+<aside><nav class="workspace-switcher" aria-label="工作台切换"><button id="show-practice" class="active" aria-selected="true">学生练习</button><button id="show-teacher" aria-selected="false">教师备课</button><button id="show-teaching" aria-selected="false">师生任务</button></nav><div id="practice-sidebar"><div class="aside-heading">我的练习 <span class="aside-actions"><button id="toggle-archived" class="archive-toggle" type="button" title="显示归档">归档</button><button id="new-session" class="icon-button" aria-label="新建练习">＋</button></span></div><nav id="sessions" aria-label="练习历史"></nav><p id="session-status" class="session-status" role="status" aria-live="polite"></p><div class="aside-bottom"><span class="small-label">学，而后知不足</span><p>保留每一次尝试，<br>看见解题的进步。</p><small>课程项目 · 本地工作台</small></div></div><div id="teacher-sidebar" hidden><div class="aside-heading">近期备课</div><nav id="lesson-history" aria-label="备课记录"></nav><div class="aside-bottom"><span class="small-label">从目标到课堂</span><p>让每一页课件，<br>对应一个思维动作。</p><small>教案转课件 · 本地生成</small></div></div></aside>
 <main>
 <section id="practice-view" class="app-view">
 <div class="page-heading"><div><div class="eyebrow">YOUR NEXT STEP IN MATHEMATICS</div><h1>把思路写下来，<em>再向前一步。</em></h1><p>从一个有依据的提示开始，逐步完善自己的解答。</p></div><div class="folio">01<span>练习工作台</span></div></div>
@@ -16,6 +16,7 @@
 <label for="problem">原题 <span>保留完整条件与范围</span></label><textarea id="problem" rows="4" placeholder="例如：在 0≤x&lt;2π 内解 sin(2x)=sin(x)。" maxlength="20000"></textarea>
 <div id="solution-field"><label for="solution">我的解题过程 <span>建议每一步另起一行</span></label><textarea id="solution" rows="7" placeholder="写下你实际做过的步骤，暂时不会的地方也可以留着。" maxlength="20000"></textarea></div>
 <div id="draft-field" hidden><label for="draft">草稿布局描述 <span>分区、分行、划改与留白</span></label><textarea id="draft" rows="7" placeholder="例如：纸面分成左右两栏；左上角有题号，中间三次划改，底部没有留白。" maxlength="20000"></textarea></div>
+<div id="work-file-field"><label for="work-files">附件 <span>可选 · 图片 / PDF / DOCX / TXT / MD · 最多 3 个，每个不超过 5 MB</span></label><input id="work-files" type="file" multiple accept="image/png,image/jpeg,image/webp,application/pdf,.docx,.txt,.md"><div id="work-file-list" class="work-file-list"></div><div id="work-extract-panel" class="work-extract-panel" hidden><label for="work-extract-text">提取的文字 <span>请核对后填入上方字段</span></label><textarea id="work-extract-text" rows="6"></textarea><div class="work-extract-actions"><button id="extract-to-problem" type="button" class="text-button">填入原题</button><button id="extract-to-solution" type="button" class="text-button">填入我的过程</button><button id="extract-close" type="button" class="text-button">关闭</button></div></div><p class="source-note">附件只保存在本机，供你自己对照；系统不识别手写，也不把附件发给模型。需要让系统使用 PDF / DOCX / TXT / MD 中的文字时，请点“提取文字”，核对后填入上方字段；扫描版没有可复制文字，请手动输入。</p></div>
 <label for="request">补充要求 <span>可选</span></label><input id="request" placeholder="例如：沿用我的方法，暂时不要给答案。" maxlength="20000">
 <label class="verification-option"><input id="verify-equation" type="checkbox">用计算工具代回检验候选值 <small>适用于等式，不证明解集完备</small></label>
 <div class="form-footer"><span id="revision-note">你的原过程会随每次提交保留。</span><button id="submit" class="primary" type="submit">开始检查 <span>→</span></button></div>
@@ -69,4 +70,29 @@
 <p id="path-status" role="status" aria-live="polite"></p></section>
 <section class="panel"><div class="section-title"><h2>当前反馈与帮助记录</h2><button id="path-refresh" class="text-button">刷新学习记录</button></div><div id="path-feedback" class="reply" aria-live="polite"></div><div id="path-records"></div></section></div>
 </section>
-</main></div><script src="vendor/katex/katex.min.js"></script><script src="vendor/katex/auto-render.min.js"></script><script src="app.js"></script><script src="jobs.js"></script><script src="teaching.js"></script><script src="learning-path.js"></script></body></html>
+</main></div><dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-heading">
+<form id="settings-form">
+<div class="settings-head"><div><div class="eyebrow">MODEL BACKEND</div><h2 id="settings-heading">模型设置</h2></div><button id="close-settings" class="icon-button" type="button" aria-label="关闭设置">×</button></div>
+<p id="settings-source" class="source-note">正在读取设置…</p>
+<label for="settings-backend">后端</label>
+<select id="settings-backend"><option value="codex-cli">Codex CLI</option><option value="http">HTTP 接口</option></select>
+<div id="settings-http-fields">
+<label for="settings-base">接口地址 <span>例如 https://api.deepseek.com/v1</span></label>
+<input id="settings-base" placeholder="https://api.example.com/v1" autocomplete="off">
+<label for="settings-style">接口风格</label>
+<select id="settings-style"><option value="chat">chat（/chat/completions）</option><option value="responses">responses</option></select>
+<label for="settings-key">API Key <span>留空表示不修改</span></label>
+<input id="settings-key" type="password" autocomplete="new-password" placeholder="未设置">
+</div>
+<div id="settings-codex-fields">
+<label for="settings-codex-bin">Codex CLI 路径 <span>留空使用 PATH 中的 codex</span></label>
+<input id="settings-codex-bin" placeholder="codex" autocomplete="off">
+</div>
+<label for="settings-model">模型名 <span>HTTP 后端必填；Codex 可留空</span></label>
+<input id="settings-model" placeholder="deepseek-flash" autocomplete="off">
+<div class="settings-actions"><button id="settings-save" class="primary" type="submit">保存设置</button><button id="settings-test" class="text-button" type="button">测试连接</button></div>
+<p id="settings-status" class="source-note" role="status" aria-live="polite"></p>
+<p class="source-note">环境变量（MATH_*）优先于页面设置。密钥只保存在本机 .local 目录，不会回传到页面。测试连接会真实调用一次模型，可能产生少量费用。</p>
+</form>
+</dialog>
+<script src="vendor/katex/katex.min.js"></script><script src="vendor/katex/auto-render.min.js"></script><script src="app.js"></script><script src="jobs.js"></script><script src="teaching.js"></script><script src="learning-path.js"></script></body></html>

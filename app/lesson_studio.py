@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from . import model
+from .core import child_env
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "lesson-materials-builder"
@@ -223,7 +224,7 @@ class LessonStudio:
         def step(name,operation,validator=valid):
             return checkpoint(name+':'+key,operation,valid=validator) if checkpoint else operation()
         def command(stage,args):
-            process=subprocess.run([sys.executable,*map(str,args)],cwd=BUILDER,capture_output=True,text=True,timeout=180)
+            process=subprocess.run([sys.executable,*map(str,args)],cwd=BUILDER,capture_output=True,text=True,encoding="utf-8",env=child_env(),timeout=180)
             logs.append({'stage':stage,'exit_code':process.returncode,'stdout':process.stdout[-12000:],'stderr':process.stderr[-4000:]})
             if process.returncode:raise ValueError(stage+' 阶段失败，请检查源码与配图清单。')
             return process

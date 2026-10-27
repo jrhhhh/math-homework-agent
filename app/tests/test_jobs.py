@@ -47,6 +47,16 @@ class JobsTest(unittest.TestCase):
             raise ValueError('verify failed')
         q=self.queue(handler);job=q.submit('test',{});q.run_one();valid[0]=False;q.retry(job['id']);q.run_one()
         self.assertEqual(calls,['build','build'])
+    def test_session_deletion_protects_active_jobs_and_removes_support(self):
+        sid=self.store.create_session();rid=self.store.submit(sid,{'problem':'x+1=2','solution':'x=1','mode':'hint'})
+        q=JobQueue(self.store,{'diagnose':lambda p,c:{'submission_id':rid}},start=False)
+        job=q.submit('diagnose',{'submission_id':rid})
+        with self.assertRaisesRegex(ValueError,'后台任务'):self.store.delete_session(sid)
+        q.run_one();self.store.delete_session(sid)
+        with self.store.connect() as db:
+            for table in ('learning_support','submission_support','durable_jobs','job_events'):
+                self.assertEqual(db.execute('SELECT COUNT(*) FROM '+table).fetchone()[0],0)
+
     def test_process_crash_then_manual_recovery(self):
         # A separate interpreter dies after persisting one step, before finalization.
         code='''import os,sys

@@ -1,18 +1,22 @@
 """Loopback-only HTTP service with immutable submissions and async inference."""
 import argparse
 import importlib.util
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import mimetypes
 import os
 from pathlib import Path
+import re
 import sqlite3
 import threading
 import uuid
 
 from .core import normalize, run, version
-from .model import available
+from .model import available, backend, probe
+from . import settings
+from . import uploads
 from .lesson_studio import LessonStudio
 from .teaching_loop import TeachingLoop
 from .support import SupportLedger
@@ -26,33 +30,117 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def attachment_keys(data):
+    keys = set()
+    if not isinstance(data, dict):
+        return keys
+    for item in data.get('attachments') or []:
+        if isinstance(item, dict) and item.get('sha256') and item.get('ext'):
+            keys.add((item['sha256'], item['ext']))
+    legacy = data.get('image')
+    if isinstance(legacy, dict) and legacy.get('sha256') and legacy.get('ext'):
+        keys.add((legacy['sha256'], legacy['ext']))
+    return keys
+
+
 class Store:
     def __init__(self, path):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.path = str(path)
         with self.connect() as db:
-            db.execute('CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, title TEXT, created TEXT)')
+            db.execute('CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, title TEXT, created TEXT, archived INTEGER DEFAULT 0)')
             db.execute('CREATE TABLE IF NOT EXISTS submissions (id TEXT PRIMARY KEY, session_id TEXT, revision INTEGER, created TEXT, data TEXT, version TEXT, state TEXT, result TEXT, UNIQUE(session_id, revision))')
             db.execute('CREATE TABLE IF NOT EXISTS lessons (id TEXT PRIMARY KEY, title TEXT, created TEXT, data TEXT, outline TEXT, missing TEXT, questions TEXT, slides_markdown TEXT, figures_spec TEXT, status TEXT, result TEXT)')
+            columns = {row['name'] for row in db.execute('PRAGMA table_info(sessions)')}
+            if 'archived' not in columns:
+                db.execute('ALTER TABLE sessions ADD COLUMN archived INTEGER DEFAULT 0')
 
         self.support = SupportLedger(self)
 
+    @contextmanager
     def connect(self):
+        """Open one connection and close it on exit.
+
+        The context manager keeps SQLite's commit/rollback semantics, but also
+        releases the file handle so temporary databases can be removed on
+        Windows, where an open handle blocks deletion.
+        """
         db = sqlite3.connect(self.path, timeout=30)
         db.row_factory = sqlite3.Row
-        return db
+        try:
+            with db:
+                yield db
+        finally:
+            db.close()
 
     def create_session(self, title='新的练习'):
         sid = uuid.uuid4().hex
         with self.connect() as db:
-            db.execute('INSERT INTO sessions VALUES (?,?,?)', (sid, title[:80], now()))
+            db.execute('INSERT INTO sessions (id, title, created) VALUES (?,?,?)',
+                       (sid, title[:80], now()))
         return sid
 
     def list_sessions(self):
         with self.connect() as db:
             return [dict(row) for row in db.execute('SELECT * FROM sessions ORDER BY created DESC')]
 
+    def set_archived(self, sid, archived):
+        with self.connect() as db:
+            cursor = db.execute('UPDATE sessions SET archived=? WHERE id=?',
+                                (1 if archived else 0, sid))
+            if cursor.rowcount == 0:
+                raise ValueError('练习不存在')
+        return {'id': sid, 'archived': bool(archived)}
+
+    def delete_session(self, sid):
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            if not db.execute('SELECT id FROM sessions WHERE id=?', (sid,)).fetchone():
+                raise ValueError('练习不存在')
+            try:
+                bound = db.execute('SELECT id FROM teaching_items WHERE session_id=? LIMIT 1',
+                                   (sid,)).fetchone()
+            except sqlite3.OperationalError:
+                bound = None
+            if bound:
+                raise ValueError('该练习已被师生任务引用，不能删除；请改为归档。')
+            submission_ids={row['id'] for row in db.execute('SELECT id FROM submissions WHERE session_id=?',(sid,))}
+            jobs=[]
+            if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='durable_jobs'").fetchone():
+                jobs=[row for row in db.execute("SELECT id,payload,state FROM durable_jobs WHERE kind='diagnose'") if json.loads(row['payload']).get('submission_id') in submission_ids]
+                if any(row['state'] in ('queued','running') for row in jobs):raise ValueError('该练习仍有后台任务，请先完成或停止后再删除。')
+            db.execute('DELETE FROM submission_support WHERE submission_id IN (SELECT id FROM submissions WHERE session_id=?)',(sid,))
+            db.execute('DELETE FROM learning_support WHERE session_id=?',(sid,))
+            for job in jobs:
+                db.execute('DELETE FROM job_events WHERE job_id=?',(job['id'],))
+                db.execute('DELETE FROM durable_jobs WHERE id=?',(job['id'],))
+            removed = set()
+            for row in db.execute('SELECT data FROM submissions WHERE session_id=?', (sid,)):
+                try:
+                    removed |= attachment_keys(json.loads(row['data']))
+                except (TypeError, ValueError):
+                    pass
+            db.execute('DELETE FROM submissions WHERE session_id=?', (sid,))
+            db.execute('DELETE FROM sessions WHERE id=?', (sid,))
+            if removed:
+                remaining = set()
+                for row in db.execute('SELECT data FROM submissions'):
+                    try:
+                        remaining |= attachment_keys(json.loads(row['data']))
+                    except (TypeError, ValueError):
+                        pass
+                for sha256, extension in removed - remaining:
+                    path = uploads.path_for(sha256, extension)
+                    if path:
+                        try:
+                            path.unlink()
+                        except OSError:
+                            pass
+        return {'id': sid, 'deleted': True}
+
     def submit(self, sid, data, allow_mode_change=False):
+        data = normalize(data)
+        data = uploads.persist(data)
         data = normalize(data)
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
@@ -248,13 +336,37 @@ def handler_for(app):
 
         def do_GET(self):
             if self.path == '/api/health':
-                return self.send({'ok': True, 'backend': 'codex-cli', 'available': available(),
+                return self.send({'ok': True, 'backend': backend(), 'available': available(),
                                   'exact_verification_available':importlib.util.find_spec('sympy') is not None})
             if self.path == '/api/jobs':
                 return self.send(app.jobs.list())
             if self.path.startswith('/api/jobs/'):
                 try:return self.send(app.jobs.public(app.jobs.get(self.path.split('/')[3])))
                 except ValueError as exc:return self.send({'error':str(exc)},404)
+            if self.path == '/api/settings':
+                return self.send(settings.public())
+            attachment_match = re.fullmatch(
+                r'/api/uploads/([0-9a-f]{64})\.(png|jpg|webp|pdf|docx|txt|md)', self.path)
+            if attachment_match:
+                extension = '.' + attachment_match.group(2)
+                path = uploads.path_for(attachment_match.group(1), extension)
+                if path is None:
+                    return self.send({'error': '附件不存在'}, 404)
+                content = path.read_bytes()
+                mime = uploads.mime_for(extension)
+                if extension in ('.txt', '.md'):
+                    mime += '; charset=utf-8'
+                self.send_response(200)
+                self.send_header('Content-Type', mime)
+                self.send_header('Content-Length', str(len(content)))
+                if not uploads.is_inline(extension):
+                    self.send_header('Content-Disposition',
+                                     f'attachment; filename="attachment{extension}"')
+                self.send_header('Cache-Control', 'private, max-age=31536000, immutable')
+                self.send_header('X-Content-Type-Options', 'nosniff')
+                self.end_headers()
+                self.wfile.write(content)
+                return
             if self.path == '/api/sessions':
                 return self.send(app.store.list_sessions())
             if self.path.startswith('/api/sessions/'):
@@ -317,6 +429,18 @@ def handler_for(app):
             self.end_headers()
             self.wfile.write(content)
 
+        def do_DELETE(self):
+            origin = self.headers.get('Origin')
+            if origin and origin not in (f'http://127.0.0.1:{self.server.server_port}',
+                                         f'http://localhost:{self.server.server_port}'):
+                return self.send({'error': '来源不允许'}, 403)
+            try:
+                if self.path.startswith('/api/sessions/') and self.path.count('/') == 3:
+                    return self.send(app.store.delete_session(self.path.split('/')[3]))
+                return self.send({'error': '不存在'}, 404)
+            except ValueError as exc:
+                return self.send({'error': str(exc)}, 400)
+
         def do_POST(self):
             # Browser-origin protection; service only binds to loopback.
             origin = self.headers.get('Origin')
@@ -326,7 +450,14 @@ def handler_for(app):
                 return self.send({'error': '需要 application/json'}, 415)
             try:
                 size = int(self.headers.get('Content-Length', '0'))
-                max_size = 8 * 1024 * 1024 if self.path in ('/api/lessons/outline','/api/jobs') else 150000
+                if self.path in ('/api/lessons/outline','/api/jobs'):
+                    max_size = 8 * 1024 * 1024
+                elif self.path.startswith('/api/sessions/') and self.path.endswith('/submissions'):
+                    max_size = 25 * 1024 * 1024
+                elif self.path == '/api/attachments/extract':
+                    max_size = 8 * 1024 * 1024
+                else:
+                    max_size = 150000
                 if not 0 < size <= max_size:
                     raise ValueError('请求大小非法')
                 data = json.loads(self.rfile.read(size))
@@ -338,6 +469,18 @@ def handler_for(app):
                     parts=self.path.split('/')
                     if len(parts)==5 and parts[4]=='retry':return self.send(app.jobs.retry(parts[3]))
                     if len(parts)==5 and parts[4]=='cancel':return self.send(app.cancel_job(parts[3]))
+                if self.path == '/api/settings':
+                    return self.send(settings.save(data))
+                if self.path == '/api/attachments/extract':
+                    name = data.get('name')
+                    encoded = data.get('base64')
+                    if not isinstance(name, str) or not isinstance(encoded, str):
+                        raise ValueError('需要附件名称与内容。')
+                    return self.send(uploads.extract_text(name, encoded))
+                if self.path == '/api/settings/test':
+                    current = settings.resolve()
+                    config = current if current['environment_locked'] else settings.candidate(data)
+                    return self.send(probe(config))
                 if self.path == '/api/sessions':
                     return self.send({'id': app.store.create_session()}, 201)
                 if self.path == '/api/math-widget':
@@ -370,6 +513,12 @@ def handler_for(app):
                     return self.send(app.lesson_studio.render(lesson_id, data))
                 if self.path.startswith('/api/sessions/') and self.path.endswith('/support'):
                     return self.send(app.store.support.record(self.path.split('/')[3], data), 201)
+                if self.path.startswith('/api/sessions/') and self.path.endswith('/archive'):
+                    parts = self.path.split('/')
+                    if len(parts) == 5 and parts[4] == 'archive':
+                        if type(data.get('archived')) is not bool:
+                            raise ValueError('archived 必须为布尔值')
+                        return self.send(app.store.set_archived(parts[3], data['archived']))
                 if self.path.startswith('/api/sessions/') and self.path.endswith('/submissions'):
                     sid = self.path.split('/')[3]
                     rid = app.submit(sid, data, data.get('allow_mode_change') is True)

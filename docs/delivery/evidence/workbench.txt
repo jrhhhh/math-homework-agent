@@ -1,5 +1,8 @@
-........................................................................
+............................................................................../Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/re/_parser.py:261: ResourceWarning: unclosed <socket.socket [closed] fd=4, family=2, type=1, proto=6>
+  def get(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............................
 ----------------------------------------------------------------------
-Ran 72 tests in 2.896s
+Ran 106 tests in 3.156s
 
 OK

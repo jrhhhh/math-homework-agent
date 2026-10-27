@@ -58,8 +58,13 @@ async (page) => {
   await page.getByRole('button',{name:'按学习路径学习 →',exact:true}).click();
   await page.screenshot({path:'output/playwright/learning-path-desktop.png',fullPage:true});
   const desktop=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));
-  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'output/playwright/learning-path-mobile.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});
   const mobile=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));
+  const headerFits=await page.locator('header').evaluate(el=>{const box=el.getBoundingClientRect();return [...el.children].filter(e=>getComputedStyle(e).display!=='none').every(e=>{const b=e.getBoundingClientRect();return b.top>=box.top+5&&b.bottom<=box.bottom&&b.right<=box.right;});});
+  if(!headerFits)throw Error('Header content is clipped');
+  // Use one tall capture to avoid browser-provider full-page stitching artifacts.
+  await page.setViewportSize({width:390,height:2200});await page.screenshot({path:'output/playwright/learning-path-mobile.png',fullPage:false});await page.setViewportSize({width:390,height:844});
+
   if(desktop.scroll>desktop.width||mobile.scroll>mobile.width)throw Error('overflow '+JSON.stringify({desktop,mobile}));
   if(errors.length)throw Error(errors.join('\n'));
   return {passed:true,backend:'explicit fixture; UI transitions only',flow:'criteria,publish,first attempt,guidance,interactive degeneracy,supported revision,independent new item,task results after reload',desktop,mobile,errors};

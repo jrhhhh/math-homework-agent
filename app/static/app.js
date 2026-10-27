@@ -19,20 +19,130 @@ function setMode() {
   $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
   $('verify-equation').disabled=!verificationAvailable||draft||$('mode').value==='hint';if($('verify-equation').disabled)$('verify-equation').checked=false;
 }
-async function sessions() {
-  const rows = await api('/api/sessions'); $('sessions').replaceChildren();
-  for(const row of rows) {
-    const button = node('button', row.title, row.id === sessionId ? 'active' : '');
-    button.onclick = () => loadSession(row.id); $('sessions').append(button);
+let workFiles=[], workFileUrls=[];
+const ATTACHMENT_TYPES=new Set(['image/png','image/jpeg','image/webp','application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain','text/markdown']);
+function fileKey(file){return file.name+'|'+file.size+'|'+file.lastModified;}
+function fileExtension(file){const parts=file.name.toLowerCase().split('.');return parts.length>1?parts.pop():'';}
+function isImageFile(file){return file.type.startsWith('image/')||['png','jpg','jpeg','webp'].includes(fileExtension(file));}
+function allowedFile(file){return ATTACHMENT_TYPES.has(file.type)||['png','jpg','jpeg','webp','pdf','docx','txt','md'].includes(fileExtension(file));}
+function formatSize(bytes){return bytes<1024?bytes+' B':bytes<1048576?(bytes/1024).toFixed(1)+' KB':(bytes/1048576).toFixed(1)+' MB';}
+function hideExtractPanel(){const panel=$('work-extract-panel');if(panel)panel.hidden=true;const area=$('work-extract-text');if(area)area.value='';}
+function clearWorkFiles(){
+  workFiles=[];workFileUrls.forEach(URL.revokeObjectURL);workFileUrls=[];
+  const input=$('work-files');if(input)input.value='';
+  const list=$('work-file-list');if(list)list.replaceChildren();
+  hideExtractPanel();
+}
+function addWorkFiles(files){
+  for(const file of files){
+    if(workFiles.length>=3){$('form-status').textContent='最多上传 3 个附件。';break;}
+    if(!allowedFile(file)){$('form-status').textContent='只支持图片、PDF、DOCX、TXT 或 MD 附件。';continue;}
+    if(file.size>5*1024*1024){$('form-status').textContent='单个附件不能超过 5 MB。';continue;}
+    if(workFiles.some(item=>item.key===fileKey(file)))continue;
+    workFiles.push({file,key:fileKey(file)});
+  }
+  renderWorkFiles();
+}
+function renderWorkFiles(){
+  workFileUrls.forEach(URL.revokeObjectURL);workFileUrls=[];
+  const list=$('work-file-list');if(!list)return;
+  list.replaceChildren();
+  for(const [index,item] of workFiles.entries()){
+    const row=node('div',undefined,'work-file-row');
+    if(isImageFile(item.file)){
+      const url=URL.createObjectURL(item.file);workFileUrls.push(url);
+      const img=document.createElement('img');img.src=url;img.alt='附件预览';row.append(img);
+    }
+    const info=node('div',undefined,'work-file-info');
+    info.append(node('strong',item.file.name));
+    info.append(node('small',formatSize(item.file.size)));
+    row.append(info);
+    if(!isImageFile(item.file)){
+      const extract=node('button','提取文字','text-button');extract.type='button';
+      extract.onclick=()=>extractWorkFile(item.file);row.append(extract);
+    }
+    const remove=node('button','移除','text-button');remove.type='button';
+    remove.onclick=()=>{workFiles.splice(index,1);renderWorkFiles();};
+    row.append(remove);
+    list.append(row);
   }
 }
+async function extractWorkFile(file){
+  try{
+    $('form-status').textContent='正在提取附件文字…';
+    const data=await api('/api/attachments/extract',{name:file.name,base64:await fileToBase64(file)});
+    $('work-extract-text').value=data.text||'';
+    $('work-extract-panel').hidden=false;
+    $('form-status').textContent=data.warning||'已提取文字；请核对后选择填入位置。';
+  }catch(error){$('form-status').textContent=error.message;}
+}
+$('extract-to-problem').onclick=()=>{const text=$('work-extract-text').value.trim();if(!text)return;$('problem').value=text;hideExtractPanel();$('problem').focus();};
+$('extract-to-solution').onclick=()=>{const text=$('work-extract-text').value.trim();if(!text)return;$('solution').value=text;hideExtractPanel();$('solution').focus();};
+$('extract-close').onclick=hideExtractPanel;
+let showArchived=false;
+function sessionRow(row, archived){
+  const wrapper=node('div',undefined,'session-row'+(row.id===sessionId?' active':'')+(archived?' archived':''));
+  const title=node('button',row.title,'session-title');title.title=row.title;
+  title.onclick=()=>loadSession(row.id);wrapper.append(title);
+  const actions=node('div',undefined,'session-actions');
+  const archive=node('button',archived?'恢复':'归档','session-action');archive.type='button';
+  archive.title=archived?'取消归档':'归档';archive.setAttribute('aria-label',archive.title);
+  archive.onclick=async event=>{event.stopPropagation();await setArchived(row.id,!archived);};
+  const trash=node('button','🗑','session-action delete');trash.type='button';
+  trash.title='删除练习';trash.setAttribute('aria-label','删除练习');
+  trash.onclick=async event=>{event.stopPropagation();await removeSession(row);};
+  actions.append(archive,trash);wrapper.append(actions);
+  return wrapper;
+}
+async function sessions() {
+  const rows=await api('/api/sessions');
+  const active=rows.filter(row=>!row.archived), archived=rows.filter(row=>row.archived);
+  const archivedCurrent=archived.find(row=>row.id===sessionId);
+  const list=$('sessions');list.replaceChildren();
+  for(const row of active)list.append(sessionRow(row,false));
+  if(showArchived&&archived.length){
+    list.append(node('div','已归档','session-group-label'));
+    for(const row of archived)list.append(sessionRow(row,true));
+  }else if(archivedCurrent){
+    list.append(node('div','当前练习 · 已归档','session-group-label'));
+    list.append(sessionRow(archivedCurrent,true));
+  }
+  $('toggle-archived').textContent=showArchived?'收起归档':'归档';
+  $('toggle-archived').classList.toggle('active',showArchived);
+}
+async function setArchived(id,archived){
+  try{await api('/api/sessions/'+id+'/archive',{archived});$('session-status').textContent=archived?'已归档。':'已取消归档。';await sessions();}
+  catch(error){$('session-status').textContent=error.message;}
+}
+async function deleteSession(id){
+  const response=await fetch('/api/sessions/'+id,{method:'DELETE'});
+  const result=await response.json();
+  if(!response.ok)throw new Error(result.error||'删除失败');
+  return result;
+}
+async function removeSession(row){
+  if(!confirm('删除“'+row.title+'”及其全部提交？此操作不可恢复。'))return;
+  try{
+    await deleteSession(row.id);
+    $('session-status').textContent='已删除练习。';
+    if(sessionId===row.id){
+      sessionId=null;history=[];renderHistory();populate({});
+      $('result').replaceChildren(node('p','练习已删除。新建一份练习继续。','history-empty'));
+      $('state-badge').textContent='等待提交';
+    }
+    await sessions();
+  }catch(error){$('session-status').textContent=error.message;}
+}
 function populate(data) {
+  clearWorkFiles();
   for(const key of ['problem','solution','draft','request','mode']) $(key).value = data[key] || (key==='mode'?'check':'');
   $('grade').value = data.grade_level || '高中'; setMode();
   $('verify-equation').checked=Boolean(data.verification_requested)&&!$('verify-equation').disabled;
 }
 async function loadSession(id) {
-  currentPoll++; sessionId=id; busy=false; $('submit').disabled=false;
+  currentPoll++; sessionId=id; busy=false; $('submit').disabled=false;$('session-status').textContent='';
   history = await api('/api/sessions/'+id); await sessions(); renderHistory();
   if(history.length){populate(history.at(-1).data); renderResult(history.at(-1)); if(['queued','running'].includes(history.at(-1).state)) poll(history.at(-1).id);}
   else {populate({});$('result').replaceChildren(node('p','写下你的尝试，开始新的练习。','history-empty'));$('state-badge').textContent='等待提交';}
@@ -43,6 +153,7 @@ function renderHistory() {
   for(const item of [...history].reverse()) {
     const row=node('div',undefined,'history-row');row.append(node('strong','第 '+item.revision+' 次提交'));
     row.append(node('small',new Date(item.created).toLocaleString('zh-CN')));
+    if(item.data?.attachments?.length || item.data?.image?.sha256)row.append(node('small','含附件'));
     row.append(node('span',item.is_current?'当前版本':'历史版本 · 已失效'));
     const button=node('button','查看');button.onclick=()=>{renderResult(item);$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});};row.append(button);$('history').append(row);
   }
@@ -51,6 +162,24 @@ function renderHistory() {
 function renderResult(item) {
   const area=$('result');area.replaceChildren();$('state-badge').textContent=labels[item.state]||item.state;
   if(!item.is_current)area.append(node('p','这是历史版本的反馈，不代表当前解答。','error-message'));
+  const attachments=item.data?.attachments || (item.data?.image?.sha256?[item.data.image]:[]);
+  for(const attachment of attachments){
+    if(!attachment?.sha256)continue;
+    const url='/api/uploads/'+attachment.sha256+attachment.ext;
+    const isImage=attachment.kind==='image'||['.png','.jpg','.webp'].includes(attachment.ext);
+    if(isImage){
+      const figure=node('figure',undefined,'work-image-card');
+      const image=document.createElement('img');
+      image.src=url;image.alt='第 '+item.revision+' 次提交的附件';image.loading='lazy';
+      figure.append(image);
+      figure.append(node('figcaption','第 '+item.revision+' 次提交的图片 · 仅本地查看，系统未识别其中文字'));
+      area.append(figure);
+    }else{
+      const link=node('a',(attachment.ext==='.pdf'?'查看 PDF 附件':'查看附件')+' ↗','attachment-link');
+      link.href=url;link.target='_blank';link.rel='noopener noreferrer';
+      area.append(link);
+    }
+  }
   if(['queued','running'].includes(item.state)){area.append(node('div','正在检查你的思路，请稍等。','loading'));return;}
   const run=item.result;
   if(!run || run.error){area.append(node('p',run?.error||'运行已中断，请重新提交。','error-message'));return;}
@@ -91,13 +220,64 @@ $('submission-form').onsubmit=async event=>{
     data.verification_requested=$('verify-equation').checked;
     const old=history.at(-1);data.allow_mode_change=Boolean(old && old.data.mode==='hint' && data.mode!=='hint');
     if(['draft','partition'].includes(data.mode))data.solution='';else data.draft='';
-    const {id}=await api('/api/sessions/'+sessionId+'/submissions',data);await sessions();history=await api('/api/sessions/'+sessionId);renderHistory();poll(id);
+    if(workFiles.length){
+      data.attachments=await Promise.all(workFiles.map(async item=>({name:item.file.name,base64:await fileToBase64(item.file)})));
+    }
+    const {id}=await api('/api/sessions/'+sessionId+'/submissions',data);clearWorkFiles();await sessions();history=await api('/api/sessions/'+sessionId);renderHistory();poll(id);
   }catch(error){$('form-status').textContent=error.message;$('submit').disabled=false;}
 };
 $('new-session').onclick=async()=>{const {id}=await api('/api/sessions',{});await loadSession(id);};
+$('toggle-archived').onclick=()=>{showArchived=!showArchived;sessions();};
 $('mode').onchange=setMode;
+$('work-files').onchange=()=>{
+  addWorkFiles([...$('work-files').files]);
+  $('work-files').value='';
+};
 $('example').onclick=()=>{populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),session_id:sessionId,submissions:history},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='数学练习-'+sessionId.slice(0,8)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+
+let settingsBusy=false;
+function settingsStatus(message,isError=false){const el=$('settings-status');el.textContent=message;el.className=isError?'error-message':'source-note';}
+function showSettingsFields(){const http=$('settings-backend').value==='http';$('settings-http-fields').hidden=!http;$('settings-codex-fields').hidden=http;}
+function settingsPayload(){return {backend:$('settings-backend').value,base_url:$('settings-base').value,model:$('settings-model').value,style:$('settings-style').value,codex_bin:$('settings-codex-bin').value,api_key:$('settings-key').value};}
+async function loadSettings(){
+  try{
+    const data=await api('/api/settings');
+    $('settings-backend').value=data.backend==='http'?'http':'codex-cli';
+    $('settings-base').value=data.base_url||'';
+    $('settings-model').value=data.model||'';
+    $('settings-style').value=data.style||'chat';
+    $('settings-codex-bin').value=data.codex_bin&&data.codex_bin!=='codex'?data.codex_bin:'';
+    $('settings-key').value='';
+    $('settings-key').placeholder=data.has_key?'已设置，留空保持不变':'未设置';
+    $('settings-source').textContent=data.environment_locked?'当前由环境变量 MATH_API_BASE 覆盖；网页保存不会生效。':data.source==='ui'?'当前使用网页保存的设置。':'当前使用默认 Codex CLI 配置。';
+    for(const id of ['settings-backend','settings-base','settings-model','settings-style','settings-codex-bin','settings-key','settings-save','settings-test'])$(id).disabled=data.environment_locked;
+    showSettingsFields();
+  }catch(error){settingsStatus('读取设置失败：'+error.message,true);}
+}
+async function refreshConnection(){
+  try{const data=await api('/api/health');
+    $('connection').textContent=data.available?(data.backend==='http'?'HTTP 模型接口已连接':'本地 Codex 已连接'):'请在模型设置中配置';
+    verificationAvailable=data.exact_verification_available;setMode();
+  }catch(error){$('connection').textContent='服务未连接';}
+}
+async function saveSettings(event){
+  event.preventDefault();if(settingsBusy)return;settingsBusy=true;settingsStatus('正在保存…');
+  try{const data=await api('/api/settings',settingsPayload());await loadSettings();await refreshConnection();settingsStatus('已保存。当前后端：'+(data.backend==='http'?'HTTP 接口':'Codex CLI'));}
+  catch(error){settingsStatus(error.message,true);}
+  finally{settingsBusy=false;}
+}
+async function testSettings(){
+  if(settingsBusy)return;settingsBusy=true;settingsStatus('正在测试连接…');
+  try{const data=await api('/api/settings/test',settingsPayload());settingsStatus(data.message||(data.ok?'连接正常。':'连接失败。'),!data.ok);}
+  catch(error){settingsStatus(error.message,true);}
+  finally{settingsBusy=false;}
+}
+$('open-settings').onclick=async()=>{if(typeof $('settings-dialog').showModal==='function')$('settings-dialog').showModal();else $('settings-dialog').setAttribute('open','');await loadSettings();};
+$('close-settings').onclick=()=>{if(typeof $('settings-dialog').close==='function')$('settings-dialog').close();else $('settings-dialog').removeAttribute('open');};
+$('settings-form').onsubmit=saveSettings;
+$('settings-test').onclick=testSettings;
+$('settings-backend').onchange=showSettingsFields;
 const openedFromFile=location.protocol==='file:';
 if(openedFromFile){
   $('file-launch-notice').hidden=false;
@@ -105,7 +285,7 @@ if(openedFromFile){
   document.querySelector('.brand').href='http://127.0.0.1:8765/';
   document.querySelectorAll('button,input,textarea,select').forEach(control=>control.disabled=true);
 }else{
-  api('/api/health').then(data=>{$('connection').textContent=data.available?'本地模型入口已连接':'请安装并登录 Codex';verificationAvailable=data.exact_verification_available;setMode();}).catch(()=>{$('connection').textContent='服务未连接';});
+  refreshConnection();
   sessions();setMode();
 }
 
