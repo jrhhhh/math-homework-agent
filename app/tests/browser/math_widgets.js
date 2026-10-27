@@ -1,0 +1,24 @@
+async (page) => {
+  const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+  await page.goto('http://127.0.0.1:8767/');await page.setViewportSize({width:1280,height:900});
+  for(const template of ['unit_circle','derivative']){
+    await page.getByRole('button',{name:'师生任务',exact:true}).click();
+    await page.getByLabel('任务标题',{exact:true}).fill(template==='unit_circle'?'三角函数的坐标含义':'割线到切线');
+    await page.getByLabel('原题',{exact:true}).fill(template==='unit_circle'?'在单位圆上说明 90° 角对应点的纵坐标。':'解释 f(x)=x² 在 x=1 处的导数与差商极限。');
+    await page.getByLabel('本题目标',{exact:true}).fill(template==='unit_circle'?'联系角度与单位圆坐标':'用差商极限解释导数');
+    await page.getByLabel('成功标准',{exact:true}).fill('结合坐标或斜率说明理由，区分观察和证明');
+    await page.getByLabel('数学操作活动',{exact:true}).selectOption(template);
+    await page.getByRole('button',{name:'检查完毕，发布任务 →',exact:true}).click();await page.getByText('任务已发布，学生可以从右侧领取题目。',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'按学习路径学习 →',exact:true}).click();await page.getByRole('button',{name:'动手观察与解释',exact:true}).click();await page.getByRole('button',{name:'打开数学活动',exact:true}).click();await page.locator('#path-widget').waitFor({state:'visible'});
+    if(template==='unit_circle'){
+      await page.getByRole('slider',{name:'angle',exact:true}).fill('90');await page.getByText('单位圆坐标：(0.000, 1.000)',{exact:true}).waitFor();
+      const bounds=await page.locator('#widget-chart path[stroke="#b70031"]').evaluate(el=>{const b=el.getBBox();return{width:b.width,height:b.height};});
+      if(Math.abs(bounds.width-bounds.height)>0.01)throw Error('Unit circle is distorted '+JSON.stringify(bounds));
+    }else{
+      await page.getByRole('slider',{name:'h',exact:true}).fill('0');await page.getByText('切线（导数给出的极限图示） 斜率：2.0000',{exact:true}).waitFor();
+    }
+    await page.screenshot({path:'output/playwright/'+template+'-desktop.png',fullPage:true});
+  }
+  if(errors.length)throw Error(errors.join('\n'));
+  return{passed:true,checks:'unit circle equal scales and 90 degrees; zero-step tangent and finite slope',errors};
+}

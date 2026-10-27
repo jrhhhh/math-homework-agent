@@ -28,6 +28,7 @@ async (page) => {
   await page.getByRole('button',{name:'布置关联的再练习 →',exact:true}).click();
   await page.getByText('将关联前序任务 '+original.slice(0,8)+' 及当前证据版本。',{exact:true}).waitFor();
   await page.getByLabel('原题',{exact:true}).fill('解 x+2=4。');
+  await page.getByLabel('成功标准',{exact:true}).fill('写出同一运算并代回验根');
   await page.getByRole('button',{name:'检查完毕，发布任务 →',exact:true}).click();
   await page.getByText('关联前序任务：'+original.slice(0,8),{exact:true}).waitFor();
   await page.getByLabel('已发布任务').selectOption(original);

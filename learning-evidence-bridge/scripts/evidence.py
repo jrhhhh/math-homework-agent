@@ -13,6 +13,8 @@ def summarize(items):
     for item in items:
         sub = item.get('submission')
         row = {key: item[key] for key in ('id', 'problem', 'objective')}
+        row['success_criteria']=item.get('success_criteria',item['objective'])
+        row['support']=sub.get('support',{'condition':'unknown_legacy','events':[]}) if sub else {'condition':'not_attempted','events':[]}
         row.update(state='unsubmitted', submission_id=None, revision=None, version=None,
                    first_error=None)
         if sub:

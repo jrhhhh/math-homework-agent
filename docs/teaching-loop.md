@@ -56,4 +56,7 @@ playwright-cli --session teaching-loop run-code --filename app/tests/browser/tea
 
 脚本覆盖布置、领取、作答、诊断回传、教案交接、关联再练习、修订与旧计划失效，并截图检查 1280/390 两个视口。截图输出到 `output/playwright/`。检查结果存于 `docs/delivery/evidence/teaching-loop-browser.json`，模型与诊断为测试替身，不表示真实教学效果。
 
-真实模型接口冒烟需显式运行 `python3 scripts/smoke_teaching_loop.py --real-model`：实际调用 Codex CLI 两次，检查任务草案与教师教案输出。教案依据使用明确的合成学生诊断，不能当作真实学生或教学质量实验。当前两次真实调用均成功，原始返回、耗时与用量保存在 `docs/delivery/evidence/teaching-loop-model-smoke.json`。
+真实模型接口冒烟需显式运行 `python3 scripts/smoke_teaching_loop.py --real-model`：实际调用 Codex CLI 三次，检查任务草案、教师教案与关联独立复核草案输出。教案依据使用明确的合成学生诊断，不能当作真实学生或教学质量实验。当前三次真实调用均成功，原始返回、耗时与用量保存在 `docs/delivery/evidence/teaching-loop-model-smoke.json`。
+
+
+学习路径、帮助快照、独立新题复核与后台任务接口见 [学习路径与任务恢复](learning-path.md)。

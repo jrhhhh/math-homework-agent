@@ -16,7 +16,7 @@ from app.teaching_loop import TeachingLoop
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--real-model',action='store_true',help='Authorize two real model calls through local Codex CLI')
+    parser.add_argument('--real-model',action='store_true',help='Authorize three real model calls through local Codex CLI')
     parser.add_argument('--out',type=Path,default=ROOT/'docs/delivery/evidence/teaching-loop-model-smoke.json')
     args=parser.parse_args()
     if not args.real_model:parser.error('This smoke makes model calls; pass --real-model to run it.')
@@ -25,7 +25,7 @@ def main():
         response=model.generate(prompt)
         records.append({key:response.get(key) for key in ('raw','elapsed_seconds','usage','backend','requested_model')})
         return response
-    report={'executed_at':datetime.now(timezone.utc).isoformat(), 'scope':'Two real model interface calls; student diagnosis is a synthetic fixture. Not a teaching-effect or mathematical-accuracy evaluation.', 'calls':records, 'passed':False}
+    report={'executed_at':datetime.now(timezone.utc).isoformat(), 'scope':'Three real model interface calls; student diagnosis is a synthetic fixture. Not a teaching-effect or mathematical-accuracy evaluation.', 'calls':records, 'passed':False}
     try:
         with tempfile.TemporaryDirectory(prefix='teaching-model-smoke-') as folder:
             store=Store(Path(folder)/'smoke.sqlite')
@@ -38,6 +38,13 @@ def main():
             rid=store.submit(opened['session_id'],{'problem':opened['problem'],'solution':'x=3','mode':'check'})
             store.update(rid,'ready',{'status':'ready','output':{'reply':'代回检查。','result':{'judgment':'incorrect','first_error':{'step':1,'quote':'x=3','reason':'3+1不等于2。'}}}})
             report['remedial_plan']=loop.plan(task['id'])
+            evidence=loop.report(task['id'])
+            independent=loop.design({'title':'同目标新题复核','objective':'设计一道与前序原题不同的一元一次方程题，要求解释等式变形与代回验根。',
+                                     'parent_id':task['id'],'evidence_version':evidence['evidence_version'],
+                                     'assessment_kind':'independent_check','target_item_id':task['items'][0]['id']})
+            report['independent_check_draft']=independent
+            report['published_independent_check']=loop.create(independent)
+
             report['passed']=True
     except Exception as exc:
         report['error']=str(exc)

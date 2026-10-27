@@ -1,0 +1,8 @@
+{
+  "min_items": 1,
+  "max_items": 10,
+  "required_item_fields": ["problem", "objective", "success_criteria"],
+  "activity_templates": ["none", "quadratic", "unit_circle", "derivative"],
+  "assessment_kinds": ["practice", "independent_check"],
+  "scene_order": ["attempt", "explain", "interactive", "independent_check"]
+}

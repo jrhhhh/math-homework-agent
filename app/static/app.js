@@ -110,13 +110,14 @@ if(openedFromFile){
 }
 
 function switchWorkspace(name) {
-  const teacher=name==='teacher', teaching=name==='teaching';
+  const teacher=name==='teacher', teaching=name==='teaching', path=name==='path';
+  $('path-view').hidden=!path;
   $('practice-view').hidden=name!=='practice';$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
-  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':'练习工作台');
-  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':'过程反馈');
+  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'练习工作台');
+  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'过程反馈');
   $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
   for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
-    $(id).classList.toggle('active',key===name);$(id).setAttribute('aria-selected',String(key===name));
+    $(id).classList.toggle('active',key===name||(key==='practice'&&path));$(id).setAttribute('aria-selected',String(key===name||(key==='practice'&&path)));
   }
   if(teacher)refreshLessonHistory();
 }
@@ -174,20 +175,20 @@ $('lesson-form').onsubmit=async event=>{
     if(lessonTeachingSource)payload.teaching_source=lessonTeachingSource;
     if(file){payload.file_name=file.name;payload.file_base64=await fileToBase64(file);}
     lessonBusyState('正在依据课件 Skill 梳理教案并生成逐页大纲…');
-    currentLesson=await api('/api/lessons/outline',payload);showLesson(currentLesson);lessonDone('请逐页核对大纲与待补充信息，再确认进入课件源码。');refreshLessonHistory();
+    currentLesson=await jobApi('/api/lessons/outline',payload);showLesson(currentLesson);lessonDone('请逐页核对大纲与待补充信息，再确认进入课件源码。');refreshLessonHistory();
   }catch(error){lessonDone(error.message);}
 };
 $('lesson-source-button').onclick=async()=>{
   if(lessonBusy||!currentLesson)return;
   try{lessonBusyState('已提交大纲确认，正在生成可编辑课件源码…');
-    currentLesson=await api('/api/lessons/'+currentLesson.id+'/source',{outline:$('lesson-outline').value,clarifications:$('lesson-clarifications').value});
+    currentLesson=await jobApi('/api/lessons/'+currentLesson.id+'/source',{outline:$('lesson-outline').value,clarifications:$('lesson-clarifications').value});
     showLesson(currentLesson);lessonDone('请检查页序、公式、例题和图示描述；确认后再渲染。');refreshLessonHistory();
   }catch(error){lessonDone(error.message);}
 };
 $('lesson-render-button').onclick=async()=>{
   if(lessonBusy||!currentLesson)return;
   try{lessonBusyState('正在生成配图、渲染 PowerPoint，并运行独立版式检查…');
-    const result=await api('/api/lessons/'+currentLesson.id+'/render',{slides_markdown:$('lesson-source').value});
+    const result=await jobApi('/api/lessons/'+currentLesson.id+'/render',{slides_markdown:$('lesson-source').value});
     currentLesson=await api('/api/lessons/'+currentLesson.id);showLesson(currentLesson);lessonDone(result.status==='ready'?'结构检查通过。请下载并在实际放映软件中通看，数学内容仍需教师审阅。':'检查未通过；根据上方告警修订源码后重试。');refreshLessonHistory();
   }catch(error){lessonDone(error.message);}
 };

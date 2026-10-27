@@ -49,6 +49,32 @@ class HttpTest(unittest.TestCase):
         self.assertTrue(payload['is_current'])
         self.assertEqual(payload['data']['solution'],'x=1')
 
+    def test_learning_path_help_and_widget_endpoints(self):
+        _,task=self.request('/api/teaching',{'title':'路径','items':[{'problem':'解 x+1=2。','objective':'逆运算','success_criteria':'说明运算依据'}]})
+        item=task['items'][0];_,opened=self.request('/api/teaching/'+task['id']+'/open/'+item['id'],{})
+        sid=opened['session_id']
+        self.assertEqual(self.request('/api/sessions/'+sid+'/support',{'kind':'guidance_opened','problem':item['problem']})[0],201)
+        _,path=self.request('/api/teaching/'+task['id']+'/path/'+item['id'])
+        self.assertEqual(path['support_history'][0]['kind'],'guidance_opened')
+        self.assertEqual(self.request('/api/math-widget',{'template':'unit_circle','angle':90})[1]['point'][1],1)
+        self.assertEqual(self.request('/api/math-widget',{'template':'eval'})[0],400)
+        self.assertEqual(self.request('/api/math-widget',{'template':'unit_circle'},origin='https://example.com')[0],403)
+        self.assertEqual(self.request('/api/teaching/no/path/no')[0],404)
+
+    def test_durable_job_endpoint_preserves_paused_failure_and_request_key(self):
+        payload={'kind':'lesson-outline','payload':{'topic':''},'request_key':'invalid-outline-http'}
+        status,job=self.request('/api/jobs',payload);self.assertEqual(status,202)
+        self.assertNotIn('payload',job)
+        for _ in range(100):
+            _,current=self.request('/api/jobs/'+job['id'])
+            if current['state']=='paused':break
+            time.sleep(.01)
+        self.assertEqual(current['state'],'paused')
+        self.assertEqual(self.request('/api/jobs',payload)[1]['id'],job['id'])
+        self.assertEqual(self.request('/api/jobs/'+job['id']+'/retry',{})[0],200)
+        self.assertEqual(self.request('/api/jobs/missing')[0],404)
+        self.assertEqual(self.request('/api/jobs',payload,origin='https://example.com')[0],403)
+
     def test_cross_origin_model_call_rejected(self):
         self.assertEqual(self.request('/api/sessions',{},origin='https://example.com')[0],403)
 

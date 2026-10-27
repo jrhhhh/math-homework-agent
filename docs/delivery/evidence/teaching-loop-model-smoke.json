@@ -1,16 +1,16 @@
 {
-  "executed_at": "2026-10-23T03:59:34.872950+00:00",
-  "scope": "Two real model interface calls; student diagnosis is a synthetic fixture. Not a teaching-effect or mathematical-accuracy evaluation.",
+  "executed_at": "2026-10-27T01:26:50.395411+00:00",
+  "scope": "Three real model interface calls; student diagnosis is a synthetic fixture. Not a teaching-effect or mathematical-accuracy evaluation.",
   "calls": [
     {
-      "raw": "{\"title\":\"高一等式逆运算\",\"items\":[{\"problem\":\"解一元一次方程 3(x－2)＋5＝2x＋7。请写出完整解题过程，在每一步变形旁说明对等式两边进行了什么相同的运算，并将求得的解代入原方程检验。\",\"objective\":\"理解并运用等式的基本性质解一元一次方程，说明等式两边所做的同一运算，并通过代回原方程检验解的正确性。\"}]}",
-      "elapsed_seconds": 23.147,
+      "raw": "{\"title\":\"高一等式逆运算\",\"items\":[{\"problem\":\"解一元一次方程 3(x－2)＋5＝2x＋7。要求：写出求解过程，在每一步变形旁说明对等式两边施加的同一运算；求得解后，将其代入原方程，分别计算左右两边并判断是否相等。\",\"objective\":\"运用等式的基本性质解一元一次方程，说明等式两边的同一运算，并通过代回原方程检验所得解。\",\"success_criteria\":\"每一步方程变形保持等价，能明确说明等式两边同时加、减同一个数或式子，或同时乘、除以同一个非零数；能将所得解代入原方程，分别计算左右两边，并依据是否相等作出验根结论。\",\"interactive_template\":\"none\"}]}",
+      "elapsed_seconds": 15.001,
       "usage": [
         {
-          "input_tokens": 27860,
-          "cached_input_tokens": 12544,
+          "input_tokens": 28156,
+          "cached_input_tokens": 0,
           "cache_write_input_tokens": 0,
-          "output_tokens": 127,
+          "output_tokens": 208,
           "reasoning_output_tokens": 0
         }
       ],
@@ -18,14 +18,29 @@
       "requested_model": "user-config-default"
     },
     {
-      "raw": "{\"draft_markdown\":\"# 补救教学草稿（供教师修改）\\n\\n## 依据与证据边界\\n- assignment_id：b4a24d277e2d4d488e48322574621ef9\\n- 任务项：a3b92dd56eb346948a2df3e3e697e5c9；原题：解 x+1=2。\\n- submission_id：ca529598fb7b47b6b2815d0ea85c828e；revision：1。\\n- 当前提交版本：9ce6ea140d4076ece424742393f217454a78d6a4a0d1d62f3a58854a9a005a74\\n- evidence_version：15edda5e3cee756109e371668947ceb1e12a7de7818574c26589cc9bebc159d9\\n\\n已观察到：当前模型诊断为错误，首错引用为第1步“x=3”，诊断理由为“3+1不等于2”。本次按补救设计；依据仅限该提交，不能据此判断长期能力或班级学情。\\n\\n待教师确认：学生是否理解等式两边需要进行相同运算，以及是否主动验根。现有记录未展示具体运算过程，不能直接认定错误成因。\\n\\n## 本次补救目标\\n学生能修订原题，明确写出等式两边同时减去1的过程，并将所得结果代回原等式检查左右两边是否相等。该目标对应提供的任务学习目标，不作为课程标准表述。\\n\\n## 教学过程\\n1. **回看当前结果。** 教师问：“把你写出的值代回原等式，左右两边相等吗？”学生代入、比较，并说明当前结果是否成立。观察学生是否实际检验，而非仅更换答案。\\n2. **说明等式变形。** 教师问：“要消去左边的加1，两边分别需要做什么？为什么要同时做？”学生在原题上写出两边的运算，并解释保持等式成立的依据。教师据此确认实际障碍，再决定是否增加提示。\\n3. **修订并验根。** 教师问：“请保留原记录，补写修订过程，再用原等式检查。”学生完成修订与验根，并指出原提交需要修改的位置。观察变形、解释和检验是否相互一致。\\n\\n## 再练习目标与验收\\n原题修订通过后，再进入同目标、条件变化的巩固练习。本草稿不新增题目或答案；由 learning-task-designer 依据上述目标设计，教师审阅并完成数学复核后使用；需要解答时交 math-solver。\\n\\n验收关注：是否对两边实施相同运算，能否说明运算目的，是否代回原等式验根，以及发现不相等时能否回查过程。不能仅凭最终答案一致认定通过。若仍缺少过程证据，继续收集学生书写与解释，不自动宣布已经掌握。\\n\\n## 教师审阅与后续交接\\n教师可根据现场表现修改提示与节奏。需要课件时，审阅后交 lesson-materials-builder，先确认教材、课时和页面大纲，再制作。\\n\\n保存上述 assignment_id、submission_id 与 evidence_version。发布再练习时记录前序任务项及证据版本；学生新提交导致证据版本变化时，将本计划标注为过期并重新规划。新一轮由 math-error-diagnosis 审查修订过程。\"}",
-      "elapsed_seconds": 24.944,
+      "raw": "{\"draft_markdown\":\"## 补救教学草稿（供教师修改）\\n\\n### 依据与版本\\n- assignment_id：`6c3d3e0ed6a84f34a2ed042fe0ddc02d`\\n- evidence_version：`3b6ef3eef96bf7d56e250c8a23d95758f4f1df0888907ae9a7e8439807e17dd4`\\n- 任务项：`dccdc696398c46b3a9b5f20b7349dcbf`\\n- 当前 submission_id：`4be0e900fb6d4599a7d39d192e650f2b`；revision：1。\\n- 当前提交版本：`9ce6ea140d4076ece424742393f217454a78d6a4a0d1d62f3a58854a9a005a74`\\n\\n### 任务与教学目标\\n- problem：解 x+1=2。\\n- objective：等式两边同时减去1并验根。\\n- success_criteria：等式两边同时减去1并验根。\\n- 类型：针对当前错误提交的补救，原任务 assessment_kind 为 practice，尚未通过 independent_check。\\n\\n### 已观察的问题与待确认解释\\n当前模型诊断引用第1步“x=3”，理由为“3+1不等于2”。这表明该结果不能使原等式成立。现有证据不足以确定学生是否混淆了运算方向、遗漏了等式两边的同步操作，或只是书写失误，需教师通过追问确认。\\n\\n系统当前未记录帮助事件；这不代表没有外部帮助，也不能据此认定学生独立完成。\\n\\n### 一次短课的可观察目标\\n学生修订原题时，能写出等式两边同时减去1的操作，解释这样做为何保持等式成立，并将所得结果代回原式检验。验收同时检查操作、解释与验根，不只核对最终答案。\\n\\n### 教学过程\\n1. **attempt｜修订原题**\\n   - 教师问题：“把你写出的结果代回原等式，两边是否相等？请写出检验过程，再尝试修订。”\\n   - 学生动作：保留原提交，另写代入检验和修订过程。\\n   - 观察证据：能否用原等式判断结果是否成立；记录修订前和修订中提供的帮助。\\n2. **explain｜说明等式操作**\\n   - 教师问题：“要去掉左边加上的1，两边分别应做什么？为什么两边都需要这样做？”\\n   - 学生动作：明确写出两边同时减去1的步骤，并用自己的话解释，再完成验根。\\n   - 观察证据：是否两边执行相同操作，书面推理是否完整，验根是否回到原等式。该追问属于帮助，应记录后再评价修订表现。\\n3. **interactive｜口头核对与书面补全**\\n   - activity_template：none，不安排交互演示。\\n   - 教师请学生逐一指出书面操作对应的等式两边，并解释验根的作用；学生据此补全自己的推理。口头表现仅用于形成观察，不能替代书面过程。\\n4. **independent_check｜迁移观察，待配置**\\n   - 交 learning-task-designer 设计一道同目标、同成功标准但条件变化的题，本草稿不提供新题或答案。\\n   - 提交前明确并记录允许的帮助条件；学生自行写出等式操作、理由和验根。若接受帮助，保留具体帮助记录，分别报告结果。\\n\\n### 再练习验收与结果表述\\n原题修订检查两边同步减去1、理由说明及代回检验是否完整。若借助上述提示修订正确，表述为“在帮助后修订正确”。\\n\\n新题检查相同推理能否迁移；若过程正确且系统未记录提交前帮助，仅表述为“新题提交前未记录帮助且过程正确”，同时保留外部帮助未知的限制。帮助记录不全时，不解释为独立掌握。新提交交 math-error-diagnosis 审查，不自动宣布已经掌握。\\n\\n### 教师审阅与交接\\n教师确认解释、课时和帮助条件后，可交 lesson-materials-builder；制作前仍需确认教材、课时及页面大纲。发布再练习时保存前序 assignment_id、任务项及 evidence_version。学生新提交导致证据版本变化时，将本草稿标注为过期并依据新证据重新规划。任何后续生成的新题或推导均需数学复核。本草稿仅讨论这一任务的当前提交，不推断班级学情或学生长期能力。\"}",
+      "elapsed_seconds": 28.934,
       "usage": [
         {
-          "input_tokens": 28166,
+          "input_tokens": 28486,
           "cached_input_tokens": 0,
           "cache_write_input_tokens": 0,
-          "output_tokens": 830,
+          "output_tokens": 1133,
+          "reasoning_output_tokens": 0
+        }
+      ],
+      "backend": "codex-cli",
+      "requested_model": "user-config-default"
+    },
+    {
+      "raw": "{\"title\":\"同目标新题复核（待教师审查，未经求解核验）\",\"items\":[{\"problem\":\"解方程 x+1=5。写出等式变形过程，说明每一步变形的依据，并将求得的解代回原方程检验。\",\"objective\":\"等式两边同时减去1并验根\",\"success_criteria\":\"等式两边同时减去1并验根\",\"interactive_template\":\"none\"}]}",
+      "elapsed_seconds": 11.704,
+      "usage": [
+        {
+          "input_tokens": 28707,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 106,
           "reasoning_output_tokens": 0
         }
       ],
@@ -38,18 +53,61 @@
     "title": "高一等式逆运算",
     "items": [
       {
-        "problem": "解一元一次方程 3(x－2)＋5＝2x＋7。请写出完整解题过程，在每一步变形旁说明对等式两边进行了什么相同的运算，并将求得的解代入原方程检验。",
-        "objective": "理解并运用等式的基本性质解一元一次方程，说明等式两边所做的同一运算，并通过代回原方程检验解的正确性。"
+        "problem": "解一元一次方程 3(x－2)＋5＝2x＋7。要求：写出求解过程，在每一步变形旁说明对等式两边施加的同一运算；求得解后，将其代入原方程，分别计算左右两边并判断是否相等。",
+        "objective": "运用等式的基本性质解一元一次方程，说明等式两边的同一运算，并通过代回原方程检验所得解。",
+        "success_criteria": "每一步方程变形保持等价，能明确说明等式两边同时加、减同一个数或式子，或同时乘、除以同一个非零数；能将所得解代入原方程，分别计算左右两边，并依据是否相等作出验根结论。",
+        "guidance": "",
+        "interactive_template": "none"
       }
     ],
+    "assessment_kind": "practice",
     "review_status": "待教师检查题意、条件和可解性，尚未进行数学核验。"
   },
   "remedial_plan": {
-    "draft_markdown": "# 补救教学草稿（供教师修改）\n\n## 依据与证据边界\n- assignment_id：b4a24d277e2d4d488e48322574621ef9\n- 任务项：a3b92dd56eb346948a2df3e3e697e5c9；原题：解 x+1=2。\n- submission_id：ca529598fb7b47b6b2815d0ea85c828e；revision：1。\n- 当前提交版本：9ce6ea140d4076ece424742393f217454a78d6a4a0d1d62f3a58854a9a005a74\n- evidence_version：15edda5e3cee756109e371668947ceb1e12a7de7818574c26589cc9bebc159d9\n\n已观察到：当前模型诊断为错误，首错引用为第1步“x=3”，诊断理由为“3+1不等于2”。本次按补救设计；依据仅限该提交，不能据此判断长期能力或班级学情。\n\n待教师确认：学生是否理解等式两边需要进行相同运算，以及是否主动验根。现有记录未展示具体运算过程，不能直接认定错误成因。\n\n## 本次补救目标\n学生能修订原题，明确写出等式两边同时减去1的过程，并将所得结果代回原等式检查左右两边是否相等。该目标对应提供的任务学习目标，不作为课程标准表述。\n\n## 教学过程\n1. **回看当前结果。** 教师问：“把你写出的值代回原等式，左右两边相等吗？”学生代入、比较，并说明当前结果是否成立。观察学生是否实际检验，而非仅更换答案。\n2. **说明等式变形。** 教师问：“要消去左边的加1，两边分别需要做什么？为什么要同时做？”学生在原题上写出两边的运算，并解释保持等式成立的依据。教师据此确认实际障碍，再决定是否增加提示。\n3. **修订并验根。** 教师问：“请保留原记录，补写修订过程，再用原等式检查。”学生完成修订与验根，并指出原提交需要修改的位置。观察变形、解释和检验是否相互一致。\n\n## 再练习目标与验收\n原题修订通过后，再进入同目标、条件变化的巩固练习。本草稿不新增题目或答案；由 learning-task-designer 依据上述目标设计，教师审阅并完成数学复核后使用；需要解答时交 math-solver。\n\n验收关注：是否对两边实施相同运算，能否说明运算目的，是否代回原等式验根，以及发现不相等时能否回查过程。不能仅凭最终答案一致认定通过。若仍缺少过程证据，继续收集学生书写与解释，不自动宣布已经掌握。\n\n## 教师审阅与后续交接\n教师可根据现场表现修改提示与节奏。需要课件时，审阅后交 lesson-materials-builder，先确认教材、课时和页面大纲，再制作。\n\n保存上述 assignment_id、submission_id 与 evidence_version。发布再练习时记录前序任务项及证据版本；学生新提交导致证据版本变化时，将本计划标注为过期并重新规划。新一轮由 math-error-diagnosis 审查修订过程。",
-    "assignment_id": "b4a24d277e2d4d488e48322574621ef9",
-    "evidence_version": "15edda5e3cee756109e371668947ceb1e12a7de7818574c26589cc9bebc159d9",
+    "draft_markdown": "## 补救教学草稿（供教师修改）\n\n### 依据与版本\n- assignment_id：`6c3d3e0ed6a84f34a2ed042fe0ddc02d`\n- evidence_version：`3b6ef3eef96bf7d56e250c8a23d95758f4f1df0888907ae9a7e8439807e17dd4`\n- 任务项：`dccdc696398c46b3a9b5f20b7349dcbf`\n- 当前 submission_id：`4be0e900fb6d4599a7d39d192e650f2b`；revision：1。\n- 当前提交版本：`9ce6ea140d4076ece424742393f217454a78d6a4a0d1d62f3a58854a9a005a74`\n\n### 任务与教学目标\n- problem：解 x+1=2。\n- objective：等式两边同时减去1并验根。\n- success_criteria：等式两边同时减去1并验根。\n- 类型：针对当前错误提交的补救，原任务 assessment_kind 为 practice，尚未通过 independent_check。\n\n### 已观察的问题与待确认解释\n当前模型诊断引用第1步“x=3”，理由为“3+1不等于2”。这表明该结果不能使原等式成立。现有证据不足以确定学生是否混淆了运算方向、遗漏了等式两边的同步操作，或只是书写失误，需教师通过追问确认。\n\n系统当前未记录帮助事件；这不代表没有外部帮助，也不能据此认定学生独立完成。\n\n### 一次短课的可观察目标\n学生修订原题时，能写出等式两边同时减去1的操作，解释这样做为何保持等式成立，并将所得结果代回原式检验。验收同时检查操作、解释与验根，不只核对最终答案。\n\n### 教学过程\n1. **attempt｜修订原题**\n   - 教师问题：“把你写出的结果代回原等式，两边是否相等？请写出检验过程，再尝试修订。”\n   - 学生动作：保留原提交，另写代入检验和修订过程。\n   - 观察证据：能否用原等式判断结果是否成立；记录修订前和修订中提供的帮助。\n2. **explain｜说明等式操作**\n   - 教师问题：“要去掉左边加上的1，两边分别应做什么？为什么两边都需要这样做？”\n   - 学生动作：明确写出两边同时减去1的步骤，并用自己的话解释，再完成验根。\n   - 观察证据：是否两边执行相同操作，书面推理是否完整，验根是否回到原等式。该追问属于帮助，应记录后再评价修订表现。\n3. **interactive｜口头核对与书面补全**\n   - activity_template：none，不安排交互演示。\n   - 教师请学生逐一指出书面操作对应的等式两边，并解释验根的作用；学生据此补全自己的推理。口头表现仅用于形成观察，不能替代书面过程。\n4. **independent_check｜迁移观察，待配置**\n   - 交 learning-task-designer 设计一道同目标、同成功标准但条件变化的题，本草稿不提供新题或答案。\n   - 提交前明确并记录允许的帮助条件；学生自行写出等式操作、理由和验根。若接受帮助，保留具体帮助记录，分别报告结果。\n\n### 再练习验收与结果表述\n原题修订检查两边同步减去1、理由说明及代回检验是否完整。若借助上述提示修订正确，表述为“在帮助后修订正确”。\n\n新题检查相同推理能否迁移；若过程正确且系统未记录提交前帮助，仅表述为“新题提交前未记录帮助且过程正确”，同时保留外部帮助未知的限制。帮助记录不全时，不解释为独立掌握。新提交交 math-error-diagnosis 审查，不自动宣布已经掌握。\n\n### 教师审阅与交接\n教师确认解释、课时和帮助条件后，可交 lesson-materials-builder；制作前仍需确认教材、课时及页面大纲。发布再练习时保存前序 assignment_id、任务项及 evidence_version。学生新提交导致证据版本变化时，将本草稿标注为过期并依据新证据重新规划。任何后续生成的新题或推导均需数学复核。本草稿仅讨论这一任务的当前提交，不推断班级学情或学生长期能力。",
+    "assignment_id": "6c3d3e0ed6a84f34a2ed042fe0ddc02d",
+    "evidence_version": "3b6ef3eef96bf7d56e250c8a23d95758f4f1df0888907ae9a7e8439807e17dd4",
     "source_submission_ids": [
-      "ca529598fb7b47b6b2815d0ea85c828e"
+      "4be0e900fb6d4599a7d39d192e650f2b"
     ]
+  },
+  "independent_check_draft": {
+    "title": "同目标新题复核（待教师审查，未经求解核验）",
+    "items": [
+      {
+        "problem": "解方程 x+1=5。写出等式变形过程，说明每一步变形的依据，并将求得的解代回原方程检验。",
+        "objective": "等式两边同时减去1并验根",
+        "success_criteria": "等式两边同时减去1并验根",
+        "guidance": "",
+        "interactive_template": "none"
+      }
+    ],
+    "assessment_kind": "independent_check",
+    "parent_id": "6c3d3e0ed6a84f34a2ed042fe0ddc02d",
+    "evidence_version": "3b6ef3eef96bf7d56e250c8a23d95758f4f1df0888907ae9a7e8439807e17dd4",
+    "target_item_id": "dccdc696398c46b3a9b5f20b7349dcbf",
+    "review_status": "待教师检查题意、条件和可解性，尚未进行数学核验。"
+  },
+  "published_independent_check": {
+    "title": "同目标新题复核（待教师审查，未经求解核验）",
+    "items": [
+      {
+        "id": "6e7498ff04044bb48cdeac62f70ac058",
+        "task_id": "d692f3220bd648adae78e1dea3073253",
+        "problem": "解方程 x+1=5。写出等式变形过程，说明每一步变形的依据，并将求得的解代回原方程检验。",
+        "objective": "等式两边同时减去1并验根",
+        "session_id": null,
+        "success_criteria": "等式两边同时减去1并验根",
+        "guidance": "",
+        "interactive_template": "none"
+      }
+    ],
+    "assessment_kind": "independent_check",
+    "parent_id": "6c3d3e0ed6a84f34a2ed042fe0ddc02d",
+    "evidence_version": "3b6ef3eef96bf7d56e250c8a23d95758f4f1df0888907ae9a7e8439807e17dd4",
+    "target_item_id": "dccdc696398c46b3a9b5f20b7349dcbf",
+    "id": "d692f3220bd648adae78e1dea3073253",
+    "created": "2026-10-27 01:27:46",
+    "plan": null
   }
 }

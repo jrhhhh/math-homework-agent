@@ -55,6 +55,37 @@ class LessonStudioTest(unittest.TestCase):
             self.assertTrue(source and "测试课" in source.read_text(encoding="utf-8"))
             self.assertGreaterEqual(result["result"]["slides"], 2)
 
+    def test_render_retry_reuses_build_but_rebuilds_tampered_artifact(self):
+        from app.jobs import JobQueue
+        from unittest.mock import patch
+        import subprocess
+        with tempfile.TemporaryDirectory() as folder:
+            store=Store(Path(folder)/'db.sqlite')
+            studio=LessonStudio(store,generator=lambda _: {'raw':json.dumps({'outline_markdown':'# [封面] 测试课','missing_information':[],'clarifying_questions':[]})})
+            lesson=studio.create_outline({'topic':'测试','grade':'高一','textbook':'人教A版','duration':'10分钟','draft_text':'观察图象'})
+            markdown='---\ntitle: 测试课\nversion: daily\n---\n# [封面] 测试课\n教材：人教A版\n# [标题] 观察\n- 比较图象\n<!-- 允许无图 -->'
+            calls=[];fail=[True];real_run=subprocess.run
+            def run(args,**kwargs):
+                stage=Path(args[1]).name;calls.append(stage)
+                if stage=='verify_pptx.py' and fail[0]:return subprocess.CompletedProcess(args,1,'','temporary verification failure')
+                return real_run(args,**kwargs)
+            def handler(p,ctx):
+                result=studio.render(lesson['id'],{'slides_markdown':markdown},checkpoint=ctx.step)
+                if result['status']!='ready':raise ValueError('verification interrupted')
+                return result
+            queue=JobQueue(store,{'render':handler},start=False);job=queue.submit('render',{})
+            with patch('app.lesson_studio.subprocess.run',side_effect=run):
+                queue.run_one();self.assertEqual(queue.get(job['id'])['state'],'paused')
+                fail[0]=False;queue.retry(job['id']);queue.run_one()
+                self.assertEqual(queue.get(job['id'])['state'],'completed')
+                self.assertEqual(calls.count('build_pptx.py'),1)
+                # Simulate a later file change before retrying a paused run.
+                with store.connect() as db:db.execute("UPDATE durable_jobs SET state='paused' WHERE id=?",(job['id'],))
+                studio.file_path(lesson['id'],'deck').write_bytes(b'tampered')
+                queue.retry(job['id']);queue.run_one()
+                self.assertEqual(calls.count('build_pptx.py'),2)
+                self.assertEqual(queue.get(job['id'])['state'],'completed')
+
     def test_incomplete_outline_requires_teacher_clarification(self):
         with tempfile.TemporaryDirectory() as folder:
             store = Store(Path(folder) / "workbench.db")

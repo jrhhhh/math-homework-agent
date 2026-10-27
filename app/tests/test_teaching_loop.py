@@ -83,7 +83,7 @@ class TeachingLoopTest(unittest.TestCase):
 
     def test_model_task_draft_is_validated_and_does_not_publish_itself(self):
         prompts=[]
-        self.loop.generator=lambda prompt:prompts.append(prompt) or {'raw':json.dumps({'title':'草案','items':[{'problem':'解 x+2=4。','objective':'逆运算'}]})}
+        self.loop.generator=lambda prompt:prompts.append(prompt) or {'raw':json.dumps({'title':'草案','items':[{'problem':'解 x+2=4。','objective':'逆运算','success_criteria':'同一运算并验根'}]})}
         draft=self.loop.design({'title':'草案','objective':'逆运算'})
         self.assertEqual(len(self.loop.list()),1)
         self.assertIn('尚未进行数学核验',draft['review_status'])

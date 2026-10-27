@@ -1,7 +1,6 @@
 """Loopback-only HTTP service with immutable submissions and async inference."""
 import argparse
 import importlib.util
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -16,6 +15,9 @@ from .core import normalize, run, version
 from .model import available
 from .lesson_studio import LessonStudio
 from .teaching_loop import TeachingLoop
+from .support import SupportLedger
+from .math_widgets import evaluate as evaluate_widget
+from .jobs import JobQueue
 
 STATIC = Path(__file__).parent / 'static'
 
@@ -32,6 +34,8 @@ class Store:
             db.execute('CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, title TEXT, created TEXT)')
             db.execute('CREATE TABLE IF NOT EXISTS submissions (id TEXT PRIMARY KEY, session_id TEXT, revision INTEGER, created TEXT, data TEXT, version TEXT, state TEXT, result TEXT, UNIQUE(session_id, revision))')
             db.execute('CREATE TABLE IF NOT EXISTS lessons (id TEXT PRIMARY KEY, title TEXT, created TEXT, data TEXT, outline TEXT, missing TEXT, questions TEXT, slides_markdown TEXT, figures_spec TEXT, status TEXT, result TEXT)')
+
+        self.support = SupportLedger(self)
 
     def connect(self):
         db = sqlite3.connect(self.path, timeout=30)
@@ -62,6 +66,7 @@ class Store:
             rid = uuid.uuid4().hex
             db.execute('INSERT INTO submissions VALUES (?,?,?,?,?,?,?,?)',
                        (rid, sid, revision, now(), json.dumps(data, ensure_ascii=False), version(data), 'queued', None))
+            self.support.before_submit(db, sid, rid, data)
             if revision == 1:
                 db.execute('UPDATE sessions SET title=? WHERE id=?', ((data['problem'] or data['draft'])[:40], sid))
         return rid
@@ -70,6 +75,7 @@ class Store:
         with self.connect() as db:
             db.execute('UPDATE submissions SET state=?, result=? WHERE id=?',
                        (state, json.dumps(result, ensure_ascii=False) if result else None, rid))
+            self.support.feedback_available(db, rid, state, result)
 
     @staticmethod
     def decode(row):
@@ -82,6 +88,7 @@ class Store:
         with self.connect() as db:
             rows = [self.decode(r) for r in db.execute('SELECT * FROM submissions WHERE session_id=? ORDER BY revision', (sid,))]
         for row in rows:
+            row['support'] = self.support.snapshot(row['id'])
             row['is_current'] = row['id'] == rows[-1]['id']
         return rows
 
@@ -91,6 +98,7 @@ class Store:
         if row is None:
             return None
         out = self.decode(row)
+        out['support'] = self.support.snapshot(rid)
         out['is_current'] = self.history(out['session_id'])[-1]['id'] == rid
         return out
 
@@ -158,36 +166,70 @@ class Application:
             self.lock.close()
             raise RuntimeError('这个练习数据库已由另一个工作台使用，请使用独立 --db 路径。') from exc
         self.teaching = TeachingLoop(store)
-        self.pool = ThreadPoolExecutor(max_workers=2)
-        self.capacity = threading.BoundedSemaphore(4)
+        self.submit_lock = threading.Lock()
         # A process restart cannot resume an inference handle; retain a truthful terminal record.
         with store.connect() as db:
             db.execute("UPDATE submissions SET state='interrupted' WHERE state IN ('queued','running')")
+        self.jobs = JobQueue(store, {kind:(lambda payload,ctx,k=kind:self.job_work(k,payload,ctx)) for kind in ('diagnose','task-design','remedial-plan','lesson-outline','lesson-source','lesson-render')})
 
     def close(self):
-        self.pool.shutdown(wait=True)
+        self.jobs.close()
         self.lock.close()
 
     def submit(self, sid, data, change_mode=False):
-        if not self.capacity.acquire(blocking=False):
-            raise ValueError('当前任务较多，请等待已有任务完成。')
-        try:
-            rid = self.store.submit(sid, data, change_mode)
-        except Exception:
-            self.capacity.release()
-            raise
-        self.pool.submit(self.work, rid)
+        with self.submit_lock:
+            with self.store.connect() as db:
+                if db.execute("SELECT COUNT(*) FROM durable_jobs WHERE state IN ('queued','running')").fetchone()[0]>=4:
+                    raise ValueError('当前任务较多，请等待已有任务完成。')
+            rid=self.store.submit(sid,data,change_mode)
+            try:self.jobs.submit('diagnose',{'submission_id':rid},'diagnose-'+rid)
+            except Exception:
+                self.store.update(rid,'interrupted');raise
         return rid
 
-    def work(self, rid):
+    def work(self,rid):
         try:
-            self.store.update(rid, 'running')
-            result = self.runner(self.store.get(rid)['data'])
-            self.store.update(rid, result['status'], result)
+            self.store.update(rid,'running')
+            result=self.runner(self.store.get(rid)['data'])
+            self.store.update(rid,result['status'],result)
+            if result['status']=='error':raise ValueError('诊断失败，请继续任务重试。')
+            return {'submission_id':rid}
         except Exception as exc:
-            self.store.update(rid, 'error', {'error': str(exc), 'diagnostic':getattr(exc,'diagnostic',{})})
-        finally:
-            self.capacity.release()
+            self.store.update(rid,'error',{'error':str(exc),'diagnostic':getattr(exc,'diagnostic',{})})
+            raise
+
+    def cancel_job(self,jid):
+        result=self.jobs.cancel(jid)
+        job=self.jobs.get(jid)
+        if job['kind']=='diagnose' and job['state']=='cancelled':
+            rid=job['payload']['submission_id']
+            current=self.store.get(rid)
+            if current and current['state'] in ('queued','running'):
+                self.store.update(rid,'interrupted',{'status':'error','error':'任务已停止，可在任务中心继续。'})
+        return result
+
+    def check_lesson_source(self,lid):
+        lesson=self.store.get_lesson(lid)
+        if lesson and lesson['data'].get('teaching_source') is not None:self.teaching.require_current(lesson['data']['teaching_source'])
+
+    def job_work(self,kind,payload,ctx):
+        if kind=='diagnose':return ctx.step('diagnosis',lambda:self.work(payload['submission_id']))
+        if kind=='task-design':
+            # Never reuse a parent-bound draft after its evidence became stale.
+            if payload.get('parent_id'):self.teaching.require_current({'assignment_id':payload['parent_id'],'evidence_version':payload.get('evidence_version')})
+            return ctx.step('task_design',lambda:self.teaching.design(payload))
+        if kind=='remedial-plan':return ctx.step('remedial_plan',lambda:self.teaching.plan(payload['assignment_id']),
+            valid=lambda result:result['evidence_version']==self.teaching.report(payload['assignment_id'])['evidence_version'])
+        if kind=='lesson-outline':
+            if payload.get('teaching_source') is not None:self.teaching.require_current(payload['teaching_source'])
+            return ctx.step('lesson_outline',lambda:self.lesson_studio.create_outline(payload,lesson_id=ctx.job['id']))
+        lid=payload.get('lesson_id');self.check_lesson_source(lid)
+        if kind=='lesson-source':return ctx.step('lesson_source',lambda:self.lesson_studio.generate_source(lid,payload))
+        if kind=='lesson-render':
+            result=self.lesson_studio.render(lid,payload,checkpoint=ctx.step)
+            if result['status']!='ready':raise ValueError('；'.join(result['result'].get('errors',[])))
+            return result
+        raise ValueError('任务类型无效。')
 
 
 def handler_for(app):
@@ -208,6 +250,11 @@ def handler_for(app):
             if self.path == '/api/health':
                 return self.send({'ok': True, 'backend': 'codex-cli', 'available': available(),
                                   'exact_verification_available':importlib.util.find_spec('sympy') is not None})
+            if self.path == '/api/jobs':
+                return self.send(app.jobs.list())
+            if self.path.startswith('/api/jobs/'):
+                try:return self.send(app.jobs.public(app.jobs.get(self.path.split('/')[3])))
+                except ValueError as exc:return self.send({'error':str(exc)},404)
             if self.path == '/api/sessions':
                 return self.send(app.store.list_sessions())
             if self.path.startswith('/api/sessions/'):
@@ -222,6 +269,8 @@ def handler_for(app):
                 try:
                     if len(parts) == 4:
                         return self.send(app.teaching.get(parts[3]))
+                    if len(parts) == 6 and parts[4] == 'path':
+                        return self.send(app.teaching.learning_path(parts[3], parts[5]))
                     if len(parts) == 5 and parts[4] == 'evidence':
                         return self.send(app.teaching.report(parts[3]))
                 except ValueError as exc:
@@ -247,7 +296,7 @@ def handler_for(app):
                     self.end_headers()
                     self.wfile.write(content)
                     return
-            name = {'/': 'index.html', '/style.css': 'style.css', '/app.js': 'app.js', '/teaching.js': 'teaching.js'}.get(self.path)
+            name = {'/': 'index.html', '/style.css': 'style.css', '/app.js': 'app.js', '/teaching.js': 'teaching.js', '/jobs.js':'jobs.js', '/learning-path.js':'learning-path.js'}.get(self.path)
             if self.path.startswith('/vendor/katex/'):
                 candidate=(STATIC/self.path.lstrip('/')).resolve()
                 if candidate.is_relative_to((STATIC/'vendor/katex').resolve()) and candidate.is_file() and candidate.suffix in ('.js','.css','.woff2'):
@@ -277,14 +326,22 @@ def handler_for(app):
                 return self.send({'error': '需要 application/json'}, 415)
             try:
                 size = int(self.headers.get('Content-Length', '0'))
-                max_size = 8 * 1024 * 1024 if self.path == '/api/lessons/outline' else 150000
+                max_size = 8 * 1024 * 1024 if self.path in ('/api/lessons/outline','/api/jobs') else 150000
                 if not 0 < size <= max_size:
                     raise ValueError('请求大小非法')
                 data = json.loads(self.rfile.read(size))
                 if not isinstance(data, dict):
                     raise ValueError('需要 JSON 对象')
+                if self.path == '/api/jobs':
+                    return self.send(app.jobs.public(app.jobs.submit(data.get('kind'),data.get('payload'),data.get('request_key'))),202)
+                if self.path.startswith('/api/jobs/'):
+                    parts=self.path.split('/')
+                    if len(parts)==5 and parts[4]=='retry':return self.send(app.jobs.retry(parts[3]))
+                    if len(parts)==5 and parts[4]=='cancel':return self.send(app.cancel_job(parts[3]))
                 if self.path == '/api/sessions':
                     return self.send({'id': app.store.create_session()}, 201)
+                if self.path == '/api/math-widget':
+                    return self.send(evaluate_widget(data))
                 if self.path == '/api/teaching/design':
                     return self.send(app.teaching.design(data))
                 if self.path == '/api/teaching':
@@ -311,6 +368,8 @@ def handler_for(app):
                     if lesson and lesson['data'].get('teaching_source') is not None:
                         app.teaching.require_current(lesson['data']['teaching_source'])
                     return self.send(app.lesson_studio.render(lesson_id, data))
+                if self.path.startswith('/api/sessions/') and self.path.endswith('/support'):
+                    return self.send(app.store.support.record(self.path.split('/')[3], data), 201)
                 if self.path.startswith('/api/sessions/') and self.path.endswith('/submissions'):
                     sid = self.path.split('/')[3]
                     rid = app.submit(sid, data, data.get('allow_mode_change') is True)

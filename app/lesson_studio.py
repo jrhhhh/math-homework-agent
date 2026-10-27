@@ -1,4 +1,5 @@
 """Teacher-side lesson preparation through the bundled Lesson Materials Builder."""
+import hashlib
 import base64
 import binascii
 from io import BytesIO
@@ -105,7 +106,9 @@ class LessonStudio:
             for path in files
         )
 
-    def create_outline(self, payload):
+    def create_outline(self, payload, lesson_id=None):
+        if lesson_id and self.store.get_lesson(lesson_id):
+            return self.store.get_lesson(lesson_id)
         topic = _required_string(payload, "topic", "课题")
         grade = _required_string(payload, "grade", "年级")
         textbook = _required_string(payload, "textbook", "教材版本")
@@ -154,7 +157,7 @@ class LessonStudio:
             raise ValueError("大纲缺项格式无效，请重新生成。")
         if not isinstance(questions, list) or not all(isinstance(x, str) for x in questions):
             raise ValueError("大纲补充问题格式无效，请重新生成。")
-        lesson_id = uuid.uuid4().hex
+        lesson_id = lesson_id or uuid.uuid4().hex
         self.store.create_lesson(lesson_id, topic, data, outline, missing, questions)
         return self.store.get_lesson(lesson_id)
 
@@ -200,63 +203,57 @@ class LessonStudio:
         self.store.save_lesson_source(lesson_id, outline, clarifications, markdown, spec)
         return self.store.get_lesson(lesson_id)
 
-    def render(self, lesson_id, payload):
-        lesson = self.store.get_lesson(lesson_id)
-        if lesson is None:
-            raise ValueError("备课记录不存在。")
-        markdown = payload.get("slides_markdown")
-        if not isinstance(markdown, str) or not markdown.strip() or len(markdown) > MAX_TEXT_CHARS:
-            raise ValueError("课件源码为空或超过 80000 字。")
-        output = self.output_root / lesson_id
-        output.mkdir(parents=True, exist_ok=True)
-        source_path = output / "课件.md"
-        deck_path = output / "课件.pptx"
-        figures_dir = output / "figures"
-        source_path.write_text(markdown, encoding="utf-8")
-        spec = lesson.get("figures_spec") or {"output_dir": "figures", "figures": []}
-        spec_path = output / "figures.json"
-        spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2), encoding="utf-8")
-        if figures_dir.exists():
-            shutil.rmtree(figures_dir)
-        figures_dir.mkdir()
-        commands = []
-        if spec["figures"]:
-            commands.append(("figures", [sys.executable, str(BUILDER / "scripts/make_figures.py"), str(spec_path), "-o", str(figures_dir)]))
-        commands.append(("build", [sys.executable, str(BUILDER / "scripts/build_pptx.py"), str(source_path),
-                                     "-o", str(deck_path), "--template", str(BUILDER / "assets/base.pptx")]))
-        logs = []
-        for stage, command in commands:
-            try:
-                process = subprocess.run(command, cwd=BUILDER, capture_output=True, text=True, timeout=180)
-            except subprocess.TimeoutExpired as exc:
-                self.store.finish_lesson_render(lesson_id, "build_failed", {"errors": [f"{stage} 阶段超时。"], "logs": logs})
-                raise ValueError(f"{stage} 阶段超时，请缩减课件或配图后重试。") from exc
-            logs.append({"stage": stage, "exit_code": process.returncode,
-                         "stdout": process.stdout[-12000:], "stderr": process.stderr[-4000:]})
-            if process.returncode != 0:
-                result = {"errors": [f"{stage} 阶段未通过，请检查源码与配图清单。"], "logs": logs}
-                self.store.finish_lesson_render(lesson_id, "build_failed", result)
-                return self._render_response(lesson_id, result, include_deck=False)
+    def render(self, lesson_id, payload, checkpoint=None):
+        lesson=self.store.get_lesson(lesson_id)
+        if lesson is None:raise ValueError("备课记录不存在。")
+        markdown=payload.get('slides_markdown')
+        if not isinstance(markdown,str) or not markdown.strip() or len(markdown)>MAX_TEXT_CHARS:raise ValueError('课件源码为空或超过 80000 字。')
+        output=self.output_root/lesson_id;output.mkdir(parents=True,exist_ok=True)
+        source_path=output/'课件.md';deck_path=output/'课件.pptx';figures_dir=output/'figures'
+        source_path.write_text(markdown,encoding='utf-8')
+        with self.store.connect() as db:db.execute('UPDATE lessons SET slides_markdown=? WHERE id=?',(markdown,lesson_id))
+        spec=lesson.get('figures_spec') or {'output_dir':'figures','figures':[]}
+        spec_path=output/'figures.json';spec_path.write_text(json.dumps(spec,ensure_ascii=False,indent=2),encoding='utf-8')
+        key=hashlib.sha256((markdown+json.dumps(spec,sort_keys=True)).encode()+(BUILDER/'assets/base.pptx').read_bytes()+b''.join(path.read_bytes() for path in sorted((BUILDER/'scripts').glob('*.py')))).hexdigest()[:16]
+        logs=[]
+        def receipt(paths):
+            return {'files':{str(path.relative_to(output)):hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},'logs':list(logs)}
+        def valid(saved):
+            return all((output/name).is_file() and hashlib.sha256((output/name).read_bytes()).hexdigest()==sha for name,sha in saved.get('files',{}).items())
+        def step(name,operation,validator=valid):
+            return checkpoint(name+':'+key,operation,valid=validator) if checkpoint else operation()
+        def command(stage,args):
+            process=subprocess.run([sys.executable,*map(str,args)],cwd=BUILDER,capture_output=True,text=True,timeout=180)
+            logs.append({'stage':stage,'exit_code':process.returncode,'stdout':process.stdout[-12000:],'stderr':process.stderr[-4000:]})
+            if process.returncode:raise ValueError(stage+' 阶段失败，请检查源码与配图清单。')
+            return process
+        def figures():
+            if figures_dir.exists():shutil.rmtree(figures_dir)
+            figures_dir.mkdir()
+            if spec['figures']:command('figures',[BUILDER/'scripts/make_figures.py',spec_path,'-o',figures_dir])
+            return receipt([path for path in figures_dir.rglob('*') if path.is_file()] if spec['figures'] else [])
+        def build():
+            command('build',[BUILDER/'scripts/build_pptx.py',source_path,'-o',deck_path,'--template',BUILDER/'assets/base.pptx'])
+            return receipt([deck_path,source_path])
+        def verify():
+            process=command('verify',[BUILDER/'scripts/verify_pptx.py',deck_path,'--figures',figures_dir,'--json'])
+            report=json.loads(process.stdout)
+            if report.get('errors'):raise ValueError('独立课件复核未通过：'+str(report['errors']))
+            return receipt([deck_path])|{'report':report}
+        stage='figures'
         try:
-            verify = subprocess.run([sys.executable, str(BUILDER / "scripts/verify_pptx.py"),
-                                     str(deck_path), "--figures", str(figures_dir), "--json"],
-                                    cwd=BUILDER, capture_output=True, text=True, timeout=180)
-            report = json.loads(verify.stdout)
-        except (subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
-            result = {"errors": ["独立课件复核未能完成，不能标记为通过。"], "logs": logs}
-            self.store.finish_lesson_render(lesson_id, "review_failed", result)
-            return self._render_response(lesson_id, result, include_deck=False)
-        result = {
-            "errors": report.get("errors", []),
-            "warnings": report.get("warns", []),
-            "slides": report.get("slides"),
-            "render_logs": logs,
-            "scope": "独立检查课件几何与结构；不验证数学内容、封面字体实测换行或播放软件动画效果。",
-            "animation_check": "COM 动画读回仅支持 Windows PowerShell；当前平台为 " + platform.system(),
-        }
-        status = "ready" if not result["errors"] and verify.returncode == 0 else "review_failed"
-        self.store.finish_lesson_render(lesson_id, status, result)
-        return self._render_response(lesson_id, result, include_deck=status == "ready")
+            step('figures',figures);stage='build';step('build',build);stage='verify';review=step('verify',verify)
+        except (ValueError,subprocess.TimeoutExpired,json.JSONDecodeError) as exc:
+            result={'errors':[str(exc)],'logs':logs,'failed_stage':stage}
+            status='review_failed' if stage=='verify' else 'build_failed'
+            self.store.finish_lesson_render(lesson_id,status,result)
+            return self._render_response(lesson_id,result,False)
+        report=review['report']
+        result={'errors':report.get('errors',[]),'warnings':report.get('warns',[]),'slides':report.get('slides'),
+                'render_logs':logs,'scope':'独立检查课件几何与结构；不验证数学内容、封面字体实测换行或播放软件动画效果。',
+                'animation_check':'COM 动画读回仅支持 Windows PowerShell；当前平台为 '+platform.system()}
+        self.store.finish_lesson_render(lesson_id,'ready',result)
+        return self._render_response(lesson_id,result,True)
 
     def _render_response(self, lesson_id, result, include_deck):
         response = {"id": lesson_id, "status": self.store.get_lesson(lesson_id)["status"], "result": result,

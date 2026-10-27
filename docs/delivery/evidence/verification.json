@@ -1,5 +1,5 @@
 {
-  "executed_at": "2026-10-23T04:01:25.194500+00:00",
+  "executed_at": "2026-10-27T01:26:52.563030+00:00",
   "python": "3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)]",
   "records": [
     {
@@ -90,7 +90,7 @@
         "test_*.py"
       ],
       "exit_code": 0,
-      "tests": 49
+      "tests": 72
     },
     {
       "suite": "lesson-builder-regression",
@@ -159,7 +159,7 @@
       "tests": null
     }
   ],
-  "unit_tests": 209,
+  "unit_tests": 232,
   "lesson_builder_privacy_identifier_count": 2,
   "all_passed": true
 }

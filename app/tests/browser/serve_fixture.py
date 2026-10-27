@@ -22,7 +22,7 @@ def generator(prompt):
         refs='、'.join(row['submission_id'] for row in report['items'] if row['submission_id'])
         value={'draft_markdown':'# 逆运算补救课\n依据当前提交 '+refs+'。\n教师提问：等式两边怎样同时减去1？\n学生动作：修订原题并代回。\n再练习目标：观察逆运算和验根过程。'}
     else:
-        value={'title':'逆运算练习','items':[{'problem':'解 x+1=2。','objective':'等式两边同时减去1并验根'}]}
+        value={'title':'逆运算练习','items':[{'problem':'解 x+1=2。','objective':'等式两边同时减去1并验根','success_criteria':'写出同一运算并代回验根','interactive_template':'unit_circle'}]}
     return {'raw':json.dumps(value,ensure_ascii=False)}
 
 

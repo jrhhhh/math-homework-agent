@@ -79,10 +79,17 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 ## 师生任务衔接
 
-新增三个技能与原有五个技能共同构成八技能教学周期：
+教学目标、当前证据与针对性教学通过以下技能交接：
 
 - **Learning Task Designer**（`learning-task-designer/SKILL.md`）：教师目标/教材材料 → 练习草案 → 教师核对后发布固定原题；新题需要 Math Solver 核验，工作台模型草案标注未核验。
 - **Learning Evidence Bridge**（`learning-evidence-bridge/SKILL.md`）：读取任务项绑定的当前学生提交，按目标汇总诊断状态与证据版本；不重新判题，不将未提交/失败/提示/仅答案当作完整过程诊断。
 - **Remedial Lesson Planner**（`remedial-lesson-planner/SKILL.md`）：当前诊断证据 → 可编辑补救教案 → Lesson Materials Builder 或关联再练习。引用实际提交 ID；版本变化时旧计划失效。
 
 工作台“师生任务”由 `app/teaching_loop.py` 处理，复用原有练习的不可变提交与诊断。任务原题固定，任务项绑定练习会话，学生修改题目/来源/学段使绑定失效；再次领取会新建原题会话并保留旧记录。共用本机数据库，尚未提供独立账号或跨设备班级访问。协议见 `docs/teaching-loop.md`。新增行为测试在 `app/tests/test_teaching_loop.py`，与工作台 HTTP 测试一起运行。保留冻结实验源码和本地 RSI 资料。
+
+
+## 学习路径与可恢复任务
+
+每题目标、成功标准、固定原题与活动模板共同保存；结构契约见 `learning-task-designer/constraints.json`。模型新草案必须给出成功标准。学生路径为尝试、按需帮助、固定数学活动、同目标新题复核；帮助快照绑定提交，不将受助修订判为独立掌握。
+
+`app/jobs.py` 保存长任务、阶段回执与事件。重启后的中断任务需手动继续；重试复用有效回执，课件文件哈希无效则重建。队列和旧接口兼容边界见 `docs/learning-path.md`。验证包含 `app/tests/test_jobs.py` 的独立进程崩溃恢复与实际 Builder 流水线，浏览器测试使用专用替身服务，真实模型结果分别记录。

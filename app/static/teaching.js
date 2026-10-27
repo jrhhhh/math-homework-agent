@@ -6,10 +6,13 @@ function addTaskItem(item={}){
   const card=node('div',undefined,'task-edit-item');
   const problemLabel=node('label','原题');const problem=node('textarea');problem.rows=3;problem.required=true;problem.maxLength=10000;problem.className='task-problem';problem.value=item.problem||'';problemLabel.append(problem);
   const goalLabel=node('label','本题目标');const goal=node('input');goal.required=true;goal.maxLength=1000;goal.className='task-goal';goal.value=item.objective||$('task-objective').value.slice(0,1000);goalLabel.append(goal);
-  const remove=node('button','删除本题','text-button');remove.type='button';remove.onclick=()=>card.remove();card.append(problemLabel,goalLabel,remove);area.append(card);
+  const criteriaLabel=node('label','成功标准');const criteria=node('textarea');criteria.rows=2;criteria.required=true;criteria.maxLength=2000;criteria.className='task-criteria';criteria.value=item.success_criteria||item.objective||'';criteriaLabel.append(criteria);
+  const guidanceLabel=node('label','需要时给学生的提示');const guidance=node('textarea');guidance.rows=2;guidance.maxLength=5000;guidance.className='task-guidance';guidance.value=item.guidance||'';guidanceLabel.append(guidance);
+  const widgetLabel=node('label','数学操作活动');const widget=node('select');widget.className='task-widget';widget.setAttribute('aria-label','数学操作活动');for(const [value,title] of [['none','不设置'],['quadratic','二次函数参数'],['unit_circle','单位圆'],['derivative','割线与切线']])widget.append(new Option(title,value));widget.value=item.interactive_template||'none';widgetLabel.append(widget);
+  const remove=node('button','删除本题','text-button');remove.type='button';remove.onclick=()=>card.remove();card.append(problemLabel,goalLabel,criteriaLabel,guidanceLabel,widgetLabel,remove);area.append(card);
 }
 function taskBusy(value,message=''){
-  taskWorking=value;for(const id of ['task-design','task-publish','task-add-item','task-plan','task-refresh','task-select','task-to-lesson','task-followup'])$(id).disabled=value;
+  taskWorking=value;for(const id of ['task-design','task-publish','task-add-item','task-plan','task-refresh','task-select','task-to-lesson','task-followup','task-assessment','task-target'])$(id).disabled=value;
   $('task-status').textContent=message;
   if(!value)$('task-plan').disabled=!activeEvidence||!activeEvidence.items.some(row=>['correct','incorrect','gap'].includes(row.state));
   if(!value&&activeTask?.plan?.stale){$('task-to-lesson').disabled=true;$('task-followup').disabled=true;}
@@ -23,10 +26,11 @@ async function loadTask(id){
   if(activeTask.parent_id)area.append(node('p','关联前序任务：'+activeTask.parent_id.slice(0,8),'loop-local-note'));
   area.append(node('p',activeEvidence.scope,'history-empty'));
   for(const row of activeEvidence.items){
-    const card=node('div',undefined,'task-evidence-item');card.append(node('strong',row.objective),node('p',row.problem),node('span',evidenceNames[row.state]||row.state,'badge'));
+    const card=node('div',undefined,'task-evidence-item');card.append(node('strong',row.objective),node('p','成功标准：'+row.success_criteria),node('p',row.problem),node('span',evidenceNames[row.state]||row.state,'badge'));
+    if(row.support)card.append(node('small','本次作答条件：'+supportLabel(row.support.condition)+(row.independent_check_passed?' · 新题复核在未记录帮助条件下通过':'')));
     if(row.submission_id)card.append(node('small','第 '+row.revision+' 次提交 · '+row.submission_id.slice(0,8)));
     if(row.first_error){card.append(node('blockquote',row.first_error.quote||''));card.append(node('p',row.first_error.reason||''));}
-    const begin=node('button',row.submission_id?'学生 · 继续修订 →':'学生 · 领取并作答 →','text-button');begin.onclick=async()=>{if(taskWorking)return;try{taskBusy(true,'正在打开任务对应的练习…');const opened=await api('/api/teaching/'+id+'/open/'+row.id,{});await loadSession(opened.session_id);if(!history.length)populate({problem:opened.problem,mode:'check',grade_level:'高中',request:'本题目标：'+opened.objective});switchWorkspace('practice');taskBusy(false);$('form-status').textContent='来自教学任务：'+activeTask.title+'。完成诊断后，在“师生任务”刷新查看。';$('problem').focus();}catch(error){taskBusy(false,error.message);}};card.append(begin);area.append(card);
+    const begin=node('button',row.submission_id?'学生 · 继续修订 →':'学生 · 领取并作答 →','text-button');begin.onclick=async()=>{if(taskWorking)return;try{taskBusy(true,'正在打开任务对应的练习…');const opened=await api('/api/teaching/'+id+'/open/'+row.id,{});await loadSession(opened.session_id);if(!history.length)populate({problem:opened.problem,mode:'check',grade_level:'高中',request:'本题目标：'+opened.objective});switchWorkspace('practice');taskBusy(false);$('form-status').textContent='来自教学任务：'+activeTask.title+'。完成诊断后，在“师生任务”刷新查看。';$('problem').focus();}catch(error){taskBusy(false,error.message);}};card.append(begin);const pathButton=node('button','按学习路径学习 →','text-button');pathButton.onclick=()=>openLearningPath(id,row.id).catch(error=>taskBusy(false,error.message));card.append(pathButton);area.append(card);
   }
   $('task-plan-stage').hidden=!activeTask.plan;
   if(activeTask.plan){$('task-plan-draft').value=activeTask.plan.draft_markdown;$('task-plan-note').textContent=activeTask.plan.stale?'学生提交或诊断已经变化，这份教案依据已过期；请重新规划。':'依据绑定当前提交。请检查数学内容和引文后再用于课堂。';}
@@ -39,20 +43,20 @@ async function refreshTasks(preferred){
   select.value=rows.some(row=>row.id===selected)?selected:rows[0].id;await loadTask(select.value);
 }
 $('show-teaching').onclick=()=>{switchWorkspace('teaching');refreshTasks().catch(error=>taskBusy(false,error.message));};
-$('task-add-item').onclick=()=>addTaskItem();
+$('task-add-item').onclick=()=>{addTaskItem();syncAssessmentTarget();};
 $('task-design').onclick=async()=>{
   if(taskWorking)return;taskBusy(true,'正在依据目标起草任务…');
-  try{const draft=await api('/api/teaching/design',{title:$('task-title').value,objective:$('task-objective').value,...(followupSource||{})});$('task-title').value=draft.title;$('task-item-editor').replaceChildren();draft.items.forEach(addTaskItem);$('task-review-note').textContent=draft.review_status;taskBusy(false,'草案已生成。请检查每题原题与目标后发布。');}catch(error){taskBusy(false,error.message);}
+  try{const draft=await jobApi('/api/teaching/design',{title:$('task-title').value,objective:$('task-objective').value,...(followupSource||{}),assessment_kind:$('task-assessment').value,target_item_id:$('task-target').value});$('task-title').value=draft.title;$('task-item-editor').replaceChildren();draft.items.forEach(addTaskItem);$('task-review-note').textContent=draft.review_status;taskBusy(false,'草案已生成。请检查每题原题与目标后发布。');}catch(error){taskBusy(false,error.message);}
 };
 $('task-form').onsubmit=async event=>{
   event.preventDefault();if(taskWorking)return;taskBusy(true,'正在发布…');
-  try{const payload={title:$('task-title').value,items:[...$('task-item-editor').children].map(card=>({problem:card.querySelector('.task-problem').value,objective:card.querySelector('.task-goal').value}))};if(followupSource)Object.assign(payload,followupSource);const task=await api('/api/teaching',payload);followupSource=null;$('task-parent-note').textContent='';await refreshTasks(task.id);taskBusy(false,'任务已发布，学生可以从右侧领取题目。');}catch(error){taskBusy(false,error.message);}
+  try{const payload={title:$('task-title').value,items:[...$('task-item-editor').children].map(card=>({problem:card.querySelector('.task-problem').value,objective:card.querySelector('.task-goal').value,success_criteria:card.querySelector('.task-criteria').value,guidance:card.querySelector('.task-guidance').value,interactive_template:card.querySelector('.task-widget').value}))};payload.assessment_kind=$('task-assessment').value;payload.target_item_id=$('task-target').value;if(followupSource)Object.assign(payload,followupSource);const task=await api('/api/teaching',payload);followupSource=null;$('task-parent-note').textContent='';$('task-assessment').value='practice';$('task-target-field').hidden=true;await refreshTasks(task.id);taskBusy(false,'任务已发布，学生可以从右侧领取题目。');}catch(error){taskBusy(false,error.message);}
 };
 $('task-refresh').onclick=()=>{if(taskWorking)return;refreshTasks().catch(error=>taskBusy(false,error.message));};
 $('task-select').onchange=()=>loadTask($('task-select').value).catch(error=>taskBusy(false,error.message));
 $('task-plan').onclick=async()=>{
   if(taskWorking||!activeTask)return;taskBusy(true,'正在根据当前诊断整理教师教案草稿…');
-  try{await api('/api/teaching/'+activeTask.id+'/plan',{});await loadTask(activeTask.id);taskBusy(false,'教案草稿已生成，先审阅再交给备课或布置再练习。');}catch(error){taskBusy(false,error.message);}
+  try{await jobApi('/api/teaching/'+activeTask.id+'/plan',{});await loadTask(activeTask.id);taskBusy(false,'教案草稿已生成，先审阅再交给备课或布置再练习。');}catch(error){taskBusy(false,error.message);}
 };
 async function checkPlanCurrent(){
   if(!activeTask?.plan)throw new Error('请先生成教案草稿。');
@@ -63,7 +67,17 @@ $('task-to-lesson').onclick=async()=>{
   try{await checkPlanCurrent();currentLesson=null;lessonTeachingSource={assignment_id:activeTask.id,evidence_version:activeTask.plan.evidence_version};switchWorkspace('teacher');$('lesson-topic').value=activeTask.title+' · 针对性教学';$('lesson-draft').value=$('task-plan-draft').value; $('lesson-outline-stage').hidden=true;$('lesson-source-stage').hidden=true;$('lesson-empty').hidden=false;$('lesson-result').replaceChildren();$('lesson-badge').textContent='等待教案';$('lesson-status').textContent='已带入学习证据和教师草稿；请补齐年级、教材、课时，再生成大纲。';lessonStep(0);$('lesson-topic').focus();}catch(error){$('task-status').textContent=error.message;}
 };
 $('task-followup').onclick=async()=>{
-  try{await checkPlanCurrent();followupSource={parent_id:activeTask.id,evidence_version:activeTask.plan.evidence_version};$('task-title').value=activeTask.title+' · 再练习';$('task-objective').value=activeEvidence.items.filter(row=>['incorrect','gap'].includes(row.state)).map(row=>row.objective).join('；')||'巩固当前已展示的推理';$('task-item-editor').replaceChildren();addTaskItem();$('task-parent-note').textContent='将关联前序任务 '+activeTask.id.slice(0,8)+' 及当前证据版本。';$('task-title').focus();}catch(error){$('task-status').textContent=error.message;}
+  if(taskWorking)return;taskBusy(true,'正在读取关联依据…');
+  try{await checkPlanCurrent();followupSource={parent_id:activeTask.id,evidence_version:activeTask.plan.evidence_version};$('task-title').value=activeTask.title+' · 再练习';$('task-objective').value=activeEvidence.items.filter(row=>['incorrect','gap'].includes(row.state)).map(row=>row.objective).join('；')||'巩固当前已展示的推理';$('task-item-editor').replaceChildren();addTaskItem();$('task-parent-note').textContent='将关联前序任务 '+activeTask.id.slice(0,8)+' 及当前证据版本。';$('task-assessment').value='practice';$('task-target-field').hidden=false;$('task-target').replaceChildren();for(const item of activeTask.items)$('task-target').append(new Option(item.objective,item.id));$('task-title').focus();}catch(error){$('task-status').textContent=error.message;}finally{taskBusy(false,$('task-status').textContent);}
 };
+$('task-assessment').onchange=()=>{if($('task-assessment').value==='independent_check'&&!followupSource){$('task-status').textContent='先从当前诊断教案选择关联再练习，再设置独立复核。';return;}syncAssessmentTarget();};
+$('task-target').onchange=syncAssessmentTarget;
+function syncAssessmentTarget(){if($('task-assessment').value!=='independent_check'||!activeTask)return;const target=activeTask.items.find(item=>item.id===$('task-target').value);if(!target)return;for(const card of $('task-item-editor').children){card.querySelector('.task-goal').value=target.objective;card.querySelector('.task-criteria').value=target.success_criteria;}$('task-status').textContent='独立复核沿用所选目标和成功标准；请提供未练习的新题。';}
 addTaskItem();
 if(openedFromFile)document.querySelectorAll('#teaching-view button,#teaching-view input,#teaching-view textarea,#teaching-view select').forEach(control=>control.disabled=true);
+
+async function adoptTaskDraft(draft){
+  if(draft.parent_id){await refreshTasks(draft.parent_id);followupSource={parent_id:draft.parent_id,evidence_version:draft.evidence_version};$('task-target').replaceChildren();for(const item of activeTask.items)$('task-target').append(new Option(item.objective,item.id));$('task-target').value=draft.target_item_id||activeTask.items[0].id;$('task-target-field').hidden=false;$('task-parent-note').textContent='将关联前序任务 '+draft.parent_id.slice(0,8)+' 及生成时证据版本。';}
+  else{followupSource=null;$('task-parent-note').textContent='';$('task-target-field').hidden=true;}
+  $('task-assessment').value=draft.assessment_kind||'practice';$('task-title').value=draft.title;$('task-item-editor').replaceChildren();draft.items.forEach(addTaskItem);$('task-review-note').textContent=draft.review_status||'请核对题意、条件和成功标准。';
+}

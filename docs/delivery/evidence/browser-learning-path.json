@@ -1,0 +1,49 @@
+{
+  "record_type": "Summary transcribed from actual Playwright CLI results; not model quality scores",
+  "executed_at": "2026-10-27T01:27:59.072941+00:00",
+  "backend": "Explicit isolated fixture on 127.0.0.1:8767; no fixture in production service",
+  "runs": [
+    {
+      "source": "app/tests/browser/teaching_loop.js",
+      "passed": true,
+      "flow": "design,publish,student submission,teacher evidence,remedial plan,lesson handoff,followup,revision,stale plan rejection",
+      "desktop": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "mobile": {
+        "width": 390,
+        "scroll": 390
+      },
+      "page_errors": []
+    },
+    {
+      "source": "app/tests/browser/learning_path.js",
+      "passed": true,
+      "flow": "success criteria,first attempt,guidance,interactive degeneracy,supported revision,independent new item,task results after reload",
+      "desktop": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "mobile": {
+        "width": 390,
+        "scroll": 390
+      },
+      "page_errors": []
+    },
+    {
+      "source": "app/tests/browser/math_widgets.js",
+      "passed": true,
+      "checks": "unit circle has equal SVG scales at 90 degrees; h=0 tangent and finite slope",
+      "page_errors": []
+    }
+  ],
+  "artifacts": {
+    "learning-path-desktop.png": "e1e6dc7cb0c825f4144d7e841c76159d0f81c56f42dca9ac165a995f7f11e1d6",
+    "learning-path-mobile.png": "18076b52752aec713ed2322add5a33a53aa5f43a8cfec976e47d30e72097ac6f",
+    "learning-widget-desktop.png": "6941b3b8c588a1078c6c483eaee8a9c5136ced4e11c0e4a7864e9119e01f922e",
+    "unit_circle-desktop.png": "4c6753c643c0f498c9ba43372032030dee970ce373719027ae343c28ab1f68f3",
+    "derivative-desktop.png": "c87132c89f156f091709a50625ecda336a10fd7496597a9513f7c04b72def33f"
+  },
+  "scope": "UI and deterministic computation only; synthetic diagnostic fixtures are not mathematical accuracy or teaching effect evidence."
+}

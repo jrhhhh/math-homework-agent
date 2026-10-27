@@ -1,13 +1,13 @@
 ---
 name: high-school-math-teacher-agent
-description: 统一调度本项目八个高中数学教学技能，覆盖课前教案转课件、例题求解、学生作业诊断、正确解法优化和草稿习惯反馈；支持按教学周期串联课件准备、课堂求解与课后诊断。Use when coordinating Math Solver, Math Error Diagnosis, Solution Refiner, Draft Coach, and Lesson Materials Builder together with Learning Task Designer, Learning Evidence Bridge, and Remedial Lesson Planner as one high-school mathematics teacher agent.
+description: 统一调度本项目高中数学教学技能，覆盖课前教案转课件、例题求解、学生作业诊断、正确解法优化和草稿习惯反馈；支持按教学周期串联课件准备、课堂求解与课后诊断。Use when coordinating Math Solver, Math Error Diagnosis, Solution Refiner, Draft Coach, and Lesson Materials Builder together with Learning Task Designer, Learning Evidence Bridge, and Remedial Lesson Planner as one high-school mathematics teacher agent.
 ---
 
 # 高中数学教师 Agent
 
 本技能是项目级调度入口。先识别请求处在备课、讲题、作业反馈还是草稿复盘环节，再调用下游技能；保留每个技能的原始证据、交付物和能力边界。不得用某个子技能代替另一个子技能，也不得把模型输出、脚本检查或有限样例包装成普遍正确性保证。
 
-## 八个子技能
+## 教学职责
 
 | 子技能 | 主要输入与职责 | 边界 |
 | --- | --- | --- |
@@ -56,3 +56,10 @@ description: 统一调度本项目八个高中数学教学技能，覆盖课前�
 - 项目未内置教材数据库、课程标准检索或长期学生档案。教材事实以用户提供/指定的教材材料为依据；无来源时明确标注待核，不编造。
 
 本地数学工作台由 `python3 run.py` 启动，学生练习区覆盖数学求解、过程诊断、正解优化、草稿反馈四类任务；教师备课区接入 `lesson-materials-builder`，按“材料整理—大纲确认—源码编辑—渲染复核”运行其本地脚本。“师生任务”区连接目标、发布任务、领取作答、当前诊断、补救教案与关联再练习。当前是共用本机数据库的单设备协作演示，没有多人账号、跨设备提交或班级权限。各区共用入口但保持任务边界。完整教师 Agent 的意图分流与跨技能边界以本文件和仓库根目录 `AGENTS.md` 为准。
+
+
+## 学习路径与运行恢复
+
+任务以“目标 → 成功标准 → 题目”组织。学生界面连接自己尝试、按需提示、固定数学活动和关联新题复核；各场景沿用任务项 ID。任何帮助均保留条件，具体规则见 `learning-evidence-bridge`；独立新题按 `learning-task-designer/constraints.json` 检查。
+
+工作台长任务保存到 SQLite 任务中心。关闭页面不会停止后台工作；服务重启会将中断任务暂停，用户选择继续后复用已完成步骤。停止请求在当前步骤返回后生效，不宣称中止了模型调用。课件配图、构建和复核分别保存文件哈希，文件或输入变化后重新执行。恢复成功不等于内容或教学效果经过核验。
