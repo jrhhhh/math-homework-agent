@@ -408,7 +408,7 @@ def handler_for(app):
                     self.end_headers()
                     self.wfile.write(content)
                     return
-            name = {'/': 'index.html', '/style.css': 'style.css', '/app.js': 'app.js', '/teaching.js': 'teaching.js', '/jobs.js':'jobs.js', '/learning-path.js':'learning-path.js'}.get(self.path)
+            name = {'/': 'index.html', '/style.css': 'style.css', '/glass.css':'glass.css', '/app.js': 'app.js', '/teaching.js': 'teaching.js', '/jobs.js':'jobs.js', '/interaction.js':'interaction.js', '/learning-path.js':'learning-path.js'}.get(self.path)
             if self.path.startswith('/vendor/katex/'):
                 candidate=(STATIC/self.path.lstrip('/')).resolve()
                 if candidate.is_relative_to((STATIC/'vendor/katex').resolve()) and candidate.is_file() and candidate.suffix in ('.js','.css','.woff2'):

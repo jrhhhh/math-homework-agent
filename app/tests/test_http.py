@@ -223,6 +223,15 @@ class HttpTest(unittest.TestCase):
         status, body = self.request(f'/api/sessions/{session["id"]}/archive',
                                     {'archived': False})
         self.assertFalse(body['archived'])
+        # Submission readiness can precede the durable job's final transaction.
+        # Deletion deliberately refuses any queued/running job.
+        deadline=time.monotonic()+3
+        while time.monotonic()<deadline:
+            with self.app.store.connect() as db:
+                active=db.execute("SELECT payload FROM durable_jobs WHERE state IN ('queued','running')").fetchall()
+                own={row['id'] for row in db.execute('SELECT id FROM submissions WHERE session_id=?',(session['id'],))}
+            if not any(json.loads(row['payload']).get('submission_id') in own for row in active):break
+            time.sleep(.01)
         status, body = self.delete('/api/sessions/' + session['id'])
         self.assertEqual(status, 200)
         self.assertTrue(body['deleted'])

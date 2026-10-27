@@ -2,6 +2,7 @@
 import argparse
 from http.server import ThreadingHTTPServer
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -31,6 +32,8 @@ def main():
     parser.add_argument('--port',type=int,default=8767)
     args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='teaching-browser-fixture-') as folder:
+        os.environ['MATH_UPLOAD_DIR']=str(Path(folder)/'uploads')
+        os.environ['MATH_SETTINGS_PATH']=str(Path(folder)/'settings.json')
         app=Application(Store(Path(folder)/'fixture.sqlite'),runner=runner)
         app.teaching.generator=generator
         server=ThreadingHTTPServer(('127.0.0.1',args.port),handler_for(app))

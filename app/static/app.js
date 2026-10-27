@@ -297,7 +297,7 @@ function switchWorkspace(name) {
   $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'过程反馈');
   $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
   for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
-    $(id).classList.toggle('active',key===name||(key==='practice'&&path));$(id).setAttribute('aria-selected',String(key===name||(key==='practice'&&path)));
+    $(id).classList.toggle('active',key===name||(key==='practice'&&path));$(id).setAttribute('aria-pressed',String(key===name||(key==='practice'&&path)));
   }
   if(teacher)refreshLessonHistory();
 }

@@ -48,12 +48,12 @@ async (page) => {
   await page.getByText('记录已更新；下一步可以修订或查看关联新题。',{exact:true}).waitFor();
   await page.getByRole('button',{name:'换一道题独立复核',exact:true}).click();
   await page.getByText('本次新题复核通过，且提交前未记录系统帮助。这只说明本题在该条件下的表现。',{exact:true}).waitFor();
-  await page.getByRole('button',{name:/任务中心/}).click();
+  await page.getByRole('button',{name:/^任务中心/}).click();
   await page.locator('#jobs-dock').waitFor({state:'visible'});
   await page.getByRole('button',{name:'查看结果 →',exact:true}).first().waitFor();
-  await page.reload();await page.getByRole('button',{name:/任务中心/}).click();
+  await page.reload();await page.getByRole('button',{name:/^任务中心/}).click();
   await page.getByRole('button',{name:'查看结果 →',exact:true}).first().waitFor();
-  await page.getByRole('button',{name:/任务中心/}).click();
+  await page.getByRole('button',{name:'关闭任务中心',exact:true}).click();
   await page.getByRole('button',{name:'师生任务',exact:true}).click();
   await page.getByRole('button',{name:'按学习路径学习 →',exact:true}).click();
   await page.screenshot({path:'output/playwright/learning-path-desktop.png',fullPage:true});
