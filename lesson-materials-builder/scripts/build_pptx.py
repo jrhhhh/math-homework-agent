@@ -82,13 +82,13 @@ SIZE_DETAIL = 16
 SIZE_CAPTION = 20                  # 流程页图下的说明文字
 
 COLOR = {
-    "title": "1A202C",
-    "body": "2D3748",
-    "emph": "C05621",
-    "question": "2B6CB0",
-    "aux": "718096",
-    "accent": "2B6CB0",
-    "emph_bg": "FEF3E2",
+    "title": "29252A",
+    "body": "39363A",
+    "emph": "9B3447",
+    "question": "76515A",
+    "aux": "81777A",
+    "accent": "9B3447",
+    "emph_bg": "F8ECEC",
     # 与 make_figures.py 的 C["main"] 同值：图里的主曲线和版面上的流程箭头
     # 同色，是"同一套视觉语言"最省力的达成方式。
     "arrow": "2B6CB0",
@@ -854,7 +854,7 @@ def render_cover(slide, page, meta):
         size = SIZE_COVER_XLONG
     tf = textbox(slide, MARGIN_X, COVER_TITLE_Y, CONTENT_W, COVER_TITLE_H,
                  anchor=MSO_ANCHOR.MIDDLE)
-    tf.paragraphs[0].alignment = PP_ALIGN.CENTER
+    tf.paragraphs[0].alignment = PP_ALIGN.LEFT
     add_rich(tf.paragraphs[0], page.title, size, COLOR["title"], bold_all=True,
              face=FONT_TITLE)
 
@@ -868,7 +868,7 @@ def render_cover(slide, page, meta):
         tf2 = textbox(slide, MARGIN_X, COVER_SUB_Y, CONTENT_W, 1.3)
         for i, t in enumerate(lines):
             p = tf2.paragraphs[0] if i == 0 else tf2.add_paragraph()
-            p.alignment = PP_ALIGN.CENTER
+            p.alignment = PP_ALIGN.LEFT
             add_rich(p, t, SIZE_SUB, COLOR["aux"])
 
 
@@ -966,6 +966,18 @@ def render_two_col(slide, page, meta):
         render_bottom_stack(slide, page)
         return "；".join(warns) if warns else None
 
+    # 两栏前的公共条件属于页面内容，不能在有 ## 左/右 时静默丢弃。
+    if page.bullets:
+        common = fit_block(page.bullets, CONTENT_W, body_h * 0.35, allow_fill=False)
+        common_h = common[4]
+        if common_h > body_h * 0.35:
+            warns.append(_overflow_warn(common, body_h * 0.35, "两栏公共内容："))
+        layout_block(slide, page.bullets, MARGIN_X, body_y, CONTENT_W, common_h,
+                     size=common[0], sub=common[1], space_after=common[2],
+                     line_spacing=common[3], center=False)
+        body_y += common_h + COL_STACK_GAP
+        body_h = max(0.1, body_h - common_h - COL_STACK_GAP)
+
     col_w = (CONTENT_W - 0.5) / 2
     cols = (("左", page.left, page.left_img, MARGIN_X),
             ("右", page.right, page.right_img, MARGIN_X + col_w + 0.5))
@@ -993,6 +1005,9 @@ def render_two_col(slide, page, meta):
              for _, items, _img, _x in cols]
     need_max = max(needs)
     text_top = body_y + max(0.0, (body_h - need_max) / 2.0)
+    # 图文两栏按整体组织，不能先把文字垂直居中而挤掉下方配图。
+    if page.left_img and page.right_img and page.left and page.right:
+        text_top = body_y
 
     for (label, items, img, x), need in zip(cols, needs):
         if items:
@@ -1005,10 +1020,12 @@ def render_two_col(slide, page, meta):
             path, h, w = img
             if items:
                 # 文字与图作为一组往下顺；空间不够就先放弃居中，再放弃填充
-                img_top = text_top + need + COL_STACK_GAP
+                # 两栏均有图文时共享图的起点和高度，避免因文字长度不同而产生错位。
+                image_need = need_max if page.left_img and page.right_img and page.left and page.right else need
+                img_top = text_top + image_need + COL_STACK_GAP
                 img_avail = BODY_BOTTOM - bottom_stack_height(page) - img_top
                 if img_avail < MIN_IMG_H:
-                    img_top = body_y + need + COL_STACK_GAP
+                    img_top = body_y + image_need + COL_STACK_GAP
                     img_avail = BODY_BOTTOM - bottom_stack_height(page) - img_top
                 if img_avail < MIN_IMG_H:
                     warns.append(f"{label}栏文字+图超出可用高度")
@@ -1768,6 +1785,11 @@ def build(md_path, out_path, template=None, font_title=None, font_body=None):
         page.layout = LAYOUT_ALIAS.get(page.layout, page.layout)
         renderer = RENDERERS.get(page.layout, render_generic)
         slide = prs.slides.add_slide(blank)
+        # Only the bundled/default theme owns this background; custom templates keep theirs.
+        bundled = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "base.pptx")
+        if page.layout == "封面" and (not template or os.path.realpath(template) == os.path.realpath(bundled)):
+            slide.background.fill.solid()
+            slide.background.fill.fore_color.rgb = RGBColor.from_string("F7F0EE")
         w = renderer(slide, page, meta)
         if w:
             warn_imgs.append(f"P{idx}[{page.layout}] {w}")

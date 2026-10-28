@@ -479,3 +479,14 @@ def prism_split(step, path, size=(5.2, 4.0), wide_size=(8.2, 3.6), gap=2.2):
       补白会让文件画布一致而图形差一倍，这是踩过的坑，见第一节 `pad_to_aspect`）
 - [ ] GIF 文件 < 2MB，`fps` 不超过 20
 - [ ] 图中字号在投影距离下可读（图内文字 ≥ 12pt 等效）
+
+
+## 单位圆 `unit_circle`
+
+适合展示三角方程的角与分支。清单示例：
+
+```json
+{"name":"unit_roots", "recipe":"unit_circle", "angles_degrees":[60,300]}
+```
+
+`angles_degrees` 为 0 至 359 的不重复整数，最多 8 个；图中角度标签按弧度精确化为 π 的分数。选择和题目范围、三角函数值一致的角；图不代替代数推理及端点检查。输出 PNG，可在 PPT 中移动和替换，但图内元素不可单独编辑。

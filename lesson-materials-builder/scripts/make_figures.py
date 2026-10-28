@@ -502,7 +502,43 @@ def recipe_prism_split(spec, out):
     return paths
 
 
+
+def recipe_unit_circle(spec, out):
+    """Draw an exact unit circle with selected angles, specified in degrees."""
+    from fractions import Fraction
+    angles = spec.get("angles_degrees", [])
+    if (not isinstance(angles, list) or len(angles) > 8
+            or any(isinstance(a, bool) or not isinstance(a, int) or not 0 <= a < 360 for a in angles)
+            or len(set(angles)) != len(angles)):
+        raise ValueError("angles_degrees must contain at most 8 distinct integers in [0, 360)")
+    fig, ax = plt.subplots(figsize=(5.0, 5.0))
+    theta = np.linspace(0, 2 * np.pi, 600)
+    ax.plot(np.cos(theta), np.sin(theta), color="#66585d", lw=2)
+    ax.axhline(0, color="#b6acad", lw=1)
+    ax.axvline(0, color="#b6acad", lw=1)
+    for angle in angles:
+        t = np.deg2rad(angle)
+        x, y = np.cos(t), np.sin(t)
+        ax.plot([0, x], [0, y], color="#a13e50", lw=2)
+        ax.scatter([x], [y], s=54, color="#a13e50", zorder=3)
+        frac = Fraction(angle, 180)
+        if not frac.numerator:
+            label = "0"
+        else:
+            num = "" if frac.numerator == 1 else str(frac.numerator)
+            label = rf"${num}\pi$" if frac.denominator == 1 else rf"$\frac{{{num}\pi}}{{{frac.denominator}}}$"
+        ax.annotate(label, (x, y), xytext=(9 if x >= 0 else -9, 9 if y >= 0 else -12),
+                    textcoords="offset points", ha="left" if x >= 0 else "right", fontsize=17, color="#802c3d")
+    ax.text(1.27, -.08, "$x$", fontsize=16, color="#66585d")
+    ax.text(.05, 1.27, "$y$", fontsize=16, color="#66585d")
+    ax.set(xlim=(-1.42, 1.42), ylim=(-1.42, 1.42), aspect="equal")
+    ax.axis("off")
+    fig.savefig(out, dpi=DPI, facecolor="white")
+    plt.close(fig)
+
+
 RECIPES = {
+    "unit_circle": recipe_unit_circle,
     "function": recipe_function,
     "secant": recipe_secant,
     "secant_gif": recipe_secant_gif,
