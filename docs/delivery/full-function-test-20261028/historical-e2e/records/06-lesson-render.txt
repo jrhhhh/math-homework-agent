@@ -1,0 +1,14 @@
+### Result
+{"stage":"lesson builder","status":"结构检查通过。请下载并在实际放映软件中通看，数学内容仍需教师审阅。","result":"结构检查完成\n\n共 10 页。独立检查课件几何与结构；不验证数学内容、封面字体实测换行或播放软件动画效果。\n\nCOM 动画读回仅支持 Windows PowerShell；当前平台为 Darwin\n\n下载课件 Markdown\n下载 PowerPoint ↗","deck":1}
+### Ran Playwright code
+```js
+await (async (page) => {
+  if(!(await page.locator('#lesson-source').inputValue()))return {stage:'lesson render',error:'没有可渲染的课件源码'};
+  await page.getByRole('button',{name:'渲染并检查 →',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('lesson-render-button').disabled && document.getElementById('lesson-status').textContent.trim().length>0,null,{timeout:300000});
+  const status=await page.locator('#lesson-status').innerText();const result=await page.locator('#lesson-result').innerText();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/11-课件构建与复核.png',fullPage:true});
+  return {stage:'lesson builder',status,result,deck:await page.locator('a').filter({hasText:'下载 PowerPoint'}).count()};
+}
+)(page);
+```

@@ -1,0 +1,20 @@
+### Error
+TimeoutError: locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('草稿布局描述 分区、分行、划改与留白')[22m
+[2m    - locator resolved to <textarea rows="7" id="draft" maxlength="20000" placeholder="例如：纸面分成左右两栏；左上角有题号，中间三次划改，底部没有留白。"></textarea>[22m
+[2m    - fill("我把两道题写在同一列，没有单独标题号。左上角写了三角方程，右侧是推导；中间三次划改，旧值和新值写在一起。最下面的检验区很小，有几行写不下挤到了旁边。")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m      - waiting 100ms[22m
+[2m    59 × waiting for element to be visible, enabled and editable[22m
+[2m       - element is not visible[22m
+[2m     - retrying fill action[22m
+[2m       - waiting 500ms[22m
+

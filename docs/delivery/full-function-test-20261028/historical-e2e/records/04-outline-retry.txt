@@ -1,0 +1,15 @@
+### Result
+{"stage":"lesson outline manual retry","job":{"id":"aa513beda08e4d52b5619c6c3b6fd512","kind":"lesson-outline","state":"paused","created":"2026-10-27T08:42:57.988939+00:00","updated":"2026-10-27T09:10:57.520509+00:00","result":null,"error":"模型调用超时；本次没有生成可交付结果。","cancel_requested":0,"events":[{"seq":20,"type":"queued","detail":"lesson-outline","created":"2026-10-27T08:42:57.989199+00:00"},{"seq":21,"type":"step","detail":"lesson_outline","created":"2026-10-27T08:42:57.993870+00:00"},{"seq":22,"type":"paused","detail":"模型调用超时；本次没有生成可交付结果。","created":"2026-10-27T09:10:57.525316+00:00"}],"completed_steps":[]}}
+### Ran Playwright code
+```js
+await (async (page) => {
+  await page.getByRole('button',{name:/^任务中心/}).click();
+  const card=page.locator('.job-row').filter({hasText:'课件大纲'}).first();await card.getByText('暂停，可继续',{exact:true}).waitFor();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/09a-课件大纲超时暂停.png',fullPage:true});
+  await card.getByRole('button',{name:'继续此任务',exact:true}).click();
+  const jobs=await page.evaluate(async()=>await(await fetch('/api/jobs')).json());
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/09b-任务中心手动重试.png',fullPage:true});
+  return {stage:'lesson outline manual retry',job:jobs.find(item=>item.kind==='lesson-outline')};
+}
+)(page);
+```

@@ -1,0 +1,30 @@
+{
+  "tool": "SymPy 1.14.0",
+  "scope": "符号解集与逐一代入；不自动审查模型推理",
+  "cases": [
+    {
+      "equation": "Eq(sin(2*x), sin(x))",
+      "domain": "[0,2π)",
+      "solveset": "{0, pi/3, pi, 5*pi/3}",
+      "all_substitution_residuals": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "matches_expected": true
+    },
+    {
+      "equation": "Eq(sin(2*x), -sin(x))",
+      "domain": "[0,2π)",
+      "solveset": "{0, 2*pi/3, pi, 4*pi/3}",
+      "all_substitution_residuals": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "matches_expected": true
+    }
+  ]
+}

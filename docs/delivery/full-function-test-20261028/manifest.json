@@ -1,0 +1,868 @@
+{
+  "algorithm": "sha256",
+  "scope": "本公开包，manifest自身除外",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5880,
+      "sha256": "3f65aa8ecb10084d61004e469ae96a5f0516a209368e493e4160bb653e434204"
+    },
+    {
+      "path": "current/browser/glass_ui.txt",
+      "bytes": 7157,
+      "sha256": "9941f55ab56834bf49a7fdb78a35ab7a53eda9c7ceff68e7980aaf5125e6fbe1"
+    },
+    {
+      "path": "current/browser/learning_path.txt",
+      "bytes": 6950,
+      "sha256": "67df4551d0748e8d66e4867f6725e58205d4d01e1f2c1ed7f8f35935e2152caa"
+    },
+    {
+      "path": "current/browser/math_widgets.txt",
+      "bytes": 2602,
+      "sha256": "df7b4be829c0c79d3ab85ce214453bc0bbba66aa85f50783bea14ab033620657"
+    },
+    {
+      "path": "current/browser/results.json",
+      "bytes": 1190,
+      "sha256": "a5dea784f58848aeadf7b57652d82796ac13182d6cb0091e9eae4e0bc34f1bb1"
+    },
+    {
+      "path": "current/browser/screenshots/glass-mobile.png",
+      "bytes": 115601,
+      "sha256": "33380ec83c86a30d7612b6aa5e54d94806f4a90ed46b6fae696c7ed4829307d1"
+    },
+    {
+      "path": "current/browser/screenshots/glass-student-desktop.png",
+      "bytes": 281509,
+      "sha256": "76c6baf711d51fdc79cd5ac913472a55758bf7efba8bb70aea015ed33fd19295"
+    },
+    {
+      "path": "current/browser/screenshots/glass-tasks-desktop.png",
+      "bytes": 239194,
+      "sha256": "ef505430619ee7c05ef638240c984774ba0736720d25d9fd881b7a3da464c204"
+    },
+    {
+      "path": "current/browser/screenshots/glass-teacher-desktop.png",
+      "bytes": 314755,
+      "sha256": "0be1d63e657b98bef59040c631cd262321704bd07dc216901f68538e817062bb"
+    },
+    {
+      "path": "current/browser/screenshots/learning-path-desktop.png",
+      "bytes": 360352,
+      "sha256": "5c926d57d093c5713baf1afa66f5ee2fd526554de8c19fbaaff94e9e65e64719"
+    },
+    {
+      "path": "current/browser/screenshots/learning-path-mobile.png",
+      "bytes": 302178,
+      "sha256": "8503695ff2a02aebdd1fc8985e2af30fe8da43e6c34c79cf065caaecc494906a"
+    },
+    {
+      "path": "current/browser/screenshots/learning-widget-desktop.png",
+      "bytes": 289491,
+      "sha256": "b993191aefdd6f6d16c1421f832894a45664f2573ce4f3c74b24cd9b8d3fb17d"
+    },
+    {
+      "path": "current/browser/screenshots/teaching-loop-desktop.png",
+      "bytes": 456628,
+      "sha256": "36a63c385530c69ac4a44c6b73bca622d6dd8f47c8905583271639da27a0f22a"
+    },
+    {
+      "path": "current/browser/screenshots/teaching-loop-mobile.png",
+      "bytes": 299040,
+      "sha256": "e6fad8c46025fa882592cab7c7baad5591c4946bdbd22ffcc50167ef598cd8b5"
+    },
+    {
+      "path": "current/browser/teaching_loop.txt",
+      "bytes": 5365,
+      "sha256": "016ddc90aeb94ac5d22ece9904edf4efbabcf7c8c788d9a51138d1006d6c14fe"
+    },
+    {
+      "path": "current/browser-learning-path.json",
+      "bytes": 2307,
+      "sha256": "ed4686f9fe7fc05a73c7ecf850fcea5cf7cda3b00acd50c2df6c6758bb10d6a4"
+    },
+    {
+      "path": "current/browser-ui.json",
+      "bytes": 98,
+      "sha256": "51ba7d8b4a2f9a8db35a1680f2313a5949ab68cb18ca4816ebf0d967f384d764"
+    },
+    {
+      "path": "current/course-artifacts.json",
+      "bytes": 224,
+      "sha256": "b4cf645c58e213af6f7ee4862c4b61e7e49a1cf7548fc5b6fdded1b401e887f1"
+    },
+    {
+      "path": "current/draft-bench.txt",
+      "bytes": 144,
+      "sha256": "ed420b59f7749a6e385f7213bc39d0f27dade68db11cef43c2d09eacaeb0c93f"
+    },
+    {
+      "path": "current/draft-gates.txt",
+      "bytes": 137,
+      "sha256": "03843e53bbe86b1028dc805e971b1d15bfe492a1e756e5b4a1dcfd13ea896baa"
+    },
+    {
+      "path": "current/draft-schema.txt",
+      "bytes": 377,
+      "sha256": "6235aa15e35c833211273ee4278df6bde9c0006b51dc5eac27c65acecf9687b0"
+    },
+    {
+      "path": "current/exact-verification.txt",
+      "bytes": 110,
+      "sha256": "523370fa616a31de399b47180dcc234360efdb27f457e3bf739109ba8852b0ea"
+    },
+    {
+      "path": "current/four-skill-refine.json",
+      "bytes": 4263,
+      "sha256": "0bde752714e782e9a5d1e978ad5a75bc6a89adcfebd02b5cb6ad6c3faeb24913"
+    },
+    {
+      "path": "current/lesson-builder-regression.txt",
+      "bytes": 525,
+      "sha256": "dbdbac9b721daaf5f12168d16aed615ca83f7c4528fcb98844a647da9cb0bfff"
+    },
+    {
+      "path": "current/math-facts-10.txt",
+      "bytes": 1585,
+      "sha256": "5bafbf5c025ee357c33f6ad9ea25d4541e74ec6cd312735237cdde2b6a4b934c"
+    },
+    {
+      "path": "current/math-facts-11.txt",
+      "bytes": 1705,
+      "sha256": "e584c48ef5d17d2cfdc93504870feb84ee934df129865261969838b4b2cdba5e"
+    },
+    {
+      "path": "current/math-facts-6.txt",
+      "bytes": 1006,
+      "sha256": "befdae53259b437d365c024c91e187aa27167e35e0a88afeb58b308d7687d09c"
+    },
+    {
+      "path": "current/real-solver-self-check.json",
+      "bytes": 39862,
+      "sha256": "282c3c657778eaf7d0280f306fa3f9670cfce56d4563058ec4c3c28bc0fab81e"
+    },
+    {
+      "path": "current/real-solver-with-tools.json",
+      "bytes": 42780,
+      "sha256": "d13452a475c05815247252095acd6cd36fe18e1c3fa98b49e94dbb7adcf29e2d"
+    },
+    {
+      "path": "current/root-tests.txt",
+      "bytes": 117,
+      "sha256": "11cafbbac36a619d55730a5259c68bc2e852db39e7a184e9a702eba78a3da3da"
+    },
+    {
+      "path": "current/solution-refiner-handoff.txt",
+      "bytes": 106,
+      "sha256": "d7fdd544658e4d33761e830bc8d7f9262190d69c633679d7d3b2262fb1f2d8c3"
+    },
+    {
+      "path": "current/solver-bench.txt",
+      "bytes": 128,
+      "sha256": "d56ffd5bbf2ab152d2a46614478b44d28ac1d502c05d903ba15f5cec7b279bb7"
+    },
+    {
+      "path": "current/solver-gates.txt",
+      "bytes": 119,
+      "sha256": "9c3a1fd5c44b06275b1a2b745c2d9d59c8f4a49f313218bddaf55a3462375c3a"
+    },
+    {
+      "path": "current/solver-schema.txt",
+      "bytes": 207,
+      "sha256": "c5fb70276a3128d4cf9883e911c83c1ad1a48cd366ca5937219547831e36317a"
+    },
+    {
+      "path": "current/teaching-loop-browser.json",
+      "bytes": 1160,
+      "sha256": "484e39c95acf4cdd5bc090a4aea492d14b40a820d0bb8581138d97579c20373c"
+    },
+    {
+      "path": "current/teaching-loop-model-smoke.json",
+      "bytes": 11956,
+      "sha256": "a5ee349ff6b37263e76fa97dc5ad72fabb17dc598922a65f08367841d01ba0de"
+    },
+    {
+      "path": "current/verification.json",
+      "bytes": 3063,
+      "sha256": "1e9462f7e31786bd2862ea4cb2f63192c323bd24547242df1d03f387d06e4411"
+    },
+    {
+      "path": "current/workbench.txt",
+      "bytes": 502,
+      "sha256": "1a586d1dde3668bbfa7637e18b1c841aa0786736953764fc1449beb1e4d866fa"
+    },
+    {
+      "path": "historical-e2e/lessons/aa513beda08e4d52b5619c6c3b6fd512/figures.json",
+      "bytes": 46,
+      "sha256": "13c9e7b92b0b5cc3b3c95b1273522792185689296c042ec93c93e8ded83461c8"
+    },
+    {
+      "path": "historical-e2e/lessons/aa513beda08e4d52b5619c6c3b6fd512/课件.md",
+      "bytes": 3505,
+      "sha256": "353d274cc64f709dffee2d6b2e4e3d15855285b2adb3d1ed2d7cba3f3a31a8d8"
+    },
+    {
+      "path": "historical-e2e/lessons/aa513beda08e4d52b5619c6c3b6fd512/课件.pptx",
+      "bytes": 145865,
+      "sha256": "ccdbc22c373bdddfc476dd131cc4bdcb698cf0f449efece2299ca680d1338a6b"
+    },
+    {
+      "path": "historical-e2e/records/01-task-design.js",
+      "bytes": 1449,
+      "sha256": "76e4755ebc32b9cae7a314d2f0973416f489ab4a18d9393d471defda0a3271cb"
+    },
+    {
+      "path": "historical-e2e/records/01-task-design.txt",
+      "bytes": 2350,
+      "sha256": "326d3a5ea09f0269a14dfe5f360f951e87e91c063021fe6621ac8be23734c24a"
+    },
+    {
+      "path": "historical-e2e/records/02-first-attempt.js",
+      "bytes": 2475,
+      "sha256": "db0ec5aac761a54e65b87cf2c1d99c4b148a8773c4c6bca44732d38e6eed0a09"
+    },
+    {
+      "path": "historical-e2e/records/02-first-attempt.txt",
+      "bytes": 4491,
+      "sha256": "a7f90e8be34839f4e0584545e5d546c7ca9fe909fcd3f129b843acadf6547c2e"
+    },
+    {
+      "path": "historical-e2e/records/03-remedial-plan.js",
+      "bytes": 1142,
+      "sha256": "47e86a449c00cf3d4b2e7568c467f5037b3740fb6723a6b95a1768b48784612c"
+    },
+    {
+      "path": "historical-e2e/records/03-remedial-plan.txt",
+      "bytes": 6474,
+      "sha256": "df29af74cd8fc9ae899814e46d5b69a67e198d4629b6e09f7c06719c892fb505"
+    },
+    {
+      "path": "historical-e2e/records/04-lesson-outline.js",
+      "bytes": 1821,
+      "sha256": "2a21c7eeb0fdb7cc68a7219c34cd5c2c74ba6d2d35756509f1cbe5abd7b862fb"
+    },
+    {
+      "path": "historical-e2e/records/04-lesson-outline.txt",
+      "bytes": 73,
+      "sha256": "d1c4107d58ce7242f74762a7d10e6d8b6b40fa74ce6caeee86ae9e3d2346ccf3"
+    },
+    {
+      "path": "historical-e2e/records/04-outline-recover.js",
+      "bytes": 695,
+      "sha256": "a7acc1fe783ae76718e7a7351a008b2e7f183dc324ccc51a8fdfc5769c1cc0c0"
+    },
+    {
+      "path": "historical-e2e/records/04-outline-recover.txt",
+      "bytes": 5520,
+      "sha256": "a906e22619467db8ceda404f2b50de33bbf636f089733dc2b9bace9c602d7078"
+    },
+    {
+      "path": "historical-e2e/records/04-outline-retry.js",
+      "bytes": 752,
+      "sha256": "77571dacebf49b2a9f93c3057cf17a17c1e3d73e07279dbad991cb8ffb7e727e"
+    },
+    {
+      "path": "historical-e2e/records/04-outline-retry.txt",
+      "bytes": 1502,
+      "sha256": "c56a8d7f637775dd1901333eb84b1e19d1d3d195e1ab3ca0b5924250cfbeccd6"
+    },
+    {
+      "path": "historical-e2e/records/05-lesson-source.js",
+      "bytes": 1227,
+      "sha256": "dbc89ad518698529e21480f44a85e9f4ca96646b377bc212be174a447e75caee"
+    },
+    {
+      "path": "historical-e2e/records/05-lesson-source.txt",
+      "bytes": 5008,
+      "sha256": "c1164957c67fc6a795c700ab494f7ddcccf288eee78bbc01d0e7c5b3a80eb416"
+    },
+    {
+      "path": "historical-e2e/records/06-lesson-render.js",
+      "bytes": 796,
+      "sha256": "a49736f5fc9ae34ebec1501e4a876c756e6eaaa3203402a0fced4abd19d76869"
+    },
+    {
+      "path": "historical-e2e/records/06-lesson-render.txt",
+      "bytes": 1286,
+      "sha256": "ccd190f7a07a43b475bea3ce93a83eb523367b358527db6194a3e4c1963d3293"
+    },
+    {
+      "path": "historical-e2e/records/07-hint-revision.js",
+      "bytes": 2312,
+      "sha256": "27c33e4dd3b5c1917e8bb8af91fb9fabac2437c02941ae2dc5da6f7f2cdcb2d3"
+    },
+    {
+      "path": "historical-e2e/records/07-hint-revision.txt",
+      "bytes": 3104,
+      "sha256": "a0a199785f3f9e85e5f40f2a7ba05abbf88fc4f901263a50c9516040b921f35d"
+    },
+    {
+      "path": "historical-e2e/records/07-revision-retry-after-reopen.txt",
+      "bytes": 702,
+      "sha256": "8b93b7e997ed6a694320dee96c4f91218e1dd509b12c756fe0359a647e7a7302"
+    },
+    {
+      "path": "historical-e2e/records/07-revision-retry.js",
+      "bytes": 570,
+      "sha256": "72b7d27992bdb8e2d15fed1bcb5802340dcccd8d089789b0f55614074d765247"
+    },
+    {
+      "path": "historical-e2e/records/07-revision-retry.txt",
+      "bytes": 112,
+      "sha256": "346b3e88ae892b642173dcd5d11507881062834e40859c9793da2b6a6c26ad28"
+    },
+    {
+      "path": "historical-e2e/records/08-refresh-plan.js",
+      "bytes": 1322,
+      "sha256": "6072d3d16cdfd01fde2879f419c3589bc9d55a6eadd60c759837ebf5515046a3"
+    },
+    {
+      "path": "historical-e2e/records/08-refresh-plan.txt",
+      "bytes": 6715,
+      "sha256": "f8e49edb4dd9d3d8c845062a203c0f219c6ac9f045efc257eb0d6e3ab5074ab9"
+    },
+    {
+      "path": "historical-e2e/records/09-independent.js",
+      "bytes": 2166,
+      "sha256": "5c2eb4004ef03834f8fa69c1f88e34ca52c8cdad0a866e62b9ae907eaed9d6db"
+    },
+    {
+      "path": "historical-e2e/records/09-independent.txt",
+      "bytes": 4022,
+      "sha256": "5b80c711fa72981623085213b3bcaa8f50a76961ce422cc0bb6bfbef8b2f5262"
+    },
+    {
+      "path": "historical-e2e/records/10-final-screens.js",
+      "bytes": 1316,
+      "sha256": "7897f0512145e3efaf65d724d17339e57e05c671f389810d343075ff931027fe"
+    },
+    {
+      "path": "historical-e2e/records/10-final-screens.txt",
+      "bytes": 2384,
+      "sha256": "28a500112517d742013bb99210f5c61c036256fdb5e4e3db32a71ed9267abc80"
+    },
+    {
+      "path": "historical-e2e/records/check_math.py",
+      "bytes": 1074,
+      "sha256": "f5f2887e7e531dfc29df04e0784692c8035c372cd62869922056fc98f5377e49"
+    },
+    {
+      "path": "historical-e2e/records/export_results.py",
+      "bytes": 1561,
+      "sha256": "25ccc3eba51ea5992c649b1fda2a4ee303cdd17cb7f53996a97476918e075944"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft-recover.js",
+      "bytes": 555,
+      "sha256": "a1727ea94e3b1efaba85f92399666492dc7cd7b1ebc68f2edbc723c92d744c3d"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft-recover.txt",
+      "bytes": 666,
+      "sha256": "5def3d1a4b0bf8c1b134384fafd87d07640bd35250f606bad638da3066eaee53"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft-retry.txt",
+      "bytes": 73,
+      "sha256": "81681edf93e7dc75ff6f6c7402bf363be1ef01fd04ce63c212671874315e2f86"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft-view.js",
+      "bytes": 779,
+      "sha256": "a67a25f808109d6cd08de15d823af9d0131ecb632e679a3f1ac733cdc12274c0"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft-view.txt",
+      "bytes": 1419,
+      "sha256": "1791cfe5832845cbf457c7c68b49164bed6cc5eb5cddf8eb008c07e3e3f2cbac"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft.js",
+      "bytes": 1222,
+      "sha256": "3607788510dac92145a82a82d55aaa223da195d26a01c8195cdd7a36cc618aa0"
+    },
+    {
+      "path": "historical-e2e/records/extra-draft.txt",
+      "bytes": 1202,
+      "sha256": "d7b18cbd2e25f00212dea6a4c1d6509966957784a677146839b06379fe04abc7"
+    },
+    {
+      "path": "historical-e2e/records/extra-modes.js",
+      "bytes": 1355,
+      "sha256": "0f8043130556471f27209d3c922c91905f228e39479cce53131a25141e605523"
+    },
+    {
+      "path": "historical-e2e/records/extra-modes.txt",
+      "bytes": 2802,
+      "sha256": "a5f9fa323ff2bd48aa8f0b5aa8d997d2adf9aec6f1562d685045686c2c0c0043"
+    },
+    {
+      "path": "historical-e2e/records/extra-new-session-race.js",
+      "bytes": 1197,
+      "sha256": "6d0fd7231d0bb2044030cae0888ae7bba87bb264d0df481f61dcab25033c9a29"
+    },
+    {
+      "path": "historical-e2e/records/extra-new-session-race.txt",
+      "bytes": 1390,
+      "sha256": "c521e2feea9750f5e5f8052f34a9a7d1c1afbafafcbcdb17f1c65665f9d00efa"
+    },
+    {
+      "path": "historical-e2e/records/extra-partition.js",
+      "bytes": 1079,
+      "sha256": "7a01c50b666da208df8c9140eb60d2fc07fa28a85a976b82c4e1dadb8473d758"
+    },
+    {
+      "path": "historical-e2e/records/extra-partition.txt",
+      "bytes": 1557,
+      "sha256": "2da13c9ca4320a731656fb22e36f64ed9fcc66fc82069d2c4b4cf28d323207fc"
+    },
+    {
+      "path": "historical-e2e/records/extra-refine.js",
+      "bytes": 1377,
+      "sha256": "1d8da44205cc8c04cef7f8124e8354ed0aba11897d4091e0e7a040947dc3f60d"
+    },
+    {
+      "path": "historical-e2e/records/extra-refine.txt",
+      "bytes": 3240,
+      "sha256": "61d48120d8d209f0f31d561488a59cf2e03cf29a3778d82cbe0698df781d1b70"
+    },
+    {
+      "path": "historical-e2e/records/extra-solver.js",
+      "bytes": 1012,
+      "sha256": "6ab02f907bc01323220d548af7eff0601b5f33380e03b577a9748dc621d92fbc"
+    },
+    {
+      "path": "historical-e2e/records/extra-solver.txt",
+      "bytes": 1527,
+      "sha256": "045885591c223acdc667d9968260704d2c7da3a48231e436ba63d5b2120c737f"
+    },
+    {
+      "path": "historical-e2e/records/inspect_pptx.py",
+      "bytes": 1895,
+      "sha256": "a4aa904b848fa5971c108fb86132f97e77d53f7192815ed81b9eb0f5d01a2ae9"
+    },
+    {
+      "path": "historical-e2e/records/math-check.json",
+      "bytes": 629,
+      "sha256": "b1229b5cb567b8f2083c490225a9187883f8a79a2fa6e010fe8345eb6024104d"
+    },
+    {
+      "path": "historical-e2e/records/pptx-inspection.json",
+      "bytes": 3605,
+      "sha256": "15bae89381cad3ccb1ed5a1040a17e47c4113e58a6f08cd0603ce2f7ebde81b2"
+    },
+    {
+      "path": "historical-e2e/records/readable-preview.json",
+      "bytes": 781,
+      "sha256": "c1af88048f4099a08cda24a4e2779ac79ad3efb35af00b6f87b11dac7f7c44ec"
+    },
+    {
+      "path": "historical-e2e/records/render_preview.py",
+      "bytes": 2510,
+      "sha256": "3749a1cd7ed0e8262f6f73be849b30eab1886b51e8131998b428f81cda41425d"
+    },
+    {
+      "path": "historical-e2e/records/完整运行快照.json",
+      "bytes": 435300,
+      "sha256": "a787d9fea7dd8a63c03faf1d5954ef34ef842ad306b2e307d63a930c5478fe97"
+    },
+    {
+      "path": "historical-e2e/screenshots/01-任务设计输入.png",
+      "bytes": 464281,
+      "sha256": "9041ae320b0ebeef6b88e47a94c6be04ebe0188e6222fb2729ea8770e31893fa"
+    },
+    {
+      "path": "historical-e2e/screenshots/02-模型任务草案.png",
+      "bytes": 524111,
+      "sha256": "7e52a44029dbf7c73c375acf126a5046e1493458a06f7a63ea42d1b00853e564"
+    },
+    {
+      "path": "historical-e2e/screenshots/03-教师发布任务.png",
+      "bytes": 532124,
+      "sha256": "1cb4175d2afe9e846578d2dc0091c313c997603bc1f4991ae74ec7a2cda9dd69"
+    },
+    {
+      "path": "historical-e2e/screenshots/04-学生首次解答.png",
+      "bytes": 437593,
+      "sha256": "1e95db81455b02da0b491501c9c46ce231b061ec83bb0176fd9c29839ca3aa8e"
+    },
+    {
+      "path": "historical-e2e/screenshots/05-真实模型诊断.png",
+      "bytes": 375790,
+      "sha256": "e59eb76def164f353cbae64dba3ee08df0c5ff01bf035a16fa653f59f33651b2"
+    },
+    {
+      "path": "historical-e2e/screenshots/06-教师查看诊断证据.png",
+      "bytes": 593277,
+      "sha256": "3311fad70036ee5fb6d6cdb13fb7656876fc44f7d580f6db58c178da54877ea9"
+    },
+    {
+      "path": "historical-e2e/screenshots/07-模型补救教案.png",
+      "bytes": 524972,
+      "sha256": "76f39fde4a773c953396c52b0fdf4cadf7824384b12e0f8da3a693e628ab6f47"
+    },
+    {
+      "path": "historical-e2e/screenshots/08-教案交接备课.png",
+      "bytes": 585683,
+      "sha256": "584a5908400ff3bcf50000e5dbf9e5dd50afb793dad8a8fc76e7756b541aefe2"
+    },
+    {
+      "path": "historical-e2e/screenshots/09-重试后真实模型课件大纲.png",
+      "bytes": 489429,
+      "sha256": "d3e3a8b0ccd223facc4e1b22be4b8ffe2542fef73d349e75e474cae0c0769001"
+    },
+    {
+      "path": "historical-e2e/screenshots/09a-课件大纲超时暂停.png",
+      "bytes": 353040,
+      "sha256": "e0fa9864d7cf289f3392d8bfe24e3df402b5e3b5a2e5ff4d26b0a15d5a9fc809"
+    },
+    {
+      "path": "historical-e2e/screenshots/09b-任务中心手动重试.png",
+      "bytes": 346654,
+      "sha256": "927f332e457491b4afda09af212b2b7abd2410481b093b26b6b28eb84215d4bd"
+    },
+    {
+      "path": "historical-e2e/screenshots/10-确认大纲与课件源码.png",
+      "bytes": 589808,
+      "sha256": "bd3637af0874f2113e256a01e6ca713a9080c91a8028fb2feeff7b763b6f3413"
+    },
+    {
+      "path": "historical-e2e/screenshots/11-课件构建与复核.png",
+      "bytes": 703938,
+      "sha256": "0e7e40de661d9f1c5057e9f84ab7e3a21c905b1c7720ed4ea96ba0aa20824503"
+    },
+    {
+      "path": "historical-e2e/screenshots/12-单步提示.png",
+      "bytes": 361344,
+      "sha256": "9006c8c6b7a1ada9a73fe8bb66ad55eee3c53b73ba5ed4c71384ded540b86a45"
+    },
+    {
+      "path": "historical-e2e/screenshots/13-单位圆数学活动.png",
+      "bytes": 362447,
+      "sha256": "28d6efe10c39a19483fc618abffa18c8bbb5d74e32b3d0ca677e902b5240fa11"
+    },
+    {
+      "path": "historical-e2e/screenshots/14-学生修订与帮助条件.png",
+      "bytes": 366870,
+      "sha256": "319306f5096d751a07cc04030ec2f701119e7a4500ce859b1b46366f772f2bb4"
+    },
+    {
+      "path": "historical-e2e/screenshots/14a-修订诊断限流.png",
+      "bytes": 230785,
+      "sha256": "4d961ac8cdddf9cdbba37f11e46220fafa1470eb06f2c7c0dadb497ac0dbdd27"
+    },
+    {
+      "path": "historical-e2e/screenshots/14b-重试后修订成功.png",
+      "bytes": 389160,
+      "sha256": "5df0d6977060d774787bbcd27200a261e9b5d630e27f4f7eed90da05bc373f3f"
+    },
+    {
+      "path": "historical-e2e/screenshots/15-修订后教案过期.png",
+      "bytes": 463440,
+      "sha256": "3094bfe3573090fd6308e9e9ead332e7050d6a6e5c51934c4e814708679b6b2c"
+    },
+    {
+      "path": "historical-e2e/screenshots/16-更新后的巩固教案.png",
+      "bytes": 384861,
+      "sha256": "bd10c4ea77bd8cc35bd334f54ca67640c3e6d9304d6e4ea93b905ef4aea134aa"
+    },
+    {
+      "path": "historical-e2e/screenshots/17-教师布置关联新题.png",
+      "bytes": 426258,
+      "sha256": "d5322baace8a3abaa7f04864e87185730a6dc8218087fa7fed4d265de468fd23"
+    },
+    {
+      "path": "historical-e2e/screenshots/18-学生独立新题.png",
+      "bytes": 353922,
+      "sha256": "b0aba9bd84e22af606e067a254bef4fbc79668b136bd7707eefb9a5a28b4cf71"
+    },
+    {
+      "path": "historical-e2e/screenshots/19-独立新题复核结果.png",
+      "bytes": 303541,
+      "sha256": "49e348b3e5d5625fa0609b0f4b95a9483f0f01564331f5e3ad32f12cb4d73060"
+    },
+    {
+      "path": "historical-e2e/screenshots/19a-教师查看独立复核.png",
+      "bytes": 431814,
+      "sha256": "58508374f16e8c6d756f1e0e73e32fb173c2605458a6cbc84776df377a7ef671"
+    },
+    {
+      "path": "historical-e2e/screenshots/20-教师求解输入.png",
+      "bytes": 352519,
+      "sha256": "19d4747497f25e9f977ff7ace486c85cde77cefc19c24c17ab318bd832b74699"
+    },
+    {
+      "path": "historical-e2e/screenshots/21-真实模型完整求解.png",
+      "bytes": 376810,
+      "sha256": "a9a54e8f0e70822105592ec9146cd9328aa95edd1afd33421603b0f0b37e9b0d"
+    },
+    {
+      "path": "historical-e2e/screenshots/22-草稿描述输入.png",
+      "bytes": 475887,
+      "sha256": "e1df05419846dbd6596e2815d801a606841c74490a8ed986ab48ecb689676680"
+    },
+    {
+      "path": "historical-e2e/screenshots/23-重试后真实草稿反馈.png",
+      "bytes": 412786,
+      "sha256": "0b59708fc0834cdc9fb061cb51690df1adc85715b36de0a09b104ff3d072cfef"
+    },
+    {
+      "path": "historical-e2e/screenshots/23a-草稿分析超时暂停.png",
+      "bytes": 337815,
+      "sha256": "7e8e65da6cf58f6aabb191dc556018a4366ffd02279c9c153703759fc6d93f86"
+    },
+    {
+      "path": "historical-e2e/screenshots/24-正确解法优化输入.png",
+      "bytes": 379584,
+      "sha256": "442ee5f75df646f3056697913b39d9ea98a8da990f2def14453d89f38c2c7ba2"
+    },
+    {
+      "path": "historical-e2e/screenshots/25-真实模型正解优化.png",
+      "bytes": 472326,
+      "sha256": "1eef186481152534050d679566bc648c770a8863b8e59cacc7aedb66afbdafec"
+    },
+    {
+      "path": "historical-e2e/screenshots/26-新建练习异步覆盖复现.png",
+      "bytes": 345979,
+      "sha256": "0bbbd8507d8fadc0c6a167c1c2bb891b5324a655e8c0b945207e9a49b2c1a169"
+    },
+    {
+      "path": "historical-e2e/screenshots/27-仅答案核对.png",
+      "bytes": 391597,
+      "sha256": "e8188f661c367b2a5e5adb57e7023d4f92fbb71759d5e587d0a50e9ec04b4b64"
+    },
+    {
+      "path": "historical-e2e/screenshots/28-完整纠正.png",
+      "bytes": 400489,
+      "sha256": "0c7f1d87011d1d19ad578cd5de45665958f0fed3e7aa76be705080d093ad4a43"
+    },
+    {
+      "path": "historical-e2e/screenshots/29-草稿版面分块.png",
+      "bytes": 398213,
+      "sha256": "32890859b754748ea99234bff949d2fbd6feba1a42904f2dd87a307f9ac4b091"
+    },
+    {
+      "path": "historical-e2e/screenshots/30-任务中心最终状态.png",
+      "bytes": 249029,
+      "sha256": "0c55ef80bfd96ee8a281cead70834424da8680007546e4aeb95f64093f1edcfa"
+    },
+    {
+      "path": "historical-e2e/测试报告.md",
+      "bytes": 10881,
+      "sha256": "d6c73a85902ffdc76c90816dce75c44e01bfb2199f4dc67955b66c43f588661d"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-01.png",
+      "bytes": 50621,
+      "sha256": "694101067b9fcda0e6a7da933f90557913ca97e91c2aa0537bba17a5dc1abe4d"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-02.png",
+      "bytes": 37548,
+      "sha256": "f5bb2bde266db02b7c48334e530456ad951b71dbdf0cc4934dfded99808d7294"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-03.png",
+      "bytes": 54453,
+      "sha256": "b1b1cba02604b993d4466dae274f9b1de2e7ca4e80320dcb167b6b8e6cc3be7c"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-04.png",
+      "bytes": 48264,
+      "sha256": "5613c05ac5da74024edf644abc1fc98f51af14535ddf38df2ae3911f034dc63a"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-05.png",
+      "bytes": 54455,
+      "sha256": "d448c9949e5cfc1de783390d329d9bf876c2235fa48a3ad01570274694d768d5"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-06.png",
+      "bytes": 41595,
+      "sha256": "7d50a7f66fe165d1615ca861f9e5f14c144513300efd0149d7cffcf79fb18c8f"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-07.png",
+      "bytes": 54052,
+      "sha256": "690d3e12fc03a7db3d173955c57b80f8ca15914decfaa1f3a810aad0b5e3f2c7"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-08.png",
+      "bytes": 39466,
+      "sha256": "d6b3fff1b6fe8a1a58d23e983f958b212209c2523bda07fec6a60e1867400939"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-09.png",
+      "bytes": 55825,
+      "sha256": "4b3e1c1b0d3738ba9bf414f39873ca53945271b501724d74444b242a4cb52e11"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/幻灯片-10.png",
+      "bytes": 62705,
+      "sha256": "e3bc179787a2d178ca6ca9cc480fd4d75d608414195f3a3af413c0ba5803be78"
+    },
+    {
+      "path": "historical-e2e/课件静态预览-可读/课件.pdf",
+      "bytes": 193542,
+      "sha256": "520505332be89902e70f645c4a691e265e34fba2e103b723f479f9c69c77009d"
+    },
+    {
+      "path": "ppt/ink-teal.preview.png",
+      "bytes": 198586,
+      "sha256": "882570f2ef88d8df326d80bd794ab5e309b05d4055128f6ed1429eecd1846485"
+    },
+    {
+      "path": "ppt/scholar-red.preview.png",
+      "bytes": 198909,
+      "sha256": "61c4a2f7b83a437c96812f6fd7d124a4e0ae68ca9616ebdc855324a891b93844"
+    },
+    {
+      "path": "ppt/slides/幻灯片-01.png",
+      "bytes": 47576,
+      "sha256": "263d83388a409bf9db4946e2b53df5a6b19e555c77c10d5a8c66c16c7974e5a1"
+    },
+    {
+      "path": "ppt/slides/幻灯片-02.png",
+      "bytes": 67470,
+      "sha256": "4b86627617048696b0fa2a03c2f0f83798e61c0f38b6ba4fb36e8c8e6a3a9496"
+    },
+    {
+      "path": "ppt/slides/幻灯片-03.png",
+      "bytes": 53764,
+      "sha256": "0cc6c53fb6e46e698acd8648afcf919854a74fd49b6fc121140e4dbc8fcff271"
+    },
+    {
+      "path": "ppt/slides/幻灯片-04.png",
+      "bytes": 52125,
+      "sha256": "c1b5fad1d9808581d78c68d8323831d28b90be4fb5af6692a8eca2534a9e898b"
+    },
+    {
+      "path": "ppt/slides/幻灯片-05.png",
+      "bytes": 57312,
+      "sha256": "0ae86dafa01bddd76fde2a368a1b22d946f8c20f7d9c7e0724a857637e91c524"
+    },
+    {
+      "path": "ppt/slides/幻灯片-06.png",
+      "bytes": 62702,
+      "sha256": "6da771f7334b337206dc94c802fcf6d8e7ed782818d96fe69bd89c33e2567354"
+    },
+    {
+      "path": "ppt/slides/幻灯片-07.png",
+      "bytes": 56838,
+      "sha256": "a4f95a50ad313393d7f5c5815d57e43cb6ab2a23e900672dd752ff09b7c43943"
+    },
+    {
+      "path": "ppt/slides/幻灯片-08.png",
+      "bytes": 53384,
+      "sha256": "d55da17680b736ac1a0fa51bd3f309af0b500ebceea997038323c79568b406cd"
+    },
+    {
+      "path": "ppt/slides/幻灯片-09.png",
+      "bytes": 47837,
+      "sha256": "0a84fa99e4add23b43733b4b4445d184510e1278979e36299b4362dfccada3fb"
+    },
+    {
+      "path": "ppt/slides/幻灯片-10.png",
+      "bytes": 61450,
+      "sha256": "841e24b1dc7411da1c3d654057c23d0de5439c96477386b8c8933ddf86281369"
+    },
+    {
+      "path": "ppt/slides/幻灯片-11.png",
+      "bytes": 75910,
+      "sha256": "e33e29720dee2598d892a1aebab087307625088c48f74a6ae8424b57c85ab674"
+    },
+    {
+      "path": "ppt/slides/幻灯片-12.png",
+      "bytes": 61194,
+      "sha256": "c0e966eb162eb81e5aa0a0de5a26ededf66c5e45ad7c09cfd1d75c3cc1cfcb19"
+    },
+    {
+      "path": "ppt/slides/幻灯片-13.png",
+      "bytes": 72941,
+      "sha256": "87c3b562344439d1852b5a673000e78a6649e3d7f9215b76fbb1b89d6df37ac1"
+    },
+    {
+      "path": "ppt/slides/幻灯片-14.png",
+      "bytes": 41705,
+      "sha256": "cb36e205422745ff8a8c56575a9b184bb75b0bdc0c5ae8b16c789b9b89cfb788"
+    },
+    {
+      "path": "ppt/slides/幻灯片-15.png",
+      "bytes": 49687,
+      "sha256": "113b503acfadc88b01a346da7a4110622916a6a2d5fb1345b7f4929c4820dc3c"
+    },
+    {
+      "path": "ppt/slides/幻灯片-16.png",
+      "bytes": 35175,
+      "sha256": "497a2250212bba5b33d36d4c769eb5e555593a7c5e66bf949127701a6f43f885"
+    },
+    {
+      "path": "ppt/slides/幻灯片-17.png",
+      "bytes": 40691,
+      "sha256": "c84358c8b93d3f3c2cb66dec1e9a5f61fe21ce976440de872b34b4fabff976e8"
+    },
+    {
+      "path": "ppt/slides/幻灯片-18.png",
+      "bytes": 43695,
+      "sha256": "046fa34675121563c9fbefd79231d62f099dd1eab881bd1e95f0240964c073b0"
+    },
+    {
+      "path": "ppt/slides/幻灯片-19.png",
+      "bytes": 52725,
+      "sha256": "adfd141c1c7a7a2df2707d504f8de6cf852676193cd00c51dd40f00990ff4343"
+    },
+    {
+      "path": "ppt/slides/幻灯片-20.png",
+      "bytes": 63648,
+      "sha256": "a14391ee654d41c3ce7e9ff112ac208a36e104ef0b93db3748a88639e16a36c9"
+    },
+    {
+      "path": "ppt/slides/幻灯片-21.png",
+      "bytes": 52306,
+      "sha256": "30a89c7f992262ec69b93b951f1d8ff5a33e88cec8aa0ed53ed959bf20ae1008"
+    },
+    {
+      "path": "ppt/交付记录.md",
+      "bytes": 2277,
+      "sha256": "4bcb38df3a1b187b9ad3367c0722ccf4ee4b485c6587b9c45359a62a454414f8"
+    },
+    {
+      "path": "ppt/全部模板结构检查.json",
+      "bytes": 1381,
+      "sha256": "c82cd2c4f5f8b9f436b358d9fc32adfae45f1e19cc81b5ebd10db5987cee4af4"
+    },
+    {
+      "path": "ppt/完整课堂静态预览.pdf",
+      "bytes": 508860,
+      "sha256": "73407aefce19bcaca9a9fa85b88140b142d0db9eb193fcb4c8a37b9014e4fb09"
+    },
+    {
+      "path": "publication-check.json",
+      "bytes": 294,
+      "sha256": "f4473dbfe4181a41fad9dca9ee035e164f385a6d124e5f97ece40ad45adb84f5"
+    },
+    {
+      "path": "publication.json",
+      "bytes": 493,
+      "sha256": "8a6c353475b3296bfb6b1b2ccfc1075cc5a9dd3f4f40133a2fc10b66ec23a048"
+    },
+    {
+      "path": "历史过程-截图总览.png",
+      "bytes": 618822,
+      "sha256": "4a7676a5551d977980d58b5dca887d02b563866988332213c1f5850766455fe5"
+    },
+    {
+      "path": "复现说明.md",
+      "bytes": 3338,
+      "sha256": "02722095707752789552454f1f2e3a42b7703d01febbdcb4739a763e2d9631f2"
+    },
+    {
+      "path": "当前交互-截图总览.png",
+      "bytes": 127828,
+      "sha256": "f4b9d6108ce67b1be7ea989bf0992fba29aee4a6656fc2840136fec481d82c12"
+    }
+  ],
+  "file_count": 172,
+  "total_bytes": 22183888
+}

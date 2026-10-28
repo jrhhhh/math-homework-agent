@@ -1,0 +1,17 @@
+### Result
+{"stage":"math solver","state":"反馈已生成","reply":"利用二倍角公式，原方程等价于\n2sin x cos x−sin x=0，\n即 sin x(2cos x−1)=0。\n所以 sin x=0 或 cos x=1/2。\n在 0≤x<2π 内，前者给出 x=0、π，后者给出 x=π/3、5π/3。\n因此解集为 {0，π/3，π，5π/3}。这四个值代回原方程均成立；注意 2π 不在所给区间内。\nmath-solver · 第 1 版 · 68e0f8202c\n查看校验与运行记录"}
+### Ran Playwright code
+```js
+await (async (page) => {
+  await page.goto('http://127.0.0.1:8768/');await page.setViewportSize({width:1440,height:1100});
+  await page.getByLabel('我需要',{exact:true}).selectOption('solve');
+  await page.getByLabel('原题 保留完整条件与范围').fill('在 0≤x<2π 内，解方程 sin(2x)=sin x。');
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/20-教师求解输入.png',fullPage:true});
+  await page.getByRole('button',{name:'开始求解 →',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('submit').disabled && !['排队中','正在思考','等待提交'].includes(document.getElementById('state-badge').textContent),null,{timeout:600000});
+  const state=await page.locator('#state-badge').innerText();const reply=await page.locator('#result').innerText();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/21-真实模型完整求解.png',fullPage:true});
+  return {stage:'math solver',state,reply};
+}
+)(page);
+```

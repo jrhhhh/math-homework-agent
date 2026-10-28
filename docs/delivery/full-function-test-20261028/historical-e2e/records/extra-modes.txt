@@ -1,0 +1,22 @@
+### Result
+{"stage":"answer-only and full correction modes","results":[{"mode":"answer_check","state":"反馈已生成","reply":"答案正确。由 sin(2x)=2sin x cos x，原方程等价于 sin x(2cos x−1)=0。因此 sin x=0 或 cos x=1/2，在 0≤x<2π 内得到 x=0、π/3、π、5π/3。你只提供了答案，无法检查具体解题步骤。\n最小修改\n\n答案无需修改；若需展示过程，可补上因式分解及两种情况的讨论。\n\n修改后再检查 ↗\nmath-error-diagnosis · 第 1 版 · d57c42d02c\n查看校验与运行记录"},{"mode":"full_correction","state":"反馈已生成","reply":"你的二倍角公式使用正确，首错在第2行：未讨论 sin x=0 就除以 sin x，遗漏了解。\n保留原思路，移项并因式分解：sin x(2cos x−1)=0。\n因此 sin x=0 或 cos x=1/2。在 0≤x<2π 内，前者给出 x=0、π，后者给出 x=π/3、5π/3。\n所以完整解集为 {0, π/3, π, 5π/3}。\n首个实质问题 · 第 2 步\n两边同除以 sin x，得 cos x=1/2。\n\n除以 sin x 需要 sin x≠0；原题允许 sin x=0，此时原等式也成立，直接相除会漏解。\n\n最小修改\n\n将第2行改为：移项得 sin x(2cos x−1)=0，故 sin x=0 或 cos x=1/2。结合 0≤x<2π，得到 x=0、π/3、π、5π/3。\n\n修改后再检查 ↗\nmath-error-diagnosis · 第 1 版 · 3a2c8cb06d\n查看校验与运行记录"}]}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const results=[];await page.setViewportSize({width:1440,height:1100});
+  for(const test of [
+    {mode:'answer_check',solution:'0，π/3，π，5π/3',name:'27-仅答案核对'},
+    {mode:'full_correction',solution:'由二倍角公式 2sin x cos x=sin x。\n两边同除以 sin x，得 cos x=1/2。\n所以 x=π/3 或 5π/3。',name:'28-完整纠正'}]){
+    await page.goto('http://127.0.0.1:8768/');await page.getByLabel('我需要',{exact:true}).selectOption(test.mode);
+    await page.getByLabel('原题 保留完整条件与范围').fill('在 0≤x<2π 内，解方程 sin(2x)=sin x。');
+    await page.getByLabel('我的解题过程 建议每一步另起一行').fill(test.solution);
+    await page.getByRole('button',{name:'开始检查 →',exact:true}).click();
+    await page.waitForFunction(()=>!document.getElementById('submit').disabled && !['排队中','正在思考','等待提交'].includes(document.getElementById('state-badge').textContent),null,{timeout:600000});
+    const state=await page.locator('#state-badge').innerText(),reply=await page.locator('#result').innerText();
+    await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/'+test.name+'.png',fullPage:true});
+    results.push({mode:test.mode,state,reply});
+  }
+  return {stage:'answer-only and full correction modes',results};
+}
+)(page);
+```

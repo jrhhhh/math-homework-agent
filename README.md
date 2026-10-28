@@ -137,7 +137,7 @@ BENCH_IDENTIFIERS='姓名,学号' python3 scripts/verify_all.py
 
 运行前将示例值替换为分享材料中需要检查的实际标识符。摘要只记录配置数量，不记录标识符内容；专用测试标记仅能验证扫描流程，不能替代实际身份信息检查。
 
-验收覆盖技能输出约束、工作台、交接版本、数学核验组件、课件生成器回归、Schema 和固定数学案例。当前执行记录见 [验收摘要](docs/delivery/evidence/verification.json)。
+验收覆盖技能输出约束、工作台、交接版本、数学核验组件、课件生成器回归、Schema 和固定数学案例。当前执行记录见 [验收摘要](docs/delivery/evidence/verification.json)。 完整功能覆盖、真实模型教学流程、浏览器截图和课件检查见 [完整功能测试记录](docs/delivery/full-function-test-20261028/README.md)。
 
 师生链路可单独验证：
 

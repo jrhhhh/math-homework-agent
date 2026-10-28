@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "case_count": 51,
+  "subset_counts": {
+    "answer_core": 26,
+    "verification_discipline": 16,
+    "status_handling": 5,
+    "boundary_routing": 4
+  },
+  "errors": [],
+  "warnings": []
+}

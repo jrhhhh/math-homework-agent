@@ -1,0 +1,23 @@
+{
+  "renderer": "LibreOffice static PDF + Poppler",
+  "font_config": "absolute file; system macOS Chinese fonts",
+  "exit_codes": [
+    0,
+    0
+  ],
+  "pages": 10,
+  "images": [
+    "课件静态预览-可读/幻灯片-01.png",
+    "课件静态预览-可读/幻灯片-02.png",
+    "课件静态预览-可读/幻灯片-03.png",
+    "课件静态预览-可读/幻灯片-04.png",
+    "课件静态预览-可读/幻灯片-05.png",
+    "课件静态预览-可读/幻灯片-06.png",
+    "课件静态预览-可读/幻灯片-07.png",
+    "课件静态预览-可读/幻灯片-08.png",
+    "课件静态预览-可读/幻灯片-09.png",
+    "课件静态预览-可读/幻灯片-10.png"
+  ],
+  "scope": "仅用于静态预览；不代表 PowerPoint 动画播放效果。",
+  "stderr": ""
+}

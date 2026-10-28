@@ -1,0 +1,12 @@
+async (page) => {
+  await page.goto('http://127.0.0.1:8768/');await page.setViewportSize({width:1440,height:1100});
+  await page.route('**/api/sessions',async route=>{if(route.request().method()==='POST')await new Promise(resolve=>setTimeout(resolve,1400));await route.continue();});
+  await page.getByRole('button',{name:'新建练习',exact:true}).click();
+  await page.getByLabel('我需要',{exact:true}).selectOption('draft');
+  const before=await page.getByLabel('我需要',{exact:true}).inputValue();
+  await page.getByLabel('草稿布局描述 分区、分行、划改与留白').fill('这里是学生输入的草稿描述，应在新练习初始化后保留。');
+  await page.waitForFunction(()=>document.getElementById('mode').value==='check',null,{timeout:15000});
+  const after=await page.getByLabel('我需要',{exact:true}).inputValue();const text=await page.locator('#draft').inputValue();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/26-新建练习异步覆盖复现.png',fullPage:true});
+  return {stage:'new session latency race',artificial_delay_ms:1400,before,after,draft_after:text,reproduced:before==='draft'&&after==='check'&&!text};
+}

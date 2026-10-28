@@ -1,0 +1,16 @@
+{
+  "published_at": "2026-10-29",
+  "current_source_commit": "93ce08baec4d4350dc2dfff9e2184c835e9a969f",
+  "historical_source_commit": "b5265efea88b7933bcd332d5e1bf6c5db1a1e9cd",
+  "normalization": {
+    "absolute_paths_normalized": 6,
+    "model_tool_event_fields_omitted": 12
+  },
+  "excluded": [
+    "本地数据库与锁文件",
+    "字体缓存和浏览器配置",
+    "账号运行信息与模型工具事件",
+    "无关实验及RSI材料"
+  ],
+  "tests_executed_on": "2026-10-28"
+}

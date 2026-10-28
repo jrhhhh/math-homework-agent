@@ -1,0 +1,68 @@
+{
+  "deck": "lessons/aa513beda08e4d52b5619c6c3b6fd512/课件.pptx",
+  "sha256": "ccdbc22c373bdddfc476dd131cc4bdcb698cf0f449efece2299ca680d1338a6b",
+  "slides": [
+    {
+      "page": 1,
+      "text": "零因子与分类讨论\n三角方程：零因子与分类讨论\n高中一年级 · 针对性教学\n教材：人教A版高中数学"
+    },
+    {
+      "page": 2,
+      "text": "公式回顾\n二倍角公式：sin(2x)=2sin x cos x。\n将二倍角公式代入原方程后，如何继续变形？"
+    },
+    {
+      "page": 3,
+      "text": "审查除法\n在 0≤x<2π 内，解方程 sin(2x)=sin x。\n原第2步：“两边同除以 sin x，得到 cos x=1/2。”\n第2步的除法在什么条件下成立？原题是否保证了这个条件？"
+    },
+    {
+      "page": 4,
+      "text": "自行修订\n保留原提交痕迹。\n在第2步旁标出需要补查的位置。\n补写除法成立的条件。\n尝试修订原题解答。"
+    },
+    {
+      "page": 5,
+      "text": "解释依据\n对照书面修订说明理由。\n补齐区间筛选与原式验证。\n修订怎样保证没有遗漏？各分支中的变形为什么成立？区间条件在哪里使用？"
+    },
+    {
+      "page": 6,
+      "text": "共同核查\n变形：两边同除以 sin x。\n成立条件：________\n未覆盖情形：________\n除法未覆盖的情形应如何处理？"
+    },
+    {
+      "page": 7,
+      "text": "保留分支\n因式分解：sin x(2cos x−1)=0。\n两个因子乘积为零，需要保留哪些分支？\nsin x=0，或 2cos x−1=0。\n若先除以 sin x，须限定 sin x≠0，并另行处理 sin x=0。"
+    },
+    {
+      "page": 8,
+      "text": "区间筛选\nsin x=0。\ncos x=1/2。\n两个分支在指定区间内分别有哪些解？\nsin x=0：x=0 或 x=π。\ncos x=1/2：x=π/3 或 x=5π/3。"
+    },
+    {
+      "page": 9,
+      "text": "原式验证\n候选解：0、π/3、π、5π/3。\n分别计算 sin(2x) 与 sin x。\n验证记录：x｜sin(2x)｜sin x｜是否相等。\n解集为 {0,π/3,π,5π/3}。\n每个候选解是否满足原方程？"
+    },
+    {
+      "page": 10,
+      "text": "独自整理\n写明除法成立的条件。\n保留零因子与非零分支。\n说明各步等价变形的依据。\n列出区间内的全部解。\n记录原式验证过程。\n提交完整书面修订。"
+    }
+  ],
+  "scope": "python-pptx 提取文本；LibreOffice 静态转换截图不验证 PowerPoint 原生动画和播放效果。",
+  "conversion": {
+    "exit_code": 0,
+    "stdout": "convert <REPO_ROOT>/delivery/教学流程实测-20261027/lessons/aa513beda08e4d52b5619c6c3b6fd512/课件.pptx as a Impress document -> <REPO_ROOT>/delivery/教学流程实测-20261027/课件静态预览/课件.pdf using filter : impress_pdf_Export\n",
+    "stderr": "Fontconfig warning: no <cachedir> elements found. Check configuration.\nFontconfig warning: adding <cachedir>/@.__________________________________________________OOO/var/cache/fontconfig</cachedir>\nFontconfig warning: adding <cachedir prefix=\"xdg\">fontconfig</cachedir>\n"
+  },
+  "preview": {
+    "exit_code": 0,
+    "images": [
+      "课件静态预览/幻灯片-01.png",
+      "课件静态预览/幻灯片-02.png",
+      "课件静态预览/幻灯片-03.png",
+      "课件静态预览/幻灯片-04.png",
+      "课件静态预览/幻灯片-05.png",
+      "课件静态预览/幻灯片-06.png",
+      "课件静态预览/幻灯片-07.png",
+      "课件静态预览/幻灯片-08.png",
+      "课件静态预览/幻灯片-09.png",
+      "课件静态预览/幻灯片-10.png"
+    ],
+    "stderr": ""
+  }
+}

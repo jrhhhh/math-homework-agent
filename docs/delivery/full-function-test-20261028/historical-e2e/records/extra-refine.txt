@@ -1,0 +1,18 @@
+### Result
+{"stage":"diagnose then refine","state":"反馈已生成","reply":"诊断阶段先审查了你当前提交的解答，模型判断结论与过程成立。下面的优化建议只针对这份解法；每个方向对应的具体练习动作也列在卡片中。\n三个可尝试的优化方向\n1 · 更短步骤\n\n保留原来的因式分解路线，用等价链串联：sin(2x)=sin x ⇔ sin x(2cos x−1)=0 ⇔ sin x=0 或 cos x=1/2，再直接列出区间内解集；等价性写明后，可省去逐一代入的重复计算。\n\n本解答尚未展示：本解答尚未展示用等价变形压缩步骤、减少重复计算的写法。\n\n现在可以试：将原解答改写成一条带“⇔”的等价链，并在末尾写出解集。\n2 · 更通用解法\n\n用同角正弦相等的通法：sin A=sin B ⇔ A=B+2kπ 或 A=π−B+2kπ，k∈Z。代入 A=2x、B=x，得到 x=2kπ 或 x=(2k+1)π/3，再按原区间筛选。这个方法更便于提炼通法，不必声称它比原法更快。\n\n本解答尚未展示：本解答展示了二倍角分解，尚未展示从正弦相等关系提炼通法的一般化视角。\n\n现在可以试：在原题上写出两族通解，并分别标出满足 0≤x<2π 的整数 k。\n3 · 更几何直观\n\n在同一坐标系画出 y=sin(2x) 与 y=sin x 在 0≤x<2π 的图象，标出四个交点的横坐标，用图形解释解集；图象用于直观理解，精确求解仍由代数步骤给出。\n\n本解答尚未展示：本解答采用代数路线，尚未展示用图象交点解释解集的数形结合。\n\n现在可以试：画出原题两条曲线的草图，在交点下标出 0、π/3、π、5π/3，并将 2π 端点画为空心。\n修改后再检查 ↗\nsolution-refiner · 第 1 版 · 5e8ba24667\n查看校验与运行记录"}
+### Ran Playwright code
+```js
+await (async (page) => {
+  await page.goto('http://127.0.0.1:8768/');await page.setViewportSize({width:1440,height:1100});
+  await page.getByLabel('我需要',{exact:true}).selectOption('refine');
+  await page.getByLabel('原题 保留完整条件与范围').fill('在 0≤x<2π 内，解方程 sin(2x)=sin x。');
+  await page.getByLabel('我的解题过程 建议每一步另起一行').fill('由二倍角公式得 2sin x cos x=sin x，整理为 sin x(2cos x−1)=0。\n所以 sin x=0 或 cos x=1/2。\n在 0≤x<2π 内，前者得到 x=0 或 π，后者得到 x=π/3 或 5π/3。\n逐一代入均满足原方程，故解集为 {0, π/3, π, 5π/3}。');
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/24-正确解法优化输入.png',fullPage:true});
+  await page.getByRole('button',{name:'先核验再优化 →',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('submit').disabled && !['排队中','正在思考','等待提交'].includes(document.getElementById('state-badge').textContent),null,{timeout:600000});
+  const state=await page.locator('#state-badge').innerText();const reply=await page.locator('#result').innerText();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/25-真实模型正解优化.png',fullPage:true});
+  return {stage:'diagnose then refine',state,reply};
+}
+)(page);
+```

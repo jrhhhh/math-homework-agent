@@ -1,0 +1,60 @@
+{
+  "record_type": "Summary transcribed from actual Playwright CLI results; not model quality scores",
+  "executed_at": "2026-10-27T01:31:26.759678+00:00",
+  "backend": "Explicit isolated fixture on 127.0.0.1:8767; no fixture in production service",
+  "runs": [
+    {
+      "source": "app/tests/browser/teaching_loop.js",
+      "passed": true,
+      "flow": "design,publish,student submission,teacher evidence,remedial plan,lesson handoff,followup,revision,stale plan rejection",
+      "desktop": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "mobile": {
+        "width": 390,
+        "scroll": 390
+      },
+      "page_errors": []
+    },
+    {
+      "source": "app/tests/browser/learning_path.js",
+      "passed": true,
+      "flow": "success criteria,first attempt,guidance,interactive degeneracy,supported revision,independent new item,task results after reload",
+      "desktop": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "mobile": {
+        "width": 390,
+        "scroll": 390
+      },
+      "page_errors": [],
+      "header_content_within_bounds": true
+    },
+    {
+      "source": "app/tests/browser/math_widgets.js",
+      "passed": true,
+      "checks": "unit circle has equal SVG scales at 90 degrees; h=0 tangent and finite slope",
+      "page_errors": []
+    }
+  ],
+  "artifacts": {
+    "learning-path-desktop.png": "d3ea19a01708f21aaa25994484cc1fbfbddb02d25a764096f5f6d9091a095805",
+    "learning-path-mobile.png": "b24a0a7e35de82f5438fabf90bd3d09632ee0f5ae25f8617a9d5d293364e75b9",
+    "learning-widget-desktop.png": "2f4e6aa3f360596fe0940dc5e015b24f4bc9147b52f6452c74d0baa02f14445c",
+    "unit_circle-desktop.png": "36d59073ac0c5917cd7d763e89255ffaa0875bedf7bc6c31e7991ca61bddc1b2",
+    "derivative-desktop.png": "87aae792fcc1c750792711a3a111fed04f747845fec9927ebf7bffa2761d5372"
+  },
+  "scope": "UI and deterministic computation only; synthetic diagnostic fixtures are not mathematical accuracy or teaching effect evidence.",
+  "integration_base": "origin/main 2fdaf2f",
+  "mobile_screenshot_viewport": {
+    "width": 390,
+    "height": 2200,
+    "reason": "Single tall capture avoids provider full-page stitching artifacts; layout assertions use 390x844."
+  },
+  "settings_dialog": {
+    "opened_and_closed": true,
+    "settings_unchanged": true
+  }
+}

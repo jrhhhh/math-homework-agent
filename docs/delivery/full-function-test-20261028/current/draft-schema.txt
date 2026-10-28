@@ -1,0 +1,18 @@
+{
+  "action": "schema_check",
+  "cases": 24,
+  "subsets": {
+    "evidence_discipline": 5,
+    "input_modes": 4,
+    "layout_core": 10,
+    "partition": 5
+  },
+  "splits": {
+    "development": 16,
+    "validation": 5,
+    "test": 3
+  },
+  "errors": [],
+  "passed": true,
+  "capability_note": "只查数据自洽与防泄漏；不验证数学，也不验证案例真实性。"
+}

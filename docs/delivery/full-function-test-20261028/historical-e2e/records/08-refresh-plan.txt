@@ -1,0 +1,22 @@
+### Result
+{"stage":"stale evidence and renewed plan","evidence":"仅本机任务当前提交的模型诊断；按任务项计数，不代表班级比例或长期掌握程度。\n\n解三角方程时审查零因子、保留全部分支并在区间内验证解集\n\n成功标准：由因式分解或分类讨论完整保留 sin x=0 与非零分支，列出指定区间所有解并说明等价变形。\n\n在 0≤x<2π 内，解方程 sin(2x)=sin x。\n\n当前过程正确\n本次作答条件：在已记录帮助后提交\n第 3 次提交 · 34fd24d1\n学生 · 继续修订 →按学习路径学习 →","planNote":"学生提交或诊断已经变化，这份教案依据已过期；请重新规划。","stale":true,"status":"教案草稿已生成，先审阅再交给备课或布置再练习。","plan":"# 教师教案草稿：三角方程分支审查巩固\n\n本草稿供教师修改。本题当前诊断为过程正确，安排巩固与迁移观察，不预设需要补救。\n\n## 依据与版本\n- assignment_id：d7f1bd26997c449cbdee8939060113b3\n- 任务项：a39b3eff87514926b05589bc1d6fb57a\n- submission_id：34fd24d1a0dc4a529c774ebbf2ee1aa9；revision：3\n- 提交版本：200ee50027532cd130f26225c9ed8f251553d08c529a9bc799d38bfaca41c704\n- evidence_version：71a3f150af2e2b1415472266a408e0d5720585e74a40529c9a2211cafb54af27\n\n已观察：当前提交诊断为 correct，无首错引用；本题为 practice，independent_check_passed 为 false。会话记录包含反馈可用、请求提示、提示可用和打开单位圆活动，帮助条件为 supported。这些记录不能证明学生实际阅读或采用了哪些帮助，也不能说明更早版本存在何种错误。\n\n待教师确认：通过当前书面过程与学生解释，确认其能说明分支保留及等价变形的依据。现有材料不足以认定“帮助后修订正确”，也不能认定独立掌握。\n\n## 任务与成功标准\n- problem：在 0≤x<2π 内，解方程 sin(2x)=sin x。\n- objective：解三角方程时审查零因子、保留全部分支并在区间内验证解集。\n- success_criteria：由因式分解或分类讨论完整保留 sin x=0 与非零分支，列出指定区间所有解并说明等价变形。\n- 提交前帮助条件：本次会话已记录帮助，按 supported 条件保留，不将当前结果归为独立检查通过。\n\n## 本次巩固目标\n学生能在自己的原题书面过程中标明分支依据、涉及除法时的条件及区间筛选理由，并口头解释这些步骤如何避免遗漏。目标用于本次教学观察，不代表课程标准或长期能力结论。\n\n## 教学过程\n### 1. attempt：回看原题\n教师问题：请在当前解答中标出每个分支从哪里产生；哪些变形需要附加条件？\n学生动作：先自行审查原题，补充缺失说明；若过程已完整，则保留原解并标注理由，不要求为修订而改写。\n观察证据：学生独立写出的分支标注、变形条件及区间审查说明。记录本环节是否得到教师提示。\n\n### 2. explain：解释关键推理\n教师问题：你如何确认没有因除去可能为零的因子而漏解？如何确认区间筛选完整？\n学生动作：对照自己的书面步骤解释，并在需要时修订说明。\n观察证据：解释是否与书面过程一致，是否覆盖零因子与非零分支。教师提示后完成的补充应明确记录为帮助后的表现。\n\n### 3. interactive：单位圆辅助观察\n活动模板：unit_circle。\n教师问题：请用单位圆说明你所写的区间筛选理由，并指出哪些结论仍需要书面推理支持。\n学生动作：结合活动解释自己的筛选过程，再把理由写回原题。\n观察证据：活动中的解释与学生亲笔推理是否一致。打开活动或操作成功本身不作为成功标准。\n\n### 4. independent_check：待设计的迁移检查\n当前未提供新题，本草稿不增加题目或答案。交 learning-task-designer 设计一道同目标、同成功标准但条件变化的新题，assessment_kind 设为 independent_check。发布前由教师审查题目及数学内容，并明确允许的帮助条件。\n\n## 再练习目标与验收\n新题仍观察：是否保留零因子与非零分支、说明等价变形、完整筛选指定区间并验证解集。验收须审查学生书面推理，不能仅核对答案。\n\n分别记录“在帮助后修订正确”和“新题提交前未记录帮助且过程正确”；后者仅描述记录范围内的表现。帮助记录不全时保留不确定性，不解释为独立掌握。本题目前只可表述为：有帮助记录的练习会话中，当前提交诊断为正确，独立检查尚未通过。\n\n## 教学交接与更新\n教师审阅后交 lesson-materials-builder，先确认教材、课时和页面大纲，再制作课件。需要解答时交 math-solver，生成的推导或新题须数学复核。\n\n发布再练习时保存本 assignment_id、前序任务项、submission_id 与 evidence_version。学生新提交导致证据版本变化时，将本计划标注过期并重新规划；新一轮由 math-error-diagnosis 审查修订过程，不自动宣布已经掌握。"}
+### Ran Playwright code
+```js
+await (async (page) => {
+  if(await page.locator('#jobs-dock').isVisible())await page.getByRole('button',{name:'关闭任务中心',exact:true}).click();
+  await page.getByRole('button',{name:'师生任务',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#task-evidence .task-evidence-item'),null,{timeout:30000});
+  const evidence=await page.locator('#task-evidence').innerText();const planNote=await page.locator('#task-plan-note').innerText();
+  const stale=await page.getByRole('button',{name:'交给教师备课 →',exact:true}).isDisabled();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/15-修订后教案过期.png',fullPage:true});
+  await page.getByRole('button',{name:'依据当前诊断起草补救教案',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('task-refresh').disabled && document.getElementById('task-status').textContent.trim().length>0,null,{timeout:300000});
+  const status=await page.locator('#task-status').innerText();const plan=await page.locator('#task-plan-draft').inputValue();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/16-更新后的巩固教案.png',fullPage:true});
+  return {stage:'stale evidence and renewed plan',evidence,planNote,stale,status,plan};
+}
+)(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8768/
+- Page Title: 数学作业智能体 · 师生任务

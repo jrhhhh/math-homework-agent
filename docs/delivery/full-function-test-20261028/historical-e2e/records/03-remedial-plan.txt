@@ -1,0 +1,20 @@
+### Result
+{"stage":"real-model remedial plan","state":"仅本机任务当前提交的模型诊断；按任务项计数，不代表班级比例或长期掌握程度。\n\n解三角方程时审查零因子、保留全部分支并在区间内验证解集\n\n成功标准：由因式分解或分类讨论完整保留 sin x=0 与非零分支，列出指定区间所有解并说明等价变形。\n\n在 0≤x<2π 内，解方程 sin(2x)=sin x。\n\n当前过程有错\n本次作答条件：提交前未记录系统帮助\n第 1 次提交 · 11f611c4\n两边同除以 sin x，得到 cos x=1/2。\n\n除以 sin x 需要 sin x≠0；题设未保证该条件，且 sin x=0 时原方程成立，因此直接相除遗漏了解。\n\n学生 · 继续修订 →按学习路径学习 →","status":"教案草稿已生成，先审阅再交给备课或布置再练习。","plan":"# 补救教学草稿（供教师修改）\n\n## 依据与适用范围\n- assignment_id：d7f1bd26997c449cbdee8939060113b3\n- evidence_version：aaab597ed12566acd27247bb0f51ec3ac75b710a5f4fc1fd2d26b0b075d2c5db\n- 任务项：a39b3eff87514926b05589bc1d6fb57a\n- 当前 submission_id：11f611c4ac7748a6a1b16c82fb21aa87；revision：1\n- 提交版本：f3664125200881b22da484115db9fa908e0876547ce8ffa71577c88c944330b1\n\n本草稿用于本题的针对性补救。当前模型诊断为 incorrect，需教师审阅；不据此评价学生长期能力或班级学情。\n\n已观察到的问题：第 2 步写道“两边同除以 sin x，得到 cos x=1/2。”该变形未说明除数非零条件，遗漏了需要保留的零因子分支。\n\n待教师确认的解释：学生可能未在除法前审查条件，也可能知道需要分类但书写时省略；通过提问和学生书面修订区分，暂不认定为稳定错误模式。\n\n提交前帮助条件：本题当前练习会话未记录帮助，events 为空；该记录不覆盖其他会话或系统外帮助，不能据此认定为独立完成。本次为 practice，independent_check_passed 为 false。\n\n## 本题与成功标准\n- 原题：在 0≤x<2π 内，解方程 sin(2x)=sin x。\n- 目标：解三角方程时审查零因子、保留全部分支并在区间内验证解集。\n- 成功标准：由因式分解或分类讨论完整保留 sin x=0 与非零分支，列出指定区间所有解并说明等价变形。\n\n## 一次短课的可观察目标\n学生能在原提交第 2 步旁写明除法成立的条件，自行修订遗漏分支，并提交包含分支处理、区间筛选与原式验证的完整推理。此目标来自当前诊断，不作为课程标准表述。\n\n## 教学过程\n### 1. attempt：先修订原题\n教师问题：“第 2 步的除法在什么条件下成立？原题是否保证了这个条件？请先标出需要补查的位置，再自行修订。”\n\n学生动作：保留原提交痕迹，在第 2 步旁补写条件审查，并尝试完成修订。\n\n观察证据：学生是否主动检查零值情形，是否在书面推理中保留全部分支。记录教师实际提供的提示及其发生时间。\n\n### 2. explain：解释修订依据\n教师问题：“你的修订怎样保证没有遗漏？各分支中的变形为什么成立？区间条件在哪里使用？”\n\n学生动作：用自己的文字解释分支设置与变形条件，补齐区间筛选和原式验证。\n\n观察证据：解释是否与书面过程一致；是否说明解集完整性的依据，而非只修改最终答案。\n\n### 3. interactive：围绕原步骤开展核查\n活动模板：none。\n\n教师与学生共同核查原第 2 步，按“变形—成立条件—未覆盖情形”逐项提问，由学生填写。活动只用于形成观察和解释，随后由学生独自整理完整书面推理，不能用口头互动代替提交。\n\n### 4. independent_check：预留迁移检查\n本次资料未提供新题，不在草稿中编造题目或答案。交 learning-task-designer 拟定一题同目标、同成功标准但条件变化的任务，供教师审阅后发布；需要解答时交 math-solver，并进行数学复核。\n\n## 再练习目标与验收\n先按上述成功标准审查原题修订，再用新题观察迁移。新题提交前记录帮助条件；验收时检查除法条件、零因子分支、等价变形、区间筛选及原式验证，不用答案一致替代过程审查。\n\n分别记录“在何种帮助后修订正确”与“新题提交前未记录帮助且过程正确”。后者只陈述记录范围内的表现；帮助记录不全时，不解释为独立掌握。若原题过程已核验正确，后续活动转为巩固与迁移观察，不继续预设存在错误。\n\n## 教师审阅与交接\n教师确认诊断依据、课时安排和提示程度后，可交 lesson-materials-builder；先确认教材、课时和页面大纲，再制作课件。\n\n保留上述 assignment_id、evidence_version、任务项及提交版本。发布再练习时关联前序任务与证据版本；学生新提交引起证据版本变化后，将本计划标注过期并重新规划。新一轮由 math-error-diagnosis 审查修订过程，不自动宣布已经掌握。"}
+### Ran Playwright code
+```js
+await (async (page) => {
+  await page.getByRole('button',{name:'返回师生任务 ↗',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#task-evidence .task-evidence-item'),null,{timeout:30000});
+  const state=await page.locator('#task-evidence').innerText();await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/06-教师查看诊断证据.png',fullPage:true});
+  if(await page.locator('#task-plan').isDisabled())return {stage:'remedial plan',state,error:'当前诊断没有进入可规划状态。'};
+  await page.getByRole('button',{name:'依据当前诊断起草补救教案',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('task-refresh').disabled && document.getElementById('task-status').textContent.trim().length>0,null,{timeout:300000});
+  const status=await page.locator('#task-status').innerText();const plan=await page.locator('#task-plan-draft').inputValue();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/07-模型补救教案.png',fullPage:true});
+  return {stage:'real-model remedial plan',state,status,plan};
+}
+)(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8768/
+- Page Title: 数学作业智能体 · 师生任务

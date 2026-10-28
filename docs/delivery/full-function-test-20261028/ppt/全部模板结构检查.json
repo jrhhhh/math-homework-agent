@@ -1,0 +1,74 @@
+[
+  {
+    "file": "lesson-materials-builder/assets/themes/scholar-red.pptx",
+    "slides": 8,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  },
+  {
+    "file": "lesson-materials-builder/assets/themes/ink-teal.pptx",
+    "slides": 8,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  },
+  {
+    "file": "lesson-materials-builder/assets/templates/problem-lesson.pptx",
+    "slides": 13,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  },
+  {
+    "file": "lesson-materials-builder/assets/templates/concept-lesson.pptx",
+    "slides": 14,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  },
+  {
+    "file": "lesson-materials-builder/assets/templates/review-lesson.pptx",
+    "slides": 11,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  },
+  {
+    "file": "lesson-materials-builder/assets/examples/trigonometric/lesson.pptx",
+    "slides": 21,
+    "canvas_emu": [
+      12192000,
+      6858000
+    ],
+    "errors": [],
+    "warns": [],
+    "n_errors": 0,
+    "n_warns": 0
+  }
+]

@@ -1,0 +1,15 @@
+### Result
+{"stage":"real-model lesson source","status":"请检查页序、公式、例题和图示描述；确认后再渲染。","source":"---\ntitle: 三角方程：零因子与分类讨论\nversion: daily\n---\n\n# [封面] 零因子与分类讨论\n三角方程：零因子与分类讨论\n高中一年级 · 针对性教学\n教材：人教A版高中数学\n\n# [重点] 公式回顾\n- **二倍角公式**：sin(2x)=2sin x cos x。\n> 将二倍角公式代入原方程后，如何继续变形？\n\n# [例题] 审查除法\n- 在 0≤x<2π 内，解方程 sin(2x)=sin x。\n- 原第2步：“两边同除以 sin x，得到 cos x=1/2。”\n> 第2步的除法在什么条件下成立？原题是否保证了这个条件？\n<!-- 题干下方留白，供学生标注除法条件。 -->\n\n# [例题] 自行修订\n- 保留原提交痕迹。\n- 在第2步旁标出需要补查的位置。\n- 补写除法成立的条件。\n- 尝试修订原题解答。\n<!-- 下半页留作学生修订区，不提前呈现答案。 -->\n\n# [例题] 解释依据\n- 对照书面修订说明理由。\n- 补齐区间筛选与原式验证。\n> 修订怎样保证没有遗漏？各分支中的变形为什么成立？区间条件在哪里使用？\n<!-- 保留解释与补写空间，不预设学生回答。 -->\n\n# [两栏] 共同核查\n<!-- 允许无图 -->\n<!-- 可用 recipe 不支持条件审查示意图，改用可编辑的两栏填写区。 -->\n## 左\n- 变形：两边同除以 sin x。\n## 右\n- 成立条件：________\n- 未覆盖情形：________\n> 除法未覆盖的情形应如何处理？\n\n# [标题] 保留分支\n<!-- 允许无图 -->\n<!-- 本页为代数分支讨论；可用 recipe 不支持分支图，以解答块延后呈现分支，避免提前泄露答案。 -->\n- 因式分解：sin x(2cos x−1)=0。\n> 两个因子乘积为零，需要保留哪些分支？\n!ans: sin x=0，或 2cos x−1=0。\n!ans: 若先除以 sin x，须限定 sin x≠0，并另行处理 sin x=0。\n\n# [两栏] 区间筛选\n<!-- 允许无图 -->\n<!-- 可用 recipe 不支持单位圆及答案同步揭示，不用函数图像冒充单位圆；保留两栏分支对照。 -->\n- 取值范围：0≤x<2π。\n## 左\n- sin x=0。\n## 右\n- cos x=1/2。\n> 两个分支在指定区间内分别有哪些解？\n!ans: sin x=0：x=0 或 x=π。\n!ans: cos x=1/2：x=π/3 或 x=5π/3。\n\n# [例题] 原式验证\n- 候选解：0、π/3、π、5π/3。\n- 分别计算 sin(2x) 与 sin x。\n- 验证记录：x｜sin(2x)｜sin x｜是否相等。\n> 每个候选解是否满足原方程？\n!ans: 解集为 {0,π/3,π,5π/3}。\n<!-- 下方留白供按上述四列填写验证表；不预填逐项验证答案。 -->\n\n# [标题] 独自整理\n<!-- 允许无图 -->\n<!-- 本页用于收束与提交，无需配图。 -->\n- 写明除法成立的条件。\n- 保留零因子与非零分支。\n- 说明各步等价变形的依据。\n- 列出区间内的全部解。\n- 记录原式验证过程。\n- 提交完整书面修订。\n\n<!-- 教师使用备注：本课为45分钟日常版合成教学演示，不预设学生已有表现或稳定错误模式。教师提示与学生修订结合，记录实际提示及发生时间。迁移题由教师课后另行布置，本课件不展示迁移题或答案，原题修订不作为迁移检查的替代。教材具体页码待核。 -->\n<!-- 来源追踪：assignment_id=d7f1bd26997c449cbdee8939060113b3；evidence_version=aaab597ed12566acd27247bb0f51ec3ac75b710a5f4fc1fd2d26b0b075d2c5db；任务项=a39b3eff87514926b05589bc1d6fb57a；submission_id=11f611c4ac7748a6a1b16c82fb21aa87；revision=1；提交版本=f3664125200881b22da484115db9fa908e0876547ce8ffa71577c88c944330b1。 -->"}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const outline=await page.locator('#lesson-outline').inputValue();if(!outline)return {stage:'lesson source',error:'未取得可确认的大纲'};
+  await page.locator('#lesson-clarifications').fill('本次是合成教学演示：对象为高一，45 分钟，先复习二倍角公式，再针对漏解开展教师提示、学生修订、分支检验与新题练习；不假定班级人数或学生已有表现。教材具体页码未提供，不编造页码。迁移题由教师课后另行布置，本次课件不展示迁移题或答案。数学结论以教师已提供的原题、因式分解与四个解为准。');
+  await page.getByRole('button',{name:'确认大纲 →',exact:true}).click();
+  await page.waitForFunction(()=>!document.getElementById('lesson-source-button').disabled && document.getElementById('lesson-status').textContent.trim().length>0,null,{timeout:300000});
+  const status=await page.locator('#lesson-status').innerText();const source=await page.locator('#lesson-source').inputValue();
+  await page.screenshot({path:'delivery/教学流程实测-20261027/screenshots/10-确认大纲与课件源码.png',fullPage:true});
+  return {stage:'real-model lesson source',status,source};
+}
+)(page);
+```

@@ -1,0 +1,44 @@
+{
+  "source_commit": "93ce08b",
+  "results": [
+    {
+      "suite": "teaching_loop",
+      "source": "app/tests/browser/teaching_loop.js",
+      "backend": "explicit isolated fixture; UI interactions only",
+      "port": 18767,
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 13.925
+    },
+    {
+      "suite": "learning_path",
+      "source": "app/tests/browser/learning_path.js",
+      "backend": "explicit isolated fixture; UI interactions only",
+      "port": 18767,
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 9.008
+    },
+    {
+      "suite": "math_widgets",
+      "source": "app/tests/browser/math_widgets.js",
+      "backend": "explicit isolated fixture; UI interactions only",
+      "port": 18767,
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 20.488
+    },
+    {
+      "suite": "glass_ui",
+      "source": "app/tests/browser/glass_ui.js",
+      "backend": "explicit isolated fixture; UI interactions only",
+      "port": 18767,
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 6.491
+    }
+  ],
+  "record_saved_at_utc": "2026-10-28T15:31:33.008662+00:00",
+  "playwright_cli_version": "0.1.22",
+  "node_version": "v26.7.0"
+}

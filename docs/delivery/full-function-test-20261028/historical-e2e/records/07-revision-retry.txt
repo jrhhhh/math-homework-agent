@@ -1,0 +1,3 @@
+The browser 'teaching-live' is not open, please run open first
+
+  playwright-cli -s=teaching-live open [params]

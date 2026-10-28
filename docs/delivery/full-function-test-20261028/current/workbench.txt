@@ -1,0 +1,8 @@
+......................................................./Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/email/feedparser.py:88: ResourceWarning: unclosed <socket.socket [closed] fd=9, family=2, type=1, proto=6>
+  for ateof in reversed(self._eofstack):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..........................................................
+----------------------------------------------------------------------
+Ran 113 tests in 8.368s
+
+OK
