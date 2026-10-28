@@ -396,6 +396,7 @@ class Page:
         self.emph = None       # 强调块文字
         self.question = None   # 驱动问题
         self.answers = []      # 答案块的段落（放映时点击才出现）
+        self.teacher_notes = [] # 教师讲授备注，不进入学生屏幕
         self.answer_blank = 0  # 写了 !ans: 但没写内容的行数
         self.images = []       # [(path, h, w)]
         self.steps = []        # [(path, caption)]
@@ -471,6 +472,12 @@ def parse(text):
             continue
 
         if cur is None:
+            continue
+
+        if stripped.startswith("!note:"):
+            value = stripped[len("!note:"):].strip()
+            if value:
+                cur.teacher_notes.append(value)
             continue
 
         # 两栏分节
@@ -1791,6 +1798,8 @@ def build(md_path, out_path, template=None, font_title=None, font_body=None):
             slide.background.fill.solid()
             slide.background.fill.fore_color.rgb = RGBColor.from_string("F7F0EE")
         w = renderer(slide, page, meta)
+        if page.teacher_notes:
+            slide.notes_slide.notes_text_frame.text = "\n".join(page.teacher_notes)
         if w:
             warn_imgs.append(f"P{idx}[{page.layout}] {w}")
 
