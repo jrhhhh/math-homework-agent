@@ -27,6 +27,10 @@ python -c "import zipfile,re,html,sys; sys.stdout.reconfigure(encoding='utf-8',e
 
 PDF 可使用 `pypdf` 提取可复制正文；扫描件不得假装已准确读取数学公式。
 
+## 先确定视觉模板
+
+先读取 `references/visual-design.md`，查看 `assets/themes/` 中真实渲染的主题预览。默认使用“绛红书院”，可选“墨青研习”；同时提供原生 PPTX 版式、JSON 视觉规范和模板样册。大纲写出所选主题及每页构图，源码 frontmatter 写 `theme`。不能只换颜色或把空白列表页称为已套模板。
+
 ## 第 1 步：选模板，写教学蓝图
 
 开始前读取 `references/classroom-design.md` 和 `references/classroom-templates.md`。

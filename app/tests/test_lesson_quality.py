@@ -33,6 +33,7 @@ class LessonQualityTest(unittest.TestCase):
             self.assertTrue(all("可授课的数学课件设计" in p for p in prompts))
             self.assertIn("concept-lesson.md", prompts[1])
             self.assertIn("!note:", prompts[1])
+            self.assertTrue(all("视觉模板与构图流程" in p for p in prompts))
 
     def test_two_columns_with_unequal_text_and_circles_pass_geometry(self):
         responses = iter([
@@ -51,6 +52,7 @@ class LessonQualityTest(unittest.TestCase):
             deck = Presentation(studio.file_path(lesson["id"], "deck"))
             text = " ".join(shape.text for slide in deck.slides for shape in slide.shapes if shape.has_text_frame)
             self.assertIn("取值范围", text)
+            self.assertEqual(deck.slides[1].slide_layout.name, "ScholarRed.Compare")
             self.assertNotIn("教师专用", text)
             self.assertIn("教师专用：先问除式为零时怎么办。", deck.slides[1].notes_slide.notes_text_frame.text)
 

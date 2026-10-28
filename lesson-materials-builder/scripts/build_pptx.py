@@ -1740,7 +1740,7 @@ def drop_all_slides(prs):
         xml_slides.remove(sld)
 
 
-def build(md_path, out_path, template=None, font_title=None, font_body=None):
+def build(md_path, out_path, template=None, font_title=None, font_body=None, theme=None):
     global FONT_TITLE, FONT_BODY
     if font_title:
         FONT_TITLE = font_title
@@ -1768,6 +1768,21 @@ def build(md_path, out_path, template=None, font_title=None, font_body=None):
         prs.slide_height = Inches(SLIDE_H)
 
     prs.core_properties.title = meta.get("title", "") or ""
+    bundled = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "base.pptx")
+    inherited_theme = (prs.core_properties.keywords or "").removeprefix("math-lesson-theme:")
+    if inherited_theme not in {"scholar-red", "ink-teal"}:
+        inherited_theme = None
+    selected_theme = theme or meta.get("theme") or inherited_theme or ("scholar-red" if template and os.path.realpath(template) == os.path.realpath(bundled) else "classic")
+    visual = None
+    if selected_theme != "classic":
+        import importlib.util
+        module_spec = importlib.util.spec_from_file_location("lesson_theme_layouts", os.path.join(os.path.dirname(__file__), "theme_layouts.py"))
+        visual = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(visual)
+        visual_spec = visual.load(selected_theme)
+        if font_title: visual_spec["title_font"] = font_title
+        if font_body: visual_spec["body_font"] = font_body
+        visual_layouts = visual.install(prs, visual_spec)
 
     blank = blank_layout(prs)
     base = os.path.dirname(os.path.abspath(md_path))
@@ -1791,13 +1806,13 @@ def build(md_path, out_path, template=None, font_title=None, font_body=None):
         page.layout_origin = page.layout if page.layout in LAYOUT_ALIAS else None
         page.layout = LAYOUT_ALIAS.get(page.layout, page.layout)
         renderer = RENDERERS.get(page.layout, render_generic)
-        slide = prs.slides.add_slide(blank)
+        slide = prs.slides.add_slide(visual_layouts.get(page.layout, blank) if visual else blank)
         # Only the bundled/default theme owns this background; custom templates keep theirs.
         bundled = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "base.pptx")
-        if page.layout == "封面" and (not template or os.path.realpath(template) == os.path.realpath(bundled)):
+        if not visual and page.layout == "封面" and (not template or os.path.realpath(template) == os.path.realpath(bundled)):
             slide.background.fill.solid()
             slide.background.fill.fore_color.rgb = RGBColor.from_string("F7F0EE")
-        w = renderer(slide, page, meta)
+        w = visual.render(slide, page, meta, sys.modules[__name__], visual_spec) if visual else renderer(slide, page, meta)
         if page.teacher_notes:
             slide.notes_slide.notes_text_frame.text = "\n".join(page.teacher_notes)
         if w:
@@ -1983,6 +1998,7 @@ def main():
     ap.add_argument("src", help="课件.md")
     ap.add_argument("-o", "--out", required=True, help="输出 .pptx")
     ap.add_argument("--template", help="底版 .pptx（继承其母版与主题）")
+    ap.add_argument("--theme", choices=("classic", "scholar-red", "ink-teal"), help="视觉主题；优先于源码 theme 字段")
     ap.add_argument("--font-title", help=f"标题字族（默认 {FONT_TITLE}）")
     ap.add_argument("--font-body", help=f"正文字族（默认 {FONT_BODY}）")
     ap.add_argument("--strict", action="store_true",
@@ -1990,7 +2006,7 @@ def main():
     args = ap.parse_args()
 
     n_pages, n_slides, n_anim, warns = build(args.src, args.out, args.template,
-                                             args.font_title, args.font_body)
+                                             args.font_title, args.font_body, args.theme)
 
     print(f"✓ {args.out}")
     print(f"  {n_pages} 个页面块 → {n_slides} 张幻灯片")

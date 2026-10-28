@@ -1,0 +1,10 @@
+{
+  "id": "ink-teal",
+  "name": "墨青研习",
+  "canvas": [13.3333333333, 7.5],
+  "colors": {"paper":"F2F6F4", "ink":"193C3C", "accent":"1C7772", "deep":"123E40", "soft":"DFEBE6", "muted":"64807B", "white":"FFFFFF", "rule":"CBDBD5", "secondary":"93603C"},
+  "title_font": "华文中宋",
+  "body_font": "微软雅黑",
+  "layout_prefix": "InkTeal",
+  "source": "Independent native PowerPoint design; workflow informed by PPT Master."
+}

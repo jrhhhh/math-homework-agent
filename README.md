@@ -76,7 +76,9 @@ python3 run.py
 
 填写课题、年级、教材版本和课时，粘贴教案或上传 `.docx`、可提取文本的 `.pdf`、`.md`、`.txt` 文件。
 
-系统先整理逐页大纲。教师补充缺失信息、编辑并确认大纲后，生成可编辑的课件 Markdown；检查源码后再渲染 PowerPoint，执行结构与几何复核并下载文件。课件按新授课、习题课或讲评课模板组织问题链、推导、分层练习和退出检测，并在 PowerPoint 演讲者备注中保留时间、追问、支架、板书和答案。支持函数图像、单位圆等数学配图。文字可编辑，配图为图片；数学内容和实际放映效果仍需教师审阅。
+系统先整理逐页大纲。教师补充缺失信息、编辑并确认大纲后，生成可编辑的课件 Markdown；检查源码后再渲染 PowerPoint，执行结构与几何复核并下载文件。课件按新授课、习题课或讲评课模板组织问题链、推导、分层练习和退出检测，并在 PowerPoint 演讲者备注中保留时间、追问、支架、板书和答案。可选择绛红书院或墨青研习视觉主题，封面、推导、对照、练习、结论等使用不同原生版式。支持函数图像、单位圆等数学配图。文字可编辑，配图为图片；数学内容和实际放映效果仍需教师审阅。
+
+视觉模板与预览：[绛红书院](lesson-materials-builder/assets/themes/scholar-red.pptx) · [墨青研习](lesson-materials-builder/assets/themes/ink-teal.pptx) · [样册预览](lesson-materials-builder/assets/themes/scholar-red.preview.png)。
 
 ### 师生任务
 

@@ -1,0 +1,10 @@
+{
+  "id": "scholar-red",
+  "name": "绛红书院",
+  "canvas": [13.3333333333, 7.5],
+  "colors": {"paper":"F8F5F0", "ink":"29252A", "accent":"9F2943", "deep":"651C31", "soft":"F2E5E6", "muted":"807378", "white":"FFFFFF", "rule":"DFD5D0", "secondary":"42675F"},
+  "title_font": "华文中宋",
+  "body_font": "微软雅黑",
+  "layout_prefix": "ScholarRed",
+  "source": "Independent native PowerPoint design; workflow informed by PPT Master."
+}
