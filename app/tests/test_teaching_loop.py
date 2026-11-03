@@ -91,6 +91,16 @@ class TeachingLoopTest(unittest.TestCase):
         self.loop.generator=lambda prompt:{'raw':'{"title":"坏草案","items":[]}'}
         with self.assertRaises(ValueError):self.loop.design({'title':'草案','objective':'逆运算'})
 
+    def test_plan_prompt_requires_json_and_rejects_plain_markdown(self):
+        rid = self.submit(); self.result(rid)
+        prompts = []
+        self.loop.generator = lambda prompt: prompts.append(prompt) or {'raw': '# 原始 Markdown'}
+        with self.assertRaises(ValueError):
+            self.loop.plan(self.task['id'])
+        self.assertIn('唯一字段 draft_markdown', prompts[0])
+        self.assertIn('只输出一个有效 JSON 对象', prompts[0])
+        self.assertIsNone(self.loop.get(self.task['id'])['plan'])
+
     def test_changed_evidence_during_generation_rejects_plan(self):
         rid=self.submit();self.result(rid)
         def generator(prompt):

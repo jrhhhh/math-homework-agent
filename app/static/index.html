@@ -77,12 +77,14 @@
 <div class="settings-head"><div><div class="eyebrow">MODEL BACKEND</div><h2 id="settings-heading">模型设置</h2></div><button id="close-settings" class="icon-button" type="button" aria-label="关闭设置">×</button></div>
 <p id="settings-source" class="source-note">正在读取设置…</p>
 <label for="settings-backend">后端</label>
-<select id="settings-backend"><option value="codex-cli">Codex CLI</option><option value="http">HTTP 接口</option></select>
+<select id="settings-backend"><option value="codex-cli">Codex CLI</option><option value="dsh-cli">DeepSeek Harness</option><option value="http">HTTP 接口</option></select>
 <div id="settings-http-fields">
 <label for="settings-base">接口地址 <span>例如 https://api.deepseek.com/v1</span></label>
 <input id="settings-base" placeholder="https://api.example.com/v1" autocomplete="off">
 <label for="settings-style">接口风格</label>
 <select id="settings-style"><option value="chat">chat（/chat/completions）</option><option value="responses">responses</option></select>
+</div>
+<div id="settings-key-fields">
 <label for="settings-key">API Key <span>留空表示不修改</span></label>
 <input id="settings-key" type="password" autocomplete="new-password" placeholder="未设置">
 </div>
@@ -90,7 +92,8 @@
 <label for="settings-codex-bin">Codex CLI 路径 <span>留空使用 PATH 中的 codex</span></label>
 <input id="settings-codex-bin" placeholder="codex" autocomplete="off">
 </div>
-<label for="settings-model">模型名 <span>HTTP 后端必填；Codex 可留空</span></label>
+<div id="settings-dsh-fields" hidden><label for="settings-dsh-bin">DeepSeek Harness CLI 路径 <span>留空自动查找</span></label><input id="settings-dsh-bin" placeholder="dsh" autocomplete="off"><p class="source-note">使用 DeepSeek API Key；桌面版账号登录与后台 API 配置相互独立。</p></div>
+<label for="settings-model">模型名 <span>HTTP 后端必填；CLI 可留空</span></label>
 <input id="settings-model" placeholder="deepseek-flash" autocomplete="off">
 <div class="settings-actions"><button id="settings-save" class="primary" type="submit">保存设置</button><button id="settings-test" class="text-button" type="button">测试连接</button></div>
 <p id="settings-status" class="source-note" role="status" aria-live="polite"></p>

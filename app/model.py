@@ -1,15 +1,17 @@
 """Inference backends for one mathematical JSON response.
 
-Two selectable backends:
+Selectable backends:
 
 - ``http``: a direct OpenAI-compatible endpoint.
 - ``codex-cli``: the user's installed, authenticated Codex CLI.
+- ``dsh-cli``: an isolated DeepSeek Harness headless invocation.
 
 The effective choice comes from :mod:`app.settings`, where environment
-variables override values saved in the workbench UI. Both backends return the
+variables override values saved in the workbench UI. All backends return the
 same shape, so the router and gates do not care which one produced the answer.
 """
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -34,6 +36,8 @@ def backend():
     config = settings.resolve()
     if config['backend'] == 'http' and config['base_url']:
         return 'http'
+    if config['backend'] == 'dsh-cli':
+        return 'dsh-cli' if _dsh_binary(config) else 'none'
     if shutil.which(config.get('codex_bin') or 'codex'):
         return 'codex-cli'
     return 'none'
@@ -47,6 +51,8 @@ def generate(prompt, timeout=240):
     config = settings.resolve()
     if config['backend'] == 'http' and config['base_url']:
         return _generate_http(prompt, timeout, config)
+    if config['backend'] == 'dsh-cli':
+        return _generate_dsh(prompt, timeout, config)
     return _generate_codex(prompt, timeout, config)
 
 
@@ -60,6 +66,14 @@ def probe(config):
         except ModelError as exc:
             return {'ok': False, 'backend': 'http', 'message': str(exc),
                     'diagnostic': exc.diagnostic}
+    if config['backend'] == 'dsh-cli':
+        try:
+            result = _generate_dsh('只输出 JSON 对象 {\"ok\":true}。', 90, config)
+            if parse_json(result['raw']).get('ok') is not True:
+                raise ModelError('DeepSeek Harness 返回的测试内容不符合预期。')
+            return {'ok': True, 'backend': 'dsh-cli', 'message': 'DeepSeek Harness 连接成功。'}
+        except (ModelError, ValueError):
+            return {'ok': False, 'backend': 'dsh-cli', 'message': 'DeepSeek Harness 连接失败，请检查密钥、版本和网络。'}
     binary = shutil.which(config.get('codex_bin') or 'codex')
     if not binary:
         return {'ok': False, 'backend': 'codex-cli', 'message': '未找到 Codex CLI。'}
@@ -114,6 +128,84 @@ def _generate_codex(prompt, timeout, config):
         return {'raw': raw, 'elapsed_seconds': round(time.monotonic() - started, 3),
                 'usage': usage, 'events': events, 'backend': 'codex-cli',
                 'requested_model': model_name or 'user-config-default'}
+
+
+# This adapter is pinned to the tested DSH composition. Unknown versions fail
+# closed until their tool catalog and isolation behavior have been verified.
+DSH_VERSION = '0.2.1-rc.5'
+DSH_DISABLED = ('tool-plugin-manager', 'tool-working-directory', 'tool-bash',
+                'tool-pwsh', 'tool-jobs', 'tool-fs', 'tool-fs-search',
+                'tool-skill', 'tool-subagent-control', 'tool-subagent-list-agents',
+                'tool-subagent', 'tool-subagent-fork', 'tool-workflow',
+                'tool-todo', 'tool-goal', 'tool-web', 'plan-mode')
+DSH_MAC_BIN = '/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh'
+
+
+def _dsh_binary(config):
+    name = config.get('dsh_bin') or 'dsh'
+    return shutil.which(name) or (DSH_MAC_BIN if name == 'dsh' and Path(DSH_MAC_BIN).is_file() else None)
+
+
+def _generate_dsh(prompt, timeout, config):
+    binary = _dsh_binary(config)
+    if not binary:
+        raise ModelError('未找到 DeepSeek Harness CLI，请安装或在设置中填写路径。',
+                         {'category': 'configuration', 'backend': 'dsh-cli'})
+    key = config.get('api_key') or os.environ.get('DEEPSEEK_API_KEY', '')
+    if not key:
+        raise ModelError('DeepSeek Harness 工作台后端需要 API Key；桌面账号登录不等于 API 配置。',
+                         {'category': 'authentication', 'backend': 'dsh-cli'})
+    started = time.monotonic()
+    try:
+        check = subprocess.run([binary, '--version'], capture_output=True, text=True,
+                               encoding='utf-8', errors='replace', timeout=20)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise ModelError('无法启动 DeepSeek Harness CLI。', {'category': 'configuration', 'backend': 'dsh-cli'}) from exc
+    if check.returncode or check.stdout.strip() != DSH_VERSION:
+        raise ModelError('DeepSeek Harness 版本未经工作台验证；当前适配版本为 ' + DSH_VERSION + '。',
+                         {'category': 'configuration', 'backend': 'dsh-cli'})
+    model_name = config.get('model') or 'deepseek-flash'
+    with tempfile.TemporaryDirectory(prefix='math-dsh-') as folder:
+        root = Path(folder)
+        patch = root / 'readonly.patch.yml'
+        patch.write_text(''.join('- id: ' + name + '\n  disabled: true\n' for name in DSH_DISABLED)
+                         + '- id: agent-default-model\n  config:\n    provider: deepseek-official\n    model: '
+                         + json.dumps(model_name) + '\n', encoding='utf-8')
+        env = os.environ.copy()
+        env.update({'DSH_HOME': str(root / 'home'), 'DEEPSEEK_API_KEY': key,
+                    'DSH_TELEMETRY_MODE': 'DISABLED'})
+        # Do not silently send a workbench key to an inherited custom endpoint.
+        env.pop('DEEPSEEK_BASE_URL', None)
+        try:
+            result = subprocess.run([binary, '--patch', str(patch), '--profile', 'headless', '--json', '-'],
+                                    input=prompt, cwd=folder, env=env, capture_output=True, text=True,
+                                    encoding='utf-8', errors='replace', timeout=timeout)
+        except subprocess.TimeoutExpired as exc:
+            raise ModelError('DeepSeek Harness 调用超时；本次没有生成可交付结果。',
+                             {'category': 'transport', 'backend': 'dsh-cli'}) from exc
+        except OSError as exc:
+            raise ModelError('无法启动 DeepSeek Harness CLI。',
+                             {'category': 'configuration', 'backend': 'dsh-cli'}) from exc
+        events = []
+        for line in result.stdout.splitlines():
+            try:
+                event = json.loads(line)
+                if isinstance(event, dict):
+                    events.append(event)
+            except ValueError:
+                continue
+        if (result.returncode or any(e.get('type') == 'tool_call' for e in events)
+                or any(e.get('type') == 'status' and e.get('phase') == 'turn_end'
+                       and isinstance(e.get('reason'), dict) and e['reason'].get('kind') != 'completed'
+                       for e in events)):
+            raise ModelError('DeepSeek Harness 调用失败，请检查密钥、网络和运行配置。',
+                             {'category': 'backend_failure', 'backend': 'dsh-cli',
+                              'exit_code': result.returncode, 'elapsed_seconds': round(time.monotonic()-started, 3)})
+        finals = [e.get('text') for e in events if e.get('type') == 'final' and isinstance(e.get('text'), str)]
+        if not finals or not finals[-1].strip():
+            raise ModelError('DeepSeek Harness 未返回文本。', {'category': 'backend_failure', 'backend': 'dsh-cli'})
+        return {'raw': finals[-1].strip(), 'elapsed_seconds': round(time.monotonic()-started, 3),
+                'usage': None, 'events': [], 'backend': 'dsh-cli', 'requested_model': model_name}
 
 
 def _http_style(config):

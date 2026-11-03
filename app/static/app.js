@@ -238,32 +238,33 @@ $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Da
 
 let settingsBusy=false;
 function settingsStatus(message,isError=false){const el=$('settings-status');el.textContent=message;el.className=isError?'error-message':'source-note';}
-function showSettingsFields(){const http=$('settings-backend').value==='http';$('settings-http-fields').hidden=!http;$('settings-codex-fields').hidden=http;}
-function settingsPayload(){return {backend:$('settings-backend').value,base_url:$('settings-base').value,model:$('settings-model').value,style:$('settings-style').value,codex_bin:$('settings-codex-bin').value,api_key:$('settings-key').value};}
+function showSettingsFields(){const backend=$('settings-backend').value;$('settings-http-fields').hidden=backend!=='http';$('settings-key-fields').hidden=backend==='codex-cli';$('settings-codex-fields').hidden=backend!=='codex-cli';$('settings-dsh-fields').hidden=backend!=='dsh-cli';}
+function settingsPayload(){return {backend:$('settings-backend').value,base_url:$('settings-base').value,model:$('settings-model').value,style:$('settings-style').value,codex_bin:$('settings-codex-bin').value,dsh_bin:$('settings-dsh-bin').value,api_key:$('settings-key').value};}
 async function loadSettings(){
   try{
     const data=await api('/api/settings');
-    $('settings-backend').value=data.backend==='http'?'http':'codex-cli';
+    $('settings-backend').value=['http','dsh-cli'].includes(data.backend)?data.backend:'codex-cli';
     $('settings-base').value=data.base_url||'';
     $('settings-model').value=data.model||'';
     $('settings-style').value=data.style||'chat';
     $('settings-codex-bin').value=data.codex_bin&&data.codex_bin!=='codex'?data.codex_bin:'';
+    $('settings-dsh-bin').value=data.dsh_bin&&data.dsh_bin!=='dsh'?data.dsh_bin:'';
     $('settings-key').value='';
     $('settings-key').placeholder=data.has_key?'已设置，留空保持不变':'未设置';
     $('settings-source').textContent=data.environment_locked?'当前由环境变量 MATH_API_BASE 覆盖；网页保存不会生效。':data.source==='ui'?'当前使用网页保存的设置。':'当前使用默认 Codex CLI 配置。';
-    for(const id of ['settings-backend','settings-base','settings-model','settings-style','settings-codex-bin','settings-key','settings-save','settings-test'])$(id).disabled=data.environment_locked;
+    for(const id of ['settings-backend','settings-base','settings-model','settings-style','settings-codex-bin','settings-dsh-bin','settings-key','settings-save','settings-test'])$(id).disabled=data.environment_locked;
     showSettingsFields();
   }catch(error){settingsStatus('读取设置失败：'+error.message,true);}
 }
 async function refreshConnection(){
   try{const data=await api('/api/health');
-    $('connection').textContent=data.available?(data.backend==='http'?'HTTP 模型接口已连接':'本地 Codex 已连接'):'请在模型设置中配置';
+    $('connection').textContent=data.available?(data.backend==='http'?'HTTP 模型接口已配置':data.backend==='dsh-cli'?'DeepSeek Harness 已找到':'本地 Codex 已找到'):'请在模型设置中配置';
     verificationAvailable=data.exact_verification_available;setMode();
   }catch(error){$('connection').textContent='服务未连接';}
 }
 async function saveSettings(event){
   event.preventDefault();if(settingsBusy)return;settingsBusy=true;settingsStatus('正在保存…');
-  try{const data=await api('/api/settings',settingsPayload());await loadSettings();await refreshConnection();settingsStatus('已保存。当前后端：'+(data.backend==='http'?'HTTP 接口':'Codex CLI'));}
+  try{const data=await api('/api/settings',settingsPayload());await loadSettings();await refreshConnection();settingsStatus('已保存。当前后端：'+(data.backend==='http'?'HTTP 接口':data.backend==='dsh-cli'?'DeepSeek Harness':'Codex CLI'));}
   catch(error){settingsStatus(error.message,true);}
   finally{settingsBusy=false;}
 }

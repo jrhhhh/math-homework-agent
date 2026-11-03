@@ -16,7 +16,7 @@ from app.teaching_loop import TeachingLoop
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--real-model',action='store_true',help='Authorize three real model calls through local Codex CLI')
+    parser.add_argument('--real-model',action='store_true',help='Authorize three real model calls through the configured backend')
     parser.add_argument('--out',type=Path,default=ROOT/'docs/delivery/evidence/teaching-loop-model-smoke.json')
     args=parser.parse_args()
     if not args.real_model:parser.error('This smoke makes model calls; pass --real-model to run it.')

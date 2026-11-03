@@ -11,7 +11,7 @@ import threading
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PATH = ROOT / '.local' / 'model_settings.json'
-BACKENDS = {'codex-cli', 'http'}
+BACKENDS = {'codex-cli', 'http', 'dsh-cli'}
 STYLES = {'chat', 'responses'}
 _LOCK = threading.Lock()
 
@@ -59,7 +59,7 @@ def resolve():
         base_url = saved_base
         source = 'ui'
     else:
-        backend = 'codex-cli'
+        backend = saved_backend if saved_backend != 'http' else 'codex-cli'
         base_url = ''
         source = 'ui' if saved else 'default'
     model = _text(os.environ.get('MATH_MODEL')) or _text(saved.get('model'))
@@ -68,8 +68,10 @@ def resolve():
     api_key = _text(os.environ.get('MATH_API_KEY'), 2000) or _text(saved.get('api_key'), 2000)
     codex_bin = (_text(os.environ.get('MATH_CODEX_BIN'))
                  or _text(saved.get('codex_bin')) or 'codex')
+    dsh_bin = _text(os.environ.get('MATH_DSH_BIN')) or _text(saved.get('dsh_bin')) or 'dsh'
     return {
         'backend': backend,
+        'dsh_bin': dsh_bin,
         'base_url': base_url,
         'model': model,
         'style': style,
@@ -85,6 +87,7 @@ def public():
     config = resolve()
     return {
         'backend': config['backend'],
+        'dsh_bin': config['dsh_bin'],
         'base_url': config['base_url'],
         'model': config['model'],
         'style': config['style'],
@@ -100,11 +103,12 @@ def _validate(payload):
         raise ValueError('设置必须为对象。')
     backend = payload.get('backend', 'codex-cli')
     if backend not in BACKENDS:
-        raise ValueError('后端只能是 codex-cli 或 http。')
+        raise ValueError('后端只能是 codex-cli、dsh-cli 或 http。')
     base_url = _text(payload.get('base_url'))
     model = _text(payload.get('model'), 200)
     style = (_text(payload.get('style'), 20).lower() or 'chat')
     codex_bin = _text(payload.get('codex_bin'))
+    dsh_bin = _text(payload.get('dsh_bin'))
     if style not in STYLES:
         raise ValueError('接口风格只能是 chat 或 responses。')
     if backend == 'http':
@@ -120,6 +124,7 @@ def _validate(payload):
         'model': model,
         'style': style,
         'codex_bin': codex_bin,
+        'dsh_bin': dsh_bin,
     }
 
 
