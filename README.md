@@ -179,6 +179,12 @@ python3 -m unittest app.tests.test_teaching_loop -v
 
 在本仓库目录打开宿主，使用“请使用高中数学教师 Agent，根据当前任务安排教学流程”开始；也可指定具体技能。项目提供 `.claude/skills/`（Claude Code）和 `.agents/skills/`（OpenCode、DeepSeek Harness 的项目级发现路径）入口。入口指向仓库根目录下的真实技能说明；请保留完整仓库，使宿主可以读取子技能、脚本和课件模板。不要只复制入口文件到别处。
 
-腾讯 WorkBuddy 可在打开本仓库后尝试发现 `.agents/skills/`，也可通过其技能导入功能选择仓库中的实际技能目录。不同版本的发现方式可能不同；如果未自动识别，请直接要求它读取 `high-school-math-teacher-agent/SKILL.md`，并依照其中路径读取所需子技能。DeepSeek Harness 需要启用其技能提供者和技能工具；技能权限或宿主配置也可能影响发现。以上入口仅供宿主内使用，并不将这些产品自动接入本项目的网页工作台。工作台目前只支持 Codex CLI 或 OpenAI 兼容 HTTP 接口。
+腾讯 WorkBuddy 可在打开本仓库后尝试发现 `.agents/skills/`，也可通过其技能导入功能导入下文所述的完整教学技能包。不同版本的发现方式可能不同；如果未自动识别，请直接要求它读取 `high-school-math-teacher-agent/SKILL.md`，并依照其中路径读取所需子技能。DeepSeek Harness 需要启用其技能提供者和技能工具；技能权限或宿主配置也可能影响发现。以上入口仅供宿主内使用，并不将这些产品自动接入本项目的网页工作台。工作台目前只支持 Codex CLI 或 OpenAI 兼容 HTTP 接口。
 
 入口符合各产品公布的技能目录约定，但尚未在四个宿主的真实模型会话中完成整套教学流程验证；使用时仍需核对数学结论和生成课件。参考：[Claude Code 技能文档](https://code.claude.com/docs/en/skills)、[OpenCode 技能文档](https://opencode.ai/docs/skills/)、[DeepSeek Harness 技能文档](https://deepseek-harness.github.io/deepseek-harness/en/reference/subsystems/skills)、[WorkBuddy Enterprise 技能说明](https://cloud.tencent.com/document/product/1831/134432)。
+
+#### WorkBuddy 导入完整教学技能包
+
+在仓库根目录执行 `python3 scripts/package_harness_skill.py output/high-school-math-teacher-agent.zip`，然后在 WorkBuddy 的技能页面选择“添加技能 → 上传技能”，导入生成的 ZIP。包内包含教师调度入口、各子技能及其仓库跟踪的脚本和课件模板；使用数学或课件任务时让宿主读取对应子技能说明。导入流程以实际 WorkBuddy 版本为准。此便携包不包含网页工作台和数据库，不能单凭对话声称任务已在工作台发布或学生记录已持久化。课件构建需满足 `lesson-materials-builder/requirements.txt` 和宿主的文件、运行命令权限。
+
+DeepSeek Harness 桌面版可将本仓库添加为工作区后，在新会话中指定 `high-school-math-teacher-agent`。桌面账号登录与命令行的 API Key 配置可能不同：桌面已登录不表示 `dsh headless` 已配置模型。一次真实桌面数学诊断及其范围记录见 [宿主兼容验证](docs/compatibility/宿主兼容验证.md)。
