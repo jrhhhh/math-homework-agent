@@ -174,3 +174,11 @@ python3 -m unittest app.tests.test_teaching_loop -v
 | `docs/` | 架构、使用协议、案例和验证说明 |
 
 进一步阅读：[架构与运行](docs/delivery/架构与运行.md) · [能力与验收](docs/delivery/实施与验收.md) · [师生任务协议](docs/teaching-loop.md) · [代表案例](docs/代表案例.md) · [验证说明](docs/验证说明.md)
+
+### 在其他 Agent 宿主中使用教学技能
+
+在本仓库目录打开宿主，使用“请使用高中数学教师 Agent，根据当前任务安排教学流程”开始；也可指定具体技能。项目提供 `.claude/skills/`（Claude Code）和 `.agents/skills/`（OpenCode、DeepSeek Harness 的项目级发现路径）入口。入口指向仓库根目录下的真实技能说明；请保留完整仓库，使宿主可以读取子技能、脚本和课件模板。不要只复制入口文件到别处。
+
+腾讯 WorkBuddy 可在打开本仓库后尝试发现 `.agents/skills/`，也可通过其技能导入功能选择仓库中的实际技能目录。不同版本的发现方式可能不同；如果未自动识别，请直接要求它读取 `high-school-math-teacher-agent/SKILL.md`，并依照其中路径读取所需子技能。DeepSeek Harness 需要启用其技能提供者和技能工具；技能权限或宿主配置也可能影响发现。以上入口仅供宿主内使用，并不将这些产品自动接入本项目的网页工作台。工作台目前只支持 Codex CLI 或 OpenAI 兼容 HTTP 接口。
+
+入口符合各产品公布的技能目录约定，但尚未在四个宿主的真实模型会话中完成整套教学流程验证；使用时仍需核对数学结论和生成课件。参考：[Claude Code 技能文档](https://code.claude.com/docs/en/skills)、[OpenCode 技能文档](https://opencode.ai/docs/skills/)、[DeepSeek Harness 技能文档](https://deepseek-harness.github.io/deepseek-harness/en/reference/subsystems/skills)、[WorkBuddy Enterprise 技能说明](https://cloud.tencent.com/document/product/1831/134432)。
