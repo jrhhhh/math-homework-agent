@@ -1513,7 +1513,5 @@ input::file-selector-button {
 .exam-guide .exam-export-note{grid-column:1/-1;border-top:1px solid rgba(127,78,87,.12);padding-top:12px;margin:0}
 .exam-workspace #problem{min-height:260px;line-height:1.9}
 .exam-workspace .input-extras{margin-top:18px}
-#show-exam{position:relative}
-#show-exam span{white-space:normal}
 @media(max-width:1100px){.exam-launch{align-items:flex-start;flex-direction:column;gap:16px}.exam-guide{gap:14px;padding:20px}}
-@media(max-width:620px){.workspace-switcher{grid-template-columns:repeat(2,minmax(0,1fr))}.exam-launch{padding:20px;margin-bottom:18px}.exam-launch h2{font-size:20px}.exam-launch button{width:100%}.exam-guide{grid-template-columns:1fr;gap:14px}.exam-guide p{margin:4px 0 0}.exam-workspace #problem{min-height:220px}}
+@media(max-width:620px){.workspace-switcher{grid-template-columns:repeat(3,minmax(0,1fr))}.exam-launch{padding:20px;margin-bottom:18px}.exam-launch h2{font-size:20px}.exam-launch button{width:100%}.exam-guide{grid-template-columns:1fr;gap:14px}.exam-guide p{margin:4px 0 0}.exam-workspace #problem{min-height:220px}}

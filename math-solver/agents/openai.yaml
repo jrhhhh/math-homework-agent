@@ -1,4 +1,0 @@
-interface:
-  display_name: "数学试卷参考答案编制"
-  short_description: "生成数学试卷参考答案、采分点、分值、思路点拨和难度评价"
-  default_prompt: "请使用 $math-solver 生成参考答案、采分点、步骤分值建议、简短思路点拨与难度评价，并核验解答。"

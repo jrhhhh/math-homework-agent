@@ -50,7 +50,7 @@ class RoutingTest(unittest.TestCase):
         self.assertIsNone(route(normalize({'problem': '解 x+1=2'}))['skill'])
 
     def test_only_problem_solves_when_requested(self):
-        self.assertEqual(route(normalize({'problem': '解 x+1=2', 'mode': 'solve'}))['skill'], 'math-solver')
+        self.assertEqual(route(normalize({'problem': '解 x+1=2', 'mode': 'solve'}))['skill'], 'answer-key-builder')
 
     def test_refinement_is_a_staged_fourth_skill_route(self):
         data=normalize({'problem':'求 x²-5x+6=0 的根。','solution':'用求根公式：x=(5±√1)/2，所以x1=3，x2=2。','mode':'refine'})
@@ -126,7 +126,7 @@ class GateTest(unittest.TestCase):
 
     def test_native_solver_gate_replayed(self):
         root=Path(__file__).resolve().parents[2]
-        card=json.loads((root/'math-solver/example/sqrt_equation_solved.json').read_text(encoding='utf-8'))
+        card=json.loads((root/'answer-key-builder/example/sqrt_equation_solved.json').read_text(encoding='utf-8'))
         data=normalize({'problem':'解 √(x+2)=x', 'mode':'solve'})
         logs=gate({'reply':'x=2','result':card}, data, route(data))
         self.assertEqual(logs[0]['exit_code'],0)

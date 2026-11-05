@@ -24,7 +24,7 @@ def digest(path):
 
 
 def freeze(source=ROOT):
-    files=[p for directory in ('app','math-solver','math-error-diagnosis','draft-coach')
+    files=[p for directory in ('app','answer-key-builder','math-error-diagnosis','draft-coach')
            for p in (source/directory).rglob('*') if p.is_file() and
            ('__pycache__' not in p.parts) and p.suffix in ('.py','.md','.json') and
            not any(x in p.parts for x in ('bench','evals','example','tests','static'))]

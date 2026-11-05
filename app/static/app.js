@@ -200,6 +200,7 @@ function renderResult(item) {
     const opportunities=run.output.result?.optimization_opportunities;
     if(Array.isArray(opportunities)){const section=node('div',undefined,'evidence-card');section.append(node('h3','三个可尝试的优化方向'));for(const [i,op] of opportunities.entries()){const block=node('section',undefined,'optimization-item');block.append(node('strong',(i+1)+' · '+op.direction));block.append(node('p',op.suggestion));block.append(node('p','本解答尚未展示：'+op.exposed_gap));block.append(node('small','现在可以试：'+op.training_suggestion));section.append(block);}area.append(section);}
     if(item.is_current && item.data.solution){const actions=node('div',undefined,'result-actions');const revise=node('button','修改后再检查 ↗');revise.onclick=()=>{$('solution').focus();$('solution').scrollIntoView({behavior:'smooth',block:'center'});};actions.append(revise);area.append(actions);}
+    if(item.is_current && item.data.mode==='exam_answer')mountExamExport(area,item);
   }
   area.append(node('div',(run.stage||run.routing?.skill||'待补充')+' · 第 '+item.revision+' 版 · '+item.version.slice(0,10),'result-meta'));
   const details=node('details');details.append(node('summary','查看校验与运行记录'));
@@ -207,6 +208,44 @@ function renderResult(item) {
   details.append(node('pre',JSON.stringify(safe,null,2)));area.append(details);
   renderMath(area);
 }
+function mountExamExport(area,item){
+  const card=node('div',undefined,'evidence-card exam-export');
+  area.append(card);
+  async function refresh(errorMessage=''){
+    card.replaceChildren(node('h3','导出参考答案文件'));
+    let data;
+    try{data=await api('/api/submissions/'+item.id+'/export');}
+    catch(error){card.append(node('p',error.message,'error-message'));return;}
+    const report=data.report,files=data.files||{};
+    if(files.pdf){const links=node('div',undefined,'result-actions');const pdf=node('a','下载 PDF ↗','attachment-link');pdf.href=files.pdf;pdf.target='_blank';pdf.rel='noopener noreferrer';links.append(pdf);card.append(links);}
+    if(report){
+      card.append(node('p',report.success?'PDF 已编译完成；请打开逐页检查公式、分页与评分标记。':'导出尚未完成，可重试。', report.success?'':'error-message'));
+      if(report.issues?.length){const list=node('ul');for(const issue of report.issues.slice(0,8))list.append(node('li',String(issue)));card.append(list);}
+    }
+    if(!data.can_compile){
+      card.append(node('p','本机未找到 XeLaTeX，暂时无法导出 PDF。','source-note'));
+    }else{
+      const actions=node('div',undefined,'result-actions');
+      const run=node('button',report?'重新生成 PDF':'生成并导出 PDF');
+      run.onclick=async()=>{
+        run.disabled=true;run.textContent='正在排版并编译…';
+        let failure='';
+        try{
+          let job=await api('/api/jobs',{kind:'exam-export',payload:{submission_id:item.id}});
+          refreshJobs();
+          while(['queued','running'].includes(job.state)){await new Promise(resolve=>setTimeout(resolve,900));job=await api('/api/jobs/'+job.id);}
+          if(job.state!=='completed')throw new Error((job.error||'导出任务未完成')+' 可在任务中心查看并继续。');
+        }catch(error){failure=error.message;}
+        await refresh(failure);
+      };
+      actions.append(run);card.append(actions);
+    }
+    if(errorMessage)card.append(node('p',errorMessage,'error-message'));
+    card.append(node('p','导出只做排版与实际编译，不重新验证数学、题号覆盖或评分建议；请对照在线答案人工核对。','source-note'));
+  }
+  refresh();
+}
+
 async function poll(id) {
   const token=++currentPoll;busy=true;refreshSubmitState();
   while(token===currentPoll){
@@ -390,24 +429,28 @@ if(openedFromFile){
 }
 
 function switchWorkspace(name) {
-  const exam=name==='exam';
-  if(exam){$('mode').value='exam_answer';setMode();}
-  else if(name==='practice'&&$('mode').value==='exam_answer'){$('mode').value='check';setMode();}
+  if(name==='practice'&&$('mode').value==='exam_answer'){$('mode').value='check';setMode();}
   const teacher=name==='teacher', teaching=name==='teaching', path=name==='path';
   $('path-view').hidden=!path;
-  $('practice-view').hidden=!['practice','exam'].includes(name);$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
-  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':exam?'试卷参考答案':'练习工作台');
-  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':exam?'试卷参考答案':'过程反馈');
-  $('practice-sidebar').hidden=!['practice','exam'].includes(name);$('teacher-sidebar').hidden=!teacher;
-  for(const [key,id] of [['practice','show-practice'],['exam','show-exam'],['teacher','show-teacher'],['teaching','show-teaching']]){
+  $('practice-view').hidden=name!=='practice';$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
+  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'练习工作台');
+  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'过程反馈');
+  $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
+  for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
     $(id).classList.toggle('active',key===name||(key==='practice'&&path));$(id).setAttribute('aria-pressed',String(key===name||(key==='practice'&&path)));
   }
   if(teacher)refreshLessonHistory();
 }
-$('show-exam').onclick=()=>switchWorkspace('exam');
-$('open-exam').onclick=()=>switchWorkspace('exam');
+function openAnswerKey(){
+  switchWorkspace('practice');
+  $('mode').value='exam_answer';
+  setMode();
+  $('problem').focus();
+  $('input-heading').scrollIntoView({behavior:'smooth',block:'start'});
+}
 $('show-practice').onclick=()=>switchWorkspace('practice');
 $('show-teacher').onclick=()=>switchWorkspace('teacher');
+$('teacher-open-answer-key').onclick=openAnswerKey;
 let currentLesson=null,lessonBusy=false,lessonTeachingSource=null;
 const lessonLabels={outline_ready:'大纲待确认',source_ready:'源码待渲染',ready:'课件已通过结构检查',review_failed:'需修改后复核',build_failed:'生成失败'};
 function lessonStep(n){document.querySelectorAll('.teacher-step').forEach((el,i)=>el.classList.toggle('active',i===n));}
@@ -485,7 +528,7 @@ function updateExamPresentation(exam) {
   heading.querySelector('h1').textContent=exam?'一份试卷，一份有依据的参考答案。':'把思路写下来，再向前一步。';
   heading.querySelector('p').textContent=exam?'面向教师的整卷编制工具，让解答与每一个采分点清晰对应。':'从一个有依据的提示开始，逐步完善自己的解答。';
   heading.querySelector('.folio span').textContent=exam?'参考答案编制':'练习工作台';
-  $('exam-launch').hidden=exam; $('exam-guide').hidden=!exam;
+  $('exam-guide').hidden=!exam;
   view.classList.toggle('exam-workspace',exam);
   $('input-heading').textContent=exam?'输入试卷':'这一次，练什么？';
   document.querySelector('label[for="problem"]').firstChild.textContent=exam?'试卷题目与分值 ':'原题 ';
@@ -501,6 +544,7 @@ function updateExamPresentation(exam) {
   const empty=$('result').querySelector('.empty-state');
   if(empty){empty.querySelector('h3').textContent=exam?'参考答案将在这里生成':'先写出你的尝试';empty.querySelector('p').textContent=exam?'提交试卷后，逐题查看解答、采分点、分值、思路和难度评价。':'这里会展示检查依据、首错位置，或一个帮助你继续思考的提示。';empty.querySelector('small').textContent=exam?'完整条件，是可靠答案的起点':'过程比一个答案更值得被看见';}
   if(!view.hidden){
-    for(const [id,active] of [['show-exam',exam],['show-practice',!exam]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-pressed',String(active));}
+    document.title='数学作业智能体 · '+(exam?'试卷参考答案':'练习工作台');
+    $('header-note').textContent='高中数学 · '+(exam?'试卷参考答案':'过程反馈');
   }
 }

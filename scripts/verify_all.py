@@ -16,14 +16,14 @@ OUT=ROOT/'docs/delivery/evidence'
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     suites=[('root-tests',ROOT,['-m','unittest','discover','-s','tests','-p','test_*.py']),
-            ('solver-gates',ROOT,['-m','unittest','discover','-s','math-solver/tests','-p','test_*.py']),
+            ('solver-gates',ROOT,['-m','unittest','discover','-s','answer-key-builder/tests','-p','test_*.py']),
             ('draft-gates',ROOT,['-m','unittest','discover','-s','draft-coach/tests','-p','test_*.py']),
-            ('solver-bench',ROOT/'math-solver/bench',['-m','unittest','discover','-s','tests','-p','test_*.py']),
+            ('solver-bench',ROOT/'answer-key-builder/bench',['-m','unittest','discover','-s','tests','-p','test_*.py']),
             ('draft-bench',ROOT/'draft-coach/bench',['-m','unittest','discover','-s','tests','-p','test_*.py']),
             ('workbench',ROOT,['-m','unittest','discover','-s','app/tests','-p','test_*.py']),
             ('lesson-builder-regression',ROOT/'lesson-materials-builder',['scripts/bench.py','regress']),
             ('exact-verification',ROOT,['-m','unittest','verification.test_exact']),
-            ('solver-schema',ROOT/'math-solver/bench',['schema_check.py']),
+            ('solver-schema',ROOT/'answer-key-builder/bench',['schema_check.py']),
             ('draft-schema',ROOT/'draft-coach/bench',['schema_check.py']),
             ('math-facts-10',ROOT,['tests/核验测试数学.py']),
             ('math-facts-6',ROOT,['tests/新例计算核验.py']),
