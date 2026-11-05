@@ -6,11 +6,11 @@
   const updateMode=()=>{help.textContent=modeHelp[$('mode').value]||'';};$('mode').addEventListener('change',updateMode);updateMode();
   // Programmatic session loads also update mode without dispatching a change event.
   const originalSetMode=setMode;setMode=function(...args){const result=originalSetMode(...args);updateMode();return result;};
-  const views=[['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']];
+  const views=[['practice','show-practice'],['exam','show-exam'],['teacher','show-teacher'],['teaching','show-teaching']];
   for(const [,id] of views)$(id).setAttribute('aria-pressed',$(id).classList.contains('active'));
   document.querySelector('.workspace-switcher').addEventListener('keydown',event=>{
     const index=views.findIndex(([,id])=>id===event.target.id);if(index<0)return;
-    const next=event.key==='Home'?0:event.key==='End'?2:['ArrowRight','ArrowDown'].includes(event.key)?(index+1)%3:['ArrowLeft','ArrowUp'].includes(event.key)?(index+2)%3:null;
+    const next=event.key==='Home'?0:event.key==='End'?views.length-1:['ArrowRight','ArrowDown'].includes(event.key)?(index+1)%views.length:['ArrowLeft','ArrowUp'].includes(event.key)?(index+views.length-1)%views.length:null;
     if(next===null)return;event.preventDefault();$(views[next][1]).focus();$(views[next][1]).click();$(views[next][1]).focus();
   });
   const originalSwitch=switchWorkspace;switchWorkspace=function(name){
@@ -27,10 +27,11 @@
   const extras=$('practice-extras');
   $('work-files').addEventListener('change',()=>{if($('work-files').files.length)extras.open=true;});
   // If a restored record contains preferences, keep them discoverable.
-  const originalPopulate=populate;populate=function(data){originalPopulate(data);extras.open=Boolean(data.request);};
+  const originalPopulate=populate;populate=function(data){originalPopulate(data);extras.open=data.mode==='exam_answer'||Boolean(data.request);};
   for(const id of ['form-status','lesson-status','task-status','path-status']){
     const el=$(id);new MutationObserver(()=>{el.classList.toggle('has-message',Boolean(el.textContent.trim()));}).observe(el,{childList:true,subtree:true,characterData:true});
   }
+  if(location.hash==='#exam')switchWorkspace('exam');
   // Dragging a local file onto the optional upload area follows the existing file limits.
   const drop=$('work-file-field');let dragDepth=0;
   drop.addEventListener('dragenter',event=>{if(!event.dataTransfer.types.includes('Files'))return;event.preventDefault();dragDepth++;drop.classList.add('drag-over');});
