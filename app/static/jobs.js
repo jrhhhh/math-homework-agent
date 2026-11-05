@@ -16,7 +16,7 @@ async function jobApi(path,data){
 async function showJobResult(job){
   if(!job.result)return;
   if(job.kind==='diagnose'){const item=await api('/api/submissions/'+job.result.submission_id);switchWorkspace('practice');await loadSession(item.session_id);}
-  else if(job.kind==='exam-export'){const item=await api('/api/submissions/'+job.result.submission_id);switchWorkspace('exam');renderResult(item);$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});}
+  else if(job.kind==='exam-export'){const item=await api('/api/submissions/'+job.result.submission_id);switchWorkspace('practice');$('mode').value='exam_answer';setMode();renderResult(item);$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});}
   else if(job.kind==='task-design'){switchWorkspace('teaching');await adoptTaskDraft(job.result);$('task-status').textContent='已恢复草案，请核对题意、条件和成功标准后发布。';}
   else if(job.kind==='remedial-plan'){switchWorkspace('teaching');await refreshTasks(job.result.assignment_id);}
   else{switchWorkspace('teacher');showLesson(await api('/api/lessons/'+job.result.id));await refreshLessonHistory();}

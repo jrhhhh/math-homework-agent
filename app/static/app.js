@@ -1,8 +1,21 @@
 const $ = id => document.getElementById(id);
-let sessionId = null, history = [], busy = false, currentPoll = 0, verificationAvailable = true;
+let sessionId = null, history = [], busy = false, currentPoll = 0, verificationAvailable = true, renderedMode = null;
 let setupRequired = false;
 function refreshSubmitState(){const button=$('submit');if(button)button.disabled=Boolean(busy||setupRequired);}
-const labels = {queued:'排队中',running:'正在思考',ready:'反馈已生成',needs_input:'待补充材料',gate_failed:'需要复核',error:'调用失败',interrupted:'运行已中断'};
+const labels = {queued:'排队中',running:'正在思考',ready:'反馈已生成',needs_input:'待补充材料',gate_failed:'需要复核',diagnosis_required:'需先完成纠错',handoff_rejected:'交接未通过',error:'调用失败',interrupted:'运行已中断'};
+const skillNames = {'math-error-diagnosis':'过程诊断','answer-key-builder':'参考答案','draft-coach':'草稿版面','draft-coach-partition':'草稿版面分块','solution-refiner':'解法优化',diagnosis:'过程诊断',handoff:'交接核验'};
+const MODE_COPY = {
+  check: {eyebrow:'YOUR NEXT STEP IN MATHEMATICS',h1:'把思路写下来，<em>再向前一步。</em>',subtitle:'从一个有依据的提示开始，逐步完善自己的解答。',folio:'练习工作台',headerNote:'过程反馈',title:'练习工作台',inputHeading:'这一次，练什么？',submit:'开始检查 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:4,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'写下你实际做过的步骤，暂时不会的地方也可以留着。',feedbackHeading:'反馈与下一步',revisionNote:'你的原过程会随每次提交保留。',requestPlaceholder:'例如：沿用我的方法，暂时不要给答案。',exampleLabel:'载入示例 ↗',empty:{mark:'f′(x)',h3:'先写出你的尝试',p:'这里会展示检查依据、首错位置，或一个帮助你继续思考的提示。',small:'过程比一个答案更值得被看见'}},
+  hint: {eyebrow:'ONE STEP AT A TIME',h1:'卡住时，先要一个<em>提示</em>。',subtitle:'一次只给一点提示，保留自己继续推理的空间。',folio:'练习工作台',headerNote:'过程反馈',title:'练习工作台',inputHeading:'这一次，练什么？',submit:'给我一个提示 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:4,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'写下你实际做过的步骤，暂时不会的地方也可以留着。',feedbackHeading:'反馈与下一步',revisionNote:'你的原过程会随每次提交保留。',requestPlaceholder:'例如：只提示下一步，不要给答案。',exampleLabel:'载入示例 ↗',empty:{mark:'?',h3:'需要一点提示？',p:'提交后会收到一个最小提示，答案不会一次给完。',small:'先保留自己的尝试'}},
+  full_correction: {eyebrow:'FULL CORRECTION',h1:'把问题讲清楚，<em>再完整走一遍。</em>',subtitle:'解释问题并给出完整纠正；这会记录为一次获得讲解。',folio:'练习工作台',headerNote:'过程反馈',title:'练习工作台',inputHeading:'这一次，练什么？',submit:'完整纠正 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:4,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'写下你实际做过的步骤，暂时不会的地方也可以留着。',feedbackHeading:'反馈与下一步',revisionNote:'这次反馈会记录为一次获得完整讲解。',requestPlaceholder:'例如：先指出问题，再给出完整纠正。',exampleLabel:'载入示例 ↗',empty:{mark:'f′(x)',h3:'写下的过程会得到完整纠正',p:'这里会指出问题所在，并给出完整的纠正过程。',small:'完整纠正会记录为获得讲解'}},
+  answer_check: {eyebrow:'ANSWER CHECK',h1:'先对上答案，<em>再决定要不要查过程。</em>',subtitle:'只核对最终答案；系统不会推断你没有写出的步骤。',folio:'练习工作台',headerNote:'仅核对答案',title:'练习工作台',inputHeading:'这一次，练什么？',submit:'核对答案 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:4,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的答案',solutionHint:'只写最终答案',solutionRows:3,solutionPlaceholder:'例如：x=π/3 和 x=5π/3。',feedbackHeading:'答案核验',revisionNote:'只核验答案时，过程不会被推断或评价。',requestPlaceholder:'例如：只告诉我答案对不对。',exampleLabel:'载入示例 ↗',empty:{mark:'=',h3:'只写最终答案也可以',p:'这里会告诉你答案是否成立；不会推断你没有写出的步骤。',small:'需要过程反馈时，切换到“检查我的过程”'}},
+  refine: {eyebrow:'REFINE A VERIFIED SOLUTION',h1:'已经写对，<em>再往简洁处走一步。</em>',subtitle:'先核验当前过程，再讨论更简洁或更通用的方法。',folio:'练习工作台',headerNote:'解法优化',title:'练习工作台',inputHeading:'提交已完成的解法',submit:'先核验再优化 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:4,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的解题过程',solutionHint:'提交完整步骤，系统会先核验',solutionPlaceholder:'写下完整的解题步骤，暂时不会的地方也可以留着。',feedbackHeading:'优化方向与下一步',revisionNote:'只有核验通过后才会进入优化；未通过时先回到诊断。',requestPlaceholder:'例如：想看看有没有更短的方法。',exampleLabel:'载入示例 ↗',empty:{mark:'↗',h3:'先提交一份完整解法',p:'核验通过后，这里会给出有依据的优化方向。',small:'不是错因诊断，也不替你重写整题'}},
+  solve: {eyebrow:'SOLVE FROM THE PROBLEM',h1:'把题目交给我，<em>给出一份完整解答。</em>',subtitle:'从题目出发求解并核验；保存为助手求解稿，不会当作你的作业。',folio:'求解工作台',headerNote:'完整求解',title:'完整求解',inputHeading:'输入题目',submit:'开始求解 ',problemLabel:'原题 ',problemHint:'保留完整条件与范围',problemRows:7,problemPlaceholder:'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'',feedbackHeading:'完整解答与核验',revisionNote:'这里生成的是助手解答，不是你的解答。',requestPlaceholder:'例如：优先使用高中方法，给出完整推导。',exampleLabel:'载入题目示例 ↗',empty:{mark:'∑',h3:'完整解答会在这里生成',p:'提交原题后，查看推导、答案与独立核验。',small:'助手解答，不是你的作业'}},
+  exam_answer: {eyebrow:'MATHEMATICS · ANSWER STUDIO',h1:'一份试卷，一份有依据的参考答案。',subtitle:'面向整份试卷的编制工具，让解答与每一个采分点清晰对应。',folio:'参考答案编制',headerNote:'试卷参考答案',title:'试卷参考答案',inputHeading:'输入试卷',submit:'生成参考答案 ',problemLabel:'试卷题目与分值 ',problemHint:'保留完整条件与范围',problemRows:14,problemPlaceholder:'粘贴完整试卷，保留题号、小问、条件与分值。\n例如：1.（5分）……\n2.（12分）（1）……（2）……',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'',feedbackHeading:'参考答案与评分建议',revisionNote:'未给分值将标为待确认；建议评分仍需教师核定。',requestPlaceholder:'例如：高三复习；保留全部小问；优先使用高中方法。',exampleLabel:'载入试卷示例 ↗',empty:{mark:'∑ → ▢',h3:'参考答案将在这里生成',p:'提交试卷后，逐题查看解答、采分点、分值、思路和难度评价。',small:'完整条件，是可靠答案的起点'}},
+  draft: {eyebrow:'DRAFT LAYOUT · SIX DIMENSIONS',h1:'先看草稿怎么排，<em>不看算得对不对。</em>',subtitle:'只看分区、分行、划改与留白；数学对错请用“检查我的过程”。',folio:'草稿版面',headerNote:'草稿版面',title:'草稿版面',inputHeading:'草稿怎么排的？',submit:'分析草稿 ',problemLabel:'原题（可选） ',problemHint:'有原题时便于核对',problemRows:3,problemPlaceholder:'有原题就粘贴在这里；没有也可以只描述草稿版面。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'',feedbackHeading:'版面观察与下一步',revisionNote:'草稿原文会随每次提交保留；这里不判断计算对错。',requestPlaceholder:'例如：重点看看分类讨论有没有标号。',exampleLabel:'载入草稿示例 ↗',empty:{mark:'▤',h3:'草稿会按版面来读',p:'这里会展示六个版面维度的观察，以及下一道题能做的一个动作。',small:'不判断计算对错'}},
+  partition: {eyebrow:'DRAFT LAYOUT · PARTITION',h1:'一张草稿纸，<em>先按版面分块。</em>',subtitle:'给出块数与估计范围；块数不等于题目数，归属由你确认。',folio:'草稿版面',headerNote:'草稿版面',title:'草稿版面',inputHeading:'整张草稿怎么分块？',submit:'分析草稿 ',problemLabel:'原题（可选） ',problemHint:'有原题时便于核对',problemRows:3,problemPlaceholder:'有原题就粘贴在这里；没有也可以只描述草稿版面。',solutionLabel:'我的解题过程',solutionHint:'建议每一步另起一行',solutionPlaceholder:'',feedbackHeading:'版面分块与确认',revisionNote:'草稿原文会随每次提交保留；块数不等于题目数。',requestPlaceholder:'例如：只按版面分块，不读具体算式。',exampleLabel:'载入草稿示例 ↗',empty:{mark:'▥',h3:'先分块，再确认归属',p:'这里会给出块数、估计范围与确认问题。',small:'块数不等于题目数'}}
+};
+function modeCopy(mode){return MODE_COPY[mode]||MODE_COPY.check;}
 async function api(path, data) {
   const response = await fetch(path, data === undefined ? {} : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
   const result = await response.json();
@@ -16,12 +29,14 @@ function renderMath(area) {
   if(typeof renderMathInElement==='function')renderMathInElement(area,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false,trust:false,strict:'ignore',maxExpand:1000,maxSize:20});
 }
 function setMode() {
-  const draft = ['draft','partition'].includes($('mode').value);
-  const exam = $('mode').value === 'exam_answer';
-  $('draft-field').hidden = !draft; $('solution-field').hidden = draft || exam;
-  updateExamPresentation(exam);
-  $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'exam_answer' ? '生成参考答案 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
-  $('verify-equation').disabled=!verificationAvailable||draft||$('mode').value==='hint';if($('verify-equation').disabled)$('verify-equation').checked=false;
+  const mode=$('mode').value, draft=['draft','partition'].includes(mode), exam=mode==='exam_answer';
+  $('draft-field').hidden=!draft;
+  $('solution-field').hidden=draft||exam||mode==='solve';
+  updateModePresentation(mode);
+  $('submit').firstChild.textContent=modeCopy(mode).submit;
+  const verify=$('verify-equation');
+  verify.disabled=!verificationAvailable||draft||mode==='hint';if(verify.disabled)verify.checked=false;
+  $('verify-option').hidden=draft;
 }
 let workFiles=[], workFileUrls=[];
 const ATTACHMENT_TYPES=new Set(['image/png','image/jpeg','image/webp','application/pdf',
@@ -164,7 +179,7 @@ function renderHistory() {
   $('revision-note').textContent='下一次提交将保存为第 '+(history.at(-1).revision+1)+' 版，旧结果保留为历史。';
 }
 function renderResult(item) {
-  const area=$('result');area.replaceChildren();$('state-badge').textContent=labels[item.state]||item.state;
+  const area=$('result');area.replaceChildren();renderedMode=item.data?.mode||null;$('state-badge').textContent=labels[item.state]||item.state;
   if(!item.is_current)area.append(node('p','这是历史版本的反馈，不代表当前解答。','error-message'));
   const attachments=item.data?.attachments || (item.data?.image?.sha256?[item.data.image]:[]);
   for(const attachment of attachments){
@@ -189,24 +204,122 @@ function renderResult(item) {
   if(!run || run.error){area.append(node('p',run?.error||'运行已中断，请重新提交。','error-message'));return;}
   if(run.status==='gate_failed'){area.append(node('p','输出未通过校验，本次不作为可交付反馈。请重新提交或查看运行记录。','error-message'));}
   else if(run.output){area.append(node('div',run.output.reply,'reply'));
+    renderStructuredResult(area,item,run.output.result);
     const checks=(run.attempts?.at(-1)?.gates||[]).filter(g=>g.gate==='exact-math');
     for(const check of checks){const card=node('div',undefined,'evidence-card');card.append(node('h3',check.exit_code===0?'已执行等式核验':'等式核验待复核'));card.append(node('p',check.source_quote||'核验请求'));for(const point of check.record?.checks||[])card.append(node('p',(check.record.request?.variable||'x')+'='+point.value+'：左边 '+point.left+'，右边 '+point.right+'，差值 '+point.residual));if(check.record?.residual!==undefined)card.append(node('p','展开后差值为 '+check.record.residual));card.append(node('p',check.record?.scope||check.scope));area.append(card);}
-    const error=run.output.result?.first_error;
-    if(error && item.data.mode!=='hint'){
-      const card=node('div',undefined,'evidence-card');card.append(node('h3','首个实质问题 · 第 '+error.step+' 步'));card.append(node('blockquote',error.quote));card.append(node('p',error.reason));area.append(card);
-    }
-    const fix=run.output.result?.minimal_fix;
-    if(fix && item.data.mode!=='hint'){const card=node('div',undefined,'evidence-card');card.append(node('h3','最小修改'));card.append(node('p',fix));area.append(card);}
-    const opportunities=run.output.result?.optimization_opportunities;
-    if(Array.isArray(opportunities)){const section=node('div',undefined,'evidence-card');section.append(node('h3','三个可尝试的优化方向'));for(const [i,op] of opportunities.entries()){const block=node('section',undefined,'optimization-item');block.append(node('strong',(i+1)+' · '+op.direction));block.append(node('p',op.suggestion));block.append(node('p','本解答尚未展示：'+op.exposed_gap));block.append(node('small','现在可以试：'+op.training_suggestion));section.append(block);}area.append(section);}
     if(item.is_current && item.data.solution){const actions=node('div',undefined,'result-actions');const revise=node('button','修改后再检查 ↗');revise.onclick=()=>{$('solution').focus();$('solution').scrollIntoView({behavior:'smooth',block:'center'});};actions.append(revise);area.append(actions);}
+    if(item.is_current && item.data.mode==='partition'){const actions=node('div',undefined,'result-actions');const next=node('button','换到草稿习惯分析 ↗');next.onclick=()=>{populate({...item.data,mode:'draft'});$('draft').focus();$('draft').scrollIntoView({behavior:'smooth',block:'center'});};actions.append(next);area.append(actions);}
     if(item.is_current && item.data.mode==='exam_answer')mountExamExport(area,item);
   }
-  area.append(node('div',(run.stage||run.routing?.skill||'待补充')+' · 第 '+item.revision+' 版 · '+item.version.slice(0,10),'result-meta'));
+  const routed=run.routing?.action==='partition'?'draft-coach-partition':(run.stage||run.routing?.skill);
+  area.append(node('div',(skillNames[routed]||routed||'待补充')+' · 第 '+item.revision+' 版 · '+item.version.slice(0,10),'result-meta'));
   const details=node('details');details.append(node('summary','查看校验与运行记录'));
   const safe={routing:run.routing,status:run.status,stage:run.stage,handoff:run.handoff,limitation:run.limitation,attempts:(run.attempts||[]).map(a=>({elapsed_seconds:a.response?.elapsed_seconds,usage:a.response?.usage,gates:a.gates,stage:a.stage})),structured_result:run.output?.result};
   details.append(node('pre',JSON.stringify(safe,null,2)));area.append(details);
   renderMath(area);
+}
+const judgementNames={correct:'过程成立',incorrect:'存在错误',gap:'论证有缺口',insufficient:'信息不足',answer_only:'仅核验了答案'};
+const dimensionNames={organization:'分区与边距',skipping:'步骤分行与密度',correction_pattern:'划改与自纠',trial_and_error:'多路径标记',graphic_use:'图形与标注',draft_to_solution:'留白与检验区'};
+const solveStatusNames={solved:'完整求解',partially_solved:'部分完成',needs_clarification:'需要补充信息',failed:'求解失败'};
+function resultCard(area,title){const card=node('div',undefined,'evidence-card');if(title)card.append(node('h3',title));area.append(card);return card;}
+function renderStructuredResult(area,item,result){
+  if(!result || typeof result!=='object')return;
+  if(result.judgment){
+    if(judgementNames[result.judgment])area.append(node('p','判断：'+judgementNames[result.judgment],'result-judgment'));
+    if(item.data.mode==='answer_check'){
+      area.append(node('p','本次只核验最终答案；没有评价解题过程。','source-note'));
+      if(result.minimal_fix){const card=resultCard(area,'正确结果');card.append(node('p',result.minimal_fix));}
+      return;
+    }
+    if(item.data.mode!=='hint' && Array.isArray(result.evidence) && result.evidence.length){
+      const card=resultCard(area,'检查依据'),list=node('ul');
+      for(const line of result.evidence)list.append(node('li',String(line)));
+      card.append(list);
+    }
+    if(item.data.mode==='hint' && result.hint){const card=resultCard(area,'提示');card.append(node('p',result.hint));}
+    if(result.first_error && item.data.mode!=='hint'){
+      const card=resultCard(area,'首个实质问题 · 第 '+result.first_error.step+' 步');
+      card.append(node('blockquote',result.first_error.quote));card.append(node('p',result.first_error.reason));
+    }
+    if(result.minimal_fix && item.data.mode!=='hint'){const card=resultCard(area,'最小修改');card.append(node('p',result.minimal_fix));}
+    return;
+  }
+  if(result.dimensions){
+    const card=resultCard(area,'六维版面观察');
+    if(result.scope)card.append(node('p',result.scope,'result-scope'));
+    const grid=node('div',undefined,'dimension-grid');
+    for(const [key,name] of Object.entries(dimensionNames)){
+      const dimension=result.dimensions[key];if(!dimension)continue;
+      const row=node('section',undefined,'dimension-row'),head=node('div',undefined,'dimension-head');
+      head.append(node('strong',name));head.append(node('span',dimension.score||'','dimension-score'));row.append(head);
+      if(dimension.observation)row.append(node('p',dimension.observation));
+      if(dimension.evidence)row.append(node('p','依据：'+dimension.evidence,'dimension-detail'));
+      if(dimension.risk)row.append(node('p','风险：'+dimension.risk,'dimension-detail'));
+      if(dimension.positive)row.append(node('p','积极信号：'+dimension.positive,'dimension-positive'));
+      grid.append(row);
+    }
+    if(grid.children.length)card.append(grid);
+    if(Array.isArray(result.top_3_habits)&&result.top_3_habits.length){
+      card.append(node('h3','值得调整的版面习惯'));
+      for(const [index,habit] of result.top_3_habits.entries()){
+        const block=node('section',undefined,'optimization-item');
+        block.append(node('strong',(index+1)+' · '+(habit.habit||'')));
+        if(habit.impact)block.append(node('p','可能影响：'+habit.impact));
+        if(habit.training)block.append(node('small','下一道题可以：'+habit.training));
+        card.append(block);
+      }
+    }
+    if(result.next_step)card.append(node('p','下一步只做一件事：'+result.next_step,'result-next-step'));
+    return;
+  }
+  if(Array.isArray(result.blocks)){
+    const card=resultCard(area,'版面分块');
+    if(result.estimated_problem_count!==undefined){
+      const range=Array.isArray(result.count_range)?result.count_range.join('–'):'';
+      card.append(node('p','估计 '+result.estimated_problem_count+' 道题'+(range?'（范围 '+range+'）':'')+'。这是版面块数，不等于题目数。','result-judgment'));
+    }
+    for(const block of result.blocks){
+      const row=node('section',undefined,'partition-block'),head=node('div',undefined,'dimension-head');
+      head.append(node('strong',(block.block_id||'')+' · '+(block.location||'')));
+      head.append(node('span',(block.confidence?'置信度 '+block.confidence:'')+(block.separate_problem?' · 像独立题目':' · 可能不是独立题目'),'dimension-score'));
+      row.append(head);
+      if(block.visual_cues)row.append(node('p','版面依据：'+block.visual_cues,'dimension-detail'));
+      if(block.note)row.append(node('p',block.note,'dimension-detail'));
+      card.append(row);
+    }
+    if(result.uncertainty)card.append(node('p','分不准的地方：'+result.uncertainty));
+    if(result.confirmation_question)card.append(node('p','请确认：'+result.confirmation_question,'result-next-step'));
+    if(Array.isArray(result.limitations)&&result.limitations.length){const list=node('ul');for(const line of result.limitations)list.append(node('li',String(line)));card.append(list);}
+    return;
+  }
+  if(Array.isArray(result.optimization_opportunities)){
+    const card=resultCard(area,'三个可尝试的优化方向');
+    if(result.current_method)card.append(node('p','当前方法：'+result.current_method));
+    if(result.overall_diagnosis)card.append(node('p',result.overall_diagnosis,'result-scope'));
+    for(const [index,option] of result.optimization_opportunities.entries()){
+      const block=node('section',undefined,'optimization-item');
+      block.append(node('strong',(index+1)+' · '+option.direction));
+      block.append(node('p',option.suggestion));
+      block.append(node('p','本解答尚未展示：'+option.exposed_gap));
+      block.append(node('small','现在可以试：'+option.training_suggestion));
+      card.append(block);
+    }
+    if(result.next_step)card.append(node('p','下一步动作：'+result.next_step,'result-next-step'));
+    return;
+  }
+  if(result.status && result.solution && item.data.mode==='solve'){
+    const card=resultCard(area,'求解状态与核验');
+    card.append(node('p','状态：'+(solveStatusNames[result.status]||result.status),'result-judgment'));
+    if(result.solution.answer)card.append(node('p','答案：'+result.solution.answer));
+    const details=node('details');details.append(node('summary','查看结构化推导与核验'));
+    for(const step of result.solution.derivation||[])details.append(node('p','第 '+step.step+' 步：'+(step.expression||'')+(step.justification?'（依据：'+step.justification+'）':'')));
+    if(result.verification){
+      if(result.verification.status)details.append(node('p','核验状态：'+result.verification.status));
+      for(const check of result.verification.checks||[])details.append(node('p',(check.name||'检查')+'：'+(check.status||'')+(check.details?' · '+check.details:'')));
+      for(const issue of result.verification.issues||[])details.append(node('p','未解决：'+issue,'error-message'));
+    }
+    card.append(details);
+  }
 }
 function mountExamExport(area,item){
   const card=node('div',undefined,'evidence-card exam-export');
@@ -264,8 +377,8 @@ $('submission-form').onsubmit=async event=>{
     const data=Object.fromEntries(['problem','solution','draft','request','mode'].map(k=>[k,$(k).value]));data.grade_level=$('grade').value;
     data.verification_requested=$('verify-equation').checked;
     const old=history.at(-1);data.allow_mode_change=Boolean(old && old.data.mode==='hint' && data.mode!=='hint');
-    if(['draft','partition','exam_answer'].includes(data.mode))data.solution='';else data.draft='';
-    if(data.mode==='exam_answer')data.draft='';
+    if(['draft','partition','exam_answer','solve'].includes(data.mode))data.solution='';else data.draft='';
+    if(data.mode==='exam_answer'||data.mode==='solve')data.draft='';
     if(workFiles.length){
       data.attachments=await Promise.all(workFiles.map(async item=>({name:item.file.name,base64:await fileToBase64(item.file)})));
     }
@@ -279,7 +392,21 @@ $('work-files').onchange=()=>{
   addWorkFiles([...$('work-files').files]);
   $('work-files').value='';
 };
-$('example').onclick=()=>{if($('mode').value==='exam_answer'){populate({mode:'exam_answer',problem:'高中数学小卷（共15分）\n1.（5分，填空题）解方程 √(x+2)=x。\n2.（10分，解答题）已知 f(x)=x²-2x。\n（1）求 f(x) 的最小值；（2）解不等式 f(x)≤3。',request:'保留题号与小问；步骤分值请标为建议，给出思路点拨和难度理由。'});$('problem').focus();return;}populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
+const EXAMPLES={
+  exam_answer:{mode:'exam_answer',problem:'高中数学小卷（共15分）\n1.（5分，填空题）解方程 √(x+2)=x。\n2.（10分，解答题）已知 f(x)=x²-2x。\n（1）求 f(x) 的最小值；（2）解不等式 f(x)≤3。',request:'保留题号与小问；步骤分值请标为建议，给出思路点拨和难度理由。'},
+  draft:{mode:'draft',problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',draft:'整张纸只写了一道题。左上是抄写的题目，中间推导分成四行；有一处划改，旧值没有划掉，新值直接写在右边；右侧留出一栏写分类讨论的第二种情况，但没有编号；底部留了三行空白，没有检验区。'},
+  partition:{mode:'partition',draft:'纸面大致分三块：左上以“第一题”开头，围绕三角函数写了五六行；左下另起一块，标着“第二题”，只有两行；右侧一整块画着带坐标轴的图，图旁另有几行计算。左下和右侧之间只有一道横线，可能是同一题的继续，也可能不是。'},
+  answer_check:{mode:'answer_check',problem:'解方程 x+1=2。',solution:'x=1'},
+  refine:{mode:'refine',problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'移项得 2sin(x)cos(x)-sin(x)=0。\n提取 sin(x)：sin(x)(2cos(x)-1)=0。\n所以 sin(x)=0 或 cos(x)=1/2。\n在 0≤x<2π 内，解为 x=0, π, π/3, 5π/3。'},
+  solve:{mode:'solve',problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。'},
+  practice:{mode:null,problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。'}
+};
+$('example').onclick=()=>{
+  const mode=$('mode').value, sample=EXAMPLES[mode]||EXAMPLES.practice;
+  const data={...sample};if(mode&&mode!=='exam_answer'&&mode!=='draft'&&mode!=='partition'&&mode!=='answer_check'&&mode!=='solve')data.mode=mode;
+  populate(data);
+  (mode==='draft'||mode==='partition'?$('draft'):mode==='solve'||mode==='exam_answer'?$('problem'):mode==='answer_check'?$('solution'):$('problem')).focus();
+};
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),session_id:sessionId,submissions:history},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='数学练习-'+sessionId.slice(0,8)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 
 let settingsBusy=false, settingsPresets=[], currentPreset='custom';
@@ -433,7 +560,7 @@ function switchWorkspace(name) {
   const teacher=name==='teacher', teaching=name==='teaching', path=name==='path';
   $('path-view').hidden=!path;
   $('practice-view').hidden=name!=='practice';$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
-  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'练习工作台');
+  document.title='高中数学教师 Agent · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'练习工作台');
   $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'过程反馈');
   $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
   for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
@@ -450,7 +577,6 @@ function openAnswerKey(){
 }
 $('show-practice').onclick=()=>switchWorkspace('practice');
 $('show-teacher').onclick=()=>switchWorkspace('teacher');
-$('teacher-open-answer-key').onclick=openAnswerKey;
 let currentLesson=null,lessonBusy=false,lessonTeachingSource=null;
 const lessonLabels={outline_ready:'大纲待确认',source_ready:'源码待渲染',ready:'课件已通过结构检查',review_failed:'需修改后复核',build_failed:'生成失败'};
 function lessonStep(n){document.querySelectorAll('.teacher-step').forEach((el,i)=>el.classList.toggle('active',i===n));}
@@ -522,29 +648,39 @@ $('lesson-render-button').onclick=async()=>{
 };
 if(!openedFromFile)refreshLessonHistory();
 
-function updateExamPresentation(exam) {
+function updateModePresentation(mode) {
+  const copy=modeCopy(mode), exam=mode==='exam_answer';
   const view=$('practice-view'), heading=view.querySelector('.page-heading');
-  heading.querySelector('.eyebrow').textContent=exam?'MATHEMATICS · ANSWER STUDIO':'YOUR NEXT STEP IN MATHEMATICS';
-  heading.querySelector('h1').textContent=exam?'一份试卷，一份有依据的参考答案。':'把思路写下来，再向前一步。';
-  heading.querySelector('p').textContent=exam?'面向教师的整卷编制工具，让解答与每一个采分点清晰对应。':'从一个有依据的提示开始，逐步完善自己的解答。';
-  heading.querySelector('.folio span').textContent=exam?'参考答案编制':'练习工作台';
+  heading.querySelector('.eyebrow').textContent=copy.eyebrow;
+  heading.querySelector('h1').innerHTML=copy.h1;
+  heading.querySelector('p').textContent=copy.subtitle;
+  heading.querySelector('.folio span').textContent=copy.folio;
   $('exam-guide').hidden=!exam;
   view.classList.toggle('exam-workspace',exam);
-  $('input-heading').textContent=exam?'输入试卷':'这一次，练什么？';
-  document.querySelector('label[for="problem"]').firstChild.textContent=exam?'试卷题目与分值 ':'原题 ';
-  $('problem').rows=exam?14:4;
-  $('problem').placeholder=exam?'粘贴完整试卷，保留题号、小问、条件与分值。\n例如：1.（5分）……\n2.（12分）（1）……（2）……':'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。';
-  $('example').textContent=exam?'载入试卷示例 ↗':'载入示例 ↗';
-  $('feedback-heading').textContent=exam?'参考答案与评分建议':'反馈与下一步';
-  $('revision-note').textContent=exam?'未给分值将标为待确认；建议评分仍需教师核定。':'你的原过程会随每次提交保留。';
-  $('request').placeholder=exam?'例如：高三复习；保留全部小问；优先使用高中方法。':'例如：沿用我的方法，暂时不要给答案。';
+  $('input-heading').textContent=copy.inputHeading;
+  document.querySelector('label[for="problem"]').firstChild.textContent=copy.problemLabel;
+  $('problem-hint').textContent=copy.problemHint;
+  $('problem').rows=copy.problemRows;
+  $('problem').placeholder=copy.problemPlaceholder;
+  document.querySelector('label[for="solution"]').firstChild.textContent=copy.solutionLabel;
+  $('solution-hint').textContent=copy.solutionHint;
+  $('solution').rows=copy.solutionRows||7;
+  $('solution').placeholder=copy.solutionPlaceholder;
+  $('example').textContent=copy.exampleLabel;
+  $('feedback-heading').textContent=copy.feedbackHeading;
+  $('revision-note').textContent=copy.revisionNote;
+  $('request').placeholder=copy.requestPlaceholder;
   $('practice-extras').open=exam||Boolean($('request').value);
   $('extract-to-problem').textContent=exam?'核对后填入试卷':'填入原题';
-  $('extract-to-solution').hidden=exam;
+  $('extract-to-solution').hidden=exam||mode==='draft'||mode==='partition'||mode==='solve';
   const empty=$('result').querySelector('.empty-state');
-  if(empty){empty.querySelector('h3').textContent=exam?'参考答案将在这里生成':'先写出你的尝试';empty.querySelector('p').textContent=exam?'提交试卷后，逐题查看解答、采分点、分值、思路和难度评价。':'这里会展示检查依据、首错位置，或一个帮助你继续思考的提示。';empty.querySelector('small').textContent=exam?'完整条件，是可靠答案的起点':'过程比一个答案更值得被看见';}
+  if(empty){empty.querySelector('.math-mark').textContent=copy.empty.mark;empty.querySelector('h3').textContent=copy.empty.h3;empty.querySelector('p').textContent=copy.empty.p;empty.querySelector('small').textContent=copy.empty.small;}
+  const stale=renderedMode&&renderedMode!==mode&&$('result').querySelector('.reply');
+  let mismatch=$('result').querySelector('.mode-mismatch');
+  if(stale&&!mismatch){mismatch=node('p','这是上一次提交的反馈；提交后会按当前模式重新检查。','mode-mismatch');$('result').prepend(mismatch);}
+  else if(!stale&&mismatch)mismatch.remove();
   if(!view.hidden){
-    document.title='数学作业智能体 · '+(exam?'试卷参考答案':'练习工作台');
-    $('header-note').textContent='高中数学 · '+(exam?'试卷参考答案':'过程反馈');
+    document.title='高中数学教师 Agent · '+copy.title;
+    $('header-note').textContent='高中数学 · '+copy.headerNote;
   }
 }

@@ -34,6 +34,7 @@ async function loadTask(id){
   }
   $('task-plan-stage').hidden=!activeTask.plan;
   if(activeTask.plan){$('task-plan-draft').value=activeTask.plan.draft_markdown;$('task-plan-note').textContent=activeTask.plan.stale?'学生提交或诊断已经变化，这份教案依据已过期；请重新规划。':'依据绑定当前提交。请检查数学内容和引文后再用于课堂。';}
+  renderMath($('task-evidence'));
   taskBusy(false);
 }
 async function refreshTasks(preferred){
@@ -68,11 +69,19 @@ $('task-to-lesson').onclick=async()=>{
 };
 $('task-followup').onclick=async()=>{
   if(taskWorking)return;taskBusy(true,'正在读取关联依据…');
-  try{await checkPlanCurrent();followupSource={parent_id:activeTask.id,evidence_version:activeTask.plan.evidence_version};$('task-title').value=activeTask.title+' · 再练习';$('task-objective').value=activeEvidence.items.filter(row=>['incorrect','gap'].includes(row.state)).map(row=>row.objective).join('；')||'巩固当前已展示的推理';$('task-item-editor').replaceChildren();addTaskItem();$('task-parent-note').textContent='将关联前序任务 '+activeTask.id.slice(0,8)+' 及当前证据版本。';$('task-assessment').value='practice';$('task-target-field').hidden=false;$('task-target').replaceChildren();for(const item of activeTask.items)$('task-target').append(new Option(item.objective,item.id));$('task-title').focus();}catch(error){$('task-status').textContent=error.message;}finally{taskBusy(false,$('task-status').textContent);}
+  try{await checkPlanCurrent();followupSource={parent_id:activeTask.id,evidence_version:activeTask.plan.evidence_version};$('task-title').value=activeTask.title+' · 再练习';$('task-objective').value=activeEvidence.items.filter(row=>['incorrect','gap'].includes(row.state)).map(row=>row.objective).join('；')||'巩固当前已展示的推理';$('task-item-editor').replaceChildren();addTaskItem();$('task-parent-note').textContent='将关联前序任务 '+activeTask.id.slice(0,8)+' 及当前证据版本。';$('task-assessment').value='practice';$('task-target-field').hidden=false;$('task-target').replaceChildren();for(const item of activeTask.items)$('task-target').append(new Option(item.objective,item.id));syncAssessmentTarget();$('task-title').focus();}catch(error){$('task-status').textContent=error.message;}finally{taskBusy(false,$('task-status').textContent);}
 };
-$('task-assessment').onchange=()=>{if($('task-assessment').value==='independent_check'&&!followupSource){$('task-status').textContent='先从当前诊断教案选择关联再练习，再设置独立复核。';return;}syncAssessmentTarget();};
+$('task-assessment').onchange=()=>{if($('task-assessment').value==='independent_check'&&!followupSource){$('task-assessment').value='practice';$('task-target-field').hidden=true;$('task-status').textContent='独立复核需要先从当前诊断教案选择关联再练习。';return;}syncAssessmentTarget();};
 $('task-target').onchange=syncAssessmentTarget;
-function syncAssessmentTarget(){if($('task-assessment').value!=='independent_check'||!activeTask)return;const target=activeTask.items.find(item=>item.id===$('task-target').value);if(!target)return;for(const card of $('task-item-editor').children){card.querySelector('.task-goal').value=target.objective;card.querySelector('.task-criteria').value=target.success_criteria;}$('task-status').textContent='独立复核沿用所选目标和成功标准；请提供未练习的新题。';}
+function syncAssessmentTarget(){
+  const independent=$('task-assessment').value==='independent_check';
+  const label=document.querySelector('label[for="task-target"]');
+  if(label)label.firstChild.textContent=independent?'复核的前序任务项':'关联的前序任务项';
+  if(!independent||!activeTask)return;
+  const target=activeTask.items.find(item=>item.id===$('task-target').value);if(!target)return;
+  for(const card of $('task-item-editor').children){card.querySelector('.task-goal').value=target.objective;card.querySelector('.task-criteria').value=target.success_criteria;}
+  $('task-status').textContent='独立复核沿用所选目标和成功标准；请提供未练习的新题。';
+}
 addTaskItem();
 if(openedFromFile)document.querySelectorAll('#teaching-view button,#teaching-view input,#teaching-view textarea,#teaching-view select').forEach(control=>control.disabled=true);
 

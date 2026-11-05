@@ -1515,3 +1515,23 @@ input::file-selector-button {
 .exam-workspace .input-extras{margin-top:18px}
 @media(max-width:1100px){.exam-launch{align-items:flex-start;flex-direction:column;gap:16px}.exam-guide{gap:14px;padding:20px}}
 @media(max-width:620px){.workspace-switcher{grid-template-columns:repeat(3,minmax(0,1fr))}.exam-launch{padding:20px;margin-bottom:18px}.exam-launch h2{font-size:20px}.exam-launch button{width:100%}.exam-guide{grid-template-columns:1fr;gap:14px}.exam-guide p{margin:4px 0 0}.exam-workspace #problem{min-height:220px}}
+
+/* Skill-specific result cards: render the structured result next to the reply. */
+.result-judgment{display:inline-block;margin:14px 0 0;padding:5px 10px;border-radius:9px;background:#fff;border:1px solid rgba(155,25,55,.2);color:var(--red,#b70031);font-size:11px;font-weight:600;letter-spacing:.02em}
+.result-scope{font-size:11px!important;color:#6d7689;line-height:1.85}
+.result-next-step{margin-top:12px!important;padding-top:10px;border-top:1px solid rgba(127,78,87,.14);font-weight:600}
+.evidence-card ul{margin:6px 0 0;padding-left:18px}
+.evidence-card li{font-size:12px;line-height:1.85;margin:3px 0}
+.dimension-grid{display:grid;gap:2px;margin-top:8px}
+.dimension-row,.partition-block{padding:10px 0;border-top:1px solid rgba(127,78,87,.12)}
+.dimension-row:first-child,.partition-block:first-of-type{border-top:0;padding-top:2px}
+.dimension-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.dimension-head strong{font-size:12px;color:#3f3437}
+.dimension-score{flex-shrink:0;font-size:10px;color:var(--red,#b70031);background:#fff;border:1px solid rgba(155,25,55,.18);border-radius:7px;padding:1px 7px;white-space:nowrap}
+.dimension-row p{margin:4px 0}
+.dimension-detail{font-size:11px!important;color:#6d7689}
+.dimension-positive{font-size:11px!important;color:#32715f}
+.answer-line{font-weight:600}
+#settings-status:empty{display:none}
+@media(max-width:620px){.dimension-head{flex-wrap:wrap;gap:4px}.result-judgment{display:block}}
+.mode-mismatch{margin:0 0 14px;padding:9px 12px;border-radius:10px;background:#fff8e8;border:1px solid #e3c56b;color:#6b5317;font-size:11px;line-height:1.7}

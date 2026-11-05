@@ -1,6 +1,6 @@
 {
-  "executed_at": "2026-10-28T14:54:35.088647+00:00",
-  "python": "3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "executed_at": "2026-11-05T14:03:42.012553+00:00",
+  "python": "3.13.9 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 19:09:58) [MSC v.1929 64 bit (AMD64)]",
   "records": [
     {
       "suite": "root-tests",
@@ -15,7 +15,7 @@
         "test_*.py"
       ],
       "exit_code": 0,
-      "tests": 18
+      "tests": 26
     },
     {
       "suite": "solver-gates",
@@ -25,7 +25,7 @@
         "unittest",
         "discover",
         "-s",
-        "math-solver/tests",
+        "answer-key-builder/tests",
         "-p",
         "test_*.py"
       ],
@@ -45,11 +45,11 @@
         "test_*.py"
       ],
       "exit_code": 0,
-      "tests": 38
+      "tests": 40
     },
     {
       "suite": "solver-bench",
-      "cwd": "math-solver/bench",
+      "cwd": "answer-key-builder\\bench",
       "args": [
         "-m",
         "unittest",
@@ -64,7 +64,7 @@
     },
     {
       "suite": "draft-bench",
-      "cwd": "draft-coach/bench",
+      "cwd": "draft-coach\\bench",
       "args": [
         "-m",
         "unittest",
@@ -90,7 +90,7 @@
         "test_*.py"
       ],
       "exit_code": 0,
-      "tests": 113
+      "tests": 140
     },
     {
       "suite": "lesson-builder-regression",
@@ -115,7 +115,7 @@
     },
     {
       "suite": "solver-schema",
-      "cwd": "math-solver/bench",
+      "cwd": "answer-key-builder\\bench",
       "args": [
         "schema_check.py"
       ],
@@ -124,7 +124,7 @@
     },
     {
       "suite": "draft-schema",
-      "cwd": "draft-coach/bench",
+      "cwd": "draft-coach\\bench",
       "args": [
         "schema_check.py"
       ],
@@ -159,7 +159,7 @@
       "tests": null
     }
   ],
-  "unit_tests": 273,
+  "unit_tests": 310,
   "lesson_builder_privacy_identifier_count": 0,
   "all_passed": false
 }

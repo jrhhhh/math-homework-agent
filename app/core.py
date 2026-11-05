@@ -159,6 +159,11 @@ def prompt_for(data, routing, arm='skill_gates'):
             parts.append('本次先做版面分块与归属确认，不生成六维卡。输入是学生文字描述，block_source=student_text。'+routing['reason'])
     else:
         parts.append(DIAGNOSIS)
+    if data['mode'] == 'answer_check':
+        parts.append('本次是“仅核对答案”：reply 只回答答案是否成立并给出正确结果，最多两句话；'
+                     '不得写出完整推导，不得推断或评价学生没有提供的过程；'
+                     'judgment 取 correct/incorrect/answer_only；first_error=null；'
+                     'evidence 只写答案核验所需的简短依据（最多两条短句）；minimal_fix 只写答案应改成什么。')
     parts.append('反馈模式 hint 时：所有返回字段都不能泄露完整解答。保持一次一个提示。')
     if importlib.util.find_spec('sympy') is not None and data['mode'] != 'hint' and skill != 'draft-coach':
         parts.append('''宿主可执行受限精确核验。适用且表达式能准确表示原题时，在公共包装中额外加入 tool_requests 数组（最多3项），原生 result 字段不变。

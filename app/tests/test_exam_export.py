@@ -122,6 +122,29 @@ class ExamExportTest(unittest.TestCase):
         self.assertEqual(result['attempts'], 1)
         self.assertIn('禁止', result['issues'][0])
 
+    def test_source_without_template_style_is_rejected_before_compile(self):
+        bad = TEX.replace(r'\usepackage{reference-answer}', '')
+
+        def compiler(source, output):
+            raise AssertionError('未使用模板样式的源码不应进入编译器')
+
+        result = self.exporter(lambda prompt: {'raw': bad}, compiler).export(self.rid)
+        self.assertFalse(result['success'])
+        self.assertEqual(result['attempts'], 3)
+        self.assertIn('reference-answer', result['issues'][0])
+
+    def test_scoring_table_must_use_scoring_environment(self):
+        bad = TEX.replace(r'\finalanswer{\(x=1\)。}',
+                          r'\textbf{采分点}\begin{tabular}{cc}1&2\end{tabular}')
+
+        def compiler(source, output):
+            raise AssertionError('用普通 tabular 代替采分表时不应进入编译器')
+
+        result = self.exporter(lambda prompt: {'raw': bad}, compiler).export(self.rid)
+        self.assertFalse(result['success'])
+        self.assertEqual(result['attempts'], 3)
+        self.assertIn('scoring', result['issues'][0])
+
     def test_missing_xelatex_keeps_source(self):
         from unittest.mock import patch
         exporter = ExamExporter(self.store, generator=lambda prompt: {'raw': TEX},

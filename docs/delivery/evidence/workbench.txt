@@ -1,8 +1,8 @@
-......................................................./Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/email/feedparser.py:88: ResourceWarning: unclosed <socket.socket [closed] fd=9, family=2, type=1, proto=6>
-  for ateof in reversed(self._eofstack):
+....................................................................................D:\Program Files\anaconda3\Lib\site-packages\pptx\oxml\xmlchemy.py:398: ResourceWarning: unclosed <socket.socket [closed] fd=956, family=2, type=1, proto=0>
+  return cast("list[BaseOxmlElement]", obj.findall(qn(self._nsptagname)))
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
-..........................................................
+........................................................
 ----------------------------------------------------------------------
-Ran 113 tests in 8.368s
+Ran 140 tests in 37.712s
 
 OK

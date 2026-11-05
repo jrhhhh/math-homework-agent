@@ -44,6 +44,13 @@ class RoutingTest(unittest.TestCase):
         self.assertNotIn('"attachments"', prompt)
         self.assertNotIn('iVBORw0KGgo=', prompt)
 
+    def test_answer_check_prompt_forbids_full_derivation(self):
+        data = normalize({'problem': '解 x+1=2', 'solution': 'x=1', 'mode': 'answer_check'})
+        prompt = prompt_for(data, route(data))
+        self.assertIn('仅核对答案', prompt)
+        self.assertIn('不得写出完整推导', prompt)
+        self.assertIn('first_error=null', prompt)
+
     def test_draft_attachment_never_enters_the_model_prompt(self):
         data = normalize({'draft': '左栏第1题，右栏第2题；中间有划改。', 'mode': 'draft',
                           'attachments': [{'name': 'draft.pdf', 'base64': 'JVBERi0='}]})

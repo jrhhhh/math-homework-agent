@@ -206,6 +206,22 @@ class ExamExporter:
                 report = {'success': False, 'pdf': None, 'passes': [],
                           'issues': ['LaTeX 源码包含工作台禁止的 \\input、\\write18 等命令；未编译。']}
                 break
+            if '\\usepackage{reference-answer}' not in source_text:
+                report = {'success': False, 'pdf': None, 'passes': [],
+                          'issues': ['LaTeX 源码必须使用 reference-answer 样式（\\usepackage{reference-answer}），'
+                                     '不要自定义 \\papertitle、\\question 等排版命令。']}
+                if attempt < MAX_ATTEMPTS:
+                    prompt = self._repair_prompt(item, source_text, report)
+                    continue
+                break
+            if '采分点' in source_text and '\\begin{scoring}' not in source_text:
+                report = {'success': False, 'pdf': None, 'passes': [],
+                          'issues': ['采分表必须使用 scoring 环境（\\begin{scoring}...\\end{scoring}），'
+                                     '不要用普通 tabular 代替。']}
+                if attempt < MAX_ATTEMPTS:
+                    prompt = self._repair_prompt(item, source_text, report)
+                    continue
+                break
             if not self.can_compile():
                 report = {'success': False, 'pdf': None, 'passes': [],
                           'issues': ['本机未找到 XeLaTeX，无法导出 PDF。']}
@@ -253,6 +269,8 @@ class ExamExporter:
             '可用 \\papertitle{试卷名}{说明}、\\question{题号}{分值}、\\parttitle{小问}{标题}、'
             '\\insight{...}、\\difficulty{等级}{依据}、\\checkpoint{累计分}、'
             '\\begin{scoring}...\\end{scoring} 和 \\finalanswer{...}。'
+            '\\papertitle 的第一个参数只写试卷名称，不要再写“参考答案与评分建议”，宏会自动补；'
+            'scoring 环境自带“采分点/新增分/累计分”表头，环境内不要再写表头行。'
             '数学公式只写 LaTeX 数学环境（\\(...\\) 与 \\[...\\]）；不要用 Unicode 公式、'
             '程序表达式或把推导整体塞进 \\text{...}。\n'
             '禁止使用 shell escape、\\write18、外部图片文件、\\input 外部文件或绝对路径字体；'
@@ -279,7 +297,8 @@ class ExamExporter:
         return (
             '上次生成的 LaTeX 未通过实际编译或版面检查。只修复排版与编译问题，'
             '不得改变原题条件、数学结论、题号、小问或分值。输出修正后的完整 .tex 源码，'
-            '不要 Markdown 代码围栏或解释。\n'
+            '不要 Markdown 代码围栏或解释。必须使用 \\usepackage{reference-answer}；'
+            '不要自定义 \\papertitle、\\question 等命令；采分表必须使用 scoring 环境，不要用普通 tabular。\n'
             '实际编译报告的问题：\n' + json.dumps(issues, ensure_ascii=False, indent=2) +
             '\n\n原题（核对用）：\n' + item['data']['problem'] +
             '\n\n上次源码：\n' + source
