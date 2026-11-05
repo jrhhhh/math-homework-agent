@@ -13,7 +13,7 @@
   - 仅使用 Python 标准库，无第三方依赖。
 
 能力边界（诚实声明，别把它当正确性证明）：
-  - 结构门只查"卡片长得对不对"：字段是否齐、方向是否恰好 3 条、方向是否在白名单内、
+  - 结构门只查"卡片长得对不对"：字段是否齐、方向是否不超过 3 条、方向是否在白名单内、
     短板标签与方向是否搭。**它不判断优化建议在数学上是否真的更优**——那要人来读。
   - 越界审计靠措辞规则：抓"判对错 / 诊断错因 / 出变式题 / 排复习计划 / 报置信度 / 探测理解深度"。
     它是便宜的确定性门，不是语义理解；换个说法绕过去，它抓不住。
@@ -40,7 +40,7 @@ TEXT_FIELDS = ("current_method", "overall_diagnosis", "next_step")
 LIST_FIELD = "optimization_opportunities"
 OPP_FIELDS = ("direction", "suggestion", "exposed_gap", "training_suggestion")
 REQUIRED_FIELDS = TEXT_FIELDS + (LIST_FIELD,)
-OPP_COUNT = 3
+OPP_MAX = 3
 
 # 七类优化方向 → (对应短板标签, gap 文本里通常会出现的关键词, 典型表现)
 GAP_TABLE = (
@@ -89,7 +89,7 @@ OUT_OF_SCOPE = (
     ("A_CAUSE", "诊断错因",
      re.compile(r"错因|错误的原因|出错的原因|错误的根源|根本原因|之所以.{0,12}错")),
     ("A_VARIANT", "出变式题",
-     re.compile(r"变式|再来一[道题]|下一道题|下面这道题|再试一题")),
+     re.compile(r"变式|再来一[道题]|再试一题")),
     ("A_PLAN", "排复习计划",
      re.compile(r"复习计划|学习计划|复习安排|错题本|计划表|每周|每天|每日|一周|一个月|打卡")),
     ("A_CONFIDENCE", "报置信度",
@@ -216,10 +216,15 @@ def cmd_validate(args):
             errors.append({"code": "E_BAD_LIST", "field": LIST_FIELD,
                            "detail": "必须是数组，数组里每条是一个优化方向"})
             opportunities = None
-        elif len(opportunities) != OPP_COUNT:
+        elif len(opportunities) > OPP_MAX:
             errors.append({"code": "E_OPP_COUNT", "count": len(opportunities),
-                           "detail": "优化方向必须恰好 %d 条，实为 %d 条"
-                                     % (OPP_COUNT, len(opportunities))})
+                           "detail": "优化方向最多 %d 条，实为 %d 条"
+                                     % (OPP_MAX, len(opportunities))})
+        elif len(opportunities) < OPP_MAX:
+            warnings.append({"code": "W_FEWER_DIRECTIONS", "count": len(opportunities),
+                             "detail": "优化方向少于 %d 条；若确实找不到更多有依据的方向，"
+                                       "请在 overall_diagnosis 说明原因，不要为凑数虚构"
+                                       % OPP_MAX})
 
     if isinstance(opportunities, list):
         seen, core_hits = {}, 0
@@ -282,13 +287,13 @@ def cmd_validate(args):
         if opportunities and core_hits == 0 and \
                 not any(e["code"] == "E_BAD_DIRECTION" for e in errors):
             warnings.append({"code": "W_DIRECTION_MONOTONY", "field": LIST_FIELD,
-                             "detail": "三个方向都没落在核心三路"
+                             "detail": "这几个方向都没落在核心三路"
                                        "（更优方法 / 更短步骤 / 更通用解法）里"})
 
     emit({
         "action": "validate",
         "input": {"card": args.card},
-        "method": "字段完整性 + 恰好 3 个优化方向 + 方向白名单 + 方向去重 + 短板标签一致性",
+        "method": "字段完整性 + 最多 3 个优化方向 + 方向白名单 + 方向去重 + 短板标签一致性",
         "errors": errors,
         "warnings": warnings,
         "passed": not errors,

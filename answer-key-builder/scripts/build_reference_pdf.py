@@ -11,6 +11,12 @@ import shutil
 import subprocess
 import sys
 
+try:  # Windows 控制台默认编码可能是 GBK，统一成 UTF-8。
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

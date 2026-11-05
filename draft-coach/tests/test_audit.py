@@ -102,6 +102,13 @@ class DraftCoachAuditTests(unittest.TestCase):
         self.assertNotIn("W_MULTI_PROBLEM_DRAFT",
                          [w["code"] for w in json.loads(result.stdout)["warnings"]])
 
+    def test_method_path_markers_are_not_multiple_problems(self):
+        # 方法①/方法② 是同一道题的多路径标记，不是两道题。
+        result = run_audit("audit", "--card", str(EXAMPLES / "high_school_cubic.json"),
+                           "--draft", "方法①先求导；方法②配方；两种方法都得到极值 −2 和 2。")
+        self.assertNotIn("W_MULTI_PROBLEM_DRAFT",
+                         [w["code"] for w in json.loads(result.stdout)["warnings"]])
+
     def test_describing_a_full_process_is_not_giving_one(self):
         # "定位不到某一道题的完整过程"是在描述草稿，不是给出解答——不能误判
         def with_risk(text):

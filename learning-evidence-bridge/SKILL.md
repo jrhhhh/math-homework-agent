@@ -17,7 +17,7 @@ description: 把已发布数学任务及其当前学生提交的诊断整理为�
 
 ## 可执行汇总
 
-[scripts/evidence.py](scripts/evidence.py) 是标准库聚合器。输入 JSON 为 `{"items":[{"id":"...","problem":"...","objective":"...","submission":null或提交记录}]}`；提交记录采用工作台 Store 的 `data/state/result/id/revision/version` 字段。运行：
+[scripts/evidence.py](scripts/evidence.py) 是标准库聚合器。输入 JSON 为 `{"items":[{"id":"...","problem":"...","objective":"...","grade_level":"高中","submission":null或提交记录}]}`；`grade_level` 可省略，默认高中，用于核对提交学段；提交记录采用工作台 Store 的 `data/state/result/id/revision/version` 字段。运行：
 
 ```bash
 python3 learning-evidence-bridge/scripts/evidence.py input.json

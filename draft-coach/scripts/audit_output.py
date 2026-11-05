@@ -23,8 +23,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _rules import (  # noqa: E402
     DIM_KEYS, DIMENSIONS_FIELD, DRAFT_CORRECTION_RE, META_VOCAB_RE, POSITIVE_DIM,
-    PROBLEM_MARKER_RE, REFUSALS, RISK_CONSEQUENCE_RE, RISK_HEDGE_RE,
-    card_texts, emit, load_card, out_of_scope_matches,
+    REFUSALS, RISK_CONSEQUENCE_RE, RISK_HEDGE_RE, card_texts, emit, load_card,
+    out_of_scope_matches, problem_markers,
 )
 
 
@@ -50,7 +50,7 @@ def cmd_audit(args):
                            "detail": "越过本 skill 边界：%s" % label})
 
     # 一整张草稿纸：分析单位是一道题，先分块并确认归属，再逐题出卡
-    markers = sorted({m.strip() for m in PROBLEM_MARKER_RE.findall(draft)})
+    markers = problem_markers(draft)
     if len(markers) >= 2:
         warnings.append({"code": "W_MULTI_PROBLEM_DRAFT", "field": "*",
                          "markers": markers[:8],
@@ -107,7 +107,7 @@ def cmd_audit(args):
         "passed": passed,
         "capability_note": "规则门而非语义理解。本技能只看版面习惯，**不判断计算对错**；"
                            "它也不验证版面观察是否属实。要查对错请走 math-error-diagnosis；"
-                           "已成立解法的优化当前项目暂不提供。",
+                           "已成立解法的优化先经诊断完整核验，再交 solution-refiner。",
     }, 0 if passed else 1)
 
 

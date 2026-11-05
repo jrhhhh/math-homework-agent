@@ -81,7 +81,13 @@ class DraftCoachValidateTests(unittest.TestCase):
              "E_MISSING_FIELD"),
             ("学段非法", lambda d: d.update(grade_level="研究生"),
              "E_BAD_GRADE"),
+            ("学段为空", lambda d: d.update(grade_level=""),
+             "E_BAD_GRADE"),
+            ("学段不是字符串", lambda d: d.update(grade_level=123),
+             "E_BAD_GRADE"),
             ("草稿来源非法", lambda d: d.update(draft_source="口头转述"),
+             "E_BAD_SOURCE"),
+            ("草稿来源为空", lambda d: d.update(draft_source=""),
              "E_BAD_SOURCE"),
             ("证据为空", lambda d: d["dimensions"]["organization"].update(evidence="  "),
              "E_EMPTY_TEXT"),
@@ -110,6 +116,13 @@ class DraftCoachValidateTests(unittest.TestCase):
 
         code, payload = validate(lambda d: d["dimensions"]["organization"].update(
             score="不适用", observation="左上角写题目，过程在中间。"))
+        self.assertEqual(code, 0, payload)
+        self.assertIn("W_UNAVAILABLE_WITHOUT_REASON",
+                      [w["code"] for w in payload["warnings"]])
+
+        # 「不适用」本身不是原因；只写这三个字仍应触发告警。
+        code, payload = validate(lambda d: d["dimensions"]["organization"].update(
+            score="不适用", observation="不适用"))
         self.assertEqual(code, 0, payload)
         self.assertIn("W_UNAVAILABLE_WITHOUT_REASON",
                       [w["code"] for w in payload["warnings"]])

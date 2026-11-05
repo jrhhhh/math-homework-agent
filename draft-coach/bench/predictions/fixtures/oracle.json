@@ -154,7 +154,7 @@
         },
         {
           "command": "python3 scripts/audit_output.py audit --card card.json --draft \"<case draft>\" --strict",
-          "exit_code": 1
+          "exit_code": 0
         }
       ]
     },

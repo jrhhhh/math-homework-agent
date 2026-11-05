@@ -26,7 +26,7 @@
     出变式题 / 给完整解答 / 评分扣分"。它是便宜的确定性门，不是语义理解；
     换个说法绕过去，它抓不住。
   - **本技能不判断草稿上的计算对错。** 版面观察也不是数学结论；要查对错请走
-    `math-error-diagnosis`；已成立解法的优化当前项目暂不提供。
+    `math-error-diagnosis`；已成立解法的优化先经诊断完整核验，再交 `solution-refiner`。
 """
 
 import json
@@ -71,7 +71,7 @@ SCORES_LAST = SCORES_ANY   # 兼容旧导入
 
 # score=不适用 时，observation 里应出现的原因词（只用来提醒，不做硬门）。
 UNAVAILABLE_REASON_RE = re.compile(
-    r"无法|看不出|不足|未提供|缺失|不可判|未核对|草稿太短|短草稿|不适用|"
+    r"无法|看不出|不足|未提供|缺失|不可判|未核对|草稿太短|短草稿|"
     r"没有提供|不清晰|拍不到")
 
 HABIT_FIELDS = ("habit", "impact", "training")
@@ -177,6 +177,9 @@ OUT_OF_SCOPE = (
 # 规则门认不出语义，所以要把"如实声明自己没做某件事"这一小类显式豁免。
 NEGATION_BEFORE_RE = re.compile(
     r"(?:没有|没|不|未|无需|不需要|不必要|不用|谈不上)\s*$")
+# 否定词不必紧贴命中词：先排除完整的否定短语，如「不判断算错」「不做转写」。
+NEGATION_SCOPE_RE = re.compile(
+    r"(?:没有|没|不|未|无需|不需要|不必要|不用|谈不上)[^，。；;,\n]{0,10}$")
 
 # ---------------------------------------------------------------- 题目分区（partition）
 # 只做版面分块：看留白、分隔线、区域大小、书写方向，**不读字符**。
@@ -198,10 +201,11 @@ PARTITION_ASSERTIVE_RE = re.compile(
 # 分区出口不做错因诊断，也不许报错误。
 PARTITION_ERROR_CLAIM_RE = re.compile(
     r"算错|错在|写错|这一步错了|错误是|漏了(?:根|一步|条件|符号|项|解)")
-# 分区出口不读字符；"我看出这行写的是…"属于越界。
+# 分区出口不读字符；只抓主张式措辞，不把「不做转写」这类边界说明当成越界。
 PARTITION_OCR_CLAIM_RE = re.compile(
     r"我(?:读|看)出.{0,12}(?:字|式子|内容|数字|写的是)|"
-    r"识别出.{0,8}(?:文字|式子|数字)|转写|OCR")
+    r"识别出.{0,8}(?:文字|式子|数字)|"
+    r"(?:我|本技能)?(?:已经|已)?(?:转写|OCR)(?:了|出|成).{0,8}")
 PARTITION_LIMITATION_CUES = ("版面", "不读", "字符", "确认", "大致", "块数",
                              "不等于", "题目数", "留白", "分隔")
 PARTITION_CONFIRM_CUES = ("确认", "像不像", "是不是", "哪", "对吗", "请你看",
@@ -222,14 +226,27 @@ DRAFT_CORRECTION_RE = re.compile(r"划掉|划去|涂改|涂抹|重写|改了|改
 
 # 题号标记：用来发现"这其实是一整张草稿纸，不止一道题"。
 # 刻意避开普通数字与 f(1) 这类函数记号，否则草稿里满地都是误报。
-# 已知边界：带圈序号也被当作题号，因此用「方法①/方法②」标同一道题的两条路径时
-# 会误报 W_MULTI_PROBLEM_DRAFT，`--strict` 下会把一张正确的卡片判为不过。
 PROBLEM_MARKER_RE = re.compile(
     r"第\s*[一二三四五六七八九十\d]+\s*[题问]"      # 第一题 / 第 2 问
     r"|[①②③④⑤⑥⑦⑧⑨⑩]"                          # 带圈序号
     r"|（\s*\d+\s*）"                              # 全角括号小问号
     r"|(?:^|[；;。\n])\s*\d+\s*[、.．]"            # 段落起首的 1、 / 2.
 )
+CIRCLED_MARKERS = frozenset("①②③④⑤⑥⑦⑧⑨⑩")
+# 出现多方法/多路径线索时，带圈序号更可能是路径标签，不是题号。
+MULTIPATH_CUE_RE = re.compile(r"方法|思路|路径|解法|一题多解")
+
+
+def problem_markers(text):
+    """返回像“多道题”的强标记。
+
+    带圈序号在“方法①/思路②”这类多路径上下文里不计入；显式的
+    “第 X 题 /（X）/ 段首 1.”仍然计入。分区模式本身不依赖这个判断。
+    """
+    text = str(text or "")
+    ignore_circled = bool(MULTIPATH_CUE_RE.search(text))
+    return sorted({m.strip() for m in PROBLEM_MARKER_RE.findall(text)
+                   if not (ignore_circled and m.strip() in CIRCLED_MARKERS)})
 
 # refuse 的三种情形：学生会话里唯一允许的"不分析"出口。
 # 退出码取值理由：2 = 草稿本身不能当证据（没给 / 给了但用不了）；

@@ -1,12 +1,12 @@
 ---
 name: solution-refiner
-description: 学生完整解答的结论和过程已经核验成立，且请求优化时，分析解法的优化空间与本解答未展示的能力，输出 3 个优化方向（每个含「怎么更好 + 暴露什么短板 + 一个训练动作」）。Use when a student shows a correct solution and asks 有没有更简单/更快/更巧的做法、还有别的方法吗、一题多解、我的解法是不是太笨了、能不能写得更优雅、解法还能怎么优化、正解优化、从对到好、再拔高一点, or asks for a better / shorter / more general / more elegant solution to a problem they have already solved correctly. Do not use when the answer is wrong or the student is stuck (use math-error-diagnosis; presolve-starter is optional and not installed here), when the student asks for 判对错、错因诊断、修复句、变式题、复习计划、评分、置信度、理解深度探测, or when the student has not produced a solution yet.
+description: 学生完整解答的结论和过程已经核验成立，且请求优化时，分析解法的优化空间与本解答未展示的能力，通常输出 3 个优化方向（每个含「怎么更好 + 暴露什么短板 + 一个训练动作」）；真实方向不足时可少给并说明原因。Use when a student shows a correct solution and asks 有没有更简单/更快/更巧的做法、还有别的方法吗、一题多解、我的解法是不是太笨了、能不能写得更优雅、解法还能怎么优化、正解优化、从对到好、再拔高一点, or asks for a better / shorter / more general / more elegant solution to a problem they have already solved correctly. Do not use when the answer is wrong or the student is stuck (use math-error-diagnosis; presolve-starter is optional and not installed here), when the student asks for 判对错、错因诊断、修复句、变式题、复习计划、评分、置信度、理解深度探测, or when the student has not produced a solution yet.
 ---
 
 # skill：Solution Refiner（solution-refiner）
 
 学生完整解答的结论和过程已经核验成立，且请求优化时，分析解法的优化空间，
-描述这份解答尚未展示的能力，给出 **3 个优化方向**——每个方向包含"怎么更好 + 暴露了什么短板 + 一个训练动作"。
+描述这份解答尚未展示的能力，通常给出 **3 个优化方向**——每个方向包含"怎么更好 + 暴露了什么短板 + 一个训练动作"；真实方向不足 3 个时，给实际找到的 0–2 个，并在 `overall_diagnosis` 说明原因，不为凑数虚构。
 
 **只回答一个问题：这份已成立解法，哪里可以更好？它尚未展示哪些可尝试的方法？**
 
@@ -14,7 +14,7 @@ description: 学生完整解答的结论和过程已经核验成立，且请求�
 
 由宿主先运行 `math-error-diagnosis` 检查完整解答。只有 `result_status=correct`、`process_status=valid`、`review_complete=true`、待解决事项为空，而且用户明确要求优化，才进入本技能。仅有正确答案、论证缺口、学生自称已验证，均不构成准入。
 
-项目中的 `AGENTS.md` 规定共享交接包及版本检查；宿主执行 `scripts/handoff_check.py route`，记录交接检查结果。诊断报告和交接状态必须留在优化卡之外，卡片仍保持原来的四个顶层字段。
+项目中的 `AGENTS.md` 规定共享交接包及版本检查；在仓库根目录或技能包根目录执行 `python3 scripts/handoff_check.py route`，记录交接检查结果。诊断报告和交接状态必须留在优化卡之外，卡片仍保持原来的四个顶层字段。
 
 优化时使用交接包绑定的完整题目、完整学生解答和学段。学生修订或采用新方法后旧状态失效，交回 `math-error-diagnosis` 重新检查。助手修补稿不能称为学生原解法；本项目先等待学生提交修订稿再优化。若发现上游检查遗漏，停止优化并由宿主交回诊断；不要在优化卡内写判错或修复句。
 
@@ -28,7 +28,7 @@ description: 学生完整解答的结论和过程已经核验成立，且请求�
    也不许绕着圈子描述一个错误。
 2. **只描述本解答的能力观察，不诊断错因。** 使用“本解答未展示方法比较，可尝试……”等局部描述，不凭一道题认定学生长期能力弱，不允许说"错因是十字相乘不熟"。
    前者是能力画像，后者是错因诊断——那是同伴 skill 的活。
-3. **可交付的卡片恰好 3 个方向，取自下面七类。** 优先让核心三路（更优方法 / 更短步骤 / 更通用解法）露面。若找不到三个真实且有依据的改进方向，说明现有解法已充分或可优化方向不足，不生成卡片，不为凑数虚构改进或能力缺陷。
+3. **可交付的卡片最多 3 个方向，取自下面七类。** 优先让核心三路（更优方法 / 更短步骤 / 更通用解法）露面。若找不到三个真实且有依据的改进方向，可以少给（0–2 个），在 `overall_diagnosis` 说明现有解法已充分或可优化方向不足；不为凑数虚构改进或能力缺陷。
 4. **每个训练建议必须是一个能立刻做的动作**，不是周期计划、不是"多练练"。
    ✓「在原题上把因式分解法和求根公式法各写一遍，比较关键计算」 ✗「每天练 5 道，一周见效」。本项目默认高中学段，建议不依赖大学数学方法。
 5. **必须过两道脚本门，未过门不得交付。** `validate` 查结构，`audit` 查越界；
@@ -42,7 +42,7 @@ description: 学生完整解答的结论和过程已经核验成立，且请求�
 | 字段 | 类型 | 约束 |
 | --- | --- | --- |
 | `current_method` | string | 学生**实际**用的方法，一句话（✓`求根公式法`） |
-| `optimization_opportunities` | object[] | **恰好 3 条**，每条四个字段，见下 |
+| `optimization_opportunities` | object[] | **最多 3 条**；少于 3 条时须在 `overall_diagnosis` 说明原因，每条四个字段，见下 |
 | `overall_diagnosis` | string | 本份解答已展示和未展示的能力（**不是错因或稳定能力标签**） |
 | `next_step` | string | 一个具体的训练动作 |
 
@@ -92,7 +92,7 @@ description: 学生完整解答的结论和过程已经核验成立，且请求�
    ```text
    你是一个正解优化器。只做一件事：学生做对了一道题，分析他的解法哪里可以更好，并描述这份解答尚未展示的能力。
    规则：不判对错；不诊断错因；不生成修复句；不出变式题；不排复习计划；
-   恰好输出 3 个优化方向，方向取自：更优方法 / 更短步骤 / 更通用解法 / 更优雅表达 / 更少分类讨论 / 更快计算 / 更几何直观；
+   最多输出 3 个优化方向（真实不足时可少给，并在 overall_diagnosis 说明原因），方向取自：更优方法 / 更短步骤 / 更通用解法 / 更优雅表达 / 更少分类讨论 / 更快计算 / 更几何直观；
    每个方向给 suggestion + exposed_gap + training_suggestion；exposed_gap使用本份解答的局部观察，不据单题评价学生长期能力；训练建议必须是一个能立刻做的动作，不是周期计划。
    只输出 JSON。学段：{{grade_level}}  题目：{{problem}}  学生解答：{{solution}}
    ```
@@ -121,7 +121,7 @@ description: 学生完整解答的结论和过程已经核验成立，且请求�
    不许降级交付。修的时候**定点修**：把脚本输出原文喂回去让它只改被指出的字段，别整张重生成
    （重生成容易把已经对的部分也改坏）。
 
-6. **交付**：卡片 JSON + 两道门的真实输出 + 用教学语言讲 3 个方向（核心三路优先）
+6. **交付**：卡片 JSON + 两道门的真实输出 + 用教学语言讲卡片中的方向（通常 3 个；少给时说明真实原因）
    + 提醒"新方法自己先写一遍，再和原解法比一比"。
 
 ## Output Standards

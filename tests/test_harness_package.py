@@ -20,6 +20,7 @@ class HarnessPackageTests(unittest.TestCase):
                     self.assertIn(name, names)
                     self.assertEqual(archive.read(name), (ROOT / skill / 'SKILL.md').read_bytes())
                 for resource in ('AGENTS.md', 'docs/teaching-loop.md',
+                                 'docs/handoff-protocol.md', 'scripts/handoff_check.py',
                                  'lesson-materials-builder/assets/base.pptx',
                                  'lesson-materials-builder/scripts/build_pptx.py',
                                  'lesson-materials-builder/references/classroom-design.md'):

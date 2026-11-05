@@ -773,7 +773,7 @@
         {
           "name": "audit_clean",
           "value": 1,
-          "detail": "audit --strict 退出码 1；errors=[]；额外 warnings=[]"
+          "detail": "audit --strict 退出码 0；errors=[]；额外 warnings=[]"
         },
         {
           "name": "source_correct",

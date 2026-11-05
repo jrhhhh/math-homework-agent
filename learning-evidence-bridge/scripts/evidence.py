@@ -3,6 +3,12 @@ import hashlib
 import json
 import sys
 
+try:  # Windows 控制台默认编码可能是 GBK，统一成 UTF-8。
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 
 STATES = ('unsubmitted', 'pending', 'unavailable', 'binding_changed',
           'needs_input', 'correct', 'incorrect', 'gap', 'answer_only')
@@ -20,7 +26,10 @@ def summarize(items):
         if sub:
             row.update(submission_id=sub['id'], revision=sub['revision'], version=sub['version'])
             data = sub['data']
-            if data.get('problem') != item['problem'] or data.get('source') != 'student' or data.get('grade_level') != '高中':
+            expected_grade = item.get('grade_level', '高中')
+            if (data.get('problem') != item['problem']
+                    or data.get('source') != 'student'
+                    or data.get('grade_level') != expected_grade):
                 row['state'] = 'binding_changed'
             elif sub['state'] in ('queued', 'running'):
                 row['state'] = 'pending'

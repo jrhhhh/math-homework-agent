@@ -22,11 +22,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _rules import (  # noqa: E402
-    PARTITION_ACTION, PARTITION_ASSERTIVE_RE, PARTITION_BLOCK_FIELDS,
-    PARTITION_CONFIRM_CUES, PARTITION_ERROR_CLAIM_RE, PARTITION_LIMITATION_CUES,
-    PARTITION_MAX_BLOCKS, PARTITION_MIN_BLOCKS, PARTITION_OCR_CLAIM_RE,
-    PARTITION_REQUIRED_FIELDS, PARTITION_SCORES, PARTITION_SOURCES, emit, norm,
-    out_of_scope_matches,
+    NEGATION_SCOPE_RE, PARTITION_ACTION, PARTITION_ASSERTIVE_RE,
+    PARTITION_BLOCK_FIELDS, PARTITION_CONFIRM_CUES, PARTITION_ERROR_CLAIM_RE,
+    PARTITION_LIMITATION_CUES, PARTITION_MAX_BLOCKS, PARTITION_MIN_BLOCKS,
+    PARTITION_OCR_CLAIM_RE, PARTITION_REQUIRED_FIELDS, PARTITION_SCORES,
+    PARTITION_SOURCES, emit, norm, out_of_scope_matches,
 )
 
 
@@ -225,14 +225,20 @@ def cmd_validate(args):
             errors.append({"code": code, "field": field, "text": text, "matched": matched,
                            "detail": "越过本 skill 边界：%s" % label})
         for match in PARTITION_ASSERTIVE_RE.finditer(text):
+            if NEGATION_SCOPE_RE.search(text[:match.start()]):
+                continue
             errors.append({"code": "E_ASSERTIVE_PARTITION", "field": field,
                            "text": text, "matched": match.group(0),
                            "detail": "只能给「大致分块」，不能把版面块说成已确认的题目边界"})
         for match in PARTITION_ERROR_CLAIM_RE.finditer(text):
+            if NEGATION_SCOPE_RE.search(text[:match.start()]):
+                continue
             errors.append({"code": "E_ERROR_CLAIM_IN_PARTITION", "field": field,
                            "text": text, "matched": match.group(0),
                            "detail": "分区出口不查对错；要查对错请走 math-error-diagnosis"})
         for match in PARTITION_OCR_CLAIM_RE.finditer(text):
+            if NEGATION_SCOPE_RE.search(text[:match.start()]):
+                continue
             errors.append({"code": "E_OCR_CLAIM_IN_PARTITION", "field": field,
                            "text": text, "matched": match.group(0),
                            "detail": "分区只看版面，不读字符；内容必须由学生自己给出"})

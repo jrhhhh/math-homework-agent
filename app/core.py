@@ -29,12 +29,12 @@ def child_env():
 
 
 @lru_cache(maxsize=1)
-def draft_marker_pattern():
+def draft_problem_markers():
     path=ROOT/'draft-coach/scripts/_rules.py'
     spec=importlib.util.spec_from_file_location('workbench_draft_rules',path)
     module=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.PROBLEM_MARKER_RE
+    return module.problem_markers
 
 
 def normalize(data):
@@ -78,13 +78,35 @@ def version(data):
     return hashlib.sha256(json.dumps(data, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
 
+DIAGNOSIS_INTENT = ('判对错', '检查对错', '算得对不对', '算对了吗', '对不对',
+                    '找首错', '错因', '错在', '是否正确', '过程是否', '检查过程', '检查步骤')
+LAYOUT_INTENT = ('版面', '布局', '分区', '分行', '留白', '划改', '草稿习惯', '草稿纸', '分块', '几道题')
+
+
+def _wants_diagnosis(text):
+    return any(marker in text for marker in DIAGNOSIS_INTENT)
+
+
+def _wants_layout(text):
+    return any(marker in text for marker in LAYOUT_INTENT)
+
+
 def route(data):
     mode = data['mode']
-    # Explicit diagnostic intent wins even if the supplied work is called a draft.
     if mode in ('draft', 'partition'):
+        # A full student solution is not draft layout. Route explicit check
+        # requests to diagnosis; otherwise ask the user to choose one mode.
+        if data['solution']:
+            if data['source'] != 'student':
+                return {'skill': None, 'action': 'clarify', 'reason': '请提交学生自己的过程；助手解答不能当作学生提交。'}
+            if data['problem'] and _wants_diagnosis(data['request']) and not _wants_layout(data['request']):
+                return {'skill': 'math-error-diagnosis', 'action': 'diagnose',
+                        'reason': '请求明确要求检查学生过程，按诊断处理，不按草稿版面分析。'}
+            return {'skill': None, 'action': 'clarify',
+                    'reason': '草稿模式只看版面，不接收学生完整解答。请选择“检查我的过程”，或清空解答后只描述版面。'}
         if not data['draft']:
             return {'skill': None, 'action': 'clarify', 'reason': '请描述草稿的分区、分行、划改和留白。'}
-        if mode=='draft' and len(set(draft_marker_pattern().findall(data['draft'])))>=2:
+        if mode=='draft' and len(draft_problem_markers()(data['draft']))>=2:
             return {'skill':'draft-coach','action':'partition',
                     'reason':'描述中有多个题号或分区标记，先按版面分块并请学生确认归属，再逐块分析习惯。'}
         return {'skill': 'draft-coach', 'action': mode, 'reason': '分析所提供的草稿版面。'}
@@ -102,6 +124,8 @@ def route(data):
 
 DIAGNOSIS = '''诊断 result 恰含 judgment、first_error、minimal_fix、hint、evidence。
 judgment 取 correct/incorrect/gap/insufficient/answer_only。
+映射：过程成立→correct；结论错误或结论正确但过程有误→incorrect；论证有缺口→gap；信息不足→insufficient；仅能核验答案→answer_only。
+结论正确但过程有误时仍用 incorrect，并在 first_error 指向那一步；不要用 correct 携带 first_error。
 first_error 是 null 或 {"step":正整数,"quote":"学生原文的连续片段","reason":"数学理由"}。
 正确过程或没有过程时 first_error=null。不得为正确过程强造错误。
 minimal_fix 和 hint 是字符串；evidence 是字符串数组。
@@ -130,6 +154,7 @@ def prompt_for(data, routing, arm='skill_gates'):
     elif skill == 'draft-coach':
         name = 'partition.md' if routing['action'] == 'partition' else 'output-schema.md'
         parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references' / name).read_text(encoding='utf-8'))
+        parts.append('本次模型输入不包含图片附件；只能依据学生的文字描述分析，不得声称看过照片或手写版面。scope 必须写明“未看图 / 内容由学生描述”。')
         if routing['action']=='partition':
             parts.append('本次先做版面分块与归属确认，不生成六维卡。输入是学生文字描述，block_source=student_text。'+routing['reason'])
     else:
@@ -316,7 +341,7 @@ def run(data, arm='skill_gates', generator=None, max_repairs=2):
         refine_route={'skill':'solution-refiner','action':'refine','reason':'诊断阶段判断当前学生过程成立，用户明确请求解法优化。'}
         refine_data={**data,'mode':'check'}
         prompt='你现在执行 solution-refiner。学生原题和完整原文过程已由上一阶段判为正确；不要重做诊断。\n'+(ROOT/'solution-refiner/SKILL.md').read_text(encoding='utf-8')
-        prompt+='\n输出JSON恰含 reply 与 result。result 必须是技能规定的四字段优化卡。不得增加交接元数据。\n原题与学生原文：\n'+json.dumps({'problem':data['problem'],'solution':data['solution'],'grade_level':data['grade_level']},ensure_ascii=False)
+        prompt+='\n输出JSON恰含 reply 与 result。result 必须是技能规定的四字段优化卡；通常给 3 个方向，真实方向不足时可少给，并在 overall_diagnosis 说明原因，不得凑数。不得增加交接元数据。\n原题与学生原文：\n'+json.dumps({'problem':data['problem'],'solution':data['solution'],'grade_level':data['grade_level']},ensure_ascii=False)
         attempts=list(first['attempts']);output=None
         for _ in range((max_repairs if arm=='skill_gates' else 0)+1):
             response=generator(prompt)

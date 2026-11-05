@@ -14,8 +14,10 @@ PREFIX = TEACHER + '/'
 
 
 def package(output):
-    tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', *SKILLS,
-                                       'docs/teaching-loop.md', 'AGENTS.md'], cwd=ROOT).decode().split('\0')
+    tracked = subprocess.check_output(
+        ['git', 'ls-files', '-z', '--', *SKILLS, 'docs/teaching-loop.md',
+         'docs/handoff-protocol.md', 'scripts/handoff_check.py', 'AGENTS.md'],
+        cwd=ROOT).decode().split('\0')
     entry = (ROOT / TEACHER / 'SKILL.md').read_text(encoding='utf-8')
     entry = entry.replace('../docs/teaching-loop.md', 'docs/teaching-loop.md')
     banner = ('\n\n> 便携包使用说明：本文件所在目录是技能包根目录。下游技能位于本目录下的同名文件夹；'

@@ -42,7 +42,7 @@ def cmd_validate(args):
     for field in card:
         if field not in REQUIRED_FIELDS:
             errors.append({"code": "E_EXTRA_FIELD", "field": field,
-                           "detail": "分析卡只能包含五个标准字段；错误清单、诊断结论、"
+                           "detail": "分析卡只能包含六个标准字段；错误清单、诊断结论、"
                                      "交接状态请放在卡片之外"})
 
     # -- scope：这次看了什么、没看什么
@@ -126,16 +126,19 @@ def cmd_validate(args):
                                  "text": evidence,
                                  "detail": "证据过短，看不出草稿里的具体位置或记号"})
 
-    # -- 学段与来源
-    grade = card.get("grade_level")
-    if isinstance(grade, str) and grade.strip() and grade.strip() not in GRADES:
-        errors.append({"code": "E_BAD_GRADE", "field": "grade_level", "text": grade,
-                       "detail": "学段必须是小学 / 初中 / 高中 / 大学之一",
-                       "allowed": list(GRADES)})
-    source = card.get("draft_source")
-    if isinstance(source, str) and source.strip() and source.strip() not in SOURCES:
-        errors.append({"code": "E_BAD_SOURCE", "field": "draft_source", "text": source,
-                       "detail": "草稿来源取值非法", "allowed": list(SOURCES)})
+    # -- 学段与来源：存在时必须是合法非空字符串，不能靠“缺值/空串”绕过
+    if "grade_level" in card:
+        grade = card.get("grade_level")
+        if not isinstance(grade, str) or not grade.strip() or grade.strip() not in GRADES:
+            errors.append({"code": "E_BAD_GRADE", "field": "grade_level", "text": grade,
+                           "detail": "学段必须是非空字符串，且为小学 / 初中 / 高中 / 大学之一",
+                           "allowed": list(GRADES)})
+    if "draft_source" in card:
+        source = card.get("draft_source")
+        if not isinstance(source, str) or not source.strip() or source.strip() not in SOURCES:
+            errors.append({"code": "E_BAD_SOURCE", "field": "draft_source", "text": source,
+                           "detail": "草稿来源必须是非空字符串，且取值合法",
+                           "allowed": list(SOURCES)})
 
     # -- next_step
     next_step = card.get("next_step")

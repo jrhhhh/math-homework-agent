@@ -20,6 +20,22 @@ class RoutingTest(unittest.TestCase):
     def test_layout_does_not_require_problem(self):
         self.assertEqual(route(normalize({'draft': '左边密集，右边留白', 'mode': 'draft'}))['skill'], 'draft-coach')
 
+    def test_draft_mode_with_student_solution_asks_for_choice(self):
+        data = normalize({'problem': '解 x+1=2', 'solution': 'x=3', 'mode': 'draft'})
+        self.assertIsNone(route(data)['skill'])
+        self.assertEqual(route(data)['action'], 'clarify')
+
+    def test_explicit_diagnosis_intent_in_draft_mode_uses_diagnosis(self):
+        data = normalize({'problem': '解 x+1=2', 'solution': 'x=3', 'mode': 'draft',
+                          'request': '帮我检查这道题算得对不对'})
+        self.assertEqual(route(data)['skill'], 'math-error-diagnosis')
+        self.assertEqual(route(data)['action'], 'diagnose')
+
+    def test_draft_word_alone_does_not_block_diagnosis_intent(self):
+        data = normalize({'problem': '解 x+1=2', 'solution': 'x=3', 'mode': 'draft',
+                          'request': '帮我检查草稿里的计算对不对'})
+        self.assertEqual(route(data)['skill'], 'math-error-diagnosis')
+
     def test_attachments_are_accepted_in_any_mode_but_never_enter_the_prompt(self):
         data = normalize({'problem': '解 x+1=2', 'solution': 'x=1', 'mode': 'check',
                           'attachments': [{'name': 'work.png', 'base64': 'iVBORw0KGgo='}]})
@@ -38,6 +54,10 @@ class RoutingTest(unittest.TestCase):
     def test_multiple_problem_markers_partition_before_card(self):
         data=normalize({'draft':'左栏第1题，右栏第2题，中间有竖线','mode':'draft'})
         self.assertEqual(route(data)['action'],'partition')
+
+    def test_method_path_markers_do_not_force_partition(self):
+        data=normalize({'draft':'方法①先求导；方法②配方','mode':'draft'})
+        self.assertEqual(route(data)['action'],'draft')
 
     def test_ordinary_function_parentheses_are_not_question_markers(self):
         data=normalize({'draft':'左边写 f(1)，右边写 f(2)，中间有留白','mode':'draft'})

@@ -48,6 +48,15 @@ class PartitionGateTests(unittest.TestCase):
         self.assertEqual(payload["errors"], [])
         self.assertEqual(payload["warnings"], [])
 
+    def test_capability_disclaimers_are_not_violations(self):
+        # 「不做转写」「不判断算错」是在声明边界，不是 OCR 自读或错因诊断。
+        data = example()
+        data["limitations"] += ["本技能不做转写，也不读字符。",
+                                "这里不判断算错，也不找错因。"]
+        code, payload = validate(data, strict=True)
+        self.assertEqual(code, 0, payload)
+        self.assertEqual(payload["errors"], [])
+
     def test_missing_field_is_rejected(self):
         data = example()
         data.pop("uncertainty")

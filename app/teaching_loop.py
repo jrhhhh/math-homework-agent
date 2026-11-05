@@ -61,7 +61,7 @@ class TeachingLoop:
             source['learning_evidence'] = report
         if payload.get('assessment_kind')=='independent_check':source['independent_check_target']=self._target_item(payload)
         draft = self._generate('learning-task-designer',
-                               '只返回 title 和 items；每题含 problem/objective/success_criteria，可选 guidance/interactive_template，不生成答案或完整解答；独立复核的新题须围绕 independent_check_target。生成 1–5 题教学草案，未经过求解核验。',
+                               '只返回 title 和 items；每题含 problem/objective/success_criteria，可选 guidance/interactive_template，不生成答案或完整解答；独立复核的新题须围绕 independent_check_target。生成 1–10 题教学草案，未经过求解核验。',
                                source)
         for item in draft.get('items',[]):check_item(item)
         draft['assessment_kind']=payload.get('assessment_kind','practice')

@@ -8,10 +8,17 @@
 *.bbl
 *.blg
 
-# 本地环境与 AI 缓存
-.claude/
+# Python 缓存与虚拟环境
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# 本地环境与运行状态
+.claude/
+.local/
 
 # VS Code 设置
 .vscode/
@@ -19,11 +26,8 @@ __pycache__/
 # 系统文件
 .DS_Store
 Thumbs.db
-.DS_Store
-__pycache__/
-*.py[cod]
-.local/
-.venv/
+
+# 打包产物
 *.zip
 
 # 固定计算脚本生成的证据，运行时重建
@@ -31,6 +35,6 @@ __pycache__/
 /tests/新例检验_计算证据.json
 /tests/高中题型计算证据.json
 
-# Browser acceptance artifacts (published evidence is under docs/delivery)
+# 浏览器验收产物（已发布的证据在 docs/delivery）
 .playwright-cli/
 output/playwright/
