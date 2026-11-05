@@ -15,7 +15,7 @@ class NativeSlideThemeTest(unittest.TestCase):
     def build(self, source, out, *options):
         result = subprocess.run([sys.executable, str(BUILDER / 'scripts/build_pptx.py'),
                                  str(source), '-o', str(out), *map(str, options)],
-                                capture_output=True, text=True)
+                                capture_output=True, text=True, encoding='utf-8', errors='replace')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return Presentation(out)
 
@@ -35,7 +35,7 @@ class NativeSlideThemeTest(unittest.TestCase):
                 self.assertTrue(any('sin(2x)' in t for t in texts))
                 process = prs.slides[6]
                 self.assertEqual(sum('统一角' in sh.text for sh in process.shapes if sh.has_text_frame), 1)
-                check = subprocess.run([sys.executable, str(BUILDER / 'scripts/verify_pptx.py'), str(out)], capture_output=True, text=True)
+                check = subprocess.run([sys.executable, str(BUILDER / 'scripts/verify_pptx.py'), str(out)], capture_output=True, text=True, encoding='utf-8', errors='replace')
                 self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
 
     def test_native_template_file_carries_its_theme(self):

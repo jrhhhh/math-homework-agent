@@ -96,7 +96,7 @@ def route(data):
         return {'skill': 'math-error-diagnosis', 'action': 'diagnose_then_refine' if mode == 'refine' else 'diagnose',
                 'reason': '先完整核验学生原过程；只有结论与过程均成立且内容版本有效时，才进入正解优化。' if mode == 'refine' else '保留学生原过程，检查结论和步骤。'}
     if mode in ('solve', 'exam_answer'):
-        return {'skill': 'math-solver', 'action': 'solve', 'reason': '只有题目，用户明确要求求解。'}
+        return {'skill': 'answer-key-builder', 'action': 'solve', 'reason': '只有题目，用户明确要求求解。'}
     return {'skill': None, 'action': 'clarify', 'reason': '请填写学生解答；需要从零求解时选择“完整求解”。'}
 
 
@@ -122,7 +122,7 @@ def prompt_for(data, routing, arm='skill_gates'):
             # All compact topic references avoid introducing a heuristic retrieval confound.
             for path in sorted((ROOT / skill / 'references').glob('*.md')):
                 parts.append(path.read_text(encoding='utf-8'))
-    if skill == 'math-solver':
+    if skill == 'answer-key-builder':
         parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references/output-schema.md').read_text(encoding='utf-8'))
         parts.append('用户请求试卷参考答案或评分细则时，遵循以下附加规则，内容写入 reply，result 保持原契约：\n' + (ROOT / skill / 'references/exam-answer.md').read_text(encoding='utf-8'))
         if data['mode'] == 'exam_answer':
@@ -212,7 +212,7 @@ def gate(output, data, routing):
     with tempfile.TemporaryDirectory(prefix='math-gate-') as folder:
         path = Path(folder) / 'card.json'
         path.write_text(json.dumps(output['result'], ensure_ascii=False), encoding='utf-8')
-        if skill == 'math-solver':
+        if skill == 'answer-key-builder':
             commands = [['scripts/validate_output.py', 'validate', '--card', str(path), '--strict']]
         elif routing['action'] == 'partition':
             commands = [['scripts/partition_check.py', 'validate', '--payload', str(path), '--strict']]

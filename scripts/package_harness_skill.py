@@ -7,7 +7,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 TEACHER = 'high-school-math-teacher-agent'
-SKILLS = ('learning-task-designer', 'math-solver', 'math-error-diagnosis',
+SKILLS = ('learning-task-designer', 'answer-key-builder', 'math-error-diagnosis',
           'solution-refiner', 'draft-coach', 'learning-evidence-bridge',
           'remedial-lesson-planner', 'lesson-materials-builder')
 PREFIX = TEACHER + '/'

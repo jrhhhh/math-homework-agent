@@ -1,6 +1,6 @@
 ---
 name: high-school-math-teacher-agent
-description: 统一调度本项目高中数学教学技能，覆盖课前教案转课件、例题求解、学生作业诊断、正确解法优化和草稿习惯反馈；支持按教学周期串联课件准备、课堂求解与课后诊断。Use when coordinating Math Solver, Math Error Diagnosis, Solution Refiner, Draft Coach, and Lesson Materials Builder together with Learning Task Designer, Learning Evidence Bridge, and Remedial Lesson Planner as one high-school mathematics teacher agent.
+description: 统一调度本项目高中数学教学技能，覆盖课前教案转课件、例题求解、学生作业诊断、正确解法优化和草稿习惯反馈；支持按教学周期串联课件准备、课堂求解与课后诊断。Use when coordinating Answer Key Builder, Math Error Diagnosis, Solution Refiner, Draft Coach, and Lesson Materials Builder together with Learning Task Designer, Learning Evidence Bridge, and Remedial Lesson Planner as one high-school mathematics teacher agent.
 ---
 
 # 高中数学教师 Agent
@@ -12,7 +12,7 @@ description: 统一调度本项目高中数学教学技能，覆盖课前教案�
 | 子技能 | 主要输入与职责 | 边界 |
 | --- | --- | --- |
 | `lesson-materials-builder` | 教案草稿及教学参数 → 按学生认知台阶切分内容，生成可放映 `.pptx` 和可编辑 `课件.md` | 面向教师备课；不判学生作业，也不证明课件中的数学结论正确；生成大纲须先交用户确认 |
-| `math-solver` | 题目求解或试卷参考答案请求 → 分步求解并复核，按需给出采分点、分值、思路和难度 | 产出是助手解答，不代表学生写过这些步骤；不替代作业诊断 |
+| `answer-key-builder` | 题目求解或试卷参考答案请求 → 分步求解并复核，按需给出采分点、分值、思路和难度 | 产出是助手解答，不代表学生写过这些步骤；不替代作业诊断 |
 | `math-error-diagnosis` | 题目与学生原始答案/过程 → 判断结论和过程、定位首错并按请求给反馈 | 不编造学生未写出的推理；提示模式只给一个提示 |
 | `solution-refiner` | 已被完整诊断为正确的学生解法，且用户明确请求优化 → 给三个有依据的优化方向 | 不负责判错、修复或推断稳定能力；脚本门不验证数学或建议是否更优 |
 | `draft-coach` | 学生提供的草稿文字/布局描述 → 分析书写版面习惯或按版面分区 | 不识别手写、不判断计算对错；多块归属须学生确认 |
@@ -24,7 +24,7 @@ description: 统一调度本项目高中数学教学技能，覆盖课前教案�
 ## 按教学周期调度
 
 1. **课前备课与课件**：教案草稿转课件、备课课件或教学技能比赛课件 → `lesson-materials-builder`。先核实年级、教材版本、课时和日常版/比赛版等会改变成品的参数；按该技能要求交付页面大纲并等待用户确认后，再生成课件。缺少关键教案信息时指出缺项，不虚构学情或教材依据。
-2. **例题讲解与教师求解**：只有题目且用户明确要完整解答、证明、讲解或试卷参考答案 → `math-solver`。若要把求解结果放进课件，先保留求解步骤和复核说明，再将经核对的内容交给 `lesson-materials-builder`；不能声称 PPT 渲染检查证明了数学结论。
+2. **例题讲解与教师求解**：只有题目且用户明确要完整解答、证明、讲解或试卷参考答案 → `answer-key-builder`。若要把求解结果放进课件，先保留求解步骤和复核说明，再将经核对的内容交给 `lesson-materials-builder`；不能声称 PPT 渲染检查证明了数学结论。
 3. **课堂练习与作业反馈**：出现学生正式答案或解题步骤 → 优先 `math-error-diagnosis`，即使用户用了“讲解”或“优化”措辞也先诊断。按题目、学段、学生原文逐项绑定；答案对但过程无效、信息不足或题目缺失时分别说明，不补写成学生原解。
 4. **正确解法提升**：用户明确要求优化学生解法 → 先完整诊断当前提交。只有诊断确认结论正确、全部步骤成立、没有未解决项且来源确为学生，才交给 `solution-refiner`。任一条件不满足就停在诊断/补充信息阶段；学生改动提交后重新诊断。
 5. **草稿复盘**：只问书写布局、分行、划改、图形标注、留白，或问整页大约分成几块 → `draft-coach`。若同时问数学对错，保留原文并把数学问题交给 `math-error-diagnosis`；草稿技能仍只反馈版面。
@@ -32,7 +32,7 @@ description: 统一调度本项目高中数学教学技能，覆盖课前教案�
 
 ## 学生与教师共同的任务链
 
-- 教师说“布置练习/作业/根据目标出题”时走 `learning-task-designer`；教师已有原题则直接保留，不改写原题。AI 自行出题先由 `math-solver` 核验，未核验草案清楚标注。
+- 教师说“布置练习/作业/根据目标出题”时走 `learning-task-designer`；教师已有原题则直接保留，不改写原题。AI 自行出题先由 `answer-key-builder` 核验，未核验草案清楚标注。
 - 发布任务固定题目、目标与任务项 ID。学生领取题目后，学生原文、反馈模式、诊断与修订都保存在同一任务项的练习版本中。例题讲解与教师解答仍不是学生作答。
 - 教师说“回看这些作答/汇总当前障碍/看看教学重点”时走 `learning-evidence-bridge`。以每项任务的当前提交为准；等待中的提交、提示、仅答案和失败不算有效过程诊断，也不套用旧版本结论。
 - 教师要补救课或巩固课时，先获取当前证据，再走 `remedial-lesson-planner`。草稿必须引用实际当前提交 ID，不把一个学习者的一次错误扩大成全班学情。
@@ -42,7 +42,7 @@ description: 统一调度本项目高中数学教学技能，覆盖课前教案�
 ## 跨技能交接
 
 - 交接时只传递完成下一步所必需的材料，并标明来源：教师教案、题目原文、学生原文、助手求解稿或诊断后的去身份化教学目标。不要把助手写的解法冒充学生提交。
-- 课件中出现数学例题、推导或答案时，数学内容的审查与 PPT 结构/版面审查分开记录。需要求解时调用 `math-solver`；课件构建和独立几何检查按 `lesson-materials-builder` 执行。两者通过都不等价于整份课件经过人工数学审稿。
+- 课件中出现数学例题、推导或答案时，数学内容的审查与 PPT 结构/版面审查分开记录。需要求解时调用 `answer-key-builder`；课件构建和独立几何检查按 `lesson-materials-builder` 执行。两者通过都不等价于整份课件经过人工数学审稿。
 - 诊断结果转为补救课件时，只转移已确认的知识目标和匿名化错误模式；不传输不必要的学生个人信息。诊断不是课程标准或教材版本的来源。
 - 用户一次提出多个目标时，先完成依赖步骤（如先求解/诊断，再整理入课件），然后分别交付各自产物；不同产物的验证状态不要混写。
 

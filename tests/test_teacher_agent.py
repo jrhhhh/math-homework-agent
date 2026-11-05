@@ -5,7 +5,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = (
     "lesson-materials-builder",
-    "math-solver",
+    "answer-key-builder",
     "math-error-diagnosis",
     "solution-refiner",
     "draft-coach",

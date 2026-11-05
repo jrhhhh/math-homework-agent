@@ -4,7 +4,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = {
-    'high-school-math-teacher-agent', 'learning-task-designer', 'math-solver',
+    'high-school-math-teacher-agent', 'learning-task-designer', 'answer-key-builder',
     'math-error-diagnosis', 'solution-refiner', 'draft-coach',
     'learning-evidence-bridge', 'remedial-lesson-planner',
     'lesson-materials-builder',

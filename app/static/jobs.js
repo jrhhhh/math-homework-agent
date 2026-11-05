@@ -1,7 +1,7 @@
 let jobsRefreshVersion=0;
-const jobNames={'diagnose':'学生过程诊断','task-design':'学习任务草案','remedial-plan':'针对性教学草稿','lesson-outline':'课件大纲','lesson-source':'课件源码','lesson-render':'课件渲染与检查'};
+const jobNames={'diagnose':'学生过程诊断','exam-export':'参考答案导出','task-design':'学习任务草案','remedial-plan':'针对性教学草稿','lesson-outline':'课件大纲','lesson-source':'课件源码','lesson-render':'课件渲染与检查'};
 const jobStates={queued:'等待运行',running:'正在执行',paused:'暂停，可继续',completed:'已完成',cancelled:'已停止'};
-function jobStepName(value){return {diagnosis:'过程诊断',task_design:'起草学习任务',remedial_plan:'规划针对性教学',lesson_outline:'整理逐页大纲',lesson_source:'生成课件源码',figures:'制作配图',build:'构建 PowerPoint',verify:'独立结构检查'}[value?.split(':')[0]]||value||'等待开始';}
+function jobStepName(value){return {diagnosis:'过程诊断',exam_export:'排版并编译 PDF',task_design:'起草学习任务',remedial_plan:'规划针对性教学',lesson_outline:'整理逐页大纲',lesson_source:'生成课件源码',figures:'制作配图',build:'构建 PowerPoint',verify:'独立结构检查'}[value?.split(':')[0]]||value||'等待开始';}
 async function jobApi(path,data){
   let kind,payload={...data};
   if(path==='/api/teaching/design')kind='task-design';
@@ -16,6 +16,7 @@ async function jobApi(path,data){
 async function showJobResult(job){
   if(!job.result)return;
   if(job.kind==='diagnose'){const item=await api('/api/submissions/'+job.result.submission_id);switchWorkspace('practice');await loadSession(item.session_id);}
+  else if(job.kind==='exam-export'){const item=await api('/api/submissions/'+job.result.submission_id);switchWorkspace('exam');renderResult(item);$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});}
   else if(job.kind==='task-design'){switchWorkspace('teaching');await adoptTaskDraft(job.result);$('task-status').textContent='已恢复草案，请核对题意、条件和成功标准后发布。';}
   else if(job.kind==='remedial-plan'){switchWorkspace('teaching');await refreshTasks(job.result.assignment_id);}
   else{switchWorkspace('teacher');showLesson(await api('/api/lessons/'+job.result.id));await refreshLessonHistory();}

@@ -4,28 +4,28 @@
 
 ## 技能与职责
 
-- skill：**Math Solver**（`math-solver/SKILL.md`）：从零求解高中数学题并生成试卷参考答案——分步推导并复核，按需给出采分点、步骤分值、简短思路点拨与难度评价。产出的是**助手解答**，不是学生解答；不检查、不修补、不优化学生已经写出的解答，也不做图片或手写转写。
+- skill：**Answer Key Builder**（`answer-key-builder/SKILL.md`）：编制高中数学试卷参考答案——分步推导并复核，按需给出采分点、步骤分值、简短思路点拨与难度评价；也支持单题求解。产出的是**助手解答**，不是学生解答；不检查、不修补、不优化学生已经写出的解答，也不做图片或手写转写。
 - skill：**Math Error Diagnosis**（`math-error-diagnosis/SKILL.md`）：检查题目、答案和解答过程，定位首错，给最小修改；处理信息不足、论证缺口与答案正确但过程有误。
 - skill：**Draft Coach**（`draft-coach/SKILL.md`）：只看学生**草稿**的版面习惯——分区与边距、步骤分行与密度、划改与自纠、多路径标记、图形与标注、留白与检验区——输出六维观察 + 1–3 条习惯 + 下一道题可执行的动作。重点看中学生常见的版面风险（多题混写、高风险步骤挤一行、分类讨论不标号、旧值新值叠在一起、几何图不标关键点、结果旁没有检验区）；**草稿允许随意，不评工整**。**不判断计算对错、不找错因、不给最小修改。** 不诊断知识漏洞、不贴标签、不给整题重写、不出变式题、不排复习计划。学生发来整张草稿纸、问「大概做了几道题」时，走 `partition` 出口：只按版面分块，给估计数与范围；**块数不等于题目数**，归属需学生确认。
 - skill：**Solution Refiner**（`solution-refiner/SKILL.md`）：仅在数学诊断先确认当前学生原文结论正确、过程完整且用户明确要求优化后，输出三个有依据的解法优化方向；结构与措辞分别通过技能脚本门。门不证明数学正确或优化建议有效。
 - skill：**Lesson Materials Builder**（`lesson-materials-builder/SKILL.md`）：把初高中教案草稿转为按认知台阶组织的可放映 `.pptx`，同时保留可编辑 Markdown 源；生成前先核对教学参数并让用户确认大纲。它不检查学生作业，也不证明课件数学内容正确。
 
-项目级调度顺序：教案/备课课件 → Lesson Materials Builder；只有题目且要求求解 → Math Solver；包含学生正式解答 → Math Error Diagnosis；明确优化且完整诊断通过 → Solution Refiner；仅分析草稿版面 → Draft Coach。课后补救课先从诊断中提炼匿名化教学目标，再由教师提供教案草稿交给 Lesson Materials Builder。跨技能工作流、输入和验证边界见 [教师 Agent Skill](high-school-math-teacher-agent/SKILL.md)。
+项目级调度顺序：教案/备课课件 → Lesson Materials Builder；只有题目且要求求解 → Answer Key Builder；包含学生正式解答 → Math Error Diagnosis；明确优化且完整诊断通过 → Solution Refiner；仅分析草稿版面 → Draft Coach。课后补救课先从诊断中提炼匿名化教学目标，再由教师提供教案草稿交给 Lesson Materials Builder。跨技能工作流、输入和验证边界见 [教师 Agent Skill](high-school-math-teacher-agent/SKILL.md)。
 
 未包含 presolve-starter；不会开始时可给起步帮助，但不要声称调用未安装技能。本项目**不内置任何手写转写（OCR）技能**：把草稿照片变成文字不归这套技能管，也不许由助手自己看图代劳——原因见 [draft-coach/references/image-intake.md](draft-coach/references/image-intake.md) 第一条。外部 OCR 若由宿主提供，只能当版面/内容的线索，**不作证据**；学生确认之前，它不进入任何结论。
 
 ## 调度
 
-1. **先看输入。** 只有题目、没有学生解答，且用户要求求解、证明、求范围、完整解答或试卷参考答案 → 调用 math-solver。
-2. 输入里有学生**已写出的正式解答** → 先调用 math-error-diagnosis。math-solver 不替代诊断；也不得把助手解答当作学生原解答提交检查或评价。输入带学生解答时保留原文，不要用求解结果悄悄替换它。
+1. **先看输入。** 只有题目、没有学生解答，且用户要求求解、证明、求范围、完整解答或试卷参考答案 → 调用 answer-key-builder。
+2. 输入里有学生**已写出的正式解答** → 先调用 math-error-diagnosis。answer-key-builder 不替代诊断；也不得把助手解答当作学生原解答提交检查或评价。输入带学生解答时保留原文，不要用求解结果悄悄替换它。
 3. 解答有错或论证缺口：给诊断/修补或提示，等待学生修订并重新检查。助手修补稿不冒充学生解答。
 4. 用户只要求检查时完成检查即可。用户要求提示时持续一次一个提示，不因自动调度泄露解答。
 5. 用户要求优化时先调用 Math Error Diagnosis 检查这份提交；只有它判定正确且无首错时才调用 Solution Refiner。错误、缺步骤、答案单独出现、来源不是学生、提示模式或检查不完整时均不得进入优化。
-6. 学生改变题目、参数、过程或提交新方法后旧检查失效，重新调用诊断；不能把旧解答的正确性状态转给新解答，也不能把 math-solver 的答案当作学生的过程状态。
+6. 学生改变题目、参数、过程或提交新方法后旧检查失效，重新调用诊断；不能把旧解答的正确性状态转给新解答，也不能把 answer-key-builder 的答案当作学生的过程状态。
 
-问题有多个小问时按题号绑定各自题目、过程与状态，检查依赖，不用某一小问通过替代整套作业核验。math-solver 求解多小问时同样逐问给状态，不因一问通过就声称整题完成。
+问题有多个小问时按题号绑定各自题目、过程与状态，检查依赖，不用某一小问通过替代整套作业核验。answer-key-builder 求解多小问时同样逐问给状态，不因一问通过就声称整题完成。
 
-math-solver 的机读输出写好后，在 `math-solver/` 目录运行 `python3 scripts/validate_output.py validate --card output.json --strict`：退出 **0** 才可交付，**1** 结构或状态一致性不合格，**2** 输入非法。结构门只查形状与一致性，**不验数学**。
+answer-key-builder 的机读输出写好后，在 `answer-key-builder/` 目录运行 `python3 scripts/validate_output.py validate --card output.json --strict`：退出 **0** 才可交付，**1** 结构或状态一致性不合格，**2** 输入非法。结构门只查形状与一致性，**不验数学**。
 
 ## draft-coach 的选用条件
 
@@ -57,7 +57,7 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 ## 维护与验证
 
-修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；math-solver 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s math-solver/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。Lesson Materials Builder 的确定性回归在 `lesson-materials-builder/` 内运行 `python3 scripts/bench.py regress`，产出还须按该技能要求用 `verify_pptx.py` 复核。Solution Refiner 的交接协议测试在根目录 `tests/test_handoff.py`。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留五个技能（math-solver / math-error-diagnosis / solution-refiner / draft-coach / lesson-materials-builder）的职责边界和各自输出契约；math-solver 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。单独使用 Skill 时由宿主调度；`app/` 工作台覆盖学生练习反馈链、教师备课和师生任务交接；备课区实际调用 lesson-materials-builder 的本地脚本。实际数学审查、结构门与课件复核分别陈述。
+修改接口后运行 `python3 -m unittest discover -s tests -p 'test_*.py'`；answer-key-builder 的结构门测试在技能目录内，另跑 `python3 -m unittest discover -s answer-key-builder/tests -p 'test_*.py'`（20 项）；draft-coach 自己的门测试在技能目录内，另跑 `python3 -m unittest discover -s draft-coach/tests -p 'test_*.py'`（38 项）。Lesson Materials Builder 的确定性回归在 `lesson-materials-builder/` 内运行 `python3 scripts/bench.py regress`，产出还须按该技能要求用 `verify_pptx.py` 复核。Solution Refiner 的交接协议测试在根目录 `tests/test_handoff.py`。版面习惯基准在 `draft-coach/bench/`，另有 44 项测试与 `schema_check.py`；改案例或门后必须重跑真实输出（`tools/build_dataset.py` → `schema_check.py` → oracle/bad 夹具 → `evaluate.py`），不能凭印象写“应该会通过”。分区门用 `draft-coach/example/partition_sheet.json` 复现：在技能目录跑 `python3 scripts/partition_check.py validate --payload example/partition_sheet.json --strict`，应退出 0。数学参考资料变化时运行相关固定计算脚本。保留五个技能（answer-key-builder / math-error-diagnosis / solution-refiner / draft-coach / lesson-materials-builder）的职责边界和各自输出契约；answer-key-builder 输出 schema 的结构核验、同一助手复核和独立验证要分别陈述。单独使用 Skill 时由宿主调度；`app/` 工作台覆盖学生练习反馈链、教师备课和师生任务交接；备课区实际调用 lesson-materials-builder 的本地脚本。实际数学审查、结构门与课件复核分别陈述。
 
 `draft-coach/evals/` 是旧版「查错」基准，已冻结（见 `draft-coach/evals/FROZEN.md`），不要在当前技能上运行；当前的版面习惯基准在 `draft-coach/bench/`，评的是已保存输出，不调用模型。
 
@@ -81,7 +81,7 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 教学目标、当前证据与针对性教学通过以下技能交接：
 
-- **Learning Task Designer**（`learning-task-designer/SKILL.md`）：教师目标/教材材料 → 练习草案 → 教师核对后发布固定原题；新题需要 Math Solver 核验，工作台模型草案标注未核验。
+- **Learning Task Designer**（`learning-task-designer/SKILL.md`）：教师目标/教材材料 → 练习草案 → 教师核对后发布固定原题；新题需要 Answer Key Builder 核验，工作台模型草案标注未核验。
 - **Learning Evidence Bridge**（`learning-evidence-bridge/SKILL.md`）：读取任务项绑定的当前学生提交，按目标汇总诊断状态与证据版本；不重新判题，不将未提交/失败/提示/仅答案当作完整过程诊断。
 - **Remedial Lesson Planner**（`remedial-lesson-planner/SKILL.md`）：当前诊断证据 → 可编辑补救教案 → Lesson Materials Builder 或关联再练习。引用实际提交 ID；版本变化时旧计划失效。
 

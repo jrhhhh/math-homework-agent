@@ -19,6 +19,7 @@ from .model import available, backend, probe
 from . import settings
 from . import uploads
 from .lesson_studio import LessonStudio
+from .exam_export import ExamExporter
 from .teaching_loop import TeachingLoop
 from .support import SupportLedger
 from .math_widgets import evaluate as evaluate_widget
@@ -238,10 +239,11 @@ class Store:
 
 
 class Application:
-    def __init__(self, store, runner=run, lesson_studio=None):
+    def __init__(self, store, runner=run, lesson_studio=None, exam_exporter=None):
         self.store = store
         self.runner = runner
         self.lesson_studio = lesson_studio or LessonStudio(store)
+        self.exam_exporter = exam_exporter or ExamExporter(store)
         self.lock = open(store.path+'.lock','a+b')
         try:
             if os.name=='nt':
@@ -259,7 +261,7 @@ class Application:
         # A process restart cannot resume an inference handle; retain a truthful terminal record.
         with store.connect() as db:
             db.execute("UPDATE submissions SET state='interrupted' WHERE state IN ('queued','running')")
-        self.jobs = JobQueue(store, {kind:(lambda payload,ctx,k=kind:self.job_work(k,payload,ctx)) for kind in ('diagnose','task-design','remedial-plan','lesson-outline','lesson-source','lesson-render')})
+        self.jobs = JobQueue(store, {kind:(lambda payload,ctx,k=kind:self.job_work(k,payload,ctx)) for kind in ('diagnose','exam-export','task-design','remedial-plan','lesson-outline','lesson-source','lesson-render')})
 
     def close(self):
         self.jobs.close()
@@ -303,6 +305,11 @@ class Application:
 
     def job_work(self,kind,payload,ctx):
         if kind=='diagnose':return ctx.step('diagnosis',lambda:self.work(payload['submission_id']))
+        if kind=='exam-export':
+            rid=payload['submission_id']
+            return ctx.step('exam_export',lambda:self.exam_exporter.export(rid),
+                valid=lambda result:(result.get('success') and self.exam_exporter.file_path(rid,'pdf')
+                                      and self.exam_exporter.file_path(rid,'tex')))
         if kind=='task-design':
             # Never reuse a parent-bound draft after its evidence became stale.
             if payload.get('parent_id'):self.teaching.require_current({'assignment_id':payload['parent_id'],'evidence_version':payload.get('evidence_version')})
@@ -376,7 +383,31 @@ def handler_for(app):
             if self.path.startswith('/api/sessions/'):
                 return self.send(app.store.history(self.path.split('/')[3]))
             if self.path.startswith('/api/submissions/'):
-                result = app.store.get(self.path.split('/')[3])
+                parts = self.path.split('/')
+                rid = parts[3] if len(parts) > 3 else ''
+                if len(parts) == 5 and parts[4] == 'export':
+                    try:
+                        return self.send(app.exam_exporter.status(rid))
+                    except ValueError as exc:
+                        return self.send({'error': str(exc)}, 404)
+                if len(parts) == 6 and parts[4] == 'files':
+                    if parts[5] != 'answer-pdf':
+                        return self.send({'error': '导出文件不存在'}, 404)
+                    path = app.exam_exporter.file_path(rid, 'pdf')
+                    if path is None:
+                        return self.send({'error': '导出文件不存在'}, 404)
+                    content = path.read_bytes()
+                    from urllib.parse import quote
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'application/pdf')
+                    self.send_header('Content-Disposition',
+                                     "attachment; filename*=UTF-8''" + quote('参考答案.pdf'))
+                    self.send_header('Content-Length', str(len(content)))
+                    self.send_header('X-Content-Type-Options', 'nosniff')
+                    self.end_headers()
+                    self.wfile.write(content)
+                    return
+                result = app.store.get(rid)
                 return self.send(result or {'error': '提交不存在'}, 200 if result else 404)
             if self.path == '/api/teaching':
                 return self.send(app.teaching.list())
@@ -489,6 +520,13 @@ def handler_for(app):
                     return self.send({'id': app.store.create_session()}, 201)
                 if self.path == '/api/math-widget':
                     return self.send(evaluate_widget(data))
+                if self.path.startswith('/api/submissions/') and self.path.endswith('/export'):
+                    parts = self.path.split('/')
+                    if len(parts) == 5:
+                        rid = parts[3]
+                        app.exam_exporter.ensure_exportable(rid)
+                        return self.send(app.jobs.public(
+                            app.jobs.submit('exam-export', {'submission_id': rid})), 202)
                 if self.path == '/api/teaching/design':
                     return self.send(app.teaching.design(data))
                 if self.path == '/api/teaching':

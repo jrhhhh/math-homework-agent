@@ -13,6 +13,15 @@ from urllib.error import HTTPError
 from urllib.request import Request,urlopen
 
 from app.server import Application,Store,handler_for
+from app.exam_export import ExamExporter
+
+
+FAKE_TEX = r'''\documentclass[UTF8]{ctexart}
+\usepackage{reference-answer}
+\begin{document}
+\question{1}{5}\finalanswer{\(x=1\)。}
+\end{document}
+'''
 
 
 class HttpTest(unittest.TestCase):
@@ -21,7 +30,12 @@ class HttpTest(unittest.TestCase):
         cls.tmp=tempfile.TemporaryDirectory()
         def runner(data):
             return {'status':'ready','output':{'reply':'实际测试后端','result':None},'attempts':[]}
+        def compiler(source,output):
+            output.mkdir(parents=True,exist_ok=True);(output/'main.pdf').write_bytes(b'%PDF-1.4 fake')
+            return {'success':True,'pdf':str(output/'main.pdf'),'passes':[{'pass':1,'exit_code':0},{'pass':2,'exit_code':0}],'issues':[]}
         cls.app=Application(Store(Path(cls.tmp.name)/'data.db'),runner=runner)
+        cls.app.exam_exporter=ExamExporter(cls.app.store,generator=lambda prompt:{'raw':FAKE_TEX},
+                                           compiler=compiler,output_root=Path(cls.tmp.name)/'exports')
         cls.server=ThreadingHTTPServer(('127.0.0.1',0),handler_for(cls.app))
         cls.thread=threading.Thread(target=cls.server.serve_forever,daemon=True);cls.thread.start()
         cls.base=f'http://127.0.0.1:{cls.server.server_port}'
@@ -45,6 +59,13 @@ class HttpTest(unittest.TestCase):
             with urlopen(request,timeout=5) as response:return response.status,json.load(response)
         except HTTPError as exc:return exc.code,json.load(exc)
 
+    def raw(self,path):
+        try:
+            with urlopen(self.base+path,timeout=5) as response:
+                return response.status,response.headers,response.read()
+        except HTTPError as exc:
+            return exc.code,exc.headers,exc.read()
+
     def test_async_submission_reaches_result_and_is_queryable(self):
         status,session=self.request('/api/sessions',{})
         self.assertEqual(status,201)
@@ -58,6 +79,45 @@ class HttpTest(unittest.TestCase):
         self.assertEqual(payload['state'],'ready')
         self.assertTrue(payload['is_current'])
         self.assertEqual(payload['data']['solution'],'x=1')
+
+    def test_exam_answer_export_job_serves_tex_and_pdf(self):
+        _,session=self.request('/api/sessions',{})
+        _,record=self.request(f'/api/sessions/{session["id"]}/submissions',
+                              {'problem':'解 x+1=2。','mode':'exam_answer'})
+        deadline=time.monotonic()+3
+        while time.monotonic()<deadline:
+            _,payload=self.request('/api/submissions/'+record['id'])
+            if payload['state']=='ready':break
+            time.sleep(.02)
+        self.assertEqual(payload['state'],'ready')
+        status,job=self.request('/api/submissions/'+record['id']+'/export',{})
+        self.assertEqual(status,202)
+        deadline=time.monotonic()+5
+        while time.monotonic()<deadline:
+            _,current=self.request('/api/jobs/'+job['id'])
+            if current['state'] not in ('queued','running'):break
+            time.sleep(.02)
+        self.assertEqual(current['state'],'completed')
+        self.assertTrue(current['result']['success'])
+        status,body=self.request('/api/submissions/'+record['id']+'/export')
+        self.assertEqual(status,200)
+        self.assertIn('pdf',body['files']);self.assertNotIn('tex',body['files'])
+        self.assertEqual(self.raw('/api/submissions/'+record['id']+'/files/answer-tex')[0],404)
+        code,headers,content=self.raw(body['files']['pdf'])
+        self.assertEqual(code,200);self.assertTrue(content.startswith(b'%PDF'))
+        self.assertIn('attachment',headers.get('Content-Disposition',''))
+
+    def test_exam_export_rejects_non_exam_submission(self):
+        _,session=self.request('/api/sessions',{})
+        _,record=self.request(f'/api/sessions/{session["id"]}/submissions',{'problem':'x+1=2','mode':'solve'})
+        deadline=time.monotonic()+3
+        while time.monotonic()<deadline:
+            _,payload=self.request('/api/submissions/'+record['id'])
+            if payload['state']=='ready':break
+            time.sleep(.02)
+        status,body=self.request('/api/submissions/'+record['id']+'/export',{})
+        self.assertEqual(status,400)
+        self.assertIn('生成试卷参考答案',body['error'])
 
     def test_learning_path_help_and_widget_endpoints(self):
         _,task=self.request('/api/teaching',{'title':'路径','items':[{'problem':'解 x+1=2。','objective':'逆运算','success_criteria':'说明运算依据'}]})

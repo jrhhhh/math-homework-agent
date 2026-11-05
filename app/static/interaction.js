@@ -1,12 +1,12 @@
 /* Progressive interaction helpers; no changes to teaching or model contracts. */
 (() => {
-  const modeHelp={check:'检查你写出的过程，定位需要调整的关键一步。',hint:'一次只给一点提示，保留自己继续推理的空间。',full_correction:'解释问题并给出完整纠正；这会记录为获得讲解。',answer_check:'只核对答案，不推断你没有提供的过程。',refine:'先核验当前过程，再讨论更简洁的方法。',solve:'从题目出发给出完整解答，保存为助手求解稿。',exam_answer:'在题目栏粘贴完整试卷和题分，或提取附件文字并核对；生成逐题答案及评分建议。图片和扫描件不会自动识别。',draft:'根据文字描述反馈草稿布局，不判断数学对错。',partition:'依据你提供的布局描述分块，题目归属由你确认。'};
+  const modeHelp={check:'检查你写出的过程，定位需要调整的关键一步。',hint:'一次只给一点提示，保留自己继续推理的空间。',full_correction:'解释问题并给出完整纠正；这会记录为获得讲解。',answer_check:'只核对答案，不推断你没有提供的过程。',refine:'先核验当前过程，再讨论更简洁的方法。',solve:'从题目出发给出完整解答，保存为助手求解稿。',exam_answer:'教师工具：在题目栏粘贴完整试卷和题分，或提取附件文字并核对；生成逐题答案及评分建议。图片和扫描件不会自动识别。',draft:'根据文字描述反馈草稿布局，不判断数学对错。',partition:'依据你提供的布局描述分块，题目归属由你确认。'};
   const help=document.createElement('p');help.id='mode-explanation';help.className='mode-explanation';
   $('submission-form').querySelector('.field-row').after(help);$('mode').setAttribute('aria-describedby',help.id);
   const updateMode=()=>{help.textContent=modeHelp[$('mode').value]||'';};$('mode').addEventListener('change',updateMode);updateMode();
   // Programmatic session loads also update mode without dispatching a change event.
   const originalSetMode=setMode;setMode=function(...args){const result=originalSetMode(...args);updateMode();return result;};
-  const views=[['practice','show-practice'],['exam','show-exam'],['teacher','show-teacher'],['teaching','show-teaching']];
+  const views=[['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']];
   for(const [,id] of views)$(id).setAttribute('aria-pressed',$(id).classList.contains('active'));
   document.querySelector('.workspace-switcher').addEventListener('keydown',event=>{
     const index=views.findIndex(([,id])=>id===event.target.id);if(index<0)return;
@@ -31,7 +31,7 @@
   for(const id of ['form-status','lesson-status','task-status','path-status']){
     const el=$(id);new MutationObserver(()=>{el.classList.toggle('has-message',Boolean(el.textContent.trim()));}).observe(el,{childList:true,subtree:true,characterData:true});
   }
-  if(location.hash==='#exam')switchWorkspace('exam');
+  if(location.hash==='#exam')openAnswerKey();
   // Dragging a local file onto the optional upload area follows the existing file limits.
   const drop=$('work-file-field');let dragDepth=0;
   drop.addEventListener('dragenter',event=>{if(!event.dataTransfer.types.includes('Files'))return;event.preventDefault();dragDepth++;drop.classList.add('drag-over');});
