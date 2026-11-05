@@ -34,8 +34,8 @@ class ModelError(RuntimeError):
 def backend():
     """Which backend the effective configuration selects."""
     config = settings.resolve()
-    if config['backend'] == 'http' and config['base_url']:
-        return 'http'
+    if config['backend'] == 'http':
+        return 'http' if config['base_url'] else 'none'
     if config['backend'] == 'dsh-cli':
         return 'dsh-cli' if _dsh_binary(config) else 'none'
     if shutil.which(config.get('codex_bin') or 'codex'):
@@ -49,7 +49,7 @@ def available():
 
 def generate(prompt, timeout=240):
     config = settings.resolve()
-    if config['backend'] == 'http' and config['base_url']:
+    if config['backend'] == 'http':
         return _generate_http(prompt, timeout, config)
     if config['backend'] == 'dsh-cli':
         return _generate_dsh(prompt, timeout, config)
@@ -270,18 +270,24 @@ def _http_category(status):
         return 'rate_limit'
     if status in (401, 403):
         return 'authentication'
+    if status in (400, 404, 422):
+        return 'configuration'
     if status >= 500:
         return 'transport'
     return 'backend_failure'
 
 
-def _http_message(category):
+def _http_message(category, status=None):
+    if category == 'configuration' and status == 404:
+        return '接口地址不正确（HTTP 404）。请检查服务商地址，通常以 /v1 结尾。'
+    if category == 'configuration' and status == 400:
+        return '模型名或请求格式不正确（HTTP 400）。请检查模型名是否可用。'
     return {
-        'rate_limit': '模型服务限流或额度不足，请稍后重试。',
-        'authentication': '模型服务鉴权失败，请检查 API Key。',
-        'transport': '模型服务暂时不可用，请检查网络或服务状态。',
-        'configuration': '模型接口配置不完整，请检查设置。',
-    }.get(category, '模型调用失败，请检查接口配置与网络。')
+        'rate_limit': '模型服务限流或额度不足，请稍后重试，或换一个 API Key。',
+        'authentication': 'API Key 不正确或已过期，请重新填写。',
+        'transport': '模型服务暂时不可用，请检查网络、代理或服务状态。',
+        'configuration': '接口地址或模型名不正确，请检查设置。',
+    }.get(category, '模型调用失败，请检查接口地址、模型名和网络。')
 
 
 def _generate_http(prompt, timeout, config):
@@ -304,15 +310,15 @@ def _generate_http(prompt, timeout, config):
             raw_bytes = response.read(MAX_HTTP_RESPONSE_BYTES)
     except urllib.error.HTTPError as exc:
         category = _http_category(exc.code)
-        raise ModelError(_http_message(category),
+        raise ModelError(_http_message(category, exc.code),
                          {'category': category, 'backend': 'http', 'status': exc.code,
                           'elapsed_seconds': round(time.monotonic() - started, 3)}) from exc
     except TimeoutError as exc:
-        raise ModelError('模型调用超时；本次没有生成可交付结果。',
+        raise ModelError('模型调用超时。请检查网络，或换用响应更快的模型。',
                          {'category': 'transport', 'backend': 'http',
                           'elapsed_seconds': round(time.monotonic() - started, 3)}) from exc
     except (urllib.error.URLError, OSError) as exc:
-        raise ModelError('模型服务连接失败，请检查网络与接口地址。',
+        raise ModelError('连接失败。请检查接口地址、网络和代理设置。',
                          {'category': 'transport', 'backend': 'http',
                           'elapsed_seconds': round(time.monotonic() - started, 3)}) from exc
     try:
@@ -323,7 +329,7 @@ def _generate_http(prompt, timeout, config):
                           'elapsed_seconds': round(time.monotonic() - started, 3)}) from exc
     raw = _http_text(data, style).strip()
     if not raw:
-        raise ModelError('模型服务没有返回文本内容。',
+        raise ModelError('模型没有返回文本。请检查模型名是否可用，或换一个模型。',
                          {'category': 'backend_failure', 'backend': 'http',
                           'elapsed_seconds': round(time.monotonic() - started, 3)})
     return {'raw': raw, 'elapsed_seconds': round(time.monotonic() - started, 3),

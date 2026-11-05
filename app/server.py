@@ -12,6 +12,7 @@ import re
 import sqlite3
 import threading
 import uuid
+import webbrowser
 
 from .core import normalize, run, version
 from .model import available, backend, probe
@@ -337,7 +338,10 @@ def handler_for(app):
         def do_GET(self):
             if self.path == '/api/health':
                 return self.send({'ok': True, 'backend': backend(), 'available': available(),
-                                  'exact_verification_available':importlib.util.find_spec('sympy') is not None})
+                                  'exact_verification_available':importlib.util.find_spec('sympy') is not None,
+                                  'setup': settings.setup_status()})
+            if self.path == '/api/settings/presets':
+                return self.send({'presets': settings.presets()})
             if self.path == '/api/jobs':
                 return self.send(app.jobs.list())
             if self.path.startswith('/api/jobs/'):
@@ -538,10 +542,21 @@ def main():
     parser = argparse.ArgumentParser(description='高中数学练习工作台')
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--db', default=os.environ.get('MATH_DB_PATH', '.local/workbench.sqlite3'))
+    parser.add_argument('--open', action='store_true', help='启动后自动打开浏览器')
     args = parser.parse_args()
     app = Application(Store(args.db))
-    server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(app))
-    print(f'数学练习工作台：http://127.0.0.1:{args.port}', flush=True)
+    try:
+        server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(app))
+    except OSError as exc:
+        app.close()
+        raise SystemExit(f'无法启动：端口 {args.port} 可能已被占用。'
+                         f'请关闭其他工作台，或使用 --port 8766。') from exc
+    url = f'http://127.0.0.1:{args.port}'
+    print(f'数学练习工作台：{url}', flush=True)
+    if args.open:
+        timer = threading.Timer(1.0, webbrowser.open, args=(url,))
+        timer.daemon = True
+        timer.start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:

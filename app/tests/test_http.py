@@ -258,7 +258,19 @@ class HttpTest(unittest.TestCase):
                 meta = payload['data']['attachments'][0]
                 path = Path(folder) / (meta['sha256'] + meta['ext'])
                 self.assertTrue(path.exists())
-                self.delete('/api/sessions/' + session['id'])
+                # Deletion refuses a session while its diagnosis job is still active.
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline:
+                    with self.app.store.connect() as db:
+                        active = db.execute(
+                            "SELECT payload FROM durable_jobs WHERE state IN ('queued','running')"
+                        ).fetchall()
+                    if not any(json.loads(row['payload']).get('submission_id') == record['id']
+                               for row in active):
+                        break
+                    time.sleep(.01)
+                status, body = self.delete('/api/sessions/' + session['id'])
+                self.assertEqual(status, 200, body)
                 self.assertFalse(path.exists())
 
     def test_bound_teaching_session_cannot_be_deleted_but_can_be_archived(self):
@@ -273,6 +285,18 @@ class HttpTest(unittest.TestCase):
         status, body = self.request(f'/api/sessions/{sid}/archive', {'archived': True})
         self.assertEqual(status, 200)
         self.assertTrue(body['archived'])
+
+    def test_health_exposes_setup_status_and_preset_list(self):
+        status, health = self.request('/api/health')
+        self.assertEqual(status, 200)
+        self.assertIn('setup', health)
+        self.assertIn('required', health['setup'])
+        self.assertIn('message', health['setup'])
+        status, body = self.request('/api/settings/presets')
+        self.assertEqual(status, 200)
+        ids = [preset['id'] for preset in body['presets']]
+        self.assertIn('deepseek', ids)
+        self.assertIn('custom', ids)
 
     def test_settings_endpoint_saves_without_exposing_key(self):
         with tempfile.TemporaryDirectory() as folder:

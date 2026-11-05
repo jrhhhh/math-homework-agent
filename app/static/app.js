@@ -1,5 +1,7 @@
 const $ = id => document.getElementById(id);
 let sessionId = null, history = [], busy = false, currentPoll = 0, verificationAvailable = true;
+let setupRequired = false;
+function refreshSubmitState(){const button=$('submit');if(button)button.disabled=Boolean(busy||setupRequired);}
 const labels = {queued:'排队中',running:'正在思考',ready:'反馈已生成',needs_input:'待补充材料',gate_failed:'需要复核',error:'调用失败',interrupted:'运行已中断'};
 async function api(path, data) {
   const response = await fetch(path, data === undefined ? {} : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
@@ -142,7 +144,7 @@ function populate(data) {
   $('verify-equation').checked=Boolean(data.verification_requested)&&!$('verify-equation').disabled;
 }
 async function loadSession(id) {
-  currentPoll++; sessionId=id; busy=false; $('submit').disabled=false;$('session-status').textContent='';
+  currentPoll++; sessionId=id; busy=false; refreshSubmitState();$('session-status').textContent='';
   history = await api('/api/sessions/'+id); await sessions(); renderHistory();
   if(history.length){populate(history.at(-1).data); renderResult(history.at(-1)); if(['queued','running'].includes(history.at(-1).state)) poll(history.at(-1).id);}
   else {populate({});$('result').replaceChildren(node('p','写下你的尝试，开始新的练习。','history-empty'));$('state-badge').textContent='等待提交';}
@@ -204,16 +206,18 @@ function renderResult(item) {
   renderMath(area);
 }
 async function poll(id) {
-  const token=++currentPoll;busy=true;$('submit').disabled=true;
+  const token=++currentPoll;busy=true;refreshSubmitState();
   while(token===currentPoll){
     try {const item=await api('/api/submissions/'+id);if(token!==currentPoll)return;renderResult(item);
-      if(!['queued','running'].includes(item.state)){history=await api('/api/sessions/'+sessionId);renderHistory();busy=false;$('submit').disabled=false;$('form-status').textContent='';if(window.matchMedia('(max-width:1080px)').matches)$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});return;}
-    } catch(error){$('form-status').textContent=error.message;busy=false;$('submit').disabled=false;return;}
+      if(!['queued','running'].includes(item.state)){history=await api('/api/sessions/'+sessionId);renderHistory();busy=false;refreshSubmitState();$('form-status').textContent='';if(window.matchMedia('(max-width:1080px)').matches)$('feedback-heading').scrollIntoView({behavior:'smooth',block:'start'});return;}
+    } catch(error){$('form-status').textContent=error.message;busy=false;refreshSubmitState();return;}
     await new Promise(resolve=>setTimeout(resolve,1500));
   }
 }
 $('submission-form').onsubmit=async event=>{
-  event.preventDefault();if(busy)return;$('form-status').textContent='正在提交…';$('submit').disabled=true;
+  event.preventDefault();
+  if(setupRequired){openSettings();settingsStatus('请先选择模型服务并保存，再开始检查。',true);return;}
+  if(busy)return;busy=true;$('form-status').textContent='正在提交…';refreshSubmitState();
   try{
     if(!sessionId)sessionId=(await api('/api/sessions',{})).id;
     const data=Object.fromEntries(['problem','solution','draft','request','mode'].map(k=>[k,$(k).value]));data.grade_level=$('grade').value;
@@ -224,7 +228,7 @@ $('submission-form').onsubmit=async event=>{
       data.attachments=await Promise.all(workFiles.map(async item=>({name:item.file.name,base64:await fileToBase64(item.file)})));
     }
     const {id}=await api('/api/sessions/'+sessionId+'/submissions',data);clearWorkFiles();await sessions();history=await api('/api/sessions/'+sessionId);renderHistory();poll(id);
-  }catch(error){$('form-status').textContent=error.message;$('submit').disabled=false;}
+  }catch(error){$('form-status').textContent=error.message;busy=false;refreshSubmitState();}
 };
 $('new-session').onclick=async()=>{const {id}=await api('/api/sessions',{});await loadSession(id);};
 $('toggle-archived').onclick=()=>{showArchived=!showArchived;sessions();};
@@ -236,13 +240,71 @@ $('work-files').onchange=()=>{
 $('example').onclick=()=>{populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),session_id:sessionId,submissions:history},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='数学练习-'+sessionId.slice(0,8)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 
-let settingsBusy=false;
+let settingsBusy=false, settingsPresets=[], currentPreset='custom';
 function settingsStatus(message,isError=false){const el=$('settings-status');el.textContent=message;el.className=isError?'error-message':'source-note';}
-function showSettingsFields(){const backend=$('settings-backend').value;$('settings-http-fields').hidden=backend!=='http';$('settings-key-fields').hidden=backend==='codex-cli';$('settings-codex-fields').hidden=backend!=='codex-cli';$('settings-dsh-fields').hidden=backend!=='dsh-cli';}
-function settingsPayload(){return {backend:$('settings-backend').value,base_url:$('settings-base').value,model:$('settings-model').value,style:$('settings-style').value,codex_bin:$('settings-codex-bin').value,dsh_bin:$('settings-dsh-bin').value,api_key:$('settings-key').value};}
+function backendLabel(backend){return backend==='http'?'HTTP 接口':backend==='dsh-cli'?'DeepSeek Harness':'Codex CLI';}
+function showSettingsFields(){
+  const backend=$('settings-backend').value;
+  $('settings-http-fields').hidden=backend!=='http';
+  $('settings-key-fields').hidden=backend==='codex-cli';
+  $('settings-codex-fields').hidden=backend!=='codex-cli';
+  $('settings-dsh-fields').hidden=backend!=='dsh-cli';
+}
+function settingsPayload(){return {backend:$('settings-backend').value,base_url:$('settings-base').value,model:$('settings-model').value,style:$('settings-style').value,codex_bin:$('settings-codex-bin').value,dsh_bin:$('settings-dsh-bin').value,api_key:$('settings-key').value,provider:currentPreset};}
+function presetById(id){return settingsPresets.find(preset=>preset.id===id);}
+function updateModelOptions(preset){
+  const list=$('settings-model-options');if(!list)return;
+  list.replaceChildren();
+  for(const name of (preset?.models||[])){const option=document.createElement('option');option.value=name;list.append(option);}
+}
+function renderPresets(){
+  const box=$('settings-presets');if(!box)return;
+  box.replaceChildren();
+  for(const preset of settingsPresets){
+    const card=node('button',undefined,'preset-card');card.type='button';
+    card.append(node('strong',preset.label));
+    card.append(node('small',preset.description||''));
+    if(preset.id==='custom')card.append(node('span','老师提供的地址','preset-tag'));
+    card.classList.toggle('active',preset.id===currentPreset);
+    card.disabled=Boolean($('settings-backend').disabled);
+    card.onclick=()=>applyPreset(preset.id);
+    box.append(card);
+  }
+}
+function applyPreset(id){
+  const preset=presetById(id);if(!preset)return;
+  const previous=currentPreset;currentPreset=id;
+  $('settings-backend').value=preset.backend;
+  if(preset.backend==='http'){
+    if(preset.base_url)$('settings-base').value=preset.base_url;
+    if(preset.style)$('settings-style').value=preset.style;
+    if(preset.model)$('settings-model').value=preset.model;
+    if(preset.id==='custom'&&previous!=='custom'){$('settings-base').value='';$('settings-model').value='';}
+  }
+  updateModelOptions(preset);showSettingsFields();renderPresets();
+  if(preset.requires_key===false){
+    settingsStatus(preset.id==='ollama'?'本机服务不需要 API Key；确认 Ollama 已启动后点“测试并保存”。':'这个服务不需要 API Key；直接点“测试并保存”。');
+    $('settings-model').focus();
+  }else if(preset.id==='custom'){
+    settingsStatus('请在高级设置中填写老师提供的接口地址，再填写模型名和 API Key。');
+    $('settings-advanced').open=true;$('settings-base').focus();
+  }else{
+    settingsStatus('已选择 '+preset.label+'，填入 API Key 后点“测试并保存”。');
+    $('settings-key').focus();
+  }
+}
+function inferPreset(data){
+  if(data.source==='default')return '';
+  const match=settingsPresets.find(preset=>preset.base_url&&preset.backend===data.backend&&preset.base_url===data.base_url);
+  if(match)return match.id;
+  if(data.provider&&data.provider!=='custom'&&presetById(data.provider))return data.provider;
+  return data.provider&&presetById(data.provider)?data.provider:(data.backend==='http'?'custom':data.backend);
+}
 async function loadSettings(){
   try{
     const data=await api('/api/settings');
+    try{const payload=await api('/api/settings/presets');settingsPresets=Array.isArray(payload.presets)?payload.presets:[];}
+    catch(_){settingsPresets=[];}
     $('settings-backend').value=['http','dsh-cli'].includes(data.backend)?data.backend:'codex-cli';
     $('settings-base').value=data.base_url||'';
     $('settings-model').value=data.model||'';
@@ -251,34 +313,68 @@ async function loadSettings(){
     $('settings-dsh-bin').value=data.dsh_bin&&data.dsh_bin!=='dsh'?data.dsh_bin:'';
     $('settings-key').value='';
     $('settings-key').placeholder=data.has_key?'已设置，留空保持不变':'未设置';
-    $('settings-source').textContent=data.environment_locked?'当前由环境变量 MATH_API_BASE 覆盖；网页保存不会生效。':data.source==='ui'?'当前使用网页保存的设置。':'当前使用默认 Codex CLI 配置。';
-    for(const id of ['settings-backend','settings-base','settings-model','settings-style','settings-codex-bin','settings-dsh-bin','settings-key','settings-save','settings-test'])$(id).disabled=data.environment_locked;
-    showSettingsFields();
+    $('settings-source').textContent=data.environment_locked?'老师已通过环境变量统一配置，学生无需修改。':data.source==='ui'?'当前使用本机保存的配置。':'还没有配置模型服务；按下面两步即可开始。';
+    currentPreset=inferPreset(data);
+    updateModelOptions(presetById(currentPreset));
+    renderPresets();showSettingsFields();
+    const locked=Boolean(data.environment_locked);
+    for(const id of ['settings-backend','settings-base','settings-model','settings-style','settings-codex-bin','settings-dsh-bin','settings-key','settings-save','settings-save-test','settings-test'])$(id).disabled=locked;
+    document.querySelectorAll('#settings-presets button').forEach(button=>button.disabled=locked);
   }catch(error){settingsStatus('读取设置失败：'+error.message,true);}
 }
 async function refreshConnection(){
   try{const data=await api('/api/health');
-    $('connection').textContent=data.available?(data.backend==='http'?'HTTP 模型接口已配置':data.backend==='dsh-cli'?'DeepSeek Harness 已找到':'本地 Codex 已找到'):'请在模型设置中配置';
-    verificationAvailable=data.exact_verification_available;setMode();
-  }catch(error){$('connection').textContent='服务未连接';}
+    const setup=data.setup||{};
+    setupRequired=Boolean(setup.required);
+    $('connection').textContent=data.available?(data.backend==='http'?'HTTP 模型接口已配置':data.backend==='dsh-cli'?'DeepSeek Harness 已找到':'本地 Codex 已找到'):'模型未配置';
+    if(setupRequired){
+      $('setup-banner').hidden=false;
+      $('setup-banner-title').textContent='还差一步：配置模型服务';
+      $('setup-banner-text').textContent=setup.message||'配置模型服务后即可开始检查。';
+      $('connection').textContent='模型未配置';
+    }else{
+      $('setup-banner').hidden=true;
+    }
+    verificationAvailable=data.exact_verification_available;setMode();refreshSubmitState();
+  }catch(error){$('connection').textContent='服务未连接';setupRequired=true;refreshSubmitState();}
 }
 async function saveSettings(event){
-  event.preventDefault();if(settingsBusy)return;settingsBusy=true;settingsStatus('正在保存…');
-  try{const data=await api('/api/settings',settingsPayload());await loadSettings();await refreshConnection();settingsStatus('已保存。当前后端：'+(data.backend==='http'?'HTTP 接口':data.backend==='dsh-cli'?'DeepSeek Harness':'Codex CLI'));}
+  if(event)event.preventDefault();if(settingsBusy)return;settingsBusy=true;settingsStatus('正在保存…');
+  try{const data=await api('/api/settings',settingsPayload());await loadSettings();await refreshConnection();settingsStatus('已保存。当前后端：'+backendLabel(data.backend));}
   catch(error){settingsStatus(error.message,true);}
   finally{settingsBusy=false;}
 }
-async function testSettings(){
+async function testSettings({saveAfter=false}={}){
   if(settingsBusy)return;settingsBusy=true;settingsStatus('正在测试连接…');
-  try{const data=await api('/api/settings/test',settingsPayload());settingsStatus(data.message||(data.ok?'连接正常。':'连接失败。'),!data.ok);}
-  catch(error){settingsStatus(error.message,true);}
+  try{
+    const data=await api('/api/settings/test',settingsPayload());
+    if(!data.ok){settingsStatus(data.message||'连接失败，请检查设置。',true);return;}
+    if(saveAfter){
+      settingsStatus('连接成功，正在保存…');
+      const saved=await api('/api/settings',settingsPayload());
+      await loadSettings();await refreshConnection();
+      settingsStatus('连接成功，已保存。当前后端：'+backendLabel(saved.backend));
+    }else{
+      settingsStatus(data.message||'连接正常。');
+    }
+  }catch(error){settingsStatus(error.message,true);}
   finally{settingsBusy=false;}
 }
-$('open-settings').onclick=async()=>{if(typeof $('settings-dialog').showModal==='function')$('settings-dialog').showModal();else $('settings-dialog').setAttribute('open','');await loadSettings();};
+async function openSettings(){
+  const dialog=$('settings-dialog');
+  if(!dialog.open){
+    if(typeof dialog.showModal==='function')dialog.showModal();
+    else dialog.setAttribute('open','');
+  }
+  await loadSettings();
+}
+$('open-settings').onclick=openSettings;
+$('setup-banner-action').onclick=openSettings;
 $('close-settings').onclick=()=>{if(typeof $('settings-dialog').close==='function')$('settings-dialog').close();else $('settings-dialog').removeAttribute('open');};
 $('settings-form').onsubmit=saveSettings;
-$('settings-test').onclick=testSettings;
-$('settings-backend').onchange=showSettingsFields;
+$('settings-save-test').onclick=()=>testSettings({saveAfter:true});
+$('settings-test').onclick=()=>testSettings();
+$('settings-backend').onchange=()=>{currentPreset=$('settings-backend').value==='http'?'custom':$('settings-backend').value;renderPresets();showSettingsFields();};
 const openedFromFile=location.protocol==='file:';
 if(openedFromFile){
   $('file-launch-notice').hidden=false;

@@ -68,7 +68,7 @@ draft-coach **不参与求解或诊断链路**，也不消费交接包。它**�
 
 ## 本地工作台
 
-`python3 run.py` 启动回环地址上的本地 Web 服务。`app/core.py` 处理路由、输出包装和真实门反馈，`app/server.py` 保存不可变提交版本；`app/model.py` 在新上下文中调用已登录的 Codex CLI。不得用夹具冒充运行结果。
+`python3 run.py` 启动回环地址上的本地 Web 服务。Windows 可双击 `启动工作台.bat`，macOS 可双击 `启动工作台.command`；启动器会寻找本机 Python、打开浏览器，服务已运行时只打开浏览器。首次打开按向导选择服务商，通常只需填写 API Key。`app/core.py` 处理路由、输出包装和真实门反馈，`app/server.py` 保存不可变提交版本；`app/model.py` 在新上下文中调用已登录的 Codex CLI。不得用夹具冒充运行结果。
 
 工作台的 `refine` 模式会先执行 Math Error Diagnosis。只有当前学生原文通过诊断并判为正确，才交由 Solution Refiner；优化卡再经过该技能的结构门和严格措辞审计。修改题目、学段或解答会生成新版本并重新诊断。
 

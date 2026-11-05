@@ -73,6 +73,19 @@ class SettingsTest(unittest.TestCase):
                 settings.save({'backend': 'http', 'base_url': 'https://new.example/v1',
                                'model': 'new'})
 
+    def test_switching_endpoint_does_not_reuse_stored_key(self):
+        with patch.dict(os.environ, self.env(), clear=True):
+            settings.save({'backend': 'http', 'base_url': 'https://a.example/v1',
+                           'model': 'm', 'api_key': 'first'})
+            settings.save({'backend': 'http', 'base_url': 'https://b.example/v1',
+                           'model': 'm'})
+            self.assertEqual(settings.resolve()['api_key'], '')
+            settings.save({'backend': 'http', 'base_url': 'https://b.example/v1',
+                           'model': 'm', 'api_key': 'second'})
+            settings.save({'backend': 'http', 'base_url': 'https://b.example/v1',
+                           'model': 'm2'})
+            self.assertEqual(settings.resolve()['api_key'], 'second')
+
     def test_switching_to_codex_clears_stored_key(self):
         with patch.dict(os.environ, self.env(), clear=True):
             settings.save({'backend': 'http', 'base_url': 'https://a.example/v1',
@@ -110,6 +123,70 @@ class SettingsTest(unittest.TestCase):
             settings.save({'backend': 'codex-cli', 'model': 'ui-model'})
         with patch.dict(os.environ, self.env(MATH_MODEL='env-model'), clear=True):
             self.assertEqual(settings.resolve()['model'], 'env-model')
+
+    def test_presets_are_complete_and_unique(self):
+        presets = settings.presets()
+        ids = [preset['id'] for preset in presets]
+        self.assertEqual(len(ids), len(set(ids)))
+        for preset in presets:
+            with self.subTest(preset=preset['id']):
+                self.assertTrue(preset['label'])
+                self.assertIn(preset['backend'], settings.BACKENDS)
+                self.assertIn(preset['style'], settings.STYLES)
+                self.assertIsInstance(preset['requires_key'], bool)
+                self.assertIsInstance(preset['models'], list)
+
+    def test_preset_fills_technical_defaults(self):
+        with patch.dict(os.environ, self.env(), clear=True):
+            public = settings.save({'backend': 'http', 'provider': 'deepseek'})
+            self.assertEqual(public['provider'], 'deepseek')
+            effective = settings.resolve()
+            self.assertEqual(effective['base_url'], 'https://api.deepseek.com/v1')
+            self.assertEqual(effective['model'], 'deepseek-flash')
+            self.assertEqual(effective['style'], 'chat')
+
+    def test_setup_status_explains_missing_key_and_accepts_local_service(self):
+        with patch.dict(os.environ, self.env(), clear=True):
+            settings.save({
+                'backend': 'http', 'provider': 'deepseek',
+                'base_url': 'https://api.deepseek.com/v1', 'model': 'deepseek-flash'})
+            status = settings.setup_status()
+            self.assertTrue(status['required'])
+            self.assertEqual(status['reason'], 'key_missing')
+            self.assertIn('API Key', status['message'])
+            settings.save({
+                'backend': 'http', 'provider': 'deepseek',
+                'base_url': 'https://api.deepseek.com/v1', 'model': 'deepseek-flash',
+                'api_key': 'k'})
+            self.assertFalse(settings.setup_status()['required'])
+        with patch.dict(os.environ, self.env(), clear=True):
+            settings.save({
+                'backend': 'http', 'provider': 'ollama',
+                'base_url': 'http://127.0.0.1:11434/v1', 'model': 'qwen2.5:7b'})
+            self.assertFalse(settings.setup_status()['required'])
+
+    def test_first_run_without_saved_settings_asks_for_a_provider(self):
+        with patch.dict(os.environ, self.env(), clear=True), \
+                patch('app.settings.shutil.which', return_value=None):
+            status = settings.setup_status()
+            self.assertTrue(status['required'])
+            self.assertEqual(status['reason'], 'not_configured')
+            self.assertIn('选择服务商', status['message'])
+
+    def test_setup_status_reports_missing_base_and_model(self):
+        with patch.dict(os.environ, self.env(), clear=True):
+            self.path.write_text(json.dumps({
+                'backend': 'http', 'base_url': '', 'model': '',
+                'style': 'chat', 'provider': 'custom'}), encoding='utf-8')
+            status = settings.setup_status()
+            self.assertTrue(status['required'])
+            self.assertEqual(status['reason'], 'base_url_missing')
+            self.path.write_text(json.dumps({
+                'backend': 'http', 'base_url': 'https://example.com/v1', 'model': '',
+                'style': 'chat', 'provider': 'custom'}), encoding='utf-8')
+            status = settings.setup_status()
+            self.assertTrue(status['required'])
+            self.assertEqual(status['reason'], 'model_missing')
 
 
 if __name__ == '__main__':

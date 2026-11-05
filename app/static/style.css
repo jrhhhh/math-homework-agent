@@ -34,6 +34,21 @@
 #settings-status{min-height:1.6em;margin-top:14px}
 @media(max-width:620px){header{gap:10px}.header-button{padding:6px 8px;font-size:10px;white-space:nowrap}.settings-dialog form{padding:20px 18px}}
 
+/* 首次配置：先选服务商，再填 Key；技术字段收在高级设置里 */
+.setup-banner{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px auto 0;width:min(1180px,calc(100vw - 32px));padding:12px 18px;border:1px solid #e3c56b;border-radius:8px;background:#fff8e1;color:#5c4300;font-size:12px}
+.setup-banner strong{font-size:13px}
+.setup-banner .primary{margin-left:auto;min-width:auto;padding:7px 14px}
+.settings-intro{font-size:11px;color:var(--muted);margin:4px 0 10px}
+.settings-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 4px}
+.preset-card{text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);font:inherit;line-height:1.5}
+.preset-card strong{display:block;font-size:12px;color:var(--ink)}
+.preset-card small{display:block;font-size:10px;color:var(--muted)}
+.preset-card .preset-tag{margin-left:4px;color:var(--red);font-size:9px}
+.preset-card.active{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red);background:var(--red-soft)}
+#settings-advanced{margin-top:16px;padding-top:6px;border-top:1px solid var(--line)}
+#settings-advanced summary{cursor:pointer;color:var(--red);font-size:11px;padding:6px 0}
+@media(max-width:620px){.settings-presets{grid-template-columns:1fr}.setup-banner{margin:10px 12px 0;width:auto}}
+
 /* 附件：仅本地预览与文字提取，不进入模型 */
 .work-file-list{display:grid;gap:8px;margin-top:10px}
 .work-file-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);background:#faf8f8}
