@@ -17,8 +17,10 @@ function renderMath(area) {
 }
 function setMode() {
   const draft = ['draft','partition'].includes($('mode').value);
-  $('draft-field').hidden = !draft; $('solution-field').hidden = draft;
-  $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
+  const exam = $('mode').value === 'exam_answer';
+  $('draft-field').hidden = !draft; $('solution-field').hidden = draft || exam;
+  updateExamPresentation(exam);
+  $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'exam_answer' ? '生成参考答案 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
   $('verify-equation').disabled=!verificationAvailable||draft||$('mode').value==='hint';if($('verify-equation').disabled)$('verify-equation').checked=false;
 }
 let workFiles=[], workFileUrls=[];
@@ -223,21 +225,22 @@ $('submission-form').onsubmit=async event=>{
     const data=Object.fromEntries(['problem','solution','draft','request','mode'].map(k=>[k,$(k).value]));data.grade_level=$('grade').value;
     data.verification_requested=$('verify-equation').checked;
     const old=history.at(-1);data.allow_mode_change=Boolean(old && old.data.mode==='hint' && data.mode!=='hint');
-    if(['draft','partition'].includes(data.mode))data.solution='';else data.draft='';
+    if(['draft','partition','exam_answer'].includes(data.mode))data.solution='';else data.draft='';
+    if(data.mode==='exam_answer')data.draft='';
     if(workFiles.length){
       data.attachments=await Promise.all(workFiles.map(async item=>({name:item.file.name,base64:await fileToBase64(item.file)})));
     }
     const {id}=await api('/api/sessions/'+sessionId+'/submissions',data);clearWorkFiles();await sessions();history=await api('/api/sessions/'+sessionId);renderHistory();poll(id);
   }catch(error){$('form-status').textContent=error.message;busy=false;refreshSubmitState();}
 };
-$('new-session').onclick=async()=>{const {id}=await api('/api/sessions',{});await loadSession(id);};
+$('new-session').onclick=async()=>{const exam=$('mode').value==='exam_answer';const {id}=await api('/api/sessions',{});await loadSession(id);if(exam){$('mode').value='exam_answer';setMode();}};
 $('toggle-archived').onclick=()=>{showArchived=!showArchived;sessions();};
 $('mode').onchange=setMode;
 $('work-files').onchange=()=>{
   addWorkFiles([...$('work-files').files]);
   $('work-files').value='';
 };
-$('example').onclick=()=>{populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
+$('example').onclick=()=>{if($('mode').value==='exam_answer'){populate({mode:'exam_answer',problem:'高中数学小卷（共15分）\n1.（5分，填空题）解方程 √(x+2)=x。\n2.（10分，解答题）已知 f(x)=x²-2x。\n（1）求 f(x) 的最小值；（2）解不等式 f(x)≤3。',request:'保留题号与小问；步骤分值请标为建议，给出思路点拨和难度理由。'});$('problem').focus();return;}populate({problem:'在 0≤x<2π 内解 sin(2x)=sin(x)。',solution:'用二倍角公式得 2sin(x)cos(x)=sin(x)。\n两边除以 sin(x)，得 cos(x)=1/2。\n所以解只有 π/3 和 5π/3。',mode:'hint'});$('problem').focus();};
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),session_id:sessionId,submissions:history},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='数学练习-'+sessionId.slice(0,8)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 
 let settingsBusy=false, settingsPresets=[], currentPreset='custom';
@@ -387,17 +390,22 @@ if(openedFromFile){
 }
 
 function switchWorkspace(name) {
+  const exam=name==='exam';
+  if(exam){$('mode').value='exam_answer';setMode();}
+  else if(name==='practice'&&$('mode').value==='exam_answer'){$('mode').value='check';setMode();}
   const teacher=name==='teacher', teaching=name==='teaching', path=name==='path';
   $('path-view').hidden=!path;
-  $('practice-view').hidden=name!=='practice';$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
-  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'练习工作台');
-  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':'过程反馈');
-  $('practice-sidebar').hidden=name!=='practice';$('teacher-sidebar').hidden=!teacher;
-  for(const [key,id] of [['practice','show-practice'],['teacher','show-teacher'],['teaching','show-teaching']]){
+  $('practice-view').hidden=!['practice','exam'].includes(name);$('teacher-view').hidden=!teacher;$('teaching-view').hidden=!teaching;
+  document.title='数学作业智能体 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':exam?'试卷参考答案':'练习工作台');
+  $('header-note').textContent='高中数学 · '+(teacher?'教师备课':teaching?'师生任务':path?'学习路径':exam?'试卷参考答案':'过程反馈');
+  $('practice-sidebar').hidden=!['practice','exam'].includes(name);$('teacher-sidebar').hidden=!teacher;
+  for(const [key,id] of [['practice','show-practice'],['exam','show-exam'],['teacher','show-teacher'],['teaching','show-teaching']]){
     $(id).classList.toggle('active',key===name||(key==='practice'&&path));$(id).setAttribute('aria-pressed',String(key===name||(key==='practice'&&path)));
   }
   if(teacher)refreshLessonHistory();
 }
+$('show-exam').onclick=()=>switchWorkspace('exam');
+$('open-exam').onclick=()=>switchWorkspace('exam');
 $('show-practice').onclick=()=>switchWorkspace('practice');
 $('show-teacher').onclick=()=>switchWorkspace('teacher');
 let currentLesson=null,lessonBusy=false,lessonTeachingSource=null;
@@ -470,3 +478,29 @@ $('lesson-render-button').onclick=async()=>{
   }catch(error){lessonDone(error.message);}
 };
 if(!openedFromFile)refreshLessonHistory();
+
+function updateExamPresentation(exam) {
+  const view=$('practice-view'), heading=view.querySelector('.page-heading');
+  heading.querySelector('.eyebrow').textContent=exam?'MATHEMATICS · ANSWER STUDIO':'YOUR NEXT STEP IN MATHEMATICS';
+  heading.querySelector('h1').textContent=exam?'一份试卷，一份有依据的参考答案。':'把思路写下来，再向前一步。';
+  heading.querySelector('p').textContent=exam?'面向教师的整卷编制工具，让解答与每一个采分点清晰对应。':'从一个有依据的提示开始，逐步完善自己的解答。';
+  heading.querySelector('.folio span').textContent=exam?'参考答案编制':'练习工作台';
+  $('exam-launch').hidden=exam; $('exam-guide').hidden=!exam;
+  view.classList.toggle('exam-workspace',exam);
+  $('input-heading').textContent=exam?'输入试卷':'这一次，练什么？';
+  document.querySelector('label[for="problem"]').firstChild.textContent=exam?'试卷题目与分值 ':'原题 ';
+  $('problem').rows=exam?14:4;
+  $('problem').placeholder=exam?'粘贴完整试卷，保留题号、小问、条件与分值。\n例如：1.（5分）……\n2.（12分）（1）……（2）……':'例如：在 0≤x<2π 内解 sin(2x)=sin(x)。';
+  $('example').textContent=exam?'载入试卷示例 ↗':'载入示例 ↗';
+  $('feedback-heading').textContent=exam?'参考答案与评分建议':'反馈与下一步';
+  $('revision-note').textContent=exam?'未给分值将标为待确认；建议评分仍需教师核定。':'你的原过程会随每次提交保留。';
+  $('request').placeholder=exam?'例如：高三复习；保留全部小问；优先使用高中方法。':'例如：沿用我的方法，暂时不要给答案。';
+  $('practice-extras').open=exam||Boolean($('request').value);
+  $('extract-to-problem').textContent=exam?'核对后填入试卷':'填入原题';
+  $('extract-to-solution').hidden=exam;
+  const empty=$('result').querySelector('.empty-state');
+  if(empty){empty.querySelector('h3').textContent=exam?'参考答案将在这里生成':'先写出你的尝试';empty.querySelector('p').textContent=exam?'提交试卷后，逐题查看解答、采分点、分值、思路和难度评价。':'这里会展示检查依据、首错位置，或一个帮助你继续思考的提示。';empty.querySelector('small').textContent=exam?'完整条件，是可靠答案的起点':'过程比一个答案更值得被看见';}
+  if(!view.hidden){
+    for(const [id,active] of [['show-exam',exam],['show-practice',!exam]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-pressed',String(active));}
+  }
+}

@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{reference-answer}[2026/11/05 Mathematics reference answers]
+\RequirePackage[a4paper,margin=22mm]{geometry}
+\RequirePackage{amsmath,amssymb,booktabs,longtable,array,needspace,fancyhdr,xcolor,hyperref}
+\definecolor{answerink}{HTML}{263C50}
+\hypersetup{colorlinks=true,urlcolor=answerink,linkcolor=answerink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\linespread{1.12}
+\postdisplaypenalty=10000
+\ctexset{section={beforeskip=12pt,afterskip=7pt},subsection={beforeskip=10pt,afterskip=5pt}}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\AnswerPaperName}
+\fancyhead[R]{\small 参考答案与评分建议}
+\fancyfoot[C]{\small\thepage}
+\newcommand{\AnswerPaperName}{数学试卷}
+\newcommand{\papertitle}[2]{%
+  \renewcommand{\AnswerPaperName}{#1}%
+  {\centering\LARGE\bfseries #1\par\vspace{4pt}\large 参考答案与评分建议\par}
+  \vspace{5pt}{\small #2}\par\vspace{5pt}}
+\newcommand{\question}[2]{\Needspace{7\baselineskip}\subsection*{第 #1 题\quad\normalfont\normalsize（#2 分）}}
+\newcommand{\insight}[1]{\par\textbf{思路点拨}\quad #1\par}
+\newcommand{\difficulty}[2]{\textbf{难度评价}\quad #1：#2\par}
+\newcommand{\parttitle}[2]{\Needspace{4\baselineskip}\par\textbf{（#1）#2}\par}
+\newcommand{\checkpoint}[1]{\par\nopagebreak[4]\noindent\hspace*{\fill}\mbox{\small\color{answerink}……累计 #1 分}\par}
+\newcommand{\finalanswer}[1]{\textbf{答案}\quad #1\par}
+\newenvironment{scoring}{\small\begin{longtable}{@{}p{0.71\linewidth}rr@{}}\toprule 采分点 & 新增分 & 累计分\\\midrule\endhead}{\bottomrule\end{longtable}}

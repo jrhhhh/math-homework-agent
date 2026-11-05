@@ -105,7 +105,7 @@ python3 run.py
 | 技能 | 负责的教学任务 |
 | --- | --- |
 | [Learning Task Designer](learning-task-designer/SKILL.md) | 将教学目标和教材材料整理为可发布的练习任务 |
-| [Math Solver](math-solver/SKILL.md) | 从零求解数学题，给出分步推导与复核说明 |
+| [Math Solver](math-solver/SKILL.md) | 从零求解数学题；按需生成含采分点、分值建议、思路点拨和难度评价的试卷参考答案 |
 | [Math Error Diagnosis](math-error-diagnosis/SKILL.md) | 检查学生原始解答，定位首错、论证缺口并提供反馈 |
 | [Solution Refiner](solution-refiner/SKILL.md) | 在当前学生过程经完整诊断为正确后，提出解法优化方向 |
 | [Draft Coach](draft-coach/SKILL.md) | 根据学生提供的草稿描述，反馈版面组织习惯或进行版面分区 |
