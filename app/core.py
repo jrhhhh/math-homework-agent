@@ -13,7 +13,7 @@ from . import model
 from . import uploads
 
 ROOT = Path(__file__).resolve().parents[1]
-MODES = {'check', 'hint', 'full_correction', 'answer_check', 'solve', 'draft', 'partition', 'refine'}
+MODES = {'check', 'hint', 'full_correction', 'answer_check', 'solve', 'exam_answer', 'draft', 'partition', 'refine'}
 
 
 def child_env():
@@ -95,7 +95,7 @@ def route(data):
             return {'skill': None, 'action': 'clarify', 'reason': '请提交学生自己的过程；助手解答不能当作学生提交。'}
         return {'skill': 'math-error-diagnosis', 'action': 'diagnose_then_refine' if mode == 'refine' else 'diagnose',
                 'reason': '先完整核验学生原过程；只有结论与过程均成立且内容版本有效时，才进入正解优化。' if mode == 'refine' else '保留学生原过程，检查结论和步骤。'}
-    if mode == 'solve':
+    if mode in ('solve', 'exam_answer'):
         return {'skill': 'math-solver', 'action': 'solve', 'reason': '只有题目，用户明确要求求解。'}
     return {'skill': None, 'action': 'clarify', 'reason': '请填写学生解答；需要从零求解时选择“完整求解”。'}
 
@@ -124,6 +124,9 @@ def prompt_for(data, routing, arm='skill_gates'):
                 parts.append(path.read_text(encoding='utf-8'))
     if skill == 'math-solver':
         parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references/output-schema.md').read_text(encoding='utf-8'))
+        parts.append('用户请求试卷参考答案或评分细则时，遵循以下附加规则，内容写入 reply，result 保持原契约：\n' + (ROOT / skill / 'references/exam-answer.md').read_text(encoding='utf-8'))
+        if data['mode'] == 'exam_answer':
+            parts.append('本次任务是整份试卷参考答案：逐题逐小问在 reply 完整输出解答、采分点和分值、思路点拨、难度评价与核验。不得遗漏题目；未完成的题须明确列出。result 保持原有求解契约，不声称未核验的整卷已经通过。')
     elif skill == 'draft-coach':
         name = 'partition.md' if routing['action'] == 'partition' else 'output-schema.md'
         parts.append('result 遵循以下输出契约：\n' + (ROOT / skill / 'references' / name).read_text(encoding='utf-8'))

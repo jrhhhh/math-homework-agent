@@ -16,7 +16,7 @@ function renderMath(area) {
 function setMode() {
   const draft = ['draft','partition'].includes($('mode').value);
   $('draft-field').hidden = !draft; $('solution-field').hidden = draft;
-  $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
+  $('submit').firstChild.textContent = draft ? '分析草稿 ' : $('mode').value === 'exam_answer' ? '生成参考答案 ' : $('mode').value === 'solve' ? '开始求解 ' : $('mode').value === 'refine' ? '先核验再优化 ' : '开始检查 ';
   $('verify-equation').disabled=!verificationAvailable||draft||$('mode').value==='hint';if($('verify-equation').disabled)$('verify-equation').checked=false;
 }
 let workFiles=[], workFileUrls=[];
